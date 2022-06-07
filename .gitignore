@@ -2,13 +2,13 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
-ProjectTundra/[Oo]bj/*
-ProjectTundra/[Bb]uild/*
-ProjectTundra/[Bb]uilds/*
-ProjectTundra/[Ll]ogs/*
-ProjectTundra/[Uu]ser[Ss]ettings/*
-ProjectTundra/[Ll]ibrary/*
-ProjectTundra/[Tt]emp/*
+Tundra/[Oo]bj/*
+Tundra/[Bb]uild/*
+Tundra/[Bb]uilds/*
+Tundra/[Ll]ogs/*
+Tundra/[Uu]ser[Ss]ettings/*
+Tundra/[Ll]ibrary/*
+Tundra/[Tt]emp/*
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
