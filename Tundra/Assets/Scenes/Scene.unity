@@ -225,8 +225,9 @@ GameObject:
   - component: {fileID: 1324381166}
   - component: {fileID: 1324381165}
   - component: {fileID: 1324381164}
-  - component: {fileID: 1324381163}
   - component: {fileID: 1324381162}
+  - component: {fileID: 1324381163}
+  - component: {fileID: 1324381168}
   m_Layer: 8
   m_Name: PlayerTemplate
   m_TagString: Untagged
@@ -259,14 +260,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1324381161}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 765f2ea6b9f4e3f43a795aad744c68d4, type: 3}
+  m_Script: {fileID: 11500000, guid: d45e24a4609ffd84a89f8284f2731f34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 0.25
-  JumpForce: 20
-  GroundLayer:
-    serializedVersion: 2
-    m_Bits: 1
+  _speed: 1
 --- !u!136 &1324381164
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -343,6 +340,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1324381168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1324381161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5f9e4f769675114e88f6fd302063559, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1403532880
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -537,7 +546,7 @@ GameObject:
   - component: {fileID: 2032988267}
   m_Layer: 0
   m_Name: Camera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
