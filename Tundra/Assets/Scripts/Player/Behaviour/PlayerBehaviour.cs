@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CameraConfiguration;
 using Player.States;
 using UnityEngine;
 
@@ -10,17 +11,18 @@ namespace Player.Behaviour
         private BasicState _currentState;
         private PlayerMovement _playerMovement;
         private List<BasicState> _allStates;
+        private CameraMovement _cameraHolder;
+        private Camera _mainCamera;
         //private float cameraDistance;
 
-        [SerializeField]
-        private float cameraRotationSpeed = 1;
-        [SerializeField]
-        private GameObject cameraHolder;
+        [SerializeField] private float cameraRotationSpeed = 1;
 
         private void Start()
         {
-            _playerMovement = GetComponent<PlayerMovement>();
             //cameraDistance = Vector3.Distance(Camera.main.transform.position, transform.position);
+            _mainCamera = Camera.main;
+            _cameraHolder = transform.parent.GetComponentInChildren<CameraMovement>();
+            _playerMovement = GetComponent<PlayerMovement>();
             _allStates = new List<BasicState>()
             {
                 new IdleState(_playerMovement, this),
@@ -29,15 +31,14 @@ namespace Player.Behaviour
             };
             _currentState = _allStates[0];
             _currentState.Start();
-            UnityEngine.Camera.main.transform.RotateAround(transform.position, Vector3.up, 45);
+            _mainCamera.transform.RotateAround(transform.position, Vector3.up, 45);
             _playerMovement.UpdateDirections();
         }
 
         private void Update()
         {
             MoveCharacter();
-            cameraHolder.transform.position = transform.position;
-            RotateCamera();
+            _cameraHolder.transform.position = transform.position;
         }
 
         public void MoveCharacter() => _currentState.MoveCharacter();
@@ -48,15 +49,6 @@ namespace Player.Behaviour
             _currentState.Stop();
             state.Start();
             _currentState = state;
-        }
-
-        public void RotateCamera()
-        {
-            float rot = 0;
-            if (Input.GetKey(KeyCode.Q)) rot -= 1;
-            if (Input.GetKey(KeyCode.E)) rot += 1;
-            UnityEngine.Camera.main.transform.RotateAround(transform.position, Vector3.up, rot * cameraRotationSpeed);
-            _playerMovement.UpdateDirections();
         }
     }
 }
