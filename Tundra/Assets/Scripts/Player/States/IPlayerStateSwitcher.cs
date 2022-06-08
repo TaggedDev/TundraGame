@@ -1,6 +1,5 @@
-﻿using AssemblyCSharp.Assets.Scripts.States;
-
-namespace AssemblyCSharp.Assets.Scripts.Player.States
+﻿
+namespace Player.States
 {
     public interface IPlayerStateSwitcher
     {

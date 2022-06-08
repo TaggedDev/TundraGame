@@ -1,8 +1,8 @@
-﻿using AssemblyCSharp.Assets.Scripts.Behaviour;
-using AssemblyCSharp.Assets.Scripts.States;
+﻿
+using Player.Behaviour;
 using UnityEngine;
 
-namespace AssemblyCSharp.Assets.Scripts.Player.States
+namespace Player.States
 {
     public class SprintingState : BasicState
     {

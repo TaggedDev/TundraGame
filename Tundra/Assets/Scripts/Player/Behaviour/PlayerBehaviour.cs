@@ -1,18 +1,16 @@
-﻿using AssemblyCSharp.Assets.Scripts.Behaviour;
-using AssemblyCSharp.Assets.Scripts.Player.States;
-using AssemblyCSharp.Assets.Scripts.States;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Player.States;
 using UnityEngine;
 
-namespace AssemblyCSharp.Assets.Scripts.Player
+namespace Player.Behaviour
 {
     public class PlayerBehaviour : MonoBehaviour, IPlayerStateSwitcher
     {
         private BasicState _currentState;
         private PlayerMovement _playerMovement;
         private List<BasicState> _allStates;
-        private float cameraDistance;
+        //private float cameraDistance;
 
         [SerializeField]
         private float cameraRotationSpeed = 1;
@@ -22,7 +20,7 @@ namespace AssemblyCSharp.Assets.Scripts.Player
         private void Start()
         {
             _playerMovement = GetComponent<PlayerMovement>();
-            cameraDistance = Vector3.Distance(Camera.main.transform.position, transform.position);
+            //cameraDistance = Vector3.Distance(Camera.main.transform.position, transform.position);
             _allStates = new List<BasicState>()
             {
                 new IdleState(_playerMovement, this),
@@ -31,7 +29,7 @@ namespace AssemblyCSharp.Assets.Scripts.Player
             };
             _currentState = _allStates[0];
             _currentState.Start();
-            Camera.main.transform.RotateAround(transform.position, Vector3.up, 45);
+            UnityEngine.Camera.main.transform.RotateAround(transform.position, Vector3.up, 45);
             _playerMovement.UpdateDirections();
         }
 
@@ -57,7 +55,7 @@ namespace AssemblyCSharp.Assets.Scripts.Player
             float rot = 0;
             if (Input.GetKey(KeyCode.Q)) rot -= 1;
             if (Input.GetKey(KeyCode.E)) rot += 1;
-            Camera.main.transform.RotateAround(transform.position, Vector3.up, rot * cameraRotationSpeed);
+            UnityEngine.Camera.main.transform.RotateAround(transform.position, Vector3.up, rot * cameraRotationSpeed);
             _playerMovement.UpdateDirections();
         }
     }

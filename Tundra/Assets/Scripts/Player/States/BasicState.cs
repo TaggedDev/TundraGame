@@ -1,9 +1,7 @@
-﻿using AssemblyCSharp.Assets.Scripts.Behaviour;
-using AssemblyCSharp.Assets.Scripts.Player.States;
+﻿using Player.Behaviour;
 
-namespace AssemblyCSharp.Assets.Scripts.States
+namespace Player.States
 {
-
     public abstract class BasicState
     {
         protected readonly PlayerMovement _playerMovement;

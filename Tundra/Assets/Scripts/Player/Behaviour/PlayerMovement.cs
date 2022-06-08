@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace AssemblyCSharp.Assets.Scripts.Behaviour
+namespace Player.Behaviour
 {
     public class PlayerMovement : MonoBehaviour
     {
@@ -28,7 +28,7 @@ namespace AssemblyCSharp.Assets.Scripts.Behaviour
 
         public void UpdateDirections()
         {
-            var cameraForward = Camera.main.transform.forward;
+            var cameraForward = UnityEngine.Camera.main.transform.forward;
             Forward = new Vector3(cameraForward.x, 0, cameraForward.z);
             Forward = Vector3.Normalize(Forward);
             Right = Quaternion.Euler(new Vector3(0, 90, 0)) * Forward;
