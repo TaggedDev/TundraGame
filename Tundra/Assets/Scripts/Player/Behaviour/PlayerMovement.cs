@@ -23,6 +23,11 @@ namespace AssemblyCSharp.Assets.Scripts.Behaviour
 
         private void Start()
         {
+            UpdateDirections();
+        }
+
+        public void UpdateDirections()
+        {
             var cameraForward = Camera.main.transform.forward;
             Forward = new Vector3(cameraForward.x, 0, cameraForward.z);
             Forward = Vector3.Normalize(Forward);
