@@ -4,14 +4,14 @@ namespace Player.Behaviour
 {
     public class PlayerMovement : MonoBehaviour
     {
-        [SerializeField] private float _speed;
+        [SerializeField] private float speed;
         //private Animator _animator;
         private Camera _mainCamera;
 
-        public float Speed { get => _speed; set => _speed = value; }
+        public float Speed { get => speed; set => speed = value; }
         //public Animator Animator { get => _animator; set => _animator = value; }
-        public Vector3 Forward { get; set; }
-        public Vector3 Right { get; set; }
+        public Vector3 Forward { get; private set; }
+        public Vector3 Right { get; private set; }
         public Vector3 Heading { get; set; }
 
         private void Awake()

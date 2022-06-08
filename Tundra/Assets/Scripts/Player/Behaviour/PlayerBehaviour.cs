@@ -15,8 +15,6 @@ namespace Player.Behaviour
         private Camera _mainCamera;
         //private float cameraDistance;
 
-        [SerializeField] private float cameraRotationSpeed = 1;
-
         private void Start()
         {
             //cameraDistance = Vector3.Distance(Camera.main.transform.position, transform.position);
@@ -41,11 +39,11 @@ namespace Player.Behaviour
             _cameraHolder.transform.position = transform.position;
         }
 
-        public void MoveCharacter() => _currentState.MoveCharacter();
+        private void MoveCharacter() => _currentState.MoveCharacter();
 
         public void SwitchState<T>() where T : BasicState
         {
-            BasicState state = _allStates.FirstOrDefault(st => st is T);
+            var state = _allStates.FirstOrDefault(st => st is T);
             _currentState.Stop();
             state.Start();
             _currentState = state;

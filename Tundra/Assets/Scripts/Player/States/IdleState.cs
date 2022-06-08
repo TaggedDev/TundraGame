@@ -1,5 +1,4 @@
-﻿
-using Player.Behaviour;
+﻿using Player.Behaviour;
 using UnityEngine;
 
 namespace Player.States
@@ -10,17 +9,15 @@ namespace Player.States
             : base (playerMovement, switcher)
         { }
 
-        float h = 0, v = 0;
+        private float _h = 0, _v = 0;
 
         public override void MoveCharacter()
         {
-            h = Input.GetAxis("Horizontal");
-            v = Input.GetAxis("Vertical");
+            _h = Input.GetAxis("Horizontal");
+            _v = Input.GetAxis("Vertical");
 
-            if (Mathf.Abs(h) > 0 || Mathf.Abs(v) > 0)
-                _stateSwitcher.SwitchState<WalkingState>();
-
-            return;
+            if (Mathf.Abs(_h) > 0 || Mathf.Abs(_v) > 0)
+                StateSwitcher.SwitchState<WalkingState>();
         }
 
         public override void Start()

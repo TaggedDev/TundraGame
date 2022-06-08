@@ -9,33 +9,38 @@ namespace Player.States
             : base(playerMovement, switcher)
         { }
 
-        float h = 0, v = 0;
-        Vector3 rightMovement = Vector3.zero, forwardMovement = Vector3.zero;
+        private float _h = 0, _v = 0;
+        private Vector3 _rightMovement = Vector3.zero, _forwardMovement = Vector3.zero;
 
         public override void MoveCharacter()
         {
             if (Input.GetKey(KeyCode.LeftShift))
-                _stateSwitcher.SwitchState<SprintingState>();
+                StateSwitcher.SwitchState<SprintingState>();
 
-            h = Input.GetAxis("Horizontal");
-            v = Input.GetAxis("Vertical");
+            _h = Input.GetAxis("Horizontal");
+            _v = Input.GetAxis("Vertical");
 
-            if (h == 0 && v == 0)
-                _stateSwitcher.SwitchState<IdleState>();
+            if (_h == 0 && _v == 0)
+                StateSwitcher.SwitchState<IdleState>();
 
-            rightMovement = _playerMovement.Right * _playerMovement.Speed * Time.deltaTime * h;
-            forwardMovement = _playerMovement.Forward * _playerMovement.Speed * Time.deltaTime * v;
+            _rightMovement = PlayerMovement.Right * (PlayerMovement.Speed * Time.deltaTime * _h);
+            _forwardMovement = PlayerMovement.Forward * (PlayerMovement.Speed * Time.deltaTime * _v);
 
-            _playerMovement.Heading = Vector3.Normalize(rightMovement + forwardMovement);
-            _playerMovement.transform.forward += _playerMovement.Heading;
-            _playerMovement.transform.position += rightMovement;
-            _playerMovement.transform.position += forwardMovement;
+            PlayerMovement.Heading = Vector3.Normalize(_rightMovement + _forwardMovement);
+            
+            var transform = PlayerMovement.transform;
+            transform.forward += PlayerMovement.Heading;
+            
+            var position = transform.position;
+            position += _rightMovement;
+            position += _forwardMovement;
+            transform.position = position;
         }
 
         public override void Start()
         {
             //_playerMovement.Animator.SetFloat("Speed", .5f);
-            _playerMovement.Speed = 3f;
+            PlayerMovement.Speed = 3f;
         }
 
         public override void Stop()

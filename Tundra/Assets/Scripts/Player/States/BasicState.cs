@@ -4,13 +4,13 @@ namespace Player.States
 {
     public abstract class BasicState
     {
-        protected readonly PlayerMovement _playerMovement;
-        protected readonly IPlayerStateSwitcher _stateSwitcher;
+        protected readonly PlayerMovement PlayerMovement;
+        protected readonly IPlayerStateSwitcher StateSwitcher;
 
         protected BasicState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher)
         {
-            _playerMovement = playerMovement;
-            _stateSwitcher = switcher;
+            this.PlayerMovement = playerMovement;
+            StateSwitcher = switcher;
     }
 
         /// <summary>
