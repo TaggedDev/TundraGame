@@ -1,20 +1,33 @@
-﻿using System.Net.Mime;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Environment
 {
     public static class TextureGenerator
     {
+        /// <summary>
+        /// Colored map
+        /// </summary>
+        /// <param name="colorMap">Color array to apply on texture</param>
+        /// <param name="width">Width of the array (and texture)</param>
+        /// <param name="height">Height of the array (and texture)</param>
+        /// <returns></returns>
         public static Texture2D TextureFromColorMap(Color[] colorMap, int width, int height)
         {
-            Texture2D texture = new Texture2D(width, height);
-            texture.filterMode = FilterMode.Point;
-            texture.wrapMode = TextureWrapMode.Clamp;
+            Texture2D texture = new Texture2D(width, height)
+            {
+                filterMode = FilterMode.Point,
+                wrapMode = TextureWrapMode.Clamp
+            };
             texture.SetPixels(colorMap);
             texture.Apply();
             return texture;
         }
 
+        /// <summary>
+        /// Returns black & white color map
+        /// </summary>
+        /// <param name="noiseMap">The array of perlin noise values</param>
+        /// <returns>A texture to apply on plane object</returns>
         public static Texture2D TextureFromHeightMap(float[,] noiseMap)
         {
             int width = noiseMap.GetLength(0);

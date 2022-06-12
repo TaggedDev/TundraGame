@@ -12,26 +12,45 @@ namespace Environment
         
         private MapDisplay _display;
 
-        [SerializeField] private DrawMode drawMode;
+        [Range(0, 1)] 
+        [SerializeField] private float persistance;
+        [SerializeField] private float noiseScale;
+        [SerializeField] private float lacunarity;
         [SerializeField] private int mapWidth;
         [SerializeField] private int mapHeight;
         [SerializeField] private int octaves;
         [SerializeField] private int seed;
-        [SerializeField] private float noiseScale;
-        [SerializeField] private float lacunarity;
-        [Range(0, 1)]
-        [SerializeField] private float persistance;
+        [SerializeField] private DrawMode drawMode;
         [SerializeField] private Vector2 offset;
-
         [SerializeField] private TerrainType[] regions;
         
         public bool autoUpdate;
 
+        /// <summary>
+        /// Generates and paints map object in the edit mode window and play mode and draws it according to the DrawMode 
+        /// </summary>
         public void GenerateMap()
         {
             var noiseMap = Noise.GenerateNoiseMap(mapWidth, mapHeight, seed, noiseScale, octaves, persistance, lacunarity, offset);
 
-            Color[] colorMap = new Color[mapWidth * mapHeight];
+            Color[] colorMap = GenerateColorsForNoiseMap(noiseMap);
+            
+            _display = GetComponent<MapDisplay>();
+            
+            if (drawMode == DrawMode.NoiseMap)
+                _display.DrawTexture(TextureGenerator.TextureFromHeightMap(noiseMap));
+            else if (drawMode == DrawMode.ColorMap)
+                _display.DrawTexture(TextureGenerator.TextureFromColorMap(colorMap, mapWidth, mapHeight));
+        }
+
+        /// <summary>
+        /// Generates a color array for noise map 
+        /// </summary>
+        /// <param name="noiseMap">The map to made colors for</param>
+        /// <returns>1D array of colors for noise map</returns>
+        private Color[] GenerateColorsForNoiseMap(float[,] noiseMap)
+        {
+            var colorMap = new Color[mapWidth * mapHeight];
             
             for (int y = 0; y < mapHeight; y++)
             {
@@ -48,14 +67,13 @@ namespace Environment
                     }
                 }
             }
-            
-            _display = GetComponent<MapDisplay>();
-            if (drawMode == DrawMode.NoiseMap)
-                _display.DrawTexture(TextureGenerator.TextureFromHeightMap(noiseMap));
-            else if (drawMode == DrawMode.ColorMap)
-                _display.DrawTexture(TextureGenerator.TextureFromColorMap(colorMap, mapWidth, mapHeight));
-        }
 
+            return colorMap;
+        }
+        
+        /// <summary>
+        /// Calls when any variable is edited in Inspector 
+        /// </summary>
         private void OnValidate()
         {
             if (mapWidth < 1)
@@ -71,6 +89,9 @@ namespace Environment
         }
     }
     
+    /// <summary>
+    /// Struct to define Terrain (sand, grass, water etc)
+    /// </summary>
     [Serializable]
     public struct TerrainType
     {
