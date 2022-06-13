@@ -10,7 +10,7 @@ namespace Environment
             NoiseMap, ColorMap, MeshMap
         }
 
-        private const int MapChunkSize = 241;
+        public const int MapChunkSize = 241;
         [Range(0, 6)]
         [SerializeField] private int levelOfDetail;
         private MapDisplay _display;
