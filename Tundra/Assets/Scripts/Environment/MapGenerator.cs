@@ -7,7 +7,7 @@ namespace Environment
     {
         private enum DrawMode
         {
-            NoiseMap, ColorMap
+            NoiseMap, ColorMap, MeshMap
         }
         
         private MapDisplay _display;
@@ -37,10 +37,18 @@ namespace Environment
             
             _display = GetComponent<MapDisplay>();
             
-            if (drawMode == DrawMode.NoiseMap)
-                _display.DrawTexture(TextureGenerator.TextureFromHeightMap(noiseMap));
-            else if (drawMode == DrawMode.ColorMap)
-                _display.DrawTexture(TextureGenerator.TextureFromColorMap(colorMap, mapWidth, mapHeight));
+            switch (drawMode)
+            {
+                case DrawMode.NoiseMap:
+                    _display.DrawTexture(TextureGenerator.TextureFromHeightMap(noiseMap));
+                    break;
+                case DrawMode.ColorMap:
+                    _display.DrawTexture(TextureGenerator.TextureFromColorMap(colorMap, mapWidth, mapHeight));
+                    break;
+                case DrawMode.MeshMap:
+                    _display.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap), TextureGenerator.TextureFromColorMap(colorMap, mapWidth, mapHeight));
+                    break;
+            }
         }
 
         /// <summary>
