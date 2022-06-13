@@ -43,8 +43,8 @@ namespace Environment
                     
                     for (int i = 0; i < octaves; i++)
                     {
-                        float sampleX = (x - halfWidth) / (scale * frequency) + octaveOffset[i].x;
-                        float sampleY = (y - halfHeight) / (scale * frequency) + octaveOffset[i].y; 
+                        float sampleX = (x - halfWidth) / scale * frequency + octaveOffset[i].x;
+                        float sampleY = (y - halfHeight) / scale * frequency + octaveOffset[i].y; 
 
                         float perlinValue = Mathf.PerlinNoise(sampleX, sampleY) * 2 - 1;
                         noiseHeight += perlinValue * amplitude;
