@@ -14,12 +14,12 @@ namespace Editor
             if (DrawDefaultInspector())
             {
                 if (mapGenerator.autoUpdate)
-                    mapGenerator.GenerateMap();
+                    mapGenerator.GenerateMapData();
             }
 
             if (GUILayout.Button("Generate"))
             {
-                mapGenerator.GenerateMap();
+                mapGenerator.GenerateMapData();
             }
         }
     }
