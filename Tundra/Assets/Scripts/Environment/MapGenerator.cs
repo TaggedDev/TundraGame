@@ -14,7 +14,7 @@ namespace Environment
 
         public const int MapChunkSize = 241;
         [Range(0, 6)]
-        [SerializeField] private int levelOfDetail;
+        [SerializeField] private int editorLOD;
         private MapDisplay _display;
 
         [Range(0, 1)] 
@@ -107,19 +107,19 @@ namespace Environment
         /// </summary>
         /// <param name="mapData"></param>
         /// <param name="callback"></param>
-        public void RequestMeshData(MapData mapData, Action<MeshData> callback)
+        public void RequestMeshData(MapData mapData, int lod, Action<MeshData> callback)
         {
             ThreadStart threadStart = delegate {
-                MeshDataThread (mapData, callback);
+                MeshDataThread (mapData, lod, callback);
             };
 
             new Thread (threadStart).Start ();
         }
 
-        private void MeshDataThread(MapData mapData, Action<MeshData> callback)
+        private void MeshDataThread(MapData mapData, int lod, Action<MeshData> callback)
         {
             MeshData meshData =
-                MeshGenerator.GenerateTerrainMesh(mapData.HeightMap, heightMultiplier, meshHeightCurve, levelOfDetail);
+                MeshGenerator.GenerateTerrainMesh(mapData.HeightMap, heightMultiplier, meshHeightCurve, lod);
             lock (_meshDataThreadInfoQueue)
             {
                 _meshDataThreadInfoQueue.Enqueue(new MapThreadInfo<MeshData>(callback, meshData)); 

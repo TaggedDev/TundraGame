@@ -212,7 +212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ebf3b5e1f9e54c4cb2d532791a355f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelOfDetail: 4
+  editorLOD: 0
   persistance: 0.4
   noiseScale: 10
   lacunarity: 40
@@ -301,6 +301,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapMaterial: {fileID: 2100000, guid: 091be2d4a1cd8b14ab517bc1a41138c3, type: 2}
+  detailLevels:
+  - lod: 0
+    visibleDistanceTreshold: 200
+  - lod: 1
+    visibleDistanceTreshold: 400
+  - lod: 2
+    visibleDistanceTreshold: 600
   viewer: {fileID: 1704736030}
 --- !u!1 &494034827
 GameObject:
@@ -514,7 +521,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1324381161}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.048997, y: 20, z: -18.057245}
+  m_LocalPosition: {x: 0, y: 16.92, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1704736030}
@@ -863,7 +870,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentTime: 0
-  dayDuration: 10
+  dayDuration: 100
   sun: {fileID: 1922622783}
   moon: {fileID: 494034828}
   sunCurve:

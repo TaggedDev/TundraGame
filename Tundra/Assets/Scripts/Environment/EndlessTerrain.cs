@@ -6,29 +6,43 @@ namespace Environment
 {
     public class EndlessTerrain : MonoBehaviour
     {
+        private const float viewerChunkUpdateThreshold = 25f;
+        private const float sqrViewerChunkUpdateThreshold = viewerChunkUpdateThreshold * viewerChunkUpdateThreshold;
+        
+        
         [SerializeField] private Material mapMaterial;
-        private const float MaxViewDistance = 450;
+        [SerializeField] private LODInfo[] detailLevels;
+        [SerializeField] private Transform viewer;
+        
+        private static float _maxViewDistance;
         private static Vector2 _viewerPosition;
+        private Vector2 _viewerPositionOld;
         private static MapGenerator _mapGenerator;
         private int _chunkSize;
         private int _chunksVisibleInViewDistance;
-
+        
         private Dictionary<Vector2, TerrainChunk> _terrainChunks = new Dictionary<Vector2, TerrainChunk>();
         private List<TerrainChunk> _lastUpdatedTerrainChunks = new List<TerrainChunk>();
         
-        public Transform viewer;
         
         private void Start()
         {
+            _maxViewDistance = detailLevels[detailLevels.Length - 1].visibleDistanceTreshold;
             _mapGenerator = GetComponent<MapGenerator>();
             _chunkSize = MapGenerator.MapChunkSize - 1;
-            _chunksVisibleInViewDistance = Mathf.RoundToInt(MaxViewDistance / _chunkSize);
+            _chunksVisibleInViewDistance = Mathf.RoundToInt(_maxViewDistance / _chunkSize);
+            UpdateVisibleChunks();
         }
 
         private void Update()
         {
             _viewerPosition = new Vector2(viewer.position.x,  viewer.position.z);
-            UpdateVisibleChunks();
+            if ((_viewerPosition - _viewerPositionOld).sqrMagnitude > sqrViewerChunkUpdateThreshold)
+            {
+                _viewerPositionOld = _viewerPosition;
+                UpdateVisibleChunks();
+            }
+                
         }
         
         /// <summary>
@@ -37,9 +51,9 @@ namespace Environment
         private void UpdateVisibleChunks()
         {
             // Disable unseen chunks and clear the list of previous update
-            for (int i = 0; i < _lastUpdatedTerrainChunks.Count; i++)
-                _lastUpdatedTerrainChunks[i].SetVisible(false);
-            
+            foreach (var chunk in _lastUpdatedTerrainChunks)
+                chunk.SetVisible(false);
+
             _lastUpdatedTerrainChunks.Clear();
             
             /*foreach (var chunk in _lastUpdateChunks) 
@@ -62,20 +76,31 @@ namespace Environment
                 }
                 else
                 {
-                    _terrainChunks.Add(viewedChunkCoord, new TerrainChunk(viewedChunkCoord, _chunkSize, transform, mapMaterial));
+                    _terrainChunks.Add(viewedChunkCoord, new TerrainChunk(viewedChunkCoord, _chunkSize, detailLevels, transform, mapMaterial));
                 }
             }
         }
 
         private class TerrainChunk
         {
+            private LODInfo[] _detailLevels;
+            private LODMesh[] _lodMeshes;
+
+            private MapData _mapData;
+            private bool _mapDataReceived;
+            
+            
             private readonly GameObject _meshObject;
             private MeshRenderer _meshRenderer;
             private MeshFilter _meshFilter;
             private Bounds _bounds;
+            private int _previousDetailsIndex;
+            
         
-            public TerrainChunk(Vector2 coords, int size, Transform parent, Material material)
+            public TerrainChunk(Vector2 coords, int size, LODInfo[] detailLevels, Transform parent, Material material)
             {
+                _previousDetailsIndex = -1;
+                _detailLevels = detailLevels;
                 var position = coords * size;
                 _bounds = new Bounds(position, Vector2.one * size);
                 Vector3 positionV3 = new Vector3(position.x, 0, position.y);
@@ -89,6 +114,12 @@ namespace Environment
                 _meshObject.transform.position = positionV3;
                 _meshObject.transform.parent = parent;
                 SetVisible(false);
+
+                _lodMeshes = new LODMesh[detailLevels.Length];
+                for (int i = 0; i < detailLevels.Length; i++)
+                {
+                    _lodMeshes[i] = new LODMesh(_detailLevels[i].lod, UpdateChunk);
+                }
                 
                 _mapGenerator.RequestMapData(OnMapDataReceived);
             }
@@ -99,22 +130,49 @@ namespace Environment
             /// <param name="mapData"></param>
             private void OnMapDataReceived(MapData mapData)
             {
-                _mapGenerator.RequestMeshData(mapData, OnMeshDataReceived);
+                _mapData = mapData;
+                _mapDataReceived = true;
+                
+                UpdateChunk();
             }
 
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="meshData"></param>
-            private void OnMeshDataReceived(MeshData meshData)
-            {
-                _meshFilter.mesh = meshData.CreateMesh();
-            }
-            
             public void UpdateChunk()
             {
+                if (!_mapDataReceived) return;
+                
                 float distanceFromViewerToEdge = Mathf.Sqrt(_bounds.SqrDistance(_viewerPosition));
-                bool visible = distanceFromViewerToEdge <= MaxViewDistance;
+                bool visible = distanceFromViewerToEdge <= _maxViewDistance;
+
+                if (visible)
+                {
+                    int lodIndex = 0;
+                    for (int i = 0; i < _detailLevels.Length -1; i++)
+                    {
+                        if (distanceFromViewerToEdge > _detailLevels[i].visibleDistanceTreshold)
+                        {
+                            lodIndex = i + 1;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    
+                    if (lodIndex != _previousDetailsIndex)
+                    {
+                        LODMesh lodMesh = _lodMeshes[lodIndex];
+                        if (lodMesh.hasMesh)
+                        {
+                            _previousDetailsIndex = lodIndex;
+                            _meshFilter.mesh = lodMesh.mesh;
+                        }
+                        else if (!lodMesh.hasRequestedMesh)
+                        {
+                            lodMesh.RequestMesh(_mapData);
+                        }
+                    }
+                }
+                
                 SetVisible(visible);
             }
 
@@ -126,5 +184,42 @@ namespace Environment
 
             public bool IsVisible() => _meshObject.activeSelf;
         }
+
+        private class LODMesh
+        {
+            public Mesh mesh;
+            public bool hasRequestedMesh;
+            public bool hasMesh;
+            private int _lod;
+            private System.Action _updateCallback;
+
+            public LODMesh(int lod, System.Action updateCallback)
+            {
+                _lod = lod;
+                _updateCallback = updateCallback;
+            }
+
+            private void OnMeshDataReceived(MeshData meshData)
+            {
+                mesh = meshData.CreateMesh();
+                hasMesh = true;
+
+                _updateCallback();
+            }
+
+            public void RequestMesh(MapData mapData)
+            {
+                hasRequestedMesh = true;
+                _mapGenerator.RequestMeshData(mapData, _lod, OnMeshDataReceived);
+            }
+        }
+    }
+
+    [System.Serializable]
+    public struct LODInfo
+    {
+        public int lod;
+        public float visibleDistanceTreshold;
+
     }
 }
