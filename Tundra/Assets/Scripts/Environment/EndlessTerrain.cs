@@ -21,8 +21,8 @@ namespace Environment
         private int _chunkSize;
         private int _chunksVisibleInViewDistance;
         
+        private static List<TerrainChunk> _lastUpdatedTerrainChunks = new List<TerrainChunk>();
         private Dictionary<Vector2, TerrainChunk> _terrainChunks = new Dictionary<Vector2, TerrainChunk>();
-        private List<TerrainChunk> _lastUpdatedTerrainChunks = new List<TerrainChunk>();
         
         
         private void Start()
@@ -68,16 +68,9 @@ namespace Environment
             {
                 Vector2 viewedChunkCoord = new Vector2(currentChunkCoordX + offsetX, currentChunkCoordY + offsetY);
                 if (_terrainChunks.ContainsKey(viewedChunkCoord))
-                {
-                    var chunk = _terrainChunks[viewedChunkCoord];
-                    chunk.UpdateChunk();
-                    if (chunk.IsVisible())
-                        _lastUpdatedTerrainChunks.Add(chunk);
-                }
+                    _terrainChunks[viewedChunkCoord].UpdateChunk();
                 else
-                {
                     _terrainChunks.Add(viewedChunkCoord, new TerrainChunk(viewedChunkCoord, _chunkSize, detailLevels, transform, mapMaterial));
-                }
             }
         }
 
@@ -175,6 +168,8 @@ namespace Environment
                             lodMesh.RequestMesh(_mapData);
                         }
                     }
+                    
+                    _lastUpdatedTerrainChunks.Add(this);
                 }
                 
                 SetVisible(visible);
