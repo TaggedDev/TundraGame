@@ -121,7 +121,7 @@ namespace Environment
                     _lodMeshes[i] = new LODMesh(_detailLevels[i].lod, UpdateChunk);
                 }
                 
-                _mapGenerator.RequestMapData(OnMapDataReceived);
+                _mapGenerator.RequestMapData(position, OnMapDataReceived);
             }
 
             /// <summary>
@@ -132,6 +132,10 @@ namespace Environment
             {
                 _mapData = mapData;
                 _mapDataReceived = true;
+
+                Texture2D texture = TextureGenerator.TextureFromColorMap(mapData.ColorMap, MapGenerator.MapChunkSize,
+                    MapGenerator.MapChunkSize);
+                _meshRenderer.material.mainTexture = texture;
                 
                 UpdateChunk();
             }

@@ -24,8 +24,8 @@ namespace Environment
         [SerializeField] private float heightMultiplier;
         [SerializeField] private int octaves;
         [SerializeField] private int seed;
-        [SerializeField] private DrawMode drawMode;
         [SerializeField] private Vector2 offset;
+        [SerializeField] private DrawMode drawMode;
         [SerializeField] private TerrainType[] regions;
         [SerializeField] private AnimationCurve meshHeightCurve;
         private Queue<MapThreadInfo<MapData>> _mapDataThreadInfoQueue = new Queue<MapThreadInfo<MapData>>();
@@ -54,38 +54,40 @@ namespace Environment
             }
         }
 
-        /*
         /// <summary>
         /// 
         /// </summary>
         public void DrawMapInEditor()
         {
-            MapData mapData = GenerateMapData();
+            MapData mapData = GenerateMapData(Vector2.zero);
             _display = GetComponent<MapDisplay>();
             
-           switch (drawMode)
+            switch (drawMode)
             {
                 case DrawMode.NoiseMap:
                     _display.DrawTexture(TextureGenerator.TextureFromHeightMap(mapData.HeightMap));
                     break;
                 case DrawMode.ColorMap:
-                    _display.DrawTexture(TextureGenerator.TextureFromColorMap(mapData.ColorMap, MapChunkSize, MapChunkSize));
+                    _display.DrawTexture(TextureGenerator.TextureFromColorMap(mapData.ColorMap, MapChunkSize,
+                        MapChunkSize));
                     break;
                 case DrawMode.MeshMap:
-                    _display.DrawMesh(MeshGenerator.GenerateTerrainMesh(mapData.HeightMap, heightMultiplier, meshHeightCurve, levelOfDetail),
+                    _display.DrawMesh(MeshGenerator.GenerateTerrainMesh(mapData.HeightMap, heightMultiplier,
+                            meshHeightCurve, editorLOD),
                         TextureGenerator.TextureFromColorMap(mapData.ColorMap, MapChunkSize, MapChunkSize));
                     break;
             }
-        }*/
+        }
 
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="centre"></param>
         /// <param name="callback"></param>
-        public void RequestMapData(Action<MapData> callback)
+        public void RequestMapData(Vector2 centre, Action<MapData> callback)
         {
             ThreadStart threadStart = delegate {
-                MapDataThread (callback);
+                MapDataThread (centre, callback);
             };
             new Thread (threadStart).Start ();
         }
@@ -93,10 +95,11 @@ namespace Environment
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="centre"></param>
         /// <param name="callback"></param>
-        private void MapDataThread(Action<MapData> callback)
+        private void MapDataThread(Vector2 centre, Action<MapData> callback)
         {
-            MapData mapData = GenerateMapData();
+            MapData mapData = GenerateMapData(centre);
             lock (_mapDataThreadInfoQueue) {
                 _mapDataThreadInfoQueue.Enqueue(new MapThreadInfo<MapData>(callback, mapData));
             }
@@ -129,42 +132,25 @@ namespace Environment
         /// <summary>
         /// Generates and paints map object in the edit mode window and play mode and draws it according to the DrawMode 
         /// </summary>
-        public MapData GenerateMapData()
-        {
-            var noiseMap = Noise.GenerateNoiseMap(MapChunkSize, MapChunkSize, seed, noiseScale, 
-                octaves, persistance, lacunarity, offset);
-            Color[] colorMap = GenerateColorsForNoiseMap(noiseMap);
-            return new MapData(noiseMap, colorMap);
-        }
+        private MapData GenerateMapData(Vector2 centre) {
+            float[,] noiseMap = Noise.GenerateNoiseMap (MapChunkSize, MapChunkSize, seed, noiseScale, octaves, persistance, lacunarity, centre + offset);
 
-        /// <summary>
-        /// Generates a color array for noise map 
-        /// </summary>
-        /// <param name="noiseMap">The map to made colors for</param>
-        /// <returns>1D array of colors for noise map</returns>
-        private Color[] GenerateColorsForNoiseMap(float[,] noiseMap)
-        {
-            var colorMap = new Color[MapChunkSize * MapChunkSize];
-            
-            for (int y = 0; y < MapChunkSize; y++)
-            {
-                for (int x = 0; x < MapChunkSize; x++)
-                {
-                    float currentHeight = noiseMap[x, y];
-                    for (int i = 0; i < regions.Length; i++)
-                    {
-                        if (currentHeight <= regions[i].height)
-                        {
-                            colorMap[y * MapChunkSize + x] = regions[i].color;
+            Color[] colourMap = new Color[MapChunkSize * MapChunkSize];
+            for (int y = 0; y < MapChunkSize; y++) {
+                for (int x = 0; x < MapChunkSize; x++) {
+                    float currentHeight = noiseMap [x, y];
+                    for (int i = 0; i < regions.Length; i++) {
+                        if (currentHeight <= regions [i].height) {
+                            colourMap [y * MapChunkSize + x] = regions [i].color;
                             break;
                         }
                     }
                 }
             }
-
-            return colorMap;
+            
+            return new MapData (noiseMap, colourMap);
         }
-        
+
         /// <summary>
         /// Calls when any variable is edited in Inspector 
         /// </summary>
@@ -197,9 +183,9 @@ namespace Environment
     [Serializable]
     public struct TerrainType
     {
-        public readonly string name;
-        public readonly float height;
-        public readonly Color color;
+        public string name;
+        public float height;
+        public Color color;
     }
 
     public struct MapData
