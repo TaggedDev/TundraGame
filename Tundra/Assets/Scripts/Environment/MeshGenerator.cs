@@ -4,7 +4,8 @@ namespace Environment
 {
     public static class MeshGenerator
     {
-        public static MeshData GenerateTerrainMesh(float[,] heightMap, float heightMultiplier, AnimationCurve heightCurve, int levelOfDetail)
+        public static MeshData GenerateTerrainMesh(float[,] heightMap, float heightMultiplier,
+            AnimationCurve heightCurve, int levelOfDetail)
         {
             int width = heightMap.GetLength(0);
             int height = heightMap.GetLength(1);
@@ -14,7 +15,7 @@ namespace Environment
             int meshSimplifyIncrement = levelOfDetail == 0 ? 1 : levelOfDetail * 2;
             int verticesPerLine = (width - 1) / meshSimplifyIncrement + 1;
             
-            MeshData meshData = new MeshData(width, height);
+            MeshData meshData = new MeshData(verticesPerLine, verticesPerLine);
             int vertexIndex = 0;
 
             for (int y = 0; y < height; y += meshSimplifyIncrement)
