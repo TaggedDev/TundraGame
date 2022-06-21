@@ -89,7 +89,7 @@ namespace Environment
 					}
 					else
 					{
-						float normalizedHeight = (noiseMap[x, y] + 1) / (maxPossibleHeight / 0.9f);
+						float normalizedHeight = (noiseMap[x, y] + 1) / (2f * maxPossibleHeight / 0.9f);
 						noiseMap[x, y] = Mathf.Clamp(normalizedHeight, 0, int.MaxValue);
 					}
 				}
