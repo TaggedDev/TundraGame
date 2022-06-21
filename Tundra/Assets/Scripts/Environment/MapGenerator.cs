@@ -17,6 +17,8 @@ namespace Environment
         [SerializeField] private int editorLOD;
         private MapDisplay _display;
 
+        [SerializeField] private NormalizeMode normalizeMode;
+
         [Range(0, 1)] 
         [SerializeField] private float persistance;
         [SerializeField] private float noiseScale;
@@ -35,28 +37,21 @@ namespace Environment
 
         private void Update()
         {
-            if (_mapDataThreadInfoQueue.Count > 0)
-            {
-                for (int i = 0; i < _mapDataThreadInfoQueue.Count; i++)
-                {
-                    var threadInfo = _mapDataThreadInfoQueue.Dequeue();
+            if (_mapDataThreadInfoQueue.Count > 0) {
+                for (int i = 0; i < _mapDataThreadInfoQueue.Count; i++) {
+                    MapThreadInfo<MapData> threadInfo = _mapDataThreadInfoQueue.Dequeue ();
                     threadInfo.callBack(threadInfo.parameter);
-                }   
+                }
             }
 
-            if (_meshDataThreadInfoQueue.Count > 0)
-            {
-                for (int i = 0; i < _meshDataThreadInfoQueue.Count; i++)
-                {
-                    var threadInfo = _meshDataThreadInfoQueue.Dequeue();
+            if (_meshDataThreadInfoQueue.Count > 0) {
+                for (int i = 0; i < _meshDataThreadInfoQueue.Count; i++) {
+                    MapThreadInfo<MeshData> threadInfo = _meshDataThreadInfoQueue.Dequeue ();
                     threadInfo.callBack(threadInfo.parameter);
                 }
             }
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
+        
         public void DrawMapInEditor()
         {
             MapData mapData = GenerateMapData(Vector2.zero);
@@ -78,12 +73,7 @@ namespace Environment
                     break;
             }
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="centre"></param>
-        /// <param name="callback"></param>
+        
         public void RequestMapData(Vector2 centre, Action<MapData> callback)
         {
             ThreadStart threadStart = delegate {
@@ -91,12 +81,7 @@ namespace Environment
             };
             new Thread (threadStart).Start ();
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="centre"></param>
-        /// <param name="callback"></param>
+        
         private void MapDataThread(Vector2 centre, Action<MapData> callback)
         {
             MapData mapData = GenerateMapData(centre);
@@ -104,12 +89,7 @@ namespace Environment
                 _mapDataThreadInfoQueue.Enqueue(new MapThreadInfo<MapData>(callback, mapData));
             }
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="mapData"></param>
-        /// <param name="callback"></param>
+        
         public void RequestMeshData(MapData mapData, int lod, Action<MeshData> callback)
         {
             ThreadStart threadStart = delegate {
@@ -121,39 +101,35 @@ namespace Environment
 
         private void MeshDataThread(MapData mapData, int lod, Action<MeshData> callback)
         {
-            MeshData meshData =
-                MeshGenerator.GenerateTerrainMesh(mapData.HeightMap, heightMultiplier, meshHeightCurve, lod);
-            lock (_meshDataThreadInfoQueue)
-            {
-                _meshDataThreadInfoQueue.Enqueue(new MapThreadInfo<MeshData>(callback, meshData)); 
+            MeshData meshData = MeshGenerator.GenerateTerrainMesh (mapData.HeightMap, heightMultiplier, meshHeightCurve, lod);
+            lock (_meshDataThreadInfoQueue) {
+                _meshDataThreadInfoQueue.Enqueue (new MapThreadInfo<MeshData> (callback, meshData));
             }
         }
 
-        /// <summary>
-        /// Generates and paints map object in the edit mode window and play mode and draws it according to the DrawMode 
-        /// </summary>
         private MapData GenerateMapData(Vector2 centre) {
-            float[,] noiseMap = Noise.GenerateNoiseMap (MapChunkSize, MapChunkSize, seed, noiseScale, octaves, persistance, lacunarity, centre + offset);
+            float[,] noiseMap = Noise.GenerateNoiseMap (MapChunkSize, MapChunkSize, seed, 
+                noiseScale, octaves, persistance, lacunarity, centre + offset, normalizeMode);
 
             Color[] colourMap = new Color[MapChunkSize * MapChunkSize];
             for (int y = 0; y < MapChunkSize; y++) {
                 for (int x = 0; x < MapChunkSize; x++) {
                     float currentHeight = noiseMap [x, y];
                     for (int i = 0; i < regions.Length; i++) {
-                        if (currentHeight <= regions [i].height) {
-                            colourMap [y * MapChunkSize + x] = regions [i].color;
+                        if (currentHeight >= regions [i].height)
+                        {
+                            colourMap[y * MapChunkSize + x] = regions[i].color;
+                        }
+                        else
+                        {
                             break;
                         }
                     }
                 }
             }
-            
             return new MapData (noiseMap, colourMap);
         }
-
-        /// <summary>
-        /// Calls when any variable is edited in Inspector 
-        /// </summary>
+        
         private void OnValidate()
         {
             if (noiseScale <= 0)
@@ -177,9 +153,6 @@ namespace Environment
         }
     }
     
-    /// <summary>
-    /// Struct to define Terrain (sand, grass, water etc)
-    /// </summary>
     [Serializable]
     public struct TerrainType
     {
@@ -198,8 +171,6 @@ namespace Environment
 
         public float[,] HeightMap;
         public Color[] ColorMap;
-        
     }
-
 }
 

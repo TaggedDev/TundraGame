@@ -6,6 +6,7 @@ namespace Environment
 {
     public class EndlessTerrain : MonoBehaviour
     {
+        private const float scale = 2f;
         private const float viewerChunkUpdateThreshold = 25f;
         private const float sqrViewerChunkUpdateThreshold = viewerChunkUpdateThreshold * viewerChunkUpdateThreshold;
         
@@ -36,7 +37,7 @@ namespace Environment
 
         private void Update()
         {
-            _viewerPosition = new Vector2(viewer.position.x,  viewer.position.z);
+            _viewerPosition = new Vector2(viewer.position.x,  viewer.position.z) / scale;
             if ((_viewerPosition - _viewerPositionOld).sqrMagnitude > sqrViewerChunkUpdateThreshold)
             {
                 _viewerPositionOld = _viewerPosition;
@@ -45,9 +46,6 @@ namespace Environment
                 
         }
         
-        /// <summary>
-        /// Updates visible/invisible parameter of chunks that are in 'visible' area  
-        /// </summary>
         private void UpdateVisibleChunks()
         {
             // Disable unseen chunks and clear the list of previous update
@@ -78,10 +76,9 @@ namespace Environment
         {
             private LODInfo[] _detailLevels;
             private LODMesh[] _lodMeshes;
-
+            
             private MapData _mapData;
             private bool _mapDataReceived;
-            
             
             private readonly GameObject _meshObject;
             private MeshRenderer _meshRenderer;
@@ -89,7 +86,6 @@ namespace Environment
             private Bounds _bounds;
             private int _previousDetailsIndex;
             
-        
             public TerrainChunk(Vector2 coords, int size, LODInfo[] detailLevels, Transform parent, Material material)
             {
                 _previousDetailsIndex = -1;
@@ -104,8 +100,9 @@ namespace Environment
                 _meshFilter = _meshObject.AddComponent<MeshFilter>();
                 _meshRenderer.material = material;
                 
-                _meshObject.transform.position = positionV3;
+                _meshObject.transform.position = positionV3 * scale;
                 _meshObject.transform.parent = parent;
+                _meshObject.transform.localScale = Vector3.one * scale;
                 SetVisible(false);
 
                 _lodMeshes = new LODMesh[detailLevels.Length];
@@ -116,11 +113,7 @@ namespace Environment
                 
                 _mapGenerator.RequestMapData(position, OnMapDataReceived);
             }
-
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="mapData"></param>
+            
             private void OnMapDataReceived(MapData mapData)
             {
                 _mapData = mapData;

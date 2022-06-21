@@ -17,7 +17,6 @@ namespace Environment
             
             MeshData meshData = new MeshData(verticesPerLine, verticesPerLine);
             int vertexIndex = 0;
-
             for (int y = 0; y < height; y += meshSimplifyIncrement)
             {
                 for (int x = 0; x < width; x += meshSimplifyIncrement)
@@ -34,7 +33,6 @@ namespace Environment
                     vertexIndex++;
                 }
             }
-
             return meshData;
         }
     }
