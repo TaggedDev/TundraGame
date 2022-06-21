@@ -30,7 +30,7 @@ namespace Environment
 		public bool AutoUpdate => autoUpdate;
 		
 		// Constants
-		public const int mapChunkSize = 241;
+		public const int mapChunkSize = 239;
 		
 		// Fields
 		[SerializeField] [Range(0, 6)] private int editorPreviewLOD;
@@ -132,7 +132,7 @@ namespace Environment
 
 		private MapData GenerateMapData(Vector2 centre)
 		{
-			float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize, mapChunkSize, seed, noiseScale, octaves,
+			float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize + 2, mapChunkSize + 2, seed, noiseScale, octaves,
 				persistance, lacunarity, centre + offset, normalizeMode);
 
 			Color[] colourMap = new Color[mapChunkSize * mapChunkSize];
