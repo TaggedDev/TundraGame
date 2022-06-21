@@ -11,8 +11,6 @@ namespace Environment
 	
 	public static class Noise
 	{
-		
-
 		public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, int seed, float scale, int octaves,
 			float persistance, float lacunarity, Vector2 offset, NormalizeMode normalizeMode)
 		{

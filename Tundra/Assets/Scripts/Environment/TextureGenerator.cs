@@ -5,9 +5,11 @@ namespace Environment
     public static class TextureGenerator {
 
         public static Texture2D TextureFromColourMap(Color[] colourMap, int width, int height) {
-            Texture2D texture = new Texture2D (width, height);
-            texture.filterMode = FilterMode.Point;
-            texture.wrapMode = TextureWrapMode.Clamp;
+            Texture2D texture = new Texture2D (width, height)
+            {
+                filterMode = FilterMode.Point,
+                wrapMode = TextureWrapMode.Clamp
+            };
             texture.SetPixels (colourMap);
             texture.Apply ();
             return texture;
