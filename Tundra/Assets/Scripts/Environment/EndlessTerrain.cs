@@ -87,6 +87,7 @@ namespace Environment
 			private readonly LODMesh[] _lodMeshes;
 			private readonly MeshRenderer _meshRenderer;
 			private readonly MeshFilter _meshFilter;
+			private readonly MeshCollider _meshCollider;
 			private bool _mapDataReceived;
 			private Bounds _bounds;
 			private MapData _mapData;
@@ -104,6 +105,7 @@ namespace Environment
 				_meshObject = new GameObject("Terrain Chunk");
 				_meshRenderer = _meshObject.AddComponent<MeshRenderer>();
 				_meshFilter = _meshObject.AddComponent<MeshFilter>();
+				_meshCollider = _meshObject.AddComponent<MeshCollider>();
 				_meshRenderer.material = material;
 
 				_meshObject.transform.position = positionV3 * Scale;
@@ -151,6 +153,7 @@ namespace Environment
 							if (lodMesh.HasMesh) {
 								previousLODIndex = lodIndex;
 								_meshFilter.mesh = lodMesh.ThisMesh;
+								_meshCollider.sharedMesh = lodMesh.ThisMesh;
 							} else if (!lodMesh.HasRequestedMesh) {
 								lodMesh.RequestMesh (_mapData);
 							}

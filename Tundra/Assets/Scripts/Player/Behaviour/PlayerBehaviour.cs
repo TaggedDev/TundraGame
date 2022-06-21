@@ -11,15 +11,10 @@ namespace Player.Behaviour
         private BasicState _currentState;
         private PlayerMovement _playerMovement;
         private List<BasicState> _allStates;
-        private CameraMovement _cameraHolder;
-        private Camera _mainCamera;
-        //private float cameraDistance;
 
         private void Start()
         {
             //cameraDistance = Vector3.Distance(Camera.main.transform.position, transform.position);
-            _mainCamera = Camera.main;
-            _cameraHolder = transform.parent.GetComponentInChildren<CameraMovement>();
             _playerMovement = GetComponent<PlayerMovement>();
             _allStates = new List<BasicState>()
             {
@@ -29,14 +24,12 @@ namespace Player.Behaviour
             };
             _currentState = _allStates[0];
             _currentState.Start();
-            _mainCamera.transform.RotateAround(transform.position, Vector3.up, 45);
             _playerMovement.UpdateDirections();
         }
 
         private void Update()
         {
             MoveCharacter();
-            _cameraHolder.transform.position = transform.position;
         }
 
         private void MoveCharacter() => _currentState.MoveCharacter();

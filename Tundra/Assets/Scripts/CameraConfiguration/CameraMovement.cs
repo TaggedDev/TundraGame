@@ -1,6 +1,5 @@
 ﻿using Player.Behaviour;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 namespace CameraConfiguration
 {
@@ -8,6 +7,7 @@ namespace CameraConfiguration
     {
         private Camera _mainCamera;
         private PlayerMovement _playerMovement;
+        [SerializeField] private GameObject _focusObject;
         [SerializeField] private float maxCameraRotationCooldown;
         private float _currentCameraRotationCooldown;
 
@@ -19,6 +19,8 @@ namespace CameraConfiguration
         
         private void Update()
         {
+            var pos = _focusObject.transform.position;
+            transform.position = new Vector3(pos.x, pos.y, pos.z - 3);
             if (Input.GetKey(KeyCode.Q)) RotateCamera(true);
             if (Input.GetKey(KeyCode.E)) RotateCamera(false);
             if (_currentCameraRotationCooldown > 0) _currentCameraRotationCooldown -= Time.deltaTime;
@@ -28,7 +30,7 @@ namespace CameraConfiguration
         /// Rotates camera by 45 degrees left or right
         /// </summary>
         /// <param name="turnDirection">Pass true if left, false if right</param>
-        public void RotateCamera(bool turnDirection)
+        private void RotateCamera(bool turnDirection)
         {
             if (!(_currentCameraRotationCooldown <= 0)) return;
             

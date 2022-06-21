@@ -14,10 +14,10 @@ namespace Player.Behaviour
         public Vector3 Right { get; private set; }
         public Vector3 Heading { get; set; }
 
-        private void Awake()
+        /*private void Awake()
         {
             //Animator = GetComponent<Animator>();
-        }
+        }*/
 
         private void Start()
         {
