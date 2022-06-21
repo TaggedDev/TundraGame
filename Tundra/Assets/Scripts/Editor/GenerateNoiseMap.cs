@@ -13,7 +13,7 @@ namespace Editor
 
             if (DrawDefaultInspector())
             {
-                if (mapGenerator.autoUpdate)
+                if (mapGenerator.AutoUpdate)
                     mapGenerator.DrawMapInEditor();
             }
 
