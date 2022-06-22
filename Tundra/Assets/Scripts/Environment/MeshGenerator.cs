@@ -73,6 +73,7 @@ namespace Environment
 			    }
 		    }
 
+		    meshData.BakeNormals();
 		    return meshData;
 	    }
     }
@@ -84,6 +85,8 @@ namespace Environment
         
         private readonly Vector3[] _borderVertices;
         private readonly int[] _borderTriangles;
+        
+        private Vector3[] _bakedNormals;
 
         private int _borderTriangleIndex;
         private int _triangleIndex;
@@ -133,11 +136,16 @@ namespace Environment
                 vertices = _vertices,
                 triangles = _triangles,
                 uv = _uvs,
-                normals = CalculateNormals()
+                normals = _bakedNormals
             };
             return mesh;
         }
 
+        public void BakeNormals()
+        {
+	        _bakedNormals = CalculateNormals();
+        }
+        
         private Vector3[] CalculateNormals()
         {
             Vector3[] vertexNormals = new Vector3[_vertices.Length];

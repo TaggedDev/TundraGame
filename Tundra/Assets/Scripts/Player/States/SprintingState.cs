@@ -37,7 +37,7 @@ namespace Player.States
         public override void Start()
         {
             //_playerMovement.Animator.SetFloat("Speed", 1f);
-            PlayerMovement.Speed = 3.5f;
+            //PlayerMovement.Speed = 3.5f;
         }
 
         public override void Stop()

@@ -85,6 +85,7 @@ namespace Environment
 			private readonly GameObject _meshObject;
 			private readonly LODInfo[] _detailLevels;
 			private readonly LODMesh[] _lodMeshes;
+			private readonly LODMesh collisionLODMesh;
 			private readonly MeshRenderer _meshRenderer;
 			private readonly MeshFilter _meshFilter;
 			private readonly MeshCollider _meshCollider;
@@ -116,6 +117,10 @@ namespace Environment
 				_lodMeshes = new LODMesh[detailLevels.Length];
 				for (int i = 0; i < detailLevels.Length; i++) {
 					_lodMeshes[i] = new LODMesh(detailLevels[i].lod, UpdateTerrainChunk);
+					if (detailLevels[i].useForCollider)
+					{
+						collisionLODMesh = _lodMeshes[i];
+					}
 				}
 
 				_mapGenerator.RequestMapData(position,OnMapDataReceived);
@@ -147,18 +152,29 @@ namespace Environment
 								break;
 							}
 						}
-
+						
 						if (lodIndex != previousLODIndex) {
 							LODMesh lodMesh = _lodMeshes [lodIndex];
 							if (lodMesh.HasMesh) {
 								previousLODIndex = lodIndex;
 								_meshFilter.mesh = lodMesh.ThisMesh;
-								_meshCollider.sharedMesh = lodMesh.ThisMesh;
 							} else if (!lodMesh.HasRequestedMesh) {
 								lodMesh.RequestMesh (_mapData);
 							}
 						}
 
+						if (lodIndex == 0)
+						{
+							if (collisionLODMesh.HasMesh)
+							{
+								_meshCollider.sharedMesh = collisionLODMesh.ThisMesh;
+							}
+							else if (!collisionLODMesh.HasRequestedMesh)
+							{
+								collisionLODMesh.RequestMesh(_mapData);
+							}
+						}
+						
 						TerrainChunksVisibleLastUpdate.Add (this);
 					}
 
@@ -204,6 +220,7 @@ namespace Environment
 		public struct LODInfo {
 			public int lod;
 			public float visibleDstThreshold;
+			public bool useForCollider;
 		}
     }
 }
