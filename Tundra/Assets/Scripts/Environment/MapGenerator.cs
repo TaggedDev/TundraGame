@@ -154,8 +154,6 @@ namespace Environment
 					}
 				}
 			}
-
-
 			return new MapData(noiseMap, colourMap);
 		}
 
