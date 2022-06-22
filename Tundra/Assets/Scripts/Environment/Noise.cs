@@ -21,7 +21,6 @@ namespace Environment
 
 			float maxPossibleHeight = 0;
 			float amplitude = 1;
-			float frequency = 1;
 
 			for (int i = 0; i < octaves; i++)
 			{
@@ -51,7 +50,7 @@ namespace Environment
 				{
 
 					amplitude = 1;
-					frequency = 1;
+					float frequency = 1;
 					float noiseHeight = 0;
 
 					for (int i = 0; i < octaves; i++)

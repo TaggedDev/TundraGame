@@ -5,7 +5,7 @@ namespace Environment
     public static class MeshGenerator
     {
 	    public static MeshData GenerateTerrainMesh(float[,] heightMap, float heightMultiplier,
-		    AnimationCurve heightCurveKeys, int levelOfDetail, bool isLowPoly)
+		    AnimationCurve heightCurveKeys, int levelOfDetail)
 	    {
 		    AnimationCurve heightCurve = new AnimationCurve(heightCurveKeys.keys);
 
@@ -21,7 +21,7 @@ namespace Environment
 
 		    int verticesPerLine = (meshSize - 1) / meshSimplificationIncrement + 1;
 
-		    MeshData meshData = new MeshData(verticesPerLine, isLowPoly);
+		    MeshData meshData = new MeshData(verticesPerLine);
 
 		    int[,] vertexIndicesMap = new int[borderedSize, borderedSize];
 		    int meshVertexIndex = 0;
@@ -90,16 +90,13 @@ namespace Environment
 
         private int _borderTriangleIndex;
         private int _triangleIndex;
-
-        private bool _useLowPoly;
-
-        public MeshData(int verticesPerLine, bool useLowPoly) {
+        
+        public MeshData(int verticesPerLine) {
             _vertices = new Vector3[verticesPerLine * verticesPerLine];
             _uvs = new Vector2[verticesPerLine * verticesPerLine];
             _triangles = new int[(verticesPerLine-1)*(verticesPerLine-1)*6];
             _borderVertices = new Vector3[verticesPerLine * 4 + 4];
             _borderTriangles = new int[24 * verticesPerLine];
-            _useLowPoly = useLowPoly;
         }
 
         public void AddTriangle(int a, int b, int c) {
@@ -140,81 +137,13 @@ namespace Environment
                 triangles = _triangles,
                 uv = _uvs
             };
-            
-            if (_useLowPoly)
-	            mesh.RecalculateNormals();
-            else
-	            mesh.normals = _bakedNormals;
-
+            mesh.RecalculateNormals();
             return mesh;
         }
 
         public void ProcessMeshType()
         {
-	        if (_useLowPoly)
-		        FlatShading();
-	        else
-		        BakeNormals();
-        }
-        
-        private void BakeNormals()
-        {
-	        _bakedNormals = CalculateNormals();
-        }
-        
-        private Vector3[] CalculateNormals()
-        {
-            Vector3[] vertexNormals = new Vector3[_vertices.Length];
-            
-            int triangleCount = _triangles.Length / 3;
-            for (int i = 0; i < triangleCount; i++)
-            {
-                int normalTriangleIndex = i * 3;
-                int vertexIndexA = _triangles[normalTriangleIndex];
-                int vertexIndexB = _triangles[normalTriangleIndex + 1];
-                int vertexIndexC = _triangles[normalTriangleIndex + 2];
-
-                Vector3 triangleNormal = GetSurfaceNormal(vertexIndexA, vertexIndexB, vertexIndexC);
-                vertexNormals[vertexIndexA] += triangleNormal;
-                vertexNormals[vertexIndexB] += triangleNormal;
-                vertexNormals[vertexIndexC] += triangleNormal;
-            }
-
-            int borderTriangleCount = _borderTriangles.Length / 3;
-            for (int i = 0; i < borderTriangleCount; i++)
-            {
-                int normalTriangleIndex = i * 3;
-                int vertexIndexA = _borderTriangles[normalTriangleIndex];
-                int vertexIndexB = _borderTriangles[normalTriangleIndex + 1];
-                int vertexIndexC = _borderTriangles[normalTriangleIndex + 2];
-
-                Vector3 triangleNormal = GetSurfaceNormal(vertexIndexA, vertexIndexB, vertexIndexC);
-                if (vertexIndexA >= 0)
-                    vertexNormals[vertexIndexA] += triangleNormal;
-                
-                if (vertexIndexB >= 0)
-                    vertexNormals[vertexIndexB] += triangleNormal;
-
-                if (vertexIndexC >= 0)
-                    vertexNormals[vertexIndexC] += triangleNormal;
-            }
-
-            
-            for (int i = 0; i < vertexNormals.Length; i++)
-                vertexNormals[i].Normalize();
-            
-            return vertexNormals;
-        }
-
-        private Vector3 GetSurfaceNormal(int indexA, int indexB, int indexC)
-        {
-            Vector3 pointA = indexA < 0 ? _borderVertices[-indexA - 1] : _vertices[indexA];
-            Vector3 pointB = indexB < 0 ? _borderVertices[-indexB - 1] : _vertices[indexB];
-            Vector3 pointC = indexC < 0 ? _borderVertices[-indexC - 1] : _vertices[indexC];
-            // Cross function calculates normal vector at surface of 2 vectors with 3 points
-            Vector3 ab = pointB - pointA;
-            Vector3 ac = pointC - pointA;
-            return Vector3.Cross(ab, ac).normalized;
+	        FlatShading();
         }
 
         private void FlatShading()

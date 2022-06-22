@@ -12,8 +12,7 @@ namespace Environment
 		{
 			NoiseMap,
 			ColourMap,
-			Mesh,
-			LowPolyMesh
+			Mesh
 		}
 		private struct MapThreadInfo<T>
 		{
@@ -71,14 +70,7 @@ namespace Environment
 			{
 				display.DrawMesh(
 					MeshGenerator.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve,
-						editorPreviewLOD, false),
-					TextureGenerator.TextureFromColourMap(mapData.colourMap, mapChunkSize, mapChunkSize));
-			}
-			else if (drawMode == DrawMode.LowPolyMesh)
-			{
-				display.DrawMesh(
-					MeshGenerator.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve,
-						editorPreviewLOD, true),
+						editorPreviewLOD),
 					TextureGenerator.TextureFromColourMap(mapData.colourMap, mapChunkSize, mapChunkSize));
 			}
 		}
@@ -110,7 +102,7 @@ namespace Environment
 		private void MeshDataThread(MapData mapData, int lod, Action<MeshData> callback)
 		{
 			MeshData meshData =
-				MeshGenerator.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve, lod, true);
+				MeshGenerator.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve, lod);
 			lock (meshDataThreadInfoQueue)
 			{
 				meshDataThreadInfoQueue.Enqueue(new MapThreadInfo<MeshData>(callback, meshData));
