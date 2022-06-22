@@ -5,7 +5,7 @@ namespace Environment
     public static class MeshGenerator
     {
 	    public static MeshData GenerateTerrainMesh(float[,] heightMap, float heightMultiplier,
-		    AnimationCurve heightCurveKeys, int levelOfDetail)
+		    AnimationCurve heightCurveKeys, int levelOfDetail, bool isLowPoly)
 	    {
 		    AnimationCurve heightCurve = new AnimationCurve(heightCurveKeys.keys);
 
@@ -21,7 +21,7 @@ namespace Environment
 
 		    int verticesPerLine = (meshSize - 1) / meshSimplificationIncrement + 1;
 
-		    MeshData meshData = new MeshData(verticesPerLine);
+		    MeshData meshData = new MeshData(verticesPerLine, isLowPoly);
 
 		    int[,] vertexIndicesMap = new int[borderedSize, borderedSize];
 		    int meshVertexIndex = 0;
@@ -73,15 +73,15 @@ namespace Environment
 			    }
 		    }
 
-		    meshData.BakeNormals();
+		    meshData.ProcessMeshType();
 		    return meshData;
 	    }
     }
 
     public class MeshData {
-        private readonly Vector3[] _vertices;
         private readonly int[] _triangles;
-        private readonly Vector2[] _uvs;
+        private Vector3[] _vertices;
+        private Vector2[] _uvs;
         
         private readonly Vector3[] _borderVertices;
         private readonly int[] _borderTriangles;
@@ -91,12 +91,15 @@ namespace Environment
         private int _borderTriangleIndex;
         private int _triangleIndex;
 
-        public MeshData(int verticesPerLine) {
+        private bool _useLowPoly;
+
+        public MeshData(int verticesPerLine, bool useLowPoly) {
             _vertices = new Vector3[verticesPerLine * verticesPerLine];
             _uvs = new Vector2[verticesPerLine * verticesPerLine];
             _triangles = new int[(verticesPerLine-1)*(verticesPerLine-1)*6];
             _borderVertices = new Vector3[verticesPerLine * 4 + 4];
             _borderTriangles = new int[24 * verticesPerLine];
+            _useLowPoly = useLowPoly;
         }
 
         public void AddTriangle(int a, int b, int c) {
@@ -135,13 +138,26 @@ namespace Environment
             {
                 vertices = _vertices,
                 triangles = _triangles,
-                uv = _uvs,
-                normals = _bakedNormals
+                uv = _uvs
             };
+            
+            if (_useLowPoly)
+	            mesh.RecalculateNormals();
+            else
+	            mesh.normals = _bakedNormals;
+
             return mesh;
         }
 
-        public void BakeNormals()
+        public void ProcessMeshType()
+        {
+	        if (_useLowPoly)
+		        FlatShading();
+	        else
+		        BakeNormals();
+        }
+        
+        private void BakeNormals()
         {
 	        _bakedNormals = CalculateNormals();
         }
@@ -199,6 +215,21 @@ namespace Environment
             Vector3 ab = pointB - pointA;
             Vector3 ac = pointC - pointA;
             return Vector3.Cross(ab, ac).normalized;
+        }
+
+        private void FlatShading()
+        {
+	        Vector3[] flatShaded = new Vector3[_triangles.Length];
+	        Vector2[] flatShadedUV = new Vector2[_triangles.Length];
+	        for (int i = 0; i < _triangles.Length; i++)
+	        {
+		        flatShaded[i] = _vertices[_triangles[i]];
+		        flatShadedUV[i] = _uvs[_triangles[i]];
+		        _triangles[i] = i;
+	        }
+
+	        _vertices = flatShaded;
+	        _uvs = flatShadedUV;
         }
     }
 }

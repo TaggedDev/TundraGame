@@ -13,8 +13,8 @@ namespace Environment
 	    [SerializeField] public Material mapMaterial;
 	    
 	    // Constants variables
-	    private const float Scale = 2f;
-	    private const float ChunkUpdateThreshold = 25f;
+	    private const float Scale = 10f;
+	    private const float ChunkUpdateThreshold = 5f;
 	    private const float SqrChunkUpdateThreshold = ChunkUpdateThreshold * ChunkUpdateThreshold;
 
 	    // Static fields 
@@ -49,7 +49,6 @@ namespace Environment
 		/// </summary>
 		private void Update() {
 			_viewerPosition = new Vector2 (viewer.position.x, viewer.position.z) / Scale;
-
 			if (!((viewerPositionOld - _viewerPosition).sqrMagnitude > SqrChunkUpdateThreshold)) return;
 			
 			viewerPositionOld = _viewerPosition;

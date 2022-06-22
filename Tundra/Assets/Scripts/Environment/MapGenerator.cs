@@ -12,7 +12,8 @@ namespace Environment
 		{
 			NoiseMap,
 			ColourMap,
-			Mesh
+			Mesh,
+			LowPolyMesh
 		}
 		private struct MapThreadInfo<T>
 		{
@@ -30,7 +31,7 @@ namespace Environment
 		public bool AutoUpdate => autoUpdate;
 		
 		// Constants
-		public const int mapChunkSize = 239;
+		public const int mapChunkSize = 47;
 		
 		// Fields
 		[SerializeField] [Range(0, 6)] private int editorPreviewLOD;
@@ -70,7 +71,14 @@ namespace Environment
 			{
 				display.DrawMesh(
 					MeshGenerator.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve,
-						editorPreviewLOD),
+						editorPreviewLOD, false),
+					TextureGenerator.TextureFromColourMap(mapData.colourMap, mapChunkSize, mapChunkSize));
+			}
+			else if (drawMode == DrawMode.LowPolyMesh)
+			{
+				display.DrawMesh(
+					MeshGenerator.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve,
+						editorPreviewLOD, true),
 					TextureGenerator.TextureFromColourMap(mapData.colourMap, mapChunkSize, mapChunkSize));
 			}
 		}
@@ -102,7 +110,7 @@ namespace Environment
 		private void MeshDataThread(MapData mapData, int lod, Action<MeshData> callback)
 		{
 			MeshData meshData =
-				MeshGenerator.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve, lod);
+				MeshGenerator.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve, lod, true);
 			lock (meshDataThreadInfoQueue)
 			{
 				meshDataThreadInfoQueue.Enqueue(new MapThreadInfo<MeshData>(callback, meshData));
