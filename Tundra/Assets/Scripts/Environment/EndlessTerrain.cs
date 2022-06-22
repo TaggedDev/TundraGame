@@ -9,12 +9,14 @@ namespace Environment
     {
 	    // Serialize variables
 	    [SerializeField] private LODInfo[] detailLevels;
-	    [SerializeField] public Transform viewer;
-	    [SerializeField] public Material mapMaterial;
-	    
+	    [SerializeField] private Transform viewer;
+	    [SerializeField] private Material mapMaterial;
+	    [SerializeField] private int colliderLODindex;
+
 	    // Constants variables
-	    private const float Scale = 10f;
+	    private const float Scale = 8f;
 	    private const float ChunkUpdateThreshold = 5f;
+	    private const float ColliderGenerationDistanceThreshold = 5f;
 	    private const float SqrChunkUpdateThreshold = ChunkUpdateThreshold * ChunkUpdateThreshold;
 
 	    // Static fields 
@@ -49,7 +51,16 @@ namespace Environment
 		/// </summary>
 		private void Update() {
 			_viewerPosition = new Vector2 (viewer.position.x, viewer.position.z) / Scale;
-			if (!((viewerPositionOld - _viewerPosition).sqrMagnitude > SqrChunkUpdateThreshold)) return;
+
+			if (_viewerPosition != viewerPositionOld)
+			{
+				foreach (TerrainChunk chunk in TerrainChunksVisibleLastUpdate)
+				{
+					chunk.UpdateCollisionMesh();
+				}
+			}
+			
+			if ((viewerPositionOld - _viewerPosition).sqrMagnitude <= SqrChunkUpdateThreshold) return;
 			
 			viewerPositionOld = _viewerPosition;
 			UpdateVisibleChunks();
@@ -71,8 +82,11 @@ namespace Environment
 
 					if (_terrainChunkDictionary.ContainsKey (viewedChunkCoord)) {
 						_terrainChunkDictionary [viewedChunkCoord].UpdateTerrainChunk ();
-					} else {
-						_terrainChunkDictionary.Add (viewedChunkCoord, new TerrainChunk (viewedChunkCoord, _chunkSize, detailLevels, transform, mapMaterial));
+					} else
+					{
+						_terrainChunkDictionary.Add(viewedChunkCoord,
+							new TerrainChunk(viewedChunkCoord, _chunkSize, detailLevels, colliderLODindex, transform,
+								mapMaterial));
 					}
 				}
 			}
@@ -84,19 +98,21 @@ namespace Environment
 			private readonly GameObject _meshObject;
 			private readonly LODInfo[] _detailLevels;
 			private readonly LODMesh[] _lodMeshes;
-			private readonly LODMesh collisionLODMesh;
+			private readonly int _colliderLODindex;
 			private readonly MeshRenderer _meshRenderer;
 			private readonly MeshFilter _meshFilter;
 			private readonly MeshCollider _meshCollider;
 			private bool _mapDataReceived;
+			private bool _hasSetCollider;
 			private Bounds _bounds;
 			private MapData _mapData;
 			
 			// Variables
 			private int previousLODIndex = -1;
 
-			public TerrainChunk(Vector2 coord, int size, LODInfo[] detailLevels, Transform parent, Material material) {
+			public TerrainChunk(Vector2 coord, int size, LODInfo[] detailLevels, int colliderLODindex, Transform parent, Material material) {
 				_detailLevels = detailLevels;
+				_colliderLODindex = colliderLODindex;
 
 				var position = coord * size;
 				_bounds = new Bounds(position,Vector2.one * size);
@@ -115,11 +131,11 @@ namespace Environment
 
 				_lodMeshes = new LODMesh[detailLevels.Length];
 				for (int i = 0; i < detailLevels.Length; i++) {
-					_lodMeshes[i] = new LODMesh(detailLevels[i].lod, UpdateTerrainChunk);
-					if (detailLevels[i].useForCollider)
-					{
-						collisionLODMesh = _lodMeshes[i];
-					}
+					_lodMeshes[i] = new LODMesh(detailLevels[i].lod);
+					_lodMeshes[i].UpdateCallback += UpdateTerrainChunk;
+					if (i == colliderLODindex)
+						_lodMeshes[i].UpdateCallback += UpdateCollisionMesh;
+					
 				}
 
 				_mapGenerator.RequestMapData(position,OnMapDataReceived);
@@ -136,49 +152,54 @@ namespace Environment
 				UpdateTerrainChunk ();
 			}
 
-			public void UpdateTerrainChunk() {
-				if (_mapDataReceived) {
-					float viewerDstFromNearestEdge = Mathf.Sqrt (_bounds.SqrDistance (_viewerPosition));
-					bool visible = viewerDstFromNearestEdge <= _maxViewDst;
+			public void UpdateTerrainChunk()
+			{
+				if (!_mapDataReceived) return;
+				
+				float viewerDstFromNearestEdge = Mathf.Sqrt (_bounds.SqrDistance (_viewerPosition));
+				bool visible = viewerDstFromNearestEdge <= _maxViewDst;
 
-					if (visible) {
-						int lodIndex = 0;
+				if (visible) {
+					int lodIndex = 0;
 
-						for (int i = 0; i < _detailLevels.Length - 1; i++) {
-							if (viewerDstFromNearestEdge > _detailLevels [i].visibleDstThreshold) {
-								lodIndex = i + 1;
-							} else {
-								break;
-							}
+					for (int i = 0; i < _detailLevels.Length - 1; i++) {
+						if (viewerDstFromNearestEdge > _detailLevels [i].visibleDstThreshold) {
+							lodIndex = i + 1;
+						} else {
+							break;
 						}
+					}
 						
-						if (lodIndex != previousLODIndex) {
-							LODMesh lodMesh = _lodMeshes [lodIndex];
-							if (lodMesh.HasMesh) {
-								previousLODIndex = lodIndex;
-								_meshFilter.mesh = lodMesh.ThisMesh;
-							} else if (!lodMesh.HasRequestedMesh) {
-								lodMesh.RequestMesh (_mapData);
-							}
+					if (lodIndex != previousLODIndex) {
+						LODMesh lodMesh = _lodMeshes [lodIndex];
+						if (lodMesh.HasMesh) {
+							previousLODIndex = lodIndex;
+							_meshFilter.mesh = lodMesh.ThisMesh;
+						} else if (!lodMesh.HasRequestedMesh) {
+							lodMesh.RequestMesh (_mapData);
 						}
-
-						if (lodIndex == 0)
-						{
-							if (collisionLODMesh.HasMesh)
-							{
-								_meshCollider.sharedMesh = collisionLODMesh.ThisMesh;
-							}
-							else if (!collisionLODMesh.HasRequestedMesh)
-							{
-								collisionLODMesh.RequestMesh(_mapData);
-							}
-						}
-						
-						TerrainChunksVisibleLastUpdate.Add (this);
 					}
 
-					SetVisible (visible);
+					TerrainChunksVisibleLastUpdate.Add (this);
 				}
+
+				SetVisible (visible);
+			}
+
+			public void UpdateCollisionMesh()
+			{
+				if (_hasSetCollider) return;
+				
+				float sqrDistanceViewerEdge = _bounds.SqrDistance(_viewerPosition);
+
+				if (sqrDistanceViewerEdge < _detailLevels[_colliderLODindex].SqrVisibleDistanceThreshold)
+					if (!_lodMeshes[_colliderLODindex].HasRequestedMesh)
+						_lodMeshes[_colliderLODindex].RequestMesh(_mapData);
+				
+				if (sqrDistanceViewerEdge < ColliderGenerationDistanceThreshold * ColliderGenerationDistanceThreshold)
+					if (_lodMeshes[_colliderLODindex].HasMesh)
+						_meshCollider.sharedMesh = _lodMeshes[_colliderLODindex].ThisMesh;
+
 			}
 
 			public void SetVisible(bool visible) {
@@ -192,14 +213,13 @@ namespace Environment
 			public bool HasRequestedMesh { get; set; }
 			public bool HasMesh { get; set; }
 
-			
+			public event Action UpdateCallback;
+
 			// Fields
 			private readonly int _lod;
-			private readonly Action _updateCallback;
 
-			public LODMesh(int lod, Action updateCallback) {
+			public LODMesh(int lod) {
 				_lod = lod;
-				_updateCallback = updateCallback;
 			}
 			
 			public void RequestMesh(MapData mapData) {
@@ -210,8 +230,7 @@ namespace Environment
 			private void OnMeshDataReceived(MeshData meshData) {
 				ThisMesh = meshData.CreateMesh ();
 				HasMesh = true;
-
-				_updateCallback ();
+				UpdateCallback ();
 			}
 		}
 
@@ -220,6 +239,7 @@ namespace Environment
 			public int lod;
 			public float visibleDstThreshold;
 			public bool useForCollider;
+			public float SqrVisibleDistanceThreshold => visibleDstThreshold * visibleDstThreshold;
 		}
     }
 }
