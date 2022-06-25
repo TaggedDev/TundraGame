@@ -76,6 +76,18 @@ namespace Environment
 		    meshData.ProcessMeshType();
 		    return meshData;
 	    }
+
+	    public static float GetMapCenter(MapGenerator generator)
+	    {
+		    AnimationCurve heightCurve = new AnimationCurve(generator.MeshHeightCurve.keys);
+		    float[,] heightMap = Noise.GenerateNoiseMap(generator.MapChunkSize, generator.MapChunkSize, 
+			    generator.Seed, generator.NoiseScale, generator.Octaves, generator.Persistance, generator.Lacunarity,
+			    generator.Offset, generator.normalizeMode);
+		    int borderedSize = heightMap.GetLength(0);
+		    float height = heightCurve.Evaluate(heightMap[borderedSize/2, borderedSize/2]) * generator.HeightMultiplier;
+		    return height; 
+	    }
+	    
     }
 
     public class MeshData {

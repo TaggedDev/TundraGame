@@ -14,7 +14,7 @@ namespace Environment
 			ColourMap,
 			Mesh
 		}
-		private struct MapThreadInfo<T>
+		public struct MapThreadInfo<T>
 		{
 			public readonly Action<T> callback;
 			public readonly T parameter;
@@ -28,7 +28,18 @@ namespace Environment
 		
 		// Properties
 		public bool AutoUpdate => autoUpdate;
+		public float MeshHeightMultiplier => meshHeightMultiplier;
+		public AnimationCurve MeshHeightCurve => meshHeightCurve;
+		public float Persistance => persistance;
+		public float Lacunarity => lacunarity;
+		public int MapChunkSize => mapChunkSize;
+		public float HeightMultiplier => meshHeightMultiplier;
+		public float NoiseScale => noiseScale;
+		public int Octaves => octaves;
+		public int Seed => seed;
+		public Vector2 Offset => offset;
 		
+
 		// Constants
 		public const int mapChunkSize = 47;
 		
@@ -42,10 +53,14 @@ namespace Environment
 		[SerializeField] private Vector2 offset;
 		[SerializeField] private float meshHeightMultiplier;
 		[SerializeField] private AnimationCurve meshHeightCurve;
+
 		[SerializeField] private bool autoUpdate;
 		[SerializeField] private TerrainType[] regions;
 		private readonly Queue<MapThreadInfo<MapData>> mapDataThreadInfoQueue = new Queue<MapThreadInfo<MapData>>();
 		private readonly Queue<MapThreadInfo<MeshData>> meshDataThreadInfoQueue = new Queue<MapThreadInfo<MeshData>>();
+
+		[HideInInspector] public int mapDataCount;
+		[HideInInspector] public int meshDataCount;
 		
 		// Variables
 		public DrawMode drawMode;
@@ -90,6 +105,36 @@ namespace Environment
 		}
 		
 		// Private methods
+		private void Start()
+		{
+			mapDataCount = 0;
+			meshDataCount = 0;
+		}
+
+		private void Update()
+		{
+			// Iterate through queued threads to calculate MapData
+			if (mapDataThreadInfoQueue.Count > 0)
+			{
+				for (int i = 0; i < mapDataThreadInfoQueue.Count; i++)
+				{
+					MapThreadInfo<MapData> threadInfo = mapDataThreadInfoQueue.Dequeue();
+					threadInfo.callback(threadInfo.parameter);
+				}
+				
+			}
+
+			// Iterate through queued threads to calculate MeshData
+			if (meshDataThreadInfoQueue.Count > 0)
+			{
+				for (int i = 0; i < meshDataThreadInfoQueue.Count; i++)
+				{
+					MapThreadInfo<MeshData> threadInfo = meshDataThreadInfoQueue.Dequeue();
+					threadInfo.callback(threadInfo.parameter);
+				}
+			}
+		}
+
 		private void MapDataThread(Vector2 centre, Action<MapData> callback)
 		{
 			MapData mapData = GenerateMapData(centre);
@@ -106,27 +151,6 @@ namespace Environment
 			lock (meshDataThreadInfoQueue)
 			{
 				meshDataThreadInfoQueue.Enqueue(new MapThreadInfo<MeshData>(callback, meshData));
-			}
-		}
-
-		private void Update()
-		{
-			if (mapDataThreadInfoQueue.Count > 0)
-			{
-				for (int i = 0; i < mapDataThreadInfoQueue.Count; i++)
-				{
-					MapThreadInfo<MapData> threadInfo = mapDataThreadInfoQueue.Dequeue();
-					threadInfo.callback(threadInfo.parameter);
-				}
-			}
-
-			if (meshDataThreadInfoQueue.Count > 0)
-			{
-				for (int i = 0; i < meshDataThreadInfoQueue.Count; i++)
-				{
-					MapThreadInfo<MeshData> threadInfo = meshDataThreadInfoQueue.Dequeue();
-					threadInfo.callback(threadInfo.parameter);
-				}
 			}
 		}
 
