@@ -80,13 +80,19 @@ namespace Environment
 	    public static float GetMapCenter(MapGenerator generator)
 	    {
 		    AnimationCurve heightCurve = new AnimationCurve(generator.MeshHeightCurve.keys);
-		    float[,] heightMap = Noise.GenerateNoiseMap(generator.MapChunkSize, generator.MapChunkSize, 
-			    generator.Seed, generator.NoiseScale, generator.Octaves, generator.Persistance, generator.Lacunarity,
-			    generator.Offset, generator.normalizeMode);
-		    int borderedSize = heightMap.GetLength(0);
-		    float height = heightCurve.Evaluate(heightMap[borderedSize/2, borderedSize/2]) * generator.HeightMultiplier;
+		    int chunkSize = 47;
+		    int seed = generator.Seed;
+		    float scale = generator.NoiseScale;
+		    int octaves = generator.Octaves;
+		    float persistance = generator.Persistance;
+		    float lacunarity = generator.Lacunarity;
+		    Vector2 offset = generator.Offset;
+		    float heightValue = Noise.GetNoiseValue(chunkSize/2, chunkSize/2, chunkSize, chunkSize,
+			    seed, scale, octaves, persistance, lacunarity, offset, NormalizeMode.Local);
+		    float height = heightCurve.Evaluate(heightValue) * generator.HeightMultiplier;
 		    return height; 
 	    }
+	   
 	    
     }
 
