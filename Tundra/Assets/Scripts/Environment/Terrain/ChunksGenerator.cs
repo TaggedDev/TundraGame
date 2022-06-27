@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using TMPro.EditorUtilities;
 using UnityEngine;
 
-
-namespace Environment
+namespace Environment.Terrain
 {
     public class ChunksGenerator : MonoBehaviour
     {
@@ -229,7 +227,7 @@ namespace Environment
 			
 			public void RequestMesh(MapData mapData) {
 				HasRequestedMesh = true;
-				_mapGenerator.RequestMeshData (mapData, _lod, OnMeshDataReceived);
+				_mapGenerator.RequestMeshData(mapData, _lod, OnMeshDataReceived);
 			}
 
 			private void OnMeshDataReceived(MeshData meshData) {

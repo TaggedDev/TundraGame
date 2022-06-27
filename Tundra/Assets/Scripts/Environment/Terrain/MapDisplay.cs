@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Environment
+namespace Environment.Terrain
 {
     public class MapDisplay : MonoBehaviour
     {
