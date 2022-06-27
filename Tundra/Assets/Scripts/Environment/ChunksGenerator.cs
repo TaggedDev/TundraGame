@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Environment
 {
-    public class EndlessTerrain : MonoBehaviour
+    public class ChunksGenerator : MonoBehaviour
     {
 	    // Serialize variables
 	    [SerializeField] private LODInfo[] detailLevels;

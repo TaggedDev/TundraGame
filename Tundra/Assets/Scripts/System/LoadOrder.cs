@@ -9,7 +9,7 @@ namespace System
     {
         [SerializeField] private MapGenerator mapGenerator;
         [SerializeField] private PlayerSpawner playerHolder;
-        private EndlessTerrain _chunks;
+        private ChunksGenerator _chunks;
         
         /*
          * 1. Terrain generation
@@ -20,7 +20,7 @@ namespace System
         
         private void Start()
         {
-            _chunks = mapGenerator.GetComponent<EndlessTerrain>();
+            _chunks = mapGenerator.GetComponent<ChunksGenerator>();
             mapGenerator.gameObject.SetActive(true);
             StartCoroutine(InstantiateWorld());
         }
