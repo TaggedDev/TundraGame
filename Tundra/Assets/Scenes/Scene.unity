@@ -551,7 +551,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapGenerator: {fileID: 185302901}
-  treeGO: {fileID: 1270528279662514557, guid: a4c557a74d9911442b57cf7c80a29b3c, type: 3}
+  treePrefab: {fileID: 1270528279662514557, guid: a4c557a74d9911442b57cf7c80a29b3c,
+    type: 3}
+  treeDensity: 5
 --- !u!4 &1101859554
 Transform:
   m_ObjectHideFlags: 0
@@ -764,7 +766,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 116
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &1324381163
 MonoBehaviour:
@@ -778,6 +780,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e54c7bd846984a54918aa8e3c432eda8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  terrainLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!136 &1324381164
 CapsuleCollider:
   m_ObjectHideFlags: 0
