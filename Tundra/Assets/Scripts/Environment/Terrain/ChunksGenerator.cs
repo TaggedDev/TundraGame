@@ -96,6 +96,8 @@ namespace Environment.Terrain
 
 		public class TerrainChunk
 		{
+			private const int TERRAIN_LAYERMASK = 8; 
+			
 			// Fields
 			private readonly GameObject _meshObject;
 			private readonly LODInfo[] _detailLevels;
@@ -121,7 +123,10 @@ namespace Environment.Terrain
 				_bounds = new Bounds(position,Vector2.one * size);
 				Vector3 positionV3 = new Vector3(position.x,0,position.y);
 
-				_meshObject = new GameObject("Terrain Chunk");
+				_meshObject = new GameObject("Terrain Chunk")
+				{
+					layer = TERRAIN_LAYERMASK
+				};
 				_meshRenderer = _meshObject.AddComponent<MeshRenderer>();
 				_meshFilter = _meshObject.AddComponent<MeshFilter>();
 				_meshCollider = _meshObject.AddComponent<MeshCollider>();

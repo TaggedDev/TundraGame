@@ -1,15 +1,21 @@
-﻿using Environment;
-using Environment.Terrain;
+﻿using System;
 using UnityEngine;
 
 namespace Player.Behaviour
 {
     public class PlayerSpawner : MonoBehaviour
     {
-        public void SpawnPlayer(MapGenerator mapGenerator)
+        [SerializeField] private LayerMask terrainLayer;
+
+        public void SpawnPlayer()
         {
-            float rawHeight = MeshGenerator.GetMapCenter(mapGenerator);
-            transform.position = new Vector3(0, rawHeight + 3, 0);
+            Debug.DrawRay(transform.position, Vector3.down * 150);
+            if (!Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, Mathf.Infinity, terrainLayer))
+            {
+                throw new Exception("Player spawn ray didn't hit the surface. Check if gameobject of terrain has" +
+                                    "collider, be sure layermask is selected and attached.");
+            }
+            transform.position = hit.point;
         }
     }
 }

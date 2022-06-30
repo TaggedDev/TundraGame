@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using Environment;
-using Environment.Terrain;
+using Environment.Objects;
 using Player.Behaviour;
 using UnityEngine;
 
@@ -10,8 +10,8 @@ namespace System
     {
         [SerializeField] private MapGenerator mapGenerator;
         [SerializeField] private PlayerSpawner playerHolder;
-        private ChunksGenerator _chunks;
-        
+        [SerializeField] private ObjectsGenerator objectsGenerator;
+
         /*
          * 1. Terrain generation
          * 2. Surface objects generation
@@ -21,7 +21,6 @@ namespace System
         
         private void Start()
         {
-            _chunks = mapGenerator.GetComponent<ChunksGenerator>();
             mapGenerator.gameObject.SetActive(true);
             StartCoroutine(InstantiateWorld());
         }
@@ -30,7 +29,15 @@ namespace System
         {
             yield return new WaitUntil(() => mapGenerator.mapDataCount == 81 && mapGenerator.meshDataCount == 77);
             playerHolder.gameObject.SetActive(true);
-            playerHolder.SpawnPlayer(mapGenerator);
+            playerHolder.SpawnPlayer();
+            objectsGenerator.gameObject.SetActive(true);
+            //StartCoroutine(InstantiateObjects());
         }
+
+        /*private IEnumerator InstantiateObjects()
+        {
+            
+            yield return 
+        }*/
     }
 }
