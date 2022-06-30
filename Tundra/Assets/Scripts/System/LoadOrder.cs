@@ -10,7 +10,7 @@ namespace System
     {
         [SerializeField] private MapGenerator mapGenerator;
         [SerializeField] private PlayerSpawner playerHolder;
-        [SerializeField] private ObjectsGenerator objectsGenerator;
+        [SerializeField] private ObjectMapGenerator objectMapGenerator;
 
         /*
          * 1. Terrain generation
@@ -30,7 +30,7 @@ namespace System
             yield return new WaitUntil(() => mapGenerator.mapDataCount == 81 && mapGenerator.meshDataCount == 77);
             playerHolder.gameObject.SetActive(true);
             playerHolder.SpawnPlayer();
-            objectsGenerator.gameObject.SetActive(true);
+            objectMapGenerator.gameObject.SetActive(true);
             //StartCoroutine(InstantiateObjects());
         }
 
