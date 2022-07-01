@@ -76,25 +76,7 @@ namespace Environment.Terrain
 		    meshData.ProcessMeshType();
 		    return meshData;
 	    }
-
-	    public static float GetMapCenter(MapGenerator generator)
-	    {
-		    AnimationCurve heightCurve = new AnimationCurve(generator.MeshHeightCurve.keys);
-		    int chunkSize = 47;
-		    int seed = generator.Seed;
-		    float scale = generator.NoiseScale;
-		    int octaves = generator.Octaves;
-		    float persistance = generator.Persistance;
-		    float lacunarity = generator.Lacunarity;
-		    Vector2 offset = generator.Offset;
-		    float heightValue = Noise.GetNoiseValue(chunkSize/2, chunkSize/2, chunkSize, chunkSize,
-			    seed, scale, octaves, persistance, lacunarity, offset, NormalizeMode.Local);
-		    float height = heightCurve.Evaluate(heightValue) * generator.HeightMultiplier;
-		    return height; 
-	    }
-	   
-	    
-    }
+	}
 
     public class MeshData {
         private readonly int[] _triangles;

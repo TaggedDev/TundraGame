@@ -15,7 +15,8 @@ namespace Environment
 			ColourMap,
 			Mesh
 		}
-		public struct MapThreadInfo<T>
+
+		private struct MapThreadInfo<T>
 		{
 			public readonly Action<T> callback;
 			public readonly T parameter;
@@ -110,6 +111,7 @@ namespace Environment
 		{
 			mapDataCount = 0;
 			meshDataCount = 0;
+			Noise.Generator = this;
 		}
 
 		private void Update()

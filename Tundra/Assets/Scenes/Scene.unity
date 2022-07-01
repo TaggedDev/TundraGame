@@ -307,7 +307,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &315861829
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -506,7 +506,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapGenerator: {fileID: 185302901}
   playerHolder: {fileID: 1324381163}
-  objectsGenerator: {fileID: 1101859555}
+  objectMapGenerator: {fileID: 1101859555}
 --- !u!4 &528677538
 Transform:
   m_ObjectHideFlags: 0
@@ -626,13 +626,14 @@ GameObject:
   - component: {fileID: 1101859554}
   - component: {fileID: 1101859555}
   - component: {fileID: 1101859553}
+  - component: {fileID: 1101859556}
   m_Layer: 0
   m_Name: ObjectsGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1101859553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -674,15 +675,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b4935f7a11044468ae69dcd7daa739c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  persistance: 0
-  noiseScale: 2.21
-  octaves: 18
-  lacunarity: 1.58
+  persistance: 0.304
+  noiseScale: 100
+  octaves: 5
+  lacunarity: 4
   seed: 0
   offset: {x: 0, y: 0}
   autoUpdate: 1
   regions: []
+  drawMode: 0
   normalizeMode: 0
+--- !u!114 &1101859556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1101859552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad97e981fd654be0911d26a263638ee7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewer: {fileID: 1324381167}
+  tree: {fileID: 1400461039152700, guid: c7821bc923171f24094e69062402d005, type: 3}
+  fillPercent: 1
 --- !u!43 &1197648072
 Mesh:
   m_ObjectHideFlags: 0
