@@ -1,16 +1,15 @@
 ﻿using Environment;
-using Environment.Objects;
 using UnityEditor;
 using UnityEngine;
 
 namespace Editor
 {
-    [CustomEditor(typeof(ObjectMapGenerator))]
+    [CustomEditor(typeof(MapGenerator))]
     public class GenerateNoiseMap : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {
-            var mapGenerator = (ObjectMapGenerator)target;
+            var mapGenerator = (MapGenerator)target;
 
             if (DrawDefaultInspector())
             {

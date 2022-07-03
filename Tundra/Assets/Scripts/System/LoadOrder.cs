@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using Environment;
-using Environment.Objects;
+using Environment.Terrain;
 using Player.Behaviour;
 using UnityEngine;
 
@@ -10,7 +10,6 @@ namespace System
     {
         [SerializeField] private MapGenerator mapGenerator;
         [SerializeField] private PlayerSpawner playerHolder;
-        [SerializeField] private ObjectMapGenerator objectMapGenerator;
 
         /*
          * 1. Terrain generation
@@ -30,14 +29,6 @@ namespace System
             yield return new WaitUntil(() => mapGenerator.mapDataCount == 81 && mapGenerator.meshDataCount == 77);
             playerHolder.gameObject.SetActive(true);
             playerHolder.SpawnPlayer();
-            objectMapGenerator.gameObject.SetActive(true);
-            //StartCoroutine(InstantiateObjects());
         }
-
-        /*private IEnumerator InstantiateObjects()
-        {
-            
-            yield return 
-        }*/
     }
 }
