@@ -8,23 +8,26 @@ namespace Environment.Terrain
     {
 	    // Serialize variables
 	    [SerializeField] private LODInfo[] detailLevels;
+	    [SerializeField] private EntityInfo[] _entityInfo;
 	    [SerializeField] private Transform viewer;
 	    [SerializeField] private Material mapMaterial;
 	    [SerializeField] private int colliderLODIndex;
 
 	    // Constants variables
-	    private const float Scale = 8f;
+	    private const int Scale = 8;
 	    private const float ChunkUpdateThreshold = 5f;
 	    private const float ColliderGenerationDistanceThreshold = 5f;
 	    private const float SqrChunkUpdateThreshold = ChunkUpdateThreshold * ChunkUpdateThreshold;
+	    private const float EntityUpdateThreshold = .05f;
+	    private const float SqrEntityUpdateThreshold = EntityUpdateThreshold * EntityUpdateThreshold;
 
 	    // Static fields 
 	    private static float _maxViewDst;
 	    private static Vector2 _viewerPosition;
 		private static MapGenerator _mapGenerator;
-		private static readonly List<TerrainChunk> TerrainChunksVisibleLastUpdate = new List<TerrainChunk>();
+		private static readonly List<TerrainChunk> _terrainChunksVisibleLastUpdate = new List<TerrainChunk>();
 
-		public Dictionary<Vector2, TerrainChunk> TerrainChunkDictionary => _terrainChunkDictionary;
+		public static List<TerrainChunk> TerrainChunksVisibleLastUpdate => _terrainChunksVisibleLastUpdate;
 
 		// Fields
 		private int _chunkSize;
@@ -45,7 +48,7 @@ namespace Environment.Terrain
 			_chunkSize = MapGenerator.mapChunkSize - 1;
 			chunksVisibleInViewDst = Mathf.RoundToInt(_maxViewDst / _chunkSize);
 
-			UpdateVisibleChunks ();
+			UpdateVisibleChunks();
 		}
 
 		/// <summary>
@@ -55,25 +58,29 @@ namespace Environment.Terrain
 			_viewerPosition = new Vector2 (viewer.position.x, viewer.position.z) / Scale;
 
 			if (_viewerPosition != viewerPositionOld)
-			{
-				foreach (TerrainChunk chunk in TerrainChunksVisibleLastUpdate)
-				{
+				foreach (TerrainChunk chunk in _terrainChunksVisibleLastUpdate) 
 					chunk.UpdateCollisionMesh();
-				}
+			float sqrSpatial = (viewerPositionOld - _viewerPosition).sqrMagnitude;
+			if (sqrSpatial > SqrEntityUpdateThreshold)
+			{
+				viewerPositionOld = _viewerPosition;
+				foreach (var chunk in _terrainChunksVisibleLastUpdate)
+					chunk.UpdateChunkEntities(_mapGenerator.MapChunkSize * Scale, chunk.EntitiesInfo);
 			}
 			
-			if ((viewerPositionOld - _viewerPosition).sqrMagnitude <= SqrChunkUpdateThreshold) return;
-			
-			viewerPositionOld = _viewerPosition;
-			UpdateVisibleChunks();
+			if (sqrSpatial > SqrChunkUpdateThreshold)
+			{
+				viewerPositionOld = _viewerPosition;
+				UpdateVisibleChunks();
+			}
 		}
 		
 		private void UpdateVisibleChunks() {
 
-			foreach (var chunk in TerrainChunksVisibleLastUpdate)
+			foreach (var chunk in _terrainChunksVisibleLastUpdate)
 				chunk.SetVisible (false);
 			
-			TerrainChunksVisibleLastUpdate.Clear ();
+			_terrainChunksVisibleLastUpdate.Clear ();
 				
 			int currentChunkCoordX = Mathf.RoundToInt (_viewerPosition.x / _chunkSize);
 			int currentChunkCoordY = Mathf.RoundToInt (_viewerPosition.y / _chunkSize);
@@ -87,7 +94,7 @@ namespace Environment.Terrain
 					} else
 					{
 						var chunk = new TerrainChunk(viewedChunkCoord, _chunkSize, detailLevels, colliderLODIndex,
-							transform, mapMaterial);
+							transform, mapMaterial, _entityInfo, viewer.transform);
 						_terrainChunkDictionary.Add(viewedChunkCoord, chunk);
 					}
 				}
@@ -96,6 +103,8 @@ namespace Environment.Terrain
 
 		public class TerrainChunk
 		{
+			public EntityInfo[] EntitiesInfo => _entitiesInfo;
+
 			private const int TERRAIN_LAYERMASK = 8; 
 			
 			// Fields
@@ -106,16 +115,25 @@ namespace Environment.Terrain
 			private readonly MeshRenderer _meshRenderer;
 			private readonly MeshFilter _meshFilter;
 			private readonly MeshCollider _meshCollider;
+			private readonly Transform _player;
 			private bool _mapDataReceived;
 			private bool _hasSetCollider;
 			private Bounds _bounds;
 			private MapData _mapData;
+			
+			//Entities
+			private readonly EntityInfo[] _entitiesInfo;
+			private readonly Dictionary<Vector2, Entity> _entities;
 
 			// Variables
 			private int previousLODIndex = -1;
 
-			public TerrainChunk(Vector2 coord, int size, LODInfo[] detailLevels, int colliderLODIndex, Transform parent, Material material)
+			public TerrainChunk(Vector2 coord, int size, LODInfo[] detailLevels, int colliderLODIndex, Transform parent,
+				Material material, EntityInfo[] entities, Transform player)
 			{
+				_player = player;
+				_entities = new Dictionary<Vector2, Entity>();
+				_entitiesInfo = entities;
 				_detailLevels = detailLevels;
 				_colliderLODIndex = colliderLODIndex;
 
@@ -147,18 +165,7 @@ namespace Environment.Terrain
 				SetVisible(false);
 				_mapGenerator.RequestMapData(position,OnMapDataReceived);
 			}
-
-			private void OnMapDataReceived(MapData mapDataParameter) {
-				_mapData = mapDataParameter;
-				_mapDataReceived = true;
-				
-				Texture2D texture = TextureGenerator.TextureFromColourMap(mapDataParameter.colourMap,
-					MapGenerator.mapChunkSize, MapGenerator.mapChunkSize);
-				_meshRenderer.material.mainTexture = texture;
-				_mapGenerator.mapDataCount++;
-				UpdateTerrainChunk ();
-			}
-
+			
 			public void UpdateTerrainChunk()
 			{
 				if (!_mapDataReceived) return;
@@ -186,8 +193,8 @@ namespace Environment.Terrain
 							lodMesh.RequestMesh (_mapData);
 						}
 					}
-
-					TerrainChunksVisibleLastUpdate.Add (this);
+					_terrainChunksVisibleLastUpdate.Add (this);
+					
 				}
 
 				SetVisible (visible);
@@ -205,7 +212,11 @@ namespace Environment.Terrain
 				
 				if (sqrDistanceViewerEdge < ColliderGenerationDistanceThreshold * ColliderGenerationDistanceThreshold)
 					if (_lodMeshes[_colliderLODIndex].HasMesh)
+					{
 						_meshCollider.sharedMesh = _lodMeshes[_colliderLODIndex].ThisMesh;
+						_hasSetCollider = true;
+						UpdateChunkEntities(_mapGenerator.MapChunkSize * Scale, EntitiesInfo);
+					}
 
 			}
 
@@ -213,13 +224,51 @@ namespace Environment.Terrain
 			{
 				_meshObject.SetActive(visible);
 			}
+			
+			private void OnMapDataReceived(MapData mapDataParameter) {
+				_mapData = mapDataParameter;
+				_mapDataReceived = true;
+				
+				Texture2D texture = TextureGenerator.TextureFromColourMap(mapDataParameter.colourMap,
+					MapGenerator.mapChunkSize, MapGenerator.mapChunkSize);
+				_meshRenderer.material.mainTexture = texture;
+				_mapGenerator.mapDataCount++;
+				UpdateTerrainChunk ();
+			}
+			
+			public void UpdateChunkEntities(int mapChunkSize, EntityInfo[] entitiesInfo)
+			{
+				if (!_hasSetCollider) return;
+
+				for (int x = 0; x <= 50; x += 3)
+				{
+					for (int y = 0; y <= 50; y += 3)
+					{
+						if (!Physics.Raycast(new Vector3(x, 500, y), Vector3.down, out RaycastHit info, Mathf.Infinity, 1 << TERRAIN_LAYERMASK))
+							continue;
+
+						Vector2 position = new Vector2(x, y);
+
+						if (_entities.ContainsKey(position))
+						{
+							_entities[position].UpdateSelf();
+						}
+						else
+						{
+							var tree = Instantiate(_entitiesInfo[0].entity, new Vector3(x, info.point.y, y), Quaternion.identity);
+							tree.Initialise(position, _player);
+							_entities.Add(position, tree);
+						}
+					}
+				}
+			}
 		}
 
 		private class LODMesh {
 			// Properties
-			public Mesh ThisMesh { get; set; }
-			public bool HasRequestedMesh { get; set; }
-			public bool HasMesh { get; set; }
+			public Mesh ThisMesh { get; private set; }
+			public bool HasRequestedMesh { get; private set; }
+			public bool HasMesh { get; private set; }
 
 			public event Action UpdateCallback;
 
@@ -250,5 +299,12 @@ namespace Environment.Terrain
 			public bool useForCollider;
 			public float SqrVisibleDistanceThreshold => visibleDstThreshold * visibleDstThreshold;
 		}
+
+		[Serializable]
+		public struct EntityInfo
+		{
+			public Entity entity;
+			[Range(1, 100)] public float density;
+		} 
     }
 }
