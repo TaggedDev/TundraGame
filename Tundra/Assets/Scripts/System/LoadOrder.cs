@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using Environment;
-using Environment.Terrain;
 using Player.Behaviour;
 using UnityEngine;
 
@@ -26,7 +25,7 @@ namespace System
 
         private IEnumerator InstantiateWorld()
         {
-            yield return new WaitUntil(() => mapGenerator.mapDataCount == 81 && mapGenerator.meshDataCount == 77);
+            yield return new WaitUntil(() => mapGenerator.mapDataCount == 9 && mapGenerator.meshDataCount == 9);
             playerHolder.gameObject.SetActive(true);
             playerHolder.SpawnPlayer();
         }

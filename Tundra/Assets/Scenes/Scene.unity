@@ -289,7 +289,7 @@ MonoBehaviour:
   _entityInfo:
   - entity: {fileID: 2032046020135244795, guid: c7821bc923171f24094e69062402d005,
       type: 3}
-    density: 50
+    density: 41
   viewer: {fileID: 1324381167}
   mapMaterial: {fileID: 2100000, guid: a45ba4aa6a876814fa7fc89f700cff2b, type: 2}
   colliderLODIndex: 0

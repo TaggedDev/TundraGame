@@ -8,26 +8,25 @@ namespace Environment.Terrain
     {
 	    // Serialize variables
 	    [SerializeField] private LODInfo[] detailLevels;
-	    [SerializeField] private EntityInfo[] _entityInfo;
+	    [SerializeField] private EntityInfo[] entityInfo;
 	    [SerializeField] private Transform viewer;
 	    [SerializeField] private Material mapMaterial;
 	    [SerializeField] private int colliderLODIndex;
 
 	    // Constants variables
 	    private const int Scale = 8;
-	    private const float ChunkUpdateThreshold = 5f;
-	    private const float ColliderGenerationDistanceThreshold = 5f;
+	    private const float ChunkUpdateThreshold = 1f;
+	    private const float ColliderGenerationDistanceThreshold = 1f;
 	    private const float SqrChunkUpdateThreshold = ChunkUpdateThreshold * ChunkUpdateThreshold;
-	    private const float EntityUpdateThreshold = .05f;
+	    private const float EntityUpdateThreshold = 1f;
 	    private const float SqrEntityUpdateThreshold = EntityUpdateThreshold * EntityUpdateThreshold;
 
 	    // Static fields 
 	    private static float _maxViewDst;
 	    private static Vector2 _viewerPosition;
 		private static MapGenerator _mapGenerator;
+		private static TerrainChunk _playerChunk;
 		private static readonly List<TerrainChunk> _terrainChunksVisibleLastUpdate = new List<TerrainChunk>();
-
-		public static List<TerrainChunk> TerrainChunksVisibleLastUpdate => _terrainChunksVisibleLastUpdate;
 
 		// Fields
 		private int _chunkSize;
@@ -56,22 +55,20 @@ namespace Environment.Terrain
 		/// </summary>
 		private void Update() {
 			_viewerPosition = new Vector2 (viewer.position.x, viewer.position.z) / Scale;
-
-			if (_viewerPosition != viewerPositionOld)
-				foreach (TerrainChunk chunk in _terrainChunksVisibleLastUpdate) 
-					chunk.UpdateCollisionMesh();
+			
 			float sqrSpatial = (viewerPositionOld - _viewerPosition).sqrMagnitude;
 			if (sqrSpatial > SqrEntityUpdateThreshold)
 			{
 				viewerPositionOld = _viewerPosition;
-				foreach (var chunk in _terrainChunksVisibleLastUpdate)
-					chunk.UpdateChunkEntities(_mapGenerator.MapChunkSize * Scale, chunk.EntitiesInfo);
+				_playerChunk.UpdateChunkEntities(_mapGenerator.MapChunkSize * Scale, _playerChunk.EntitiesInfo[0]);
 			}
 			
 			if (sqrSpatial > SqrChunkUpdateThreshold)
 			{
 				viewerPositionOld = _viewerPosition;
 				UpdateVisibleChunks();
+				foreach (TerrainChunk chunk in _terrainChunksVisibleLastUpdate)
+					chunk.UpdateCollisionMesh();
 			}
 		}
 		
@@ -84,7 +81,7 @@ namespace Environment.Terrain
 				
 			int currentChunkCoordX = Mathf.RoundToInt (_viewerPosition.x / _chunkSize);
 			int currentChunkCoordY = Mathf.RoundToInt (_viewerPosition.y / _chunkSize);
-
+			
 			for (int yOffset = -chunksVisibleInViewDst; yOffset <= chunksVisibleInViewDst; yOffset++) {
 				for (int xOffset = -chunksVisibleInViewDst; xOffset <= chunksVisibleInViewDst; xOffset++) {
 					Vector2 viewedChunkCoord = new Vector2 (currentChunkCoordX + xOffset, currentChunkCoordY + yOffset);
@@ -94,18 +91,20 @@ namespace Environment.Terrain
 					} else
 					{
 						var chunk = new TerrainChunk(viewedChunkCoord, _chunkSize, detailLevels, colliderLODIndex,
-							transform, mapMaterial, _entityInfo, viewer.transform);
+							transform, mapMaterial, entityInfo, viewer.transform);
 						_terrainChunkDictionary.Add(viewedChunkCoord, chunk);
 					}
 				}
 			}
+			Vector2 currentChunkPosition = new Vector2(currentChunkCoordX, currentChunkCoordY);
+			_playerChunk = _terrainChunkDictionary[currentChunkPosition];
 		}
 
 		public class TerrainChunk
 		{
 			public EntityInfo[] EntitiesInfo => _entitiesInfo;
 
-			private const int TERRAIN_LAYERMASK = 8; 
+			private const int TERRAIN_LAYER_MASK = 8; 
 			
 			// Fields
 			private readonly GameObject _meshObject;
@@ -143,7 +142,7 @@ namespace Environment.Terrain
 
 				_meshObject = new GameObject("Terrain Chunk")
 				{
-					layer = TERRAIN_LAYERMASK
+					layer = TERRAIN_LAYER_MASK
 				};
 				_meshRenderer = _meshObject.AddComponent<MeshRenderer>();
 				_meshFilter = _meshObject.AddComponent<MeshFilter>();
@@ -215,7 +214,7 @@ namespace Environment.Terrain
 					{
 						_meshCollider.sharedMesh = _lodMeshes[_colliderLODIndex].ThisMesh;
 						_hasSetCollider = true;
-						UpdateChunkEntities(_mapGenerator.MapChunkSize * Scale, EntitiesInfo);
+						UpdateChunkEntities(_mapGenerator.MapChunkSize * Scale, EntitiesInfo[0]);
 					}
 
 			}
@@ -236,28 +235,34 @@ namespace Environment.Terrain
 				UpdateTerrainChunk ();
 			}
 			
-			public void UpdateChunkEntities(int mapChunkSize, EntityInfo[] entitiesInfo)
+			public void UpdateChunkEntities(int mapChunkSize, EntityInfo tree_entity)
 			{
 				if (!_hasSetCollider) return;
 
-				for (int x = 0; x <= 50; x += 3)
+				float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize, mapChunkSize, _mapGenerator.Seed,
+					_mapGenerator.NoiseScale, _mapGenerator.Octaves, _mapGenerator.Persistance, _mapGenerator.Lacunarity,
+					new Vector2(_player.position.x, _player.position.z), _mapGenerator.normalizeMode);
+
+				for (int x = -mapChunkSize / 2; x <= mapChunkSize / 2; x += 16)
 				{
-					for (int y = 0; y <= 50; y += 3)
+					for (int y = -mapChunkSize / 2; y <= mapChunkSize / 2; y += 16)
 					{
-						if (!Physics.Raycast(new Vector3(x, 500, y), Vector3.down, out RaycastHit info, Mathf.Infinity, 1 << TERRAIN_LAYERMASK))
-							continue;
-
+						
 						Vector2 position = new Vector2(x, y);
-
 						if (_entities.ContainsKey(position))
 						{
 							_entities[position].UpdateSelf();
 						}
 						else
 						{
-							var tree = Instantiate(_entitiesInfo[0].entity, new Vector3(x, info.point.y, y), Quaternion.identity);
-							tree.Initialise(position, _player);
-							_entities.Add(position, tree);
+							if (Physics.Raycast(new Vector3(x, 500, y), Vector3.down, out RaycastHit info,
+								    Mathf.Infinity, 1 << TERRAIN_LAYER_MASK))
+							{
+								var tree = Instantiate(_entitiesInfo[0].entity, new Vector3(x, info.point.y, y),
+									Quaternion.identity);
+								tree.Initialise(position, _player);
+								_entities.Add(position, tree);
+							}
 						}
 					}
 				}
@@ -304,7 +309,7 @@ namespace Environment.Terrain
 		public struct EntityInfo
 		{
 			public Entity entity;
-			[Range(1, 100)] public float density;
+			[Range(0, 1)] public float density;
 		} 
     }
 }
