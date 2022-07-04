@@ -13,25 +13,18 @@ namespace Environment.Terrain
 	    [SerializeField] private Material mapMaterial;
 	    [SerializeField] private int colliderLODIndex;
 
-	    // Constants variables
-	    private const int Scale = 8;
-	    private const float ChunkUpdateThreshold = 1f;
-	    private const float ColliderGenerationDistanceThreshold = 1f;
-	    private const float SqrChunkUpdateThreshold = ChunkUpdateThreshold * ChunkUpdateThreshold;
-	    private const float EntityUpdateThreshold = 1f;
-	    private const float SqrEntityUpdateThreshold = EntityUpdateThreshold * EntityUpdateThreshold;
-
 	    // Static fields 
 	    private static float _maxViewDst;
 	    private static Vector2 _viewerPosition;
 		private static MapGenerator _mapGenerator;
-		private static TerrainChunk _playerChunk;
 		private static readonly List<TerrainChunk> _terrainChunksVisibleLastUpdate = new List<TerrainChunk>();
 
 		// Fields
 		private int _chunkSize;
 		private readonly Dictionary<Vector2, TerrainChunk> _terrainChunkDictionary = new Dictionary<Vector2, TerrainChunk>();
-		
+
+		public Dictionary<Vector2, TerrainChunk> TerrainChunkDictionary => _terrainChunkDictionary;
+
 		// Variables
 		private Vector2 viewerPositionOld;
 		private int chunksVisibleInViewDst;
@@ -54,16 +47,11 @@ namespace Environment.Terrain
 		/// Function is called every frame
 		/// </summary>
 		private void Update() {
-			_viewerPosition = new Vector2 (viewer.position.x, viewer.position.z) / Scale;
+			_viewerPosition = new Vector2 (viewer.position.x, viewer.position.z) / WorldConstants.Scale;
 			
 			float sqrSpatial = (viewerPositionOld - _viewerPosition).sqrMagnitude;
-			if (sqrSpatial > SqrEntityUpdateThreshold)
-			{
-				viewerPositionOld = _viewerPosition;
-				_playerChunk.UpdateChunkEntities(_mapGenerator.MapChunkSize * Scale, _playerChunk.EntitiesInfo[0]);
-			}
 			
-			if (sqrSpatial > SqrChunkUpdateThreshold)
+			if (sqrSpatial > WorldConstants.SqrChunkUpdateThreshold)
 			{
 				viewerPositionOld = _viewerPosition;
 				UpdateVisibleChunks();
@@ -96,8 +84,6 @@ namespace Environment.Terrain
 					}
 				}
 			}
-			Vector2 currentChunkPosition = new Vector2(currentChunkCoordX, currentChunkCoordY);
-			_playerChunk = _terrainChunkDictionary[currentChunkPosition];
 		}
 
 		public class TerrainChunk
@@ -149,9 +135,9 @@ namespace Environment.Terrain
 				_meshCollider = _meshObject.AddComponent<MeshCollider>();
 				_meshRenderer.material = material;
 
-				_meshObject.transform.position = positionV3 * Scale;
+				_meshObject.transform.position = positionV3 * WorldConstants.Scale;
 				_meshObject.transform.parent = parent;
-				_meshObject.transform.localScale = Vector3.one * Scale;
+				_meshObject.transform.localScale = Vector3.one * WorldConstants.Scale;
 				
 				_lodMeshes = new LODMesh[detailLevels.Length];
 				for (int i = 0; i < detailLevels.Length; i++)
@@ -209,12 +195,11 @@ namespace Environment.Terrain
 					if (!_lodMeshes[_colliderLODIndex].HasRequestedMesh)
 						_lodMeshes[_colliderLODIndex].RequestMesh(_mapData);
 				
-				if (sqrDistanceViewerEdge < ColliderGenerationDistanceThreshold * ColliderGenerationDistanceThreshold)
+				if (sqrDistanceViewerEdge < WorldConstants.SqrColliderGenerationDistanceThreshold)
 					if (_lodMeshes[_colliderLODIndex].HasMesh)
 					{
 						_meshCollider.sharedMesh = _lodMeshes[_colliderLODIndex].ThisMesh;
 						_hasSetCollider = true;
-						UpdateChunkEntities(_mapGenerator.MapChunkSize * Scale, EntitiesInfo[0]);
 					}
 
 			}
@@ -239,9 +224,9 @@ namespace Environment.Terrain
 			{
 				if (!_hasSetCollider) return;
 
-				float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize, mapChunkSize, _mapGenerator.Seed,
+				/*float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize, mapChunkSize, _mapGenerator.Seed,
 					_mapGenerator.NoiseScale, _mapGenerator.Octaves, _mapGenerator.Persistance, _mapGenerator.Lacunarity,
-					new Vector2(_player.position.x, _player.position.z), _mapGenerator.normalizeMode);
+					new Vector2(_player.position.x, _player.position.z), _mapGenerator.normalizeMode);*/
 
 				for (int x = -mapChunkSize / 2; x <= mapChunkSize / 2; x += 16)
 				{
