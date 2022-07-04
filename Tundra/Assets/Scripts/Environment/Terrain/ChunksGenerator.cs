@@ -148,7 +148,7 @@ namespace Environment.Terrain
 						_lodMeshes[i].UpdateCallback += UpdateCollisionMesh;
 				}
 				SetVisible(false);
-				_mapGenerator.RequestMapData(position,OnMapDataReceived);
+				_mapGenerator.RequestMapData(position, OnMapDataReceived);
 			}
 			
 			public void UpdateTerrainChunk()
@@ -158,28 +158,38 @@ namespace Environment.Terrain
 				float viewerDstFromNearestEdge = Mathf.Sqrt (_bounds.SqrDistance (_viewerPosition));
 				bool visible = viewerDstFromNearestEdge <= _maxViewDst;
 
-				if (visible) {
+				if (visible)
+				{
 					int lodIndex = 0;
 
-					for (int i = 0; i < _detailLevels.Length - 1; i++) {
-						if (viewerDstFromNearestEdge > _detailLevels [i].visibleDstThreshold) {
+					for (int i = 0; i < _detailLevels.Length - 1; i++)
+					{
+						if (viewerDstFromNearestEdge > _detailLevels[i].visibleDstThreshold)
+						{
 							lodIndex = i + 1;
-						} else {
+						}
+						else
+						{
 							break;
 						}
 					}
-						
-					if (lodIndex != previousLODIndex) {
-						LODMesh lodMesh = _lodMeshes [lodIndex];
-						if (lodMesh.HasMesh) {
+
+					if (lodIndex != previousLODIndex)
+					{
+						LODMesh lodMesh = _lodMeshes[lodIndex];
+						if (lodMesh.HasMesh)
+						{
 							previousLODIndex = lodIndex;
 							_meshFilter.mesh = lodMesh.ThisMesh;
-						} else if (!lodMesh.HasRequestedMesh) {
-							lodMesh.RequestMesh (_mapData);
+						}
+						else if (!lodMesh.HasRequestedMesh)
+						{
+							lodMesh.RequestMesh(_mapData);
 						}
 					}
-					_terrainChunksVisibleLastUpdate.Add (this);
-					
+
+					_terrainChunksVisibleLastUpdate.Add(this);
+
 				}
 
 				SetVisible (visible);
@@ -224,15 +234,15 @@ namespace Environment.Terrain
 			{
 				if (!_hasSetCollider) return;
 
+				Vector2 offset = new Vector2(_meshObject.transform.position.x, _meshObject.transform.position.z);
+
 				/*float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize, mapChunkSize, _mapGenerator.Seed,
 					_mapGenerator.NoiseScale, _mapGenerator.Octaves, _mapGenerator.Persistance, _mapGenerator.Lacunarity,
 					new Vector2(_player.position.x, _player.position.z), _mapGenerator.normalizeMode);*/
-
-				for (int x = -mapChunkSize / 2; x <= mapChunkSize / 2; x += 16)
+				for (int x = Mathf.FloorToInt(offset.x + -mapChunkSize / 2); x <= Mathf.FloorToInt(offset.x + mapChunkSize / 2); x += 16)
 				{
-					for (int y = -mapChunkSize / 2; y <= mapChunkSize / 2; y += 16)
+					for (int y = Mathf.FloorToInt(offset.y + -mapChunkSize / 2); y <= Mathf.FloorToInt(offset.y + mapChunkSize / 2); y += 16)
 					{
-						
 						Vector2 position = new Vector2(x, y);
 						if (_entities.ContainsKey(position))
 						{
@@ -243,9 +253,9 @@ namespace Environment.Terrain
 							if (Physics.Raycast(new Vector3(x, 500, y), Vector3.down, out RaycastHit info,
 								    Mathf.Infinity, 1 << TERRAIN_LAYER_MASK))
 							{
-								var tree = Instantiate(_entitiesInfo[0].entity, new Vector3(x, info.point.y, y),
-									Quaternion.identity);
-								tree.Initialise(position, _player);
+								var entityPosition = new Vector3(x, info.point.y, y);
+								var tree = Instantiate(_entitiesInfo[0].entity, _meshObject.transform);
+								tree.Initialise(entityPosition, _player);
 								_entities.Add(position, tree);
 							}
 						}

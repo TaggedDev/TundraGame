@@ -416,7 +416,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapGenerator: {fileID: 185302901}
   playerHolder: {fileID: 1324381163}
-  entityGenerator: {fileID: 0}
+  entityGenerator: {fileID: 1035914547}
 --- !u!4 &528677538
 Transform:
   m_ObjectHideFlags: 0
@@ -541,7 +541,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1035914547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -557,6 +557,9 @@ MonoBehaviour:
   chunksGenerator: {fileID: 185302903}
   player: {fileID: 1324381167}
   _mapGenerator: {fileID: 185302901}
+  _previousChunkPosition: {x: 0, y: 0}
+  chunkPosition: {x: 0, y: 0}
+  sqrSpatial: 0
 --- !u!4 &1035914548
 Transform:
   m_ObjectHideFlags: 0

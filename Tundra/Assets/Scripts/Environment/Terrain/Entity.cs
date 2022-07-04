@@ -8,10 +8,12 @@ namespace Environment.Terrain
         private Transform _player;
         private Vector2 _entityPosition;
 
-        public void Initialise(Vector2 position, Transform player)
+        public void Initialise(Vector3 position, Transform player)
         {
-            _entityPosition = position;
+            _entityPosition = new Vector2(position.x, position.z);
             _player = player;
+            transform.localScale /= WorldConstants.Scale;
+            transform.position = position;
         }
 
         public void UpdateSelf()
