@@ -527,6 +527,7 @@ GameObject:
   - component: {fileID: 1324381162}
   - component: {fileID: 1324381163}
   - component: {fileID: 1324381168}
+  - component: {fileID: 1324381169}
   m_Layer: 8
   m_Name: PlayerObject
   m_TagString: Untagged
@@ -650,6 +651,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5f9e4f769675114e88f6fd302063559, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1324381169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1324381161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc7b3cd8d4f946329524f6ce8f2dd733, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 100
 --- !u!1001 &1403532880
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -739,6 +753,27 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -2432090755550338912, guid: 8ceb4ee704fe21c45a6c71cc8084908d, type: 3}
+--- !u!1 &1447771687 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4029028534375472020, guid: 17dd1282da04e2d4fa33c6ae861ce932,
+    type: 3}
+  m_PrefabInstance: {fileID: 4029028533667059268}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1447771689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1447771687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf3bb56ec3cebe841b1aa09557062145, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Player: {fileID: 1324381161}
+  Canvas: {fileID: 1877504744}
+  animationSpeedModifier: 1
 --- !u!1 &1592812210 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3923797324772228554, guid: c315cb33912100f4cacb82e2ad06e025,
@@ -1446,6 +1481,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1877504745}
     m_Modifications:
+    - target: {fileID: 4029028532843697356, guid: 17dd1282da04e2d4fa33c6ae861ce932,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4029028532843697356, guid: 17dd1282da04e2d4fa33c6ae861ce932,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4029028533142058177, guid: 17dd1282da04e2d4fa33c6ae861ce932,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4029028533142058178, guid: 17dd1282da04e2d4fa33c6ae861ce932,
         type: 3}
       propertyPath: m_Type

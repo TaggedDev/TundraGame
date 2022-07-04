@@ -12,11 +12,13 @@ namespace Player.Behaviour
             set => _maxHealth = value;
         }
         
+        public float CurrentHealth => currentHealth;
         // Fields
         [SerializeField] private float _maxHealth;
-        
         // Variables
         private float currentHealth;
+
+        
         
         // Public methods
 
@@ -28,7 +30,12 @@ namespace Player.Behaviour
 
         private void Update()
         {
-            throw new NotImplementedException();
+            //Debug.Log($"Current hp: {currentHealth}");
+            if (Input.GetKey(KeyCode.H))
+            {
+                if (Input.GetKeyDown(KeyCode.Minus)) currentHealth -= 5;
+                if (Input.GetKeyDown(KeyCode.Equals)) currentHealth += 5;
+            }
         }
     }
 }
