@@ -24,7 +24,8 @@ namespace Environment.Terrain
 		private readonly Dictionary<Vector2, TerrainChunk> _terrainChunkDictionary = new Dictionary<Vector2, TerrainChunk>();
 
 		public Dictionary<Vector2, TerrainChunk> TerrainChunkDictionary => _terrainChunkDictionary;
-
+		public List<TerrainChunk> TerrainChunksLastUpdate => _terrainChunksVisibleLastUpdate;
+		
 		// Variables
 		private Vector2 viewerPositionOld;
 		private int chunksVisibleInViewDst;
@@ -105,6 +106,7 @@ namespace Environment.Terrain
 			private bool _hasSetCollider;
 			private Bounds _bounds;
 			private MapData _mapData;
+			private int _chunkSize;
 			
 			//Entities
 			private readonly EntityInfo[] _entitiesInfo;
@@ -121,7 +123,8 @@ namespace Environment.Terrain
 				_entitiesInfo = entities;
 				_detailLevels = detailLevels;
 				_colliderLODIndex = colliderLODIndex;
-
+				_chunkSize = size;
+				
 				var position = coord * size;
 				_bounds = new Bounds(position,Vector2.one * size);
 				Vector3 positionV3 = new Vector3(position.x,0,position.y);
@@ -230,18 +233,19 @@ namespace Environment.Terrain
 				UpdateTerrainChunk ();
 			}
 			
-			public void UpdateChunkEntities(int mapChunkSize, EntityInfo tree_entity)
+			public void UpdateChunkEntities()
 			{
 				if (!_hasSetCollider) return;
 
 				Vector2 offset = new Vector2(_meshObject.transform.position.x, _meshObject.transform.position.z);
 
+				int absHalfChunkSize = _chunkSize * WorldConstants.Scale / 2;
 				/*float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize, mapChunkSize, _mapGenerator.Seed,
 					_mapGenerator.NoiseScale, _mapGenerator.Octaves, _mapGenerator.Persistance, _mapGenerator.Lacunarity,
 					new Vector2(_player.position.x, _player.position.z), _mapGenerator.normalizeMode);*/
-				for (int x = Mathf.FloorToInt(offset.x + -mapChunkSize / 2); x <= Mathf.FloorToInt(offset.x + mapChunkSize / 2); x += 16)
+				for (int x = Mathf.FloorToInt(offset.x - absHalfChunkSize); x <= Mathf.FloorToInt(offset.x + absHalfChunkSize); x += 16)
 				{
-					for (int y = Mathf.FloorToInt(offset.y + -mapChunkSize / 2); y <= Mathf.FloorToInt(offset.y + mapChunkSize / 2); y += 16)
+					for (int y = Mathf.FloorToInt(offset.y - absHalfChunkSize); y <= Mathf.FloorToInt(offset.y + absHalfChunkSize); y += 16)
 					{
 						Vector2 position = new Vector2(x, y);
 						if (_entities.ContainsKey(position))

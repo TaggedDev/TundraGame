@@ -24,7 +24,7 @@ namespace Environment
             _playerPosition = new Vector2(player.position.x, player.position.z);
             _previousChunkPosition = GetCurrentChunkCoordinates();
             _playerChunk = chunksGenerator.TerrainChunkDictionary[_previousChunkPosition];
-            _playerChunk?.UpdateChunkEntities(_mapGenerator.MapChunkSize * WorldConstants.Scale, _playerChunk.EntitiesInfo[0]);
+            _playerChunk?.UpdateChunkEntities();
         }
 
         private void Update()
@@ -41,8 +41,11 @@ namespace Environment
                 if (sqrSpatial <= WorldConstants.SqrEntityUpdateThreshold) return;
             
                 _oldPlayerPosition = _playerPosition;
-                _playerChunk?.UpdateChunkEntities(_mapGenerator.MapChunkSize * WorldConstants.Scale, _playerChunk.EntitiesInfo[0]);
-
+                foreach (var chunk in chunksGenerator.TerrainChunksLastUpdate)
+                {
+                    chunk.UpdateChunkEntities();
+                }
+                //_playerChunk?.UpdateChunkEntities();
             }
             else
             {
