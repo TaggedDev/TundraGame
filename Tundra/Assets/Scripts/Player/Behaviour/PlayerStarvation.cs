@@ -7,6 +7,7 @@ namespace Player.Behaviour
     {
         // Properties
         public float MaxStarve => maxStarve;
+        public float CurrentStarveCapacity => currentStarveCapacity;
 
         // Fields
         [SerializeField] private float maxStarve;
@@ -38,6 +39,7 @@ namespace Player.Behaviour
                 return;
             }
             currentStarveCapacity -= 1;
+            if (currentStarveCapacity < 0) currentStarveCapacity = 0;
         }
 
         private void ConsumeFood(float value)
