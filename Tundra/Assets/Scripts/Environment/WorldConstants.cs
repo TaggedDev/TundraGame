@@ -5,7 +5,7 @@
         public const int Scale = 8;
         private const float ChunkUpdateThreshold = 1f;
         public const float SqrChunkUpdateThreshold = ChunkUpdateThreshold * ChunkUpdateThreshold;
-        private const float ColliderGenerationDistanceThreshold = 1f;
+        private const float ColliderGenerationDistanceThreshold = 5f;
         public const float SqrColliderGenerationDistanceThreshold =
             ColliderGenerationDistanceThreshold * ColliderGenerationDistanceThreshold; 
         private const float EntityUpdateThreshold = .5f;

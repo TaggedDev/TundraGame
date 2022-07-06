@@ -30,6 +30,8 @@ namespace Environment.Terrain
 		private Vector2 viewerPositionOld;
 		private int chunksVisibleInViewDst;
 		
+		[SerializeField] private float sqrSpatial;
+		
 		/// <summary>
 		/// Function is called on object initialization
 		/// </summary>
@@ -50,7 +52,7 @@ namespace Environment.Terrain
 		private void Update() {
 			_viewerPosition = new Vector2 (viewer.position.x, viewer.position.z) / WorldConstants.Scale;
 			
-			float sqrSpatial = (viewerPositionOld - _viewerPosition).sqrMagnitude;
+			sqrSpatial = (viewerPositionOld - _viewerPosition).sqrMagnitude;
 			
 			if (sqrSpatial > WorldConstants.SqrChunkUpdateThreshold)
 			{
@@ -212,6 +214,7 @@ namespace Environment.Terrain
 					if (_lodMeshes[_colliderLODIndex].HasMesh)
 					{
 						_meshCollider.sharedMesh = _lodMeshes[_colliderLODIndex].ThisMesh;
+						Debug.Log(_meshObject.name);
 						_hasSetCollider = true;
 					}
 
