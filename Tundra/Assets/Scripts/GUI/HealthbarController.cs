@@ -84,7 +84,7 @@ namespace GUI
             float deltaScaleValue = (float)Math.Round((_targetScale - _currentScale), 3) * animationSpeedModifier * Time.deltaTime;
             //Debug.Log($"target: {targetScale}, current: {currentScale}, delta: {deltaScaleValue}, actualWidth: {actualWidth}");
             //Если анимация завершена (не надо особо стремиться), то окргуляем величины для точности информации и выключаем анимацию потери хп
-            if (Math.Abs(deltaScaleValue) < 0.00002)
+            if (Math.Abs(deltaScaleValue) < 0.0000002)
             {
                 deltaScaleValue = 0;
                 _currentScale = _targetScale;

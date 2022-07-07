@@ -54,13 +54,24 @@ namespace Player.States
             //debug
             if (Input.GetKey(KeyCode.T))
             {
-                if (Input.GetKeyDown(KeyCode.Equals))
+                if (Input.GetKey(KeyCode.Equals))
                 {
-                    PlayerBehaviour._currentTemperature += 0.1f;
+                    PlayerBehaviour._currentTemperature += 0.02f;
                 }
-                if (Input.GetKeyDown(KeyCode.Minus))
+                if (Input.GetKey(KeyCode.Minus))
                 {
-                    PlayerBehaviour._currentTemperature -= 0.1f;
+                    PlayerBehaviour._currentTemperature -= 0.02f;
+                }
+            }
+            if (Input.GetKey(KeyCode.H))
+            {
+                if (Input.GetKey(KeyCode.Equals))
+                {
+                    PlayerBehaviour._currentHealth += 1f;
+                }
+                if (Input.GetKey(KeyCode.Minus))
+                {
+                    PlayerBehaviour._currentHealth -= 1f;
                 }
             }
         }

@@ -38,7 +38,6 @@ namespace GUI
             }
             _textComponent.color = resultingColor;
             _textComponent.text = (Math.Round(_behaviour.CurrentTemperature, 1) + " C").Replace(',', '.');
-            print(tempAmplitudeScale);
         }
     }
 }

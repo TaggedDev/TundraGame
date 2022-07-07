@@ -1942,7 +1942,7 @@ MonoBehaviour:
   perfectTemperature: 36.6
   absoluteTemperatureAmplitude: 10
   hotTemperature: 50
-  maxHealth: 150
+  maxHealth: 500
 --- !u!1 &1361871495
 GameObject:
   m_ObjectHideFlags: 0
