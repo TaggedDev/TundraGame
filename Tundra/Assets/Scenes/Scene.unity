@@ -378,6 +378,7 @@ GameObject:
   - component: {fileID: 197550187}
   - component: {fileID: 197550189}
   - component: {fileID: 197550188}
+  - component: {fileID: 197550190}
   m_Layer: 5
   m_Name: CurrentTemperatureText
   m_TagString: Untagged
@@ -445,6 +446,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 197550186}
   m_CullTransparentMesh: 0
+--- !u!114 &197550190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 197550186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ba0134db341dfb4f9a50dec9739e4c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1324381161}
 --- !u!1 &199731078
 GameObject:
   m_ObjectHideFlags: 0
@@ -1800,8 +1814,6 @@ GameObject:
   - component: {fileID: 1324381162}
   - component: {fileID: 1324381163}
   - component: {fileID: 1324381168}
-  - component: {fileID: 1324381169}
-  - component: {fileID: 1324381170}
   m_Layer: 8
   m_Name: PlayerObject
   m_TagString: Untagged
@@ -1925,33 +1937,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5f9e4f769675114e88f6fd302063559, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1324381169
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1324381161}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc7b3cd8d4f946329524f6ce8f2dd733, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maxHealth: 100
---- !u!114 &1324381170
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1324381161}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b864ea3963354ef9988442b37a4c44b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   maxStarve: 1000
-  saturationTime: 1
+  saturationTime: 20
+  perfectTemperature: 36.6
+  absoluteTemperatureAmplitude: 10
+  hotTemperature: 50
+  maxHealth: 150
 --- !u!1 &1361871495
 GameObject:
   m_ObjectHideFlags: 0

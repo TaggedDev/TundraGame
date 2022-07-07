@@ -45,5 +45,29 @@ namespace Player.States
 
         public override void Stop()
         { }
+
+        public override void ContinueStarving()
+        {
+            if (PlayerBehaviour._currentSaturationTime > 0)
+            {
+                PlayerBehaviour._currentSaturationTime -= Time.deltaTime;
+                return;
+            }
+            PlayerBehaviour._currentStarveCapacity -= 1;
+            if (PlayerBehaviour._currentStarveCapacity < 0) PlayerBehaviour._currentStarveCapacity = 0;
+        }
+
+        public override void UpdateTemperature()
+        {
+            //TODO: make temperature logic
+
+            /*
+             * Check if current temperature is below the perfect + absolute amplitude
+             * If so, start decreasing the temperature of player
+             * If player is in comfy place, keep him warm
+             * If the current temperature is above the perfect + absolute amplitude - start increasing the temperature
+             * If temperature is greater then 'hot' temperature -> burning. Hit player
+             */
+        }
     }
 }

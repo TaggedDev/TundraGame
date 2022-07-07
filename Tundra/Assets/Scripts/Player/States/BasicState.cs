@@ -6,9 +6,11 @@ namespace Player.States
     {
         protected readonly PlayerMovement PlayerMovement;
         protected readonly IPlayerStateSwitcher StateSwitcher;
+        protected readonly PlayerBehaviour PlayerBehaviour;
 
         protected BasicState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher)
         {
+            PlayerBehaviour = (PlayerBehaviour)switcher;
             this.PlayerMovement = playerMovement;
             StateSwitcher = switcher;
     }
@@ -27,6 +29,16 @@ namespace Player.States
         /// Basic movement with sprint
         /// </summary>
         public abstract void MoveCharacter();
+        
+        /// <summary>
+        /// Updates starving state in <see cref="PlayerBehaviour"/>
+        /// </summary>
+        public abstract void ContinueStarving();
+
+        /// <summary>
+        /// Updates temperature in <see cref="PlayerBehaviour"/>
+        /// </summary>
+        public abstract void UpdateTemperature();
     }
 
 }

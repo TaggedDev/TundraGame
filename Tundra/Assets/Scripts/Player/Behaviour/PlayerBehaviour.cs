@@ -8,12 +8,49 @@ namespace Player.Behaviour
 {
     public class PlayerBehaviour : MonoBehaviour, IPlayerStateSwitcher
     {
+        
+        //Properites
+        public float MaxStarve => maxStarve;
+        public float CurrentStarveCapacity => _currentStarveCapacity;
+
+        public float PerfectTemperature => perfectTemperature;
+        public float CurrentTemperature => _currentTemperature;
+
+        public float AbsoluteTemperatureAmplitude => absoluteTemperatureAmplitude;
+
+        public float MaxHealth
+        {
+            get => maxHealth;
+            set => maxHealth = value;
+        }
+
+        public float CurrentHealth => _currentHealth;
+        // Fields
+        [SerializeField] private float maxStarve;
+        [SerializeField] private float saturationTime;
+
+        [SerializeField] private float perfectTemperature;
+        [SerializeField] private float absoluteTemperatureAmplitude;
+        [SerializeField] private float hotTemperature;
+
+        [SerializeField] private float maxHealth;
+
+        // Variables
+        //TODO: Здесь нужно думаю, по-хорошему, как-нибудь закрыть эти поля для доступа, но разрешить их изменение в классах States
+        internal float _currentStarveCapacity;
+        internal float _currentSaturationTime;
+
+        internal float _currentTemperature;
+
+        internal float _currentHealth;
+
         private BasicState _currentState;
         private PlayerMovement _playerMovement;
         private List<BasicState> _allStates;
         private CameraMovement _cameraHolder;
         private Camera _mainCamera;
         //private float cameraDistance;
+
 
         private void Start()
         {
@@ -31,15 +68,29 @@ namespace Player.Behaviour
             _currentState.Start();
             _mainCamera.transform.RotateAround(transform.position, Vector3.up, 45);
             _playerMovement.UpdateDirections();
+
+            //Initialize health, starvation and temperature:
+            _currentStarveCapacity = maxStarve;
+            _currentSaturationTime = saturationTime;
+
+            _currentTemperature = PerfectTemperature;
+
+            _currentHealth = maxHealth;
         }
 
         private void Update()
         {
             MoveCharacter();
             _cameraHolder.transform.position = transform.position;
+            ContinueStarving();
+            UpdateTemperature();
         }
 
         private void MoveCharacter() => _currentState.MoveCharacter();
+
+        private void ContinueStarving() => _currentState.ContinueStarving();
+
+        private void UpdateTemperature() => _currentState.UpdateTemperature();
 
         public void SwitchState<T>() where T : BasicState
         {
