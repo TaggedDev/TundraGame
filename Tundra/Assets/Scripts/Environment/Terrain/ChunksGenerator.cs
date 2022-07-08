@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Environment.Terrain
 {
@@ -12,7 +14,7 @@ namespace Environment.Terrain
     {
 	    // Serialize variables
 	    [SerializeField] private LODInfo[] detailLevels;
-	    [SerializeField] private EntityInfo[] entityInfo;
+	    [SerializeField] private EntityLevel[] entityInfo;
 	    [SerializeField] private Transform viewer;
 	    [SerializeField] private Material mapMaterial;
 	    [SerializeField] private int colliderLODIndex;
@@ -33,8 +35,7 @@ namespace Environment.Terrain
 		// Variables
 		private Vector2 viewerPositionOld;
 		private int chunksVisibleInViewDst;
-		
-		[SerializeField] private float sqrSpatial;
+		private float sqrSpatial;
 		
 		/// <summary>
 		/// Function is called on object initialization
@@ -103,7 +104,7 @@ namespace Environment.Terrain
 		/// </summary>
 		public class TerrainChunk
 		{
-			public EntityInfo[] EntitiesInfo => _entitiesInfo;
+			public EntityLevel[] EntitiesInfo => _entitiesInfo;
 
 			private const int TERRAIN_LAYER_MASK = 8; 
 			
@@ -118,12 +119,13 @@ namespace Environment.Terrain
 			private readonly Transform _player;
 			private readonly int _chunkSize;
 			private bool _mapDataReceived;
+			private bool _hasGeneratedEntities;
 			private bool _hasSetCollider;
 			private Bounds _bounds;
 			private MapData _mapData;
 			
 			//Entities
-			private readonly EntityInfo[] _entitiesInfo;
+			private readonly EntityLevel[] _entitiesInfo;
 			private readonly Dictionary<Vector2, Entity> _entities;
 
 			// Variables
@@ -141,7 +143,7 @@ namespace Environment.Terrain
 			/// <param name="entities">Array of entities to choose from.</param>
 			/// <param name="player">The transform of player</param>
 			public TerrainChunk(Vector2 coord, int size, LODInfo[] detailLevels, int colliderLODIndex, Transform parent,
-				Material material, EntityInfo[] entities, Transform player)
+				Material material, EntityLevel[] entities, Transform player)
 			{
 				_player = player;
 				_entities = new Dictionary<Vector2, Entity>();
@@ -243,7 +245,6 @@ namespace Environment.Terrain
 					if (_lodMeshes[_colliderLODIndex].HasMesh)
 					{
 						_meshCollider.sharedMesh = _lodMeshes[_colliderLODIndex].ThisMesh;
-						Debug.Log(_meshObject.name);
 						_hasSetCollider = true;
 					}
 			}
@@ -289,30 +290,77 @@ namespace Environment.Terrain
 					for (int y = Mathf.FloorToInt(offset.y - absHalfChunkSize); y <= Mathf.FloorToInt(offset.y + absHalfChunkSize); y += 16)
 					{
 						Vector2 position = new Vector2(x, y);
-						if (_entities.ContainsKey(position))
+						if (_hasGeneratedEntities)
 						{
-							_entities[position].UpdateSelf();
+							if (_entities.ContainsKey(position))
+							{
+								_entities[position].UpdateSelf();
+							}
 						}
 						else
 						{
 							if (!Physics.Raycast(new Vector3(x, 500, y), Vector3.down, out RaycastHit info,
 								    Mathf.Infinity, 1 << TERRAIN_LAYER_MASK)) continue;
 
-							if (info.point.y <= 15f)
-							{
-								var entityPosition = new Vector3(x, info.point.y, y);
-								var tree = Instantiate(_entitiesInfo[0].entity, _meshObject.transform);
-								tree.Initialise(entityPosition, _player);
-								_entities.Add(position, tree);								
-							}
-							
+							var height = info.point.y;
+							IterateThroughBiomes(x, height, y, position);
 							
 						}
+						
+					}
+				}
+				_hasGeneratedEntities = true;
+			}
+
+			private void IterateThroughBiomes(float x, float height, float z, Vector2 position)
+			{
+				for (int i = 0; i < _entitiesInfo.Length; i++)
+				{
+					// If blank chance has proceeded, ignore this X;Z position
+					if (height < _entitiesInfo[i].topSpawnHeightThreshold)
+					{
+						SpawnEntityInPosition(x, height, z, _entitiesInfo[i].entities, position, _entitiesInfo[i].blankChance);
+						return;
 					}
 				}
 			}
-		}
+			
+			private void SpawnEntityInPosition(float x, float height, float z, IReadOnlyList<Entity> entities, 
+				Vector2 position, float blankChance)
+			{
+				float rnd = Random.Range(0f, 1f);
+				// If blank chance has proceeded - don't spawn anything
+				if (blankChance >= rnd)
+					return;
+				
+				// Else, choose an object from the list and spawn an entity
+				var entityPosition = new Vector3(x, height, z);
+				var tree = Instantiate(GetRandomEntity(entities), _meshObject.transform);
+				tree.Initialise(entityPosition, _player);
+				_entities.Add(position, tree);
+			}
 
+			private Entity GetRandomEntity(IReadOnlyList<Entity> entities)
+			{
+				Entity entity = null;
+				float totalChance = entities.Sum(entityItem => entityItem.SpawnRateForLevel);
+
+				float chanceNumber = Random.Range(0f, totalChance);
+
+				totalChance = 0f;
+
+				foreach (var entityItem in entities)
+				{
+					entity = entityItem;
+					totalChance += entityItem.SpawnRateForLevel;
+					if (totalChance >= chanceNumber)
+						return entity;
+				}
+				
+				return entity;
+			}
+		}
+		
 		/// <summary>
 		/// This class describes the level of detail of the Mesh
 		/// </summary>
@@ -335,7 +383,7 @@ namespace Environment.Terrain
 				HasRequestedMesh = true;
 				_mapGenerator.RequestMeshData(mapData, _lod, OnMeshDataReceived);
 			}
-
+			
 			private void OnMeshDataReceived(MeshData meshData) {
 				ThisMesh = meshData.CreateMesh ();
 				HasMesh = true;
@@ -359,10 +407,12 @@ namespace Environment.Terrain
         /// Contains some basic information about this entity
         /// </summary>
 		[Serializable]
-		public struct EntityInfo
+		public struct EntityLevel
 		{
-			public Entity entity;
-			[Range(0, 1)] public float density;
+			public Entity[] entities;
+			[Range(0, 1)]
+			public float blankChance;
+			public float topSpawnHeightThreshold;
 		} 
     }
 }

@@ -12,15 +12,14 @@ namespace Environment
         // Fields
         [SerializeField] private ChunksGenerator chunksGenerator;
         [SerializeField] private Transform player;
-        [SerializeField] private MapGenerator _mapGenerator;
-        
+
         private static ChunksGenerator.TerrainChunk _playerChunk;
         private Vector2 _playerPosition;
         private Vector2 _oldPlayerPosition;
-        [SerializeField] private Vector2 _previousChunkPosition;
-        [SerializeField] private Vector2 chunkPosition;
+        private Vector2 _previousChunkPosition;
+        private Vector2 chunkPosition;
         private int _chunkSize;
-        [SerializeField] private float sqrSpatial;
+        private float sqrSpatial;
 
         /// <summary>
         /// Sets the start values.
@@ -55,7 +54,6 @@ namespace Environment
                 {
                     chunk.UpdateChunkEntities();
                 }
-                //_playerChunk?.UpdateChunkEntities();
             }
             else
             {

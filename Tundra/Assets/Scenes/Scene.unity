@@ -287,9 +287,18 @@ MonoBehaviour:
     visibleDstThreshold: 50
     useForCollider: 0
   entityInfo:
-  - entity: {fileID: 2032046020135244795, guid: c7821bc923171f24094e69062402d005,
-      type: 3}
-    density: 0.411
+  - entities:
+    - {fileID: 2032046020135244795, guid: c7821bc923171f24094e69062402d005, type: 3}
+    - {fileID: 4359974080133157424, guid: dc00aab85b301f242896a77c4b442ec0, type: 3}
+    - {fileID: 4127295616235328013, guid: fa6105287f77b1240a0017f7d23434c2, type: 3}
+    blankChance: 0.275
+    topSpawnHeightThreshold: 40
+  - entities:
+    - {fileID: 7826993223395954021, guid: 74442f407a24ac84f95f08a83b1bb617, type: 3}
+    - {fileID: 544176334209047762, guid: 4983f395b2610de4e9f688a87bbd9af9, type: 3}
+    - {fileID: 8203775875145826790, guid: da41fd2967a439d409358c2214a5409e, type: 3}
+    blankChance: 0.5
+    topSpawnHeightThreshold: 150
   viewer: {fileID: 1324381167}
   mapMaterial: {fileID: 2100000, guid: a45ba4aa6a876814fa7fc89f700cff2b, type: 2}
   colliderLODIndex: 0
@@ -556,10 +565,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chunksGenerator: {fileID: 185302903}
   player: {fileID: 1324381167}
-  _mapGenerator: {fileID: 185302901}
-  _previousChunkPosition: {x: 0, y: 0}
-  chunkPosition: {x: 0, y: 0}
-  sqrSpatial: 0
 --- !u!4 &1035914548
 Transform:
   m_ObjectHideFlags: 0
@@ -568,7 +573,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1035914546}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 74.74288, y: -437.72482, z: 543.89197}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
