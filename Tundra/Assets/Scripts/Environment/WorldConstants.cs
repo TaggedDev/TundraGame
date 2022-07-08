@@ -1,5 +1,8 @@
 ﻿namespace Environment
 {
+    /// <summary>
+    /// This class contains all constants of this World.
+    /// </summary>
     public static class WorldConstants
     {
         public const int Scale = 8;

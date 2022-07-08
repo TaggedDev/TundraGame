@@ -3,6 +3,10 @@ using UnityEngine;
 
 namespace Environment
 {
+    /// <summary>
+    /// GameObject with this class must be only 1 in the scene. This class checks the current player position
+    /// and updates entities' positions and visibility.
+    /// </summary>
     public class EntityGenerator : MonoBehaviour
     {
         // Fields
@@ -18,6 +22,9 @@ namespace Environment
         private int _chunkSize;
         [SerializeField] private float sqrSpatial;
 
+        /// <summary>
+        /// Sets the start values.
+        /// </summary>
         private void Start()
         {
             _chunkSize = MapGenerator.mapChunkSize - 1;
@@ -27,6 +34,9 @@ namespace Environment
             _playerChunk?.UpdateChunkEntities();
         }
 
+        /// <summary>
+        /// Updates chunk's entities based on player's movement.
+        /// </summary>
         private void Update()
         {
             _playerPosition = new Vector2(player.position.x, player.position.z) / WorldConstants.Scale;
@@ -55,6 +65,10 @@ namespace Environment
             }
         }
 
+        /// <summary>
+        /// Gets the coordinates of a chunk, on which player stays.
+        /// </summary>
+        /// <returns>Vector2 coordinates of chunk</returns>
         private Vector2 GetCurrentChunkCoordinates()
         {
             int currentChunkCoordX = Mathf.RoundToInt (_playerPosition.x / _chunkSize);

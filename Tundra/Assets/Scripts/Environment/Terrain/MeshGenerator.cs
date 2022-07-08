@@ -2,8 +2,19 @@
 
 namespace Environment.Terrain
 {
+	/// <summary>
+	/// This class must be in scene only once. Generates Meshes for planes.
+	/// </summary>
     public static class MeshGenerator
     {
+	    /// <summary>
+	    /// Generates MeshData with passed parameters.
+	    /// </summary>
+	    /// <param name="heightMap">Noise map for current coordinates</param>
+	    /// <param name="heightMultiplier">Multiplier of how hilly will terrain be</param>
+	    /// <param name="heightCurveKeys">Curve for certain heightmap</param>
+	    /// <param name="levelOfDetail">Level of detail for current chunk</param>
+	    /// <returns>MeshData to build chunk mesh from</returns>
 	    public static MeshData GenerateTerrainMesh(float[,] heightMap, float heightMultiplier,
 		    AnimationCurve heightCurveKeys, int levelOfDetail)
 	    {
@@ -78,6 +89,9 @@ namespace Environment.Terrain
 	    }
 	}
 
+	/// <summary>
+	/// Describes the values to create and apply Mesh.
+	/// </summary>
     public class MeshData {
         private readonly int[] _triangles;
         private Vector3[] _vertices;
@@ -91,6 +105,10 @@ namespace Environment.Terrain
         private int _borderTriangleIndex;
         private int _triangleIndex;
         
+        /// <summary>
+        /// MeshData constructor.
+        /// </summary>
+        /// <param name="verticesPerLine"></param>
         public MeshData(int verticesPerLine) {
             _vertices = new Vector3[verticesPerLine * verticesPerLine];
             _uvs = new Vector2[verticesPerLine * verticesPerLine];
@@ -99,6 +117,12 @@ namespace Environment.Terrain
             _borderTriangles = new int[24 * verticesPerLine];
         }
 
+        /// <summary>
+        /// Adds triangle to triangles array for Meshes.
+        /// </summary>
+        /// <param name="a">Index of A</param>
+        /// <param name="b">Index of B</param>
+        /// <param name="c">Index of C</param>
         public void AddTriangle(int a, int b, int c) {
             if (a < 0 || b < 0 || c < 0)
             {
@@ -116,6 +140,12 @@ namespace Environment.Terrain
             }
         }
 
+        /// <summary>
+        /// Adds points by position to array.
+        /// </summary>
+        /// <param name="vertexPosition">Position of a point</param>
+        /// <param name="uv">Texture coordinates</param>
+        /// <param name="vertexIndex">Index of this index corresponding to whole array of vertexes</param>
         public void AddVertex(Vector3 vertexPosition, Vector2 uv, int vertexIndex)
         {
             if (vertexIndex < 0)
@@ -128,7 +158,11 @@ namespace Environment.Terrain
                 _uvs[vertexIndex] = uv;
             }
         }
-
+        
+        /// <summary>
+        /// Generates mesh from saved values.
+        /// </summary>
+        /// <returns>Mesh to apply for GameObject</returns>
         public Mesh CreateMesh()
         {
             Mesh mesh = new Mesh
@@ -141,11 +175,17 @@ namespace Environment.Terrain
             return mesh;
         }
 
+        /// <summary>
+        /// Applies low poly appearance to triangles.
+        /// </summary>
         public void ProcessMeshType()
         {
 	        FlatShading();
         }
-
+        
+        /// <summary>
+        /// Makes triangles' shadows look more in low-poly style.
+        /// </summary>
         private void FlatShading()
         {
 	        Vector3[] flatShaded = new Vector3[_triangles.Length];

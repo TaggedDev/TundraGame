@@ -4,6 +4,10 @@ using UnityEngine;
 
 namespace Environment.Terrain
 {
+	/// <summary>
+	/// Class is *only once* attached to an object in scene and is responsible for generating terrain chunks as children
+	/// objects.
+	/// </summary>
     public class ChunksGenerator : MonoBehaviour
     {
 	    // Serialize variables
@@ -47,7 +51,7 @@ namespace Environment.Terrain
 		}
 
 		/// <summary>
-		/// Function is called every frame
+		/// Function is called every frame.
 		/// </summary>
 		private void Update() {
 			_viewerPosition = new Vector2 (viewer.position.x, viewer.position.z) / WorldConstants.Scale;
@@ -63,10 +67,15 @@ namespace Environment.Terrain
 			}
 		}
 		
+		/// <summary>
+		/// Is responsible for updating chunks that were active in the last update. The amount of such depends on
+		/// 'chunksVisibleInViewDst' variable.
+		/// In case there is a new chunks to be rendered, we add it in dictionary with it's V2 coords.
+		/// </summary>
 		private void UpdateVisibleChunks() {
 
 			foreach (var chunk in _terrainChunksVisibleLastUpdate)
-				chunk.SetVisible (false);
+				chunk.SetVisibility (false);
 			
 			_terrainChunksVisibleLastUpdate.Clear ();
 				
@@ -88,7 +97,10 @@ namespace Environment.Terrain
 				}
 			}
 		}
-
+		
+		/// <summary>
+		/// This class describes the terrain chunk and it's entities
+		/// </summary>
 		public class TerrainChunk
 		{
 			public EntityInfo[] EntitiesInfo => _entitiesInfo;
@@ -104,11 +116,11 @@ namespace Environment.Terrain
 			private readonly MeshFilter _meshFilter;
 			private readonly MeshCollider _meshCollider;
 			private readonly Transform _player;
+			private readonly int _chunkSize;
 			private bool _mapDataReceived;
 			private bool _hasSetCollider;
 			private Bounds _bounds;
 			private MapData _mapData;
-			private int _chunkSize;
 			
 			//Entities
 			private readonly EntityInfo[] _entitiesInfo;
@@ -117,6 +129,17 @@ namespace Environment.Terrain
 			// Variables
 			private int previousLODIndex = -1;
 
+			/// <summary>
+			/// The constructor of Terrain Chunk.
+			/// </summary>
+			/// <param name="coord">The coordinates of terrain chunk game object.</param>
+			/// <param name="size">The chunk size of the object.</param>
+			/// <param name="detailLevels">The array of LODInfo from ChunksGenerator.</param>
+			/// <param name="colliderLODIndex">Current index of LOD.</param>
+			/// <param name="parent">The parent object.</param>
+			/// <param name="material">Material to apply to chunk.</param>
+			/// <param name="entities">Array of entities to choose from.</param>
+			/// <param name="player">The transform of player</param>
 			public TerrainChunk(Vector2 coord, int size, LODInfo[] detailLevels, int colliderLODIndex, Transform parent,
 				Material material, EntityInfo[] entities, Transform player)
 			{
@@ -152,10 +175,13 @@ namespace Environment.Terrain
 					if (i == colliderLODIndex)
 						_lodMeshes[i].UpdateCallback += UpdateCollisionMesh;
 				}
-				SetVisible(false);
+				SetVisibility(false);
 				_mapGenerator.RequestMapData(position, OnMapDataReceived);
 			}
 			
+			/// <summary>
+			/// Updates the level of detail of current terrain chunk based on its position relative to the viewer. 
+			/// </summary>
 			public void UpdateTerrainChunk()
 			{
 				if (!_mapDataReceived) return;
@@ -197,9 +223,12 @@ namespace Environment.Terrain
 
 				}
 
-				SetVisible (visible);
+				SetVisibility (visible);
 			}
 
+			/// <summary>
+			/// Updates the collision mesh depending on the position relative to player's object.
+			/// </summary>
 			public void UpdateCollisionMesh()
 			{
 				if (_hasSetCollider) return;
@@ -217,25 +246,37 @@ namespace Environment.Terrain
 						Debug.Log(_meshObject.name);
 						_hasSetCollider = true;
 					}
-
 			}
 
-			public void SetVisible(bool visible)
+			/// <summary>
+			/// Sets the current terrain chunk object visible depending on visible value
+			/// </summary>
+			/// <param name="visible">Visibility parameter, as is</param>
+			public void SetVisibility(bool visible)
 			{
 				_meshObject.SetActive(visible);
 			}
 			
-			private void OnMapDataReceived(MapData mapDataParameter) {
-				_mapData = mapDataParameter;
+			/// <summary>
+			/// Is called by MapGenerator in a new thread when TerrainChunk requests the MapData for _mapData field.
+			/// Also calls the level of detail update on the chunk.
+			/// We use new thread on generating MapData because calculating MapData is a costly process.
+			/// </summary>
+			/// <param name="mapData">MapData to be saved</param>
+			private void OnMapDataReceived(MapData mapData) {
+				_mapData = mapData;
 				_mapDataReceived = true;
 				
-				Texture2D texture = TextureGenerator.TextureFromColourMap(mapDataParameter.colourMap,
+				Texture2D texture = TextureGenerator.TextureFromColourMap(mapData.colourMap,
 					MapGenerator.mapChunkSize, MapGenerator.mapChunkSize);
 				_meshRenderer.material.mainTexture = texture;
 				_mapGenerator.mapDataCount++;
 				UpdateTerrainChunk ();
 			}
 			
+			/// <summary>
+			/// If chunk has a collider set, we generate or render entities in _entities list of this chunk 
+			/// </summary>
 			public void UpdateChunkEntities()
 			{
 				if (!_hasSetCollider) return;
@@ -272,6 +313,9 @@ namespace Environment.Terrain
 			}
 		}
 
+		/// <summary>
+		/// This class describes the level of detail of the Mesh
+		/// </summary>
 		private class LODMesh {
 			// Properties
 			public Mesh ThisMesh { get; private set; }
@@ -300,6 +344,9 @@ namespace Environment.Terrain
 			}
 		}
 
+		/// <summary>
+		/// Contains some basic information about current level of detail
+		/// </summary>
 		[Serializable]
 		public struct LODInfo {
 			public int lod;
@@ -308,6 +355,9 @@ namespace Environment.Terrain
 			public float SqrVisibleDistanceThreshold => visibleDstThreshold * visibleDstThreshold;
 		}
 
+		/// <summary>
+        /// Contains some basic information about this entity
+        /// </summary>
 		[Serializable]
 		public struct EntityInfo
 		{

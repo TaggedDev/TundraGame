@@ -1,11 +1,13 @@
 ﻿using System;
-using UnityEngine;
-using System.Threading;
 using System.Collections.Generic;
-using Environment.Terrain;
+using System.Threading;
+using UnityEngine;
 
-namespace Environment
+namespace Environment.Terrain
 {
+	/// <summary>
+	/// Only once set class describes the generation of meshes, mapData and noise for the whole world.
+	/// </summary>
 	public class MapGenerator : MonoBehaviour
 	{
 		// Inner structs and enums
@@ -16,6 +18,10 @@ namespace Environment
 			Mesh
 		}
 
+		/// <summary>
+		/// Overall information about the current Thread
+		/// </summary>
+		/// <typeparam name="T">Class that returns the callback</typeparam>
 		private struct MapThreadInfo<T>
 		{
 			public readonly Action<T> callback;
@@ -69,6 +75,10 @@ namespace Environment
 		public NormalizeMode normalizeMode;
 		
 		// Public methods
+		
+		/// <summary>
+		/// Draws the map in editor
+		/// </summary>
 		public void DrawMapInEditor()
 		{
 			MapData mapData = GenerateMapData(Vector2.zero);
@@ -92,28 +102,45 @@ namespace Environment
 			}
 		}
 
+		/// <summary>
+		/// Creates the thread to generate mapData
+		/// </summary>
+		/// <param name="centre">The centre of the chunk</param>
+		/// <param name="callback">The function to call when thread will be processed</param>
 		public void RequestMapData(Vector2 centre, Action<MapData> callback)
 		{
-			ThreadStart threadStart = delegate { MapDataThread(centre, callback); };
+			ThreadStart threadStart = delegate { ProcessMapDataThread(centre, callback); };
 
 			new Thread(threadStart).Start();
 		}
 		
+		/// <summary>
+		/// Creates the thread to generate meshData
+		/// </summary>
+		/// <param name="mapData"></param>
+		/// <param name="lod"></param>
+		/// <param name="callback"></param>
 		public void RequestMeshData(MapData mapData, int lod, Action<MeshData> callback)
 		{
-			ThreadStart threadStart = delegate { MeshDataThread(mapData, lod, callback); };
+			ThreadStart threadStart = delegate { ProcessMeshDataThread(mapData, lod, callback); };
 
 			new Thread(threadStart).Start();
 		}
 		
 		// Private methods
+		
+		/// <summary>
+		/// This function is called object initializing 
+		/// </summary>
 		private void Start()
 		{
 			mapDataCount = 0;
 			meshDataCount = 0;
-			Noise.Generator = this;
 		}
 
+		/// <summary>
+		/// This function is called on every frame. Gets all threads from queues and process them with callback
+		/// </summary>
 		private void Update()
 		{
 			// Iterate through queued threads to calculate MapData
@@ -138,7 +165,12 @@ namespace Environment
 			}
 		}
 
-		private void MapDataThread(Vector2 centre, Action<MapData> callback)
+		/// <summary>
+		/// Generates MapData and passes it in queue
+		/// </summary>
+		/// <param name="centre">The chunk centre</param>
+		/// <param name="callback">The function to be passed in thread</param>
+		private void ProcessMapDataThread(Vector2 centre, Action<MapData> callback)
 		{
 			MapData mapData = GenerateMapData(centre);
 			lock (mapDataThreadInfoQueue)
@@ -147,7 +179,13 @@ namespace Environment
 			}
 		}
 
-		private void MeshDataThread(MapData mapData, int lod, Action<MeshData> callback)
+		/// <summary>
+		/// Generates MeshData and passes it in queue
+		/// </summary>
+		/// <param name="mapData">MapData to generate mesh from</param>
+		/// <param name="lod">Level of index for this mesh</param>
+		/// <param name="callback">Callback function to be passed in thread</param>
+		private void ProcessMeshDataThread(MapData mapData, int lod, Action<MeshData> callback)
 		{
 			MeshData meshData =
 				MeshGenerator.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve, lod);
@@ -157,6 +195,11 @@ namespace Environment
 			}
 		}
 
+		/// <summary>
+		/// This function is used to generate Map Data
+		/// </summary>
+		/// <param name="centre">Map Centre</param>
+		/// <returns>Object with generated mapData</returns>
 		private MapData GenerateMapData(Vector2 centre)
 		{
 			float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize + 2, mapChunkSize + 2, seed, noiseScale, octaves,
@@ -184,6 +227,9 @@ namespace Environment
 			return new MapData(noiseMap, colourMap);
 		}
 
+		/// <summary>
+		/// Is called when values are changed in Inspector
+		/// </summary>
 		private void OnValidate()
 		{
 			if (lacunarity < 1)
@@ -194,6 +240,9 @@ namespace Environment
 		}
 	}
 
+	/// <summary>
+	/// This class describes the settings of Terrain levels, which are based on height of the map
+	/// </summary>
 	[Serializable]
 	public struct TerrainType
 	{
@@ -202,6 +251,9 @@ namespace Environment
 		public Color colour;
 	}
 
+	/// <summary>
+	/// This class represents the heightMap and colourMap combined
+	/// </summary>
 	public struct MapData
 	{
 		public readonly float[,] heightMap;

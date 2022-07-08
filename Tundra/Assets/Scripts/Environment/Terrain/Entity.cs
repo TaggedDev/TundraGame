@@ -2,12 +2,21 @@
 
 namespace Environment.Terrain
 {
+    /// <summary>
+    /// This class describes an entity that is spawned on map.
+    /// </summary>
     public class Entity : MonoBehaviour
     {
-        private const float ENTITIY_VIEW_RANGE = 3000f;
+        private const float ENTITY_VIEW_RANGE = 3000f;
         private Transform _player;
         private Vector2 _entityPosition;
 
+        /// <summary>
+        /// Due Entities are spawned as Initialise() function, there is no built-in constructor for this method.
+        /// Call this function right after prop is initialised.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="player"></param>
         public void Initialise(Vector3 position, Transform player)
         {
             _entityPosition = new Vector2(position.x, position.z);
@@ -16,10 +25,13 @@ namespace Environment.Terrain
             transform.position = position;
         }
 
+        /// <summary>
+        /// Updates current entity's visibility.
+        /// </summary>
         public void UpdateSelf()
         {
             Vector2 playerPosition = new Vector2(_player.position.x, _player.position.z);
-            if ((playerPosition - _entityPosition).sqrMagnitude <= ENTITIY_VIEW_RANGE)
+            if ((playerPosition - _entityPosition).sqrMagnitude <= ENTITY_VIEW_RANGE)
             {
                 gameObject.SetActive(true);
                 return;
