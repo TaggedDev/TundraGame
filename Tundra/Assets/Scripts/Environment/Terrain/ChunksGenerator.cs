@@ -243,9 +243,6 @@ namespace Environment.Terrain
 				Vector2 offset = new Vector2(_meshObject.transform.position.x, _meshObject.transform.position.z);
 
 				int absHalfChunkSize = _chunkSize * WorldConstants.Scale / 2;
-				/*float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize, mapChunkSize, _mapGenerator.Seed,
-					_mapGenerator.NoiseScale, _mapGenerator.Octaves, _mapGenerator.Persistance, _mapGenerator.Lacunarity,
-					new Vector2(_player.position.x, _player.position.z), _mapGenerator.normalizeMode);*/
 				for (int x = Mathf.FloorToInt(offset.x - absHalfChunkSize); x <= Mathf.FloorToInt(offset.x + absHalfChunkSize); x += 16)
 				{
 					for (int y = Mathf.FloorToInt(offset.y - absHalfChunkSize); y <= Mathf.FloorToInt(offset.y + absHalfChunkSize); y += 16)
@@ -257,14 +254,18 @@ namespace Environment.Terrain
 						}
 						else
 						{
-							if (Physics.Raycast(new Vector3(x, 500, y), Vector3.down, out RaycastHit info,
-								    Mathf.Infinity, 1 << TERRAIN_LAYER_MASK))
+							if (!Physics.Raycast(new Vector3(x, 500, y), Vector3.down, out RaycastHit info,
+								    Mathf.Infinity, 1 << TERRAIN_LAYER_MASK)) continue;
+
+							if (info.point.y <= 15f)
 							{
 								var entityPosition = new Vector3(x, info.point.y, y);
 								var tree = Instantiate(_entitiesInfo[0].entity, _meshObject.transform);
 								tree.Initialise(entityPosition, _player);
-								_entities.Add(position, tree);
+								_entities.Add(position, tree);								
 							}
+							
+							
 						}
 					}
 				}
