@@ -25,6 +25,10 @@ namespace Player.Behaviour
         }
 
         public float CurrentHealth => _currentHealth;
+
+        public float CurrentStamina => _currentStamina;
+
+        public float MaxStamina => maxStamina;
         // Fields
         [SerializeField] private float maxStarve;
         [SerializeField] private float saturationTime;
@@ -35,6 +39,7 @@ namespace Player.Behaviour
 
         [SerializeField] private float maxHealth;
 
+        [SerializeField] private float maxStamina;
         // Variables
         //TODO: Здесь нужно думаю, по-хорошему, как-нибудь закрыть эти поля для доступа, но разрешить их изменение в классах States
         internal float _currentStarveCapacity;
@@ -44,11 +49,14 @@ namespace Player.Behaviour
 
         internal float _currentHealth;
 
+        internal float _currentStamina;
+
         private BasicState _currentState;
         private PlayerMovement _playerMovement;
         private List<BasicState> _allStates;
         private CameraMovement _cameraHolder;
         private Camera _mainCamera;
+        
         //private float cameraDistance;
 
 
