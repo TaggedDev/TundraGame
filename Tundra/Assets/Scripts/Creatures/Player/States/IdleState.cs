@@ -1,11 +1,11 @@
-﻿using Player.Behaviour;
+﻿using Creatures.Player.Behaviour;
 using UnityEngine;
 
-namespace Player.States
+namespace Creatures.Player.States
 {
     public class IdleState : BasicState
     {
-        public IdleState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher) 
+        public IdleState(PlayerMovement playerMovement, IStateSwitcher switcher) 
             : base (playerMovement, switcher)
         { }
 

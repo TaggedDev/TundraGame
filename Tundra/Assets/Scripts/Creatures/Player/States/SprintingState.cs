@@ -1,11 +1,11 @@
-﻿using Player.Behaviour;
+﻿using Creatures.Player.Behaviour;
 using UnityEngine;
 
-namespace Player.States
+namespace Creatures.Player.States
 {
-    public class WalkingState : BasicState
+    public class SprintingState : BasicState
     {
-        public WalkingState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher)
+        public SprintingState(PlayerMovement playerMovement, IStateSwitcher switcher)
             : base(playerMovement, switcher)
         { }
 
@@ -14,15 +14,11 @@ namespace Player.States
 
         public override void MoveCharacter()
         {
-            if (Input.GetKey(KeyCode.LeftShift))
-                StateSwitcher.SwitchState<SprintingState>();
+            if (Input.GetKeyUp(KeyCode.LeftShift))
+                StateSwitcher.SwitchState<WalkingState>();
 
             _h = Input.GetAxis("Horizontal");
             _v = Input.GetAxis("Vertical");
-
-            if (_h == 0 && _v == 0)
-                StateSwitcher.SwitchState<IdleState>();
-
             _rightMovement = PlayerMovement.Right * (PlayerMovement.Speed * Time.deltaTime * _h);
             _forwardMovement = PlayerMovement.Forward * (PlayerMovement.Speed * Time.deltaTime * _v);
 
@@ -39,10 +35,13 @@ namespace Player.States
 
         public override void Start()
         {
-            //_playerMovement.Animator.SetFloat("Speed", .5f);
+            //_playerMovement.Animator.SetFloat("Speed", 1f);
+            //PlayerMovement.Speed = 3.5f;
         }
 
         public override void Stop()
-        { }
+        {
+            PlayerMovement.Speed = 3f;
+        }
     }
 }

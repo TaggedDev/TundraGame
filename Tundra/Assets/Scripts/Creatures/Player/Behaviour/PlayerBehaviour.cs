@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CameraConfiguration;
-using Player.States;
+using Creatures.Player.States;
 using UnityEngine;
 
-namespace Player.Behaviour
+namespace Creatures.Player.Behaviour
 {
-    public class PlayerBehaviour : MonoBehaviour, IPlayerStateSwitcher
+    public class PlayerBehaviour : MonoBehaviour, IStateSwitcher
     {
         private BasicState _currentState;
         private PlayerMovement _playerMovement;

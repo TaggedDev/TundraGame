@@ -109,15 +109,15 @@ namespace Environment.Terrain
 			private const int TERRAIN_LAYER_MASK = 8; 
 			
 			// Fields
-			private readonly GameObject _meshObject;
 			private readonly LODInfo[] _detailLevels;
 			private readonly LODMesh[] _lodMeshes;
-			private readonly int _colliderLODIndex;
-			private readonly MeshRenderer _meshRenderer;
-			private readonly MeshFilter _meshFilter;
-			private readonly MeshCollider _meshCollider;
 			private readonly Transform _player;
 			private readonly int _chunkSize;
+			private readonly int _colliderLODIndex;
+			private GameObject _meshObject;
+			private MeshRenderer _meshRenderer;
+			private MeshFilter _meshFilter;
+			private MeshCollider _meshCollider;
 			private bool _mapDataReceived;
 			private bool _hasGeneratedEntities;
 			private bool _hasSetCollider;
@@ -156,19 +156,9 @@ namespace Environment.Terrain
 				_bounds = new Bounds(position,Vector2.one * size);
 				Vector3 positionV3 = new Vector3(position.x,0,position.y);
 
-				_meshObject = new GameObject("Terrain Chunk")
-				{
-					layer = TERRAIN_LAYER_MASK
-				};
-				_meshRenderer = _meshObject.AddComponent<MeshRenderer>();
-				_meshFilter = _meshObject.AddComponent<MeshFilter>();
-				_meshCollider = _meshObject.AddComponent<MeshCollider>();
-				_meshRenderer.material = material;
+				InstantiateTerrainChunk();
+				SetChunkTransform();
 
-				_meshObject.transform.position = positionV3 * WorldConstants.Scale;
-				_meshObject.transform.parent = parent;
-				_meshObject.transform.localScale = Vector3.one * WorldConstants.Scale;
-				
 				_lodMeshes = new LODMesh[detailLevels.Length];
 				for (int i = 0; i < detailLevels.Length; i++)
 				{
@@ -179,8 +169,30 @@ namespace Environment.Terrain
 				}
 				SetVisibility(false);
 				_mapGenerator.RequestMapData(position, OnMapDataReceived);
+
+				// Instantiates and adds components to meshObject
+				void InstantiateTerrainChunk()
+				{
+					_meshObject = new GameObject("Terrain Chunk")
+					{
+						layer = TERRAIN_LAYER_MASK
+					};
+					_meshRenderer = _meshObject.AddComponent<MeshRenderer>();
+					_meshFilter = _meshObject.AddComponent<MeshFilter>();
+					_meshCollider = _meshObject.AddComponent<MeshCollider>();
+					_meshRenderer.material = material;
+				}
+				
+				// Sets chunk's transform parameters  
+				void SetChunkTransform()
+				{
+					_meshObject.transform.position = positionV3 * WorldConstants.Scale;
+					_meshObject.transform.parent = parent;
+					_meshObject.transform.localScale = Vector3.one * WorldConstants.Scale;
+					_meshObject.isStatic = true;
+				}
 			}
-			
+
 			/// <summary>
 			/// Updates the level of detail of current terrain chunk based on its position relative to the viewer. 
 			/// </summary>
@@ -257,7 +269,7 @@ namespace Environment.Terrain
 			{
 				_meshObject.SetActive(visible);
 			}
-			
+
 			/// <summary>
 			/// Is called by MapGenerator in a new thread when TerrainChunk requests the MapData for _mapData field.
 			/// Also calls the level of detail update on the chunk.

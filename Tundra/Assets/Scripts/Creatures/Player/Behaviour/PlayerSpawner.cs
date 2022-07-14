@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Player.Behaviour
+namespace Creatures.Player.Behaviour
 {
     public class PlayerSpawner : MonoBehaviour
     {

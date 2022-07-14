@@ -1,7 +1,7 @@
 ﻿using System.Collections;
+using Creatures.Player.Behaviour;
 using Environment;
 using Environment.Terrain;
-using Player.Behaviour;
 using UnityEngine;
 
 namespace System

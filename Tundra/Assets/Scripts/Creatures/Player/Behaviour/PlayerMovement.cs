@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Player.Behaviour
+namespace Creatures.Player.Behaviour
 {
     public class PlayerMovement : MonoBehaviour
     {
