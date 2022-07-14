@@ -1,16 +1,11 @@
-﻿using Creatures.Animals.Behaviour;
-using Creatures.Player;
-
-namespace Creatures.Animals.States
+﻿namespace Creatures.Animals.States
 {
     public abstract class BasicAnimalState
     {
-        protected readonly AnimalMovement AnimalMovement;
-        protected readonly IAnimalStateSwitcher PlayerStateSwitcher;
+        private readonly IAnimalStateSwitcher PlayerStateSwitcher;
 
-        protected BasicAnimalState(AnimalMovement animalMovement, IAnimalStateSwitcher switcher)
+        protected BasicAnimalState(IAnimalStateSwitcher switcher)
         {
-            AnimalMovement = animalMovement;
             PlayerStateSwitcher = switcher;
         }
 

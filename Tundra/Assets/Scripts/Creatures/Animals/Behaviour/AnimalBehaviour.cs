@@ -8,18 +8,16 @@ namespace Creatures.Animals.Behaviour
     public class AnimalBehaviour : MonoBehaviour, IAnimalStateSwitcher
     {
         private BasicAnimalState _currentAnimalState;
-        private AnimalMovement _animalMovement;
         private List<BasicAnimalState> _allStates;
 
         private void Start()
         {
             //cameraDistance = Vector3.Distance(Camera.main.transform.position, transform.position);
-            _animalMovement = GetComponent<AnimalMovement>();
             _allStates = new List<BasicAnimalState>
             {
-                new PatrolAnimalState(_animalMovement, this),
-                new ChasingAnimalState(_animalMovement, this),
-                new EscapingAnimalState(_animalMovement, this)
+                new PatrolAnimalState(this),
+                new ChasingAnimalState(this),
+                new EscapingAnimalState(this)
             };
             _currentAnimalState = _allStates[0];
             _currentAnimalState.Start();

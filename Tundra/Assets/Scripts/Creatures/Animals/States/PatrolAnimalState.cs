@@ -1,10 +1,8 @@
-﻿using Creatures.Animals.Behaviour;
-
-namespace Creatures.Animals.States
+﻿namespace Creatures.Animals.States
 {
     public class PatrolAnimalState : BasicAnimalState
     {
-        public PatrolAnimalState(AnimalMovement animalMovement, IAnimalStateSwitcher switcher) : base(animalMovement, switcher)
+        public PatrolAnimalState(IAnimalStateSwitcher switcher) : base(switcher)
         { }
 
         public override void Start()
