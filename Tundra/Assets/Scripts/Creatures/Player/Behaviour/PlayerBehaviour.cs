@@ -5,24 +5,24 @@ using UnityEngine;
 
 namespace Creatures.Player.Behaviour
 {
-    public class PlayerBehaviour : MonoBehaviour, IStateSwitcher
+    public class PlayerBehaviour : MonoBehaviour, IPlayerStateSwitcher
     {
-        private BasicState _currentState;
+        private BasicPlayerState _currentPlayerState;
         private PlayerMovement _playerMovement;
-        private List<BasicState> _allStates;
+        private List<BasicPlayerState> _allStates;
 
         private void Start()
         {
             //cameraDistance = Vector3.Distance(Camera.main.transform.position, transform.position);
             _playerMovement = GetComponent<PlayerMovement>();
-            _allStates = new List<BasicState>()
+            _allStates = new List<BasicPlayerState>()
             {
-                new IdleState(_playerMovement, this),
-                new WalkingState(_playerMovement,  this),
-                new SprintingState(_playerMovement, this),
+                new IdlePlayerState(_playerMovement, this),
+                new WalkingPlayerState(_playerMovement,  this),
+                new SprintingPlayerState(_playerMovement, this),
             };
-            _currentState = _allStates[0];
-            _currentState.Start();
+            _currentPlayerState = _allStates[0];
+            _currentPlayerState.Start();
             _playerMovement.UpdateDirections();
         }
 
@@ -31,14 +31,14 @@ namespace Creatures.Player.Behaviour
             MoveCharacter();
         }
 
-        private void MoveCharacter() => _currentState.MoveCharacter();
+        private void MoveCharacter() => _currentPlayerState.MoveCharacter();
 
-        public void SwitchState<T>() where T : BasicState
+        public void SwitchState<T>() where T : BasicPlayerState
         {
             var state = _allStates.FirstOrDefault(st => st is T);
-            _currentState.Stop();
+            _currentPlayerState.Stop();
             state.Start();
-            _currentState = state;
+            _currentPlayerState = state;
         }
     }
 }
