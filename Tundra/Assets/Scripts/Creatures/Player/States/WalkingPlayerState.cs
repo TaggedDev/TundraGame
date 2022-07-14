@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace Creatures.Player.States
 {
-    public class WalkingState : BasicState
+    public class WalkingPlayerState : BasicPlayerState
     {
-        public WalkingState(PlayerMovement playerMovement, IStateSwitcher switcher)
+        public WalkingPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher)
             : base(playerMovement, switcher)
         { }
 
@@ -15,13 +15,13 @@ namespace Creatures.Player.States
         public override void MoveCharacter()
         {
             if (Input.GetKey(KeyCode.LeftShift))
-                StateSwitcher.SwitchState<SprintingState>();
+                PlayerStateSwitcher.SwitchState<SprintingPlayerState>();
 
             _h = Input.GetAxis("Horizontal");
             _v = Input.GetAxis("Vertical");
 
             if (_h == 0 && _v == 0)
-                StateSwitcher.SwitchState<IdleState>();
+                PlayerStateSwitcher.SwitchState<IdlePlayerState>();
 
             _rightMovement = PlayerMovement.Right * (PlayerMovement.Speed * Time.deltaTime * _h);
             _forwardMovement = PlayerMovement.Forward * (PlayerMovement.Speed * Time.deltaTime * _v);
