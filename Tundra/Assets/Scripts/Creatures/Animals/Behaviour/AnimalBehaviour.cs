@@ -1,30 +1,28 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Creatures.Player.Behaviour;
-using Creatures.Player.States;
+using Creatures.Animals.States;
 using UnityEngine;
 
 namespace Creatures.Animals.Behaviour
 {
-    public class AnimalBehaviour : MonoBehaviour, IStateSwitcher
+    public class AnimalBehaviour : MonoBehaviour, IAnimalStateSwitcher
     {
-        private BasicState _currentState;
-        private PlayerMovement _playerMovement;
-        private List<BasicState> _allStates;
+        private BasicAnimalState _currentAnimalState;
+        private AnimalMovement _animalMovement;
+        private List<BasicAnimalState> _allStates;
 
         private void Start()
         {
             //cameraDistance = Vector3.Distance(Camera.main.transform.position, transform.position);
-            _playerMovement = GetComponent<PlayerMovement>();
-            _allStates = new List<BasicState>()
+            _animalMovement = GetComponent<AnimalMovement>();
+            _allStates = new List<BasicAnimalState>
             {
-                new IdleState(_playerMovement, this),
-                new WalkingState(_playerMovement, this),
-                new SprintingState(_playerMovement, this),
+                new PatrolAnimalState(_animalMovement, this),
+                new ChasingAnimalState(_animalMovement, this),
+                new EscapingAnimalState(_animalMovement, this)
             };
-            _currentState = _allStates[0];
-            _currentState.Start();
-            _playerMovement.UpdateDirections();
+            _currentAnimalState = _allStates[0];
+            _currentAnimalState.Start();
         }
 
         private void Update()
@@ -32,14 +30,14 @@ namespace Creatures.Animals.Behaviour
             MoveCharacter();
         }
 
-        private void MoveCharacter() => _currentState.MoveCharacter();
+        private void MoveCharacter() => _currentAnimalState.MoveCharacter();
 
-        public void SwitchState<T>() where T : BasicState
+        public void SwitchState<T>() where T : BasicAnimalState
         {
-            var state = _allStates.FirstOrDefault(st => st is T);
-            _currentState.Stop();
-            state.Start();
-            _currentState = state;
+            var state = _allStates.FirstOrDefault(st => false);
+            _currentAnimalState.Stop();
+            state?.Start();
+            _currentAnimalState = state;
         }
     }
 }
