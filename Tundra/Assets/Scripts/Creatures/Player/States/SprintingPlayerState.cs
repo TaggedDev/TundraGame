@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace Creatures.Player.States
 {
-    public class SprintingState : BasicState
+    public class SprintingPlayerState : BasicPlayerState
     {
-        public SprintingState(PlayerMovement playerMovement, IStateSwitcher switcher)
+        public SprintingPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher)
             : base(playerMovement, switcher)
         { }
 
@@ -15,7 +15,7 @@ namespace Creatures.Player.States
         public override void MoveCharacter()
         {
             if (Input.GetKeyUp(KeyCode.LeftShift))
-                StateSwitcher.SwitchState<WalkingState>();
+                PlayerStateSwitcher.SwitchState<WalkingPlayerState>();
 
             _h = Input.GetAxis("Horizontal");
             _v = Input.GetAxis("Vertical");
