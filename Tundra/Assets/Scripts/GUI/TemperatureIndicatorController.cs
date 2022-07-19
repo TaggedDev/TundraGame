@@ -10,34 +10,65 @@ namespace GUI
     public class TemperatureIndicatorController : MonoBehaviour
     {
 
-        private Text _textComponent;
-        private PlayerBehaviour _behaviour;
+        // Properties
+        /// <summary>
+        /// Ссылка на компонент, отвечающий за температуру игрока.
+        /// </summary>
+        private PlayerBehaviour PlayerTemperature => Player.GetComponent<PlayerBehaviour>();
 
+        // Public fields
+        /// <summary>
+        /// Ссылка на игрока.
+        /// </summary>
+        public GameObject Player;
+        /// <summary>
+        /// Ссылка на холст, нужна для получения данных о масштабировании холста.
+        /// </summary>
+        public Canvas Canvas;
+
+        /// <summary>
+        /// Модификатор, определяющий скорость анимации. 
+        /// <!-- главное – не переборщить со скоростью, а то эта полоска может начать туда-сюда скакать.
+        /// Но с нормальными величинами всё нормально будет. -->
+        /// </summary>
         [SerializeField]
-        private GameObject player;
+        private float animationSpeedModifier = 1f;
+
+        // Private fields
+        /// <summary>
+        /// Трансформация основной полоски для отображения температуры.
+        /// </summary>
+        private RectTransform _indicator;
+
+        /// <summary>
+        /// Величина, к которой будет стремиться полоска температуры.
+        /// </summary>
+        private float _targetScale;
+        /// <summary>
+        /// Текущая величина полоски.
+        /// </summary>
+        private float _currentScale;
+
 
         // Start is called before the first frame update
         void Start()
         {
-            _textComponent = GetComponent<Text>();
-            _behaviour = player.GetComponent<PlayerBehaviour>();
+            _indicator = transform.Find("HeatBarInner") as RectTransform;
+            _currentScale = _indicator.localScale.x;
         }
 
         // Update is called once per frame
         void Update()
         {
-            Color resultingColor;
-            float tempAmplitudeScale = (_behaviour.CurrentTemperature - _behaviour.PerfectTemperature) / _behaviour.AbsoluteTemperatureAmplitude;
-            if (tempAmplitudeScale > 0)
+            _targetScale = PlayerTemperature.CurrentWarmLevel / PlayerTemperature.MaxWarmLevel;
+            float deltaScaleValue = (float)Math.Round((_targetScale - _currentScale), 3) * animationSpeedModifier * Time.deltaTime;
+            if (Math.Abs(deltaScaleValue) < 0.00002)
             {
-                resultingColor = new Color(1, Mathf.Clamp(1 - tempAmplitudeScale, 0, 1), Mathf.Clamp(1 - tempAmplitudeScale, 0, 1));
+                deltaScaleValue = 0;
+                _currentScale = _targetScale;
             }
-            else
-            {
-                resultingColor = new Color(Mathf.Clamp(1 + tempAmplitudeScale, 0, 1), Mathf.Clamp(1 + tempAmplitudeScale, 0, 1), 1);
-            }
-            _textComponent.color = resultingColor;
-            _textComponent.text = (Math.Round(_behaviour.CurrentTemperature, 1) + " C").Replace(',', '.');
+            _indicator.localScale = new Vector3(deltaScaleValue + _currentScale, _indicator.localScale.y, _indicator.localScale.z);
+            _currentScale = _indicator.localScale.x;
         }
     }
 }

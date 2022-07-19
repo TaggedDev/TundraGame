@@ -29,6 +29,10 @@ namespace Player.Behaviour
         public float CurrentStamina => _currentStamina;
 
         public float MaxStamina => maxStamina;
+
+        public float MaxWarmLevel => maxWarmLevel;
+
+        public float CurrentWarmLevel => _currentWarmLevel;
         // Fields
         [SerializeField] private float maxStarve;
         [SerializeField] private float saturationTime;
@@ -36,6 +40,7 @@ namespace Player.Behaviour
         [SerializeField] private float perfectTemperature;
         [SerializeField] private float absoluteTemperatureAmplitude;
         [SerializeField] private float hotTemperature;
+        [SerializeField] private float maxWarmLevel;
 
         [SerializeField] private float maxHealth;
 
@@ -46,6 +51,7 @@ namespace Player.Behaviour
         internal float _currentSaturationTime;
 
         internal float _currentTemperature;
+        internal float _currentWarmLevel;
 
         internal float _currentHealth;
 
