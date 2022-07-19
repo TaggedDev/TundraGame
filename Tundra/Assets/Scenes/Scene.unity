@@ -1846,8 +1846,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ba0134db341dfb4f9a50dec9739e4c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 0}
-  Canvas: {fileID: 0}
+  Player: {fileID: 1324381161}
+  Canvas: {fileID: 1877504744}
   animationSpeedModifier: 1
 --- !u!114 &1107645814
 MonoBehaviour:
@@ -2165,9 +2165,9 @@ MonoBehaviour:
   perfectTemperature: 36.6
   absoluteTemperatureAmplitude: 10
   hotTemperature: 50
-  maxWarmLevel: 0
+  maxWarmLevel: 500
   maxHealth: 500
-  maxStamina: 0
+  maxStamina: 100
 --- !u!1 &1361871495
 GameObject:
   m_ObjectHideFlags: 0
