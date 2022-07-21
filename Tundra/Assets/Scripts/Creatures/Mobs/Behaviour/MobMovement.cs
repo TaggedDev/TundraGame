@@ -7,17 +7,18 @@ namespace Creatures.Mobs.Behaviour
         [SerializeField] private Transform player;
         [SerializeField] private float maxDeltaRotate;
         [SerializeField] private float speed;
-
-        [SerializeField] private float deltaRotate;
         [SerializeField] private int entityLayerMaskIndex;
-        [SerializeField] private Vector3 mobSize;
+        
+        private float _deltaRotate;
+        private Vector3 _mobSize;
         private Renderer _renderer;
         private void Start()
         {
             _renderer = GetComponent<Renderer>();
-            mobSize = _renderer.bounds.size;
+            _mobSize = _renderer.bounds.size;
+            _deltaRotate = maxDeltaRotate;
             FaceTowardsPlayer();
-            deltaRotate = maxDeltaRotate;
+            _deltaRotate = maxDeltaRotate;
         }
 
         // Update is called once per frame
@@ -35,13 +36,13 @@ namespace Creatures.Mobs.Behaviour
             if (IsEntitySensed())
             {
                 RotateAwayFromSolidEntity();
-                deltaRotate = maxDeltaRotate;
+                _deltaRotate = maxDeltaRotate;
             }
             else
             {
-                if (deltaRotate > 0)
+                if (_deltaRotate > 0)
                 {
-                    deltaRotate -= Time.deltaTime;
+                    _deltaRotate -= Time.deltaTime;
                 }
                 else
                 {
@@ -56,7 +57,7 @@ namespace Creatures.Mobs.Behaviour
         /// <returns></returns>
         private bool IsEntitySensed()
         {
-            return Physics.BoxCast(transform.position, mobSize / 2, transform.forward, Quaternion.identity, 5f,
+            return Physics.BoxCast(transform.position, _mobSize / 2, transform.forward, Quaternion.identity, 5f,
                 1 << entityLayerMaskIndex);
         }
 
