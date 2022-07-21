@@ -1,17 +1,25 @@
 ﻿using UnityEngine;
 
-namespace Creatures.Mobs.Behaviour
+namespace Creatures.Mobs.Fox
 {
-    public class MobMovement : MonoBehaviour
+    public class FoxMovement : MonoBehaviour, IMob
     {
         [SerializeField] private Transform player;
         [SerializeField] private float maxDeltaRotate;
         [SerializeField] private float speed;
         [SerializeField] private int entityLayerMaskIndex;
         
+        private const int MOB_LAYER = 11;
         private float _deltaRotate;
         private Vector3 _mobSize;
         private Renderer _renderer;
+        
+        public void Initialise(Transform playerParameter)
+        {
+            player = playerParameter;
+            transform.gameObject.layer = MOB_LAYER;
+        }
+        
         private void Start()
         {
             _renderer = GetComponent<Renderer>();
@@ -24,13 +32,6 @@ namespace Creatures.Mobs.Behaviour
         // Update is called once per frame
         private void Update()
         {
-            // Check if a tree in front of us
-            // Rotate at Y axis by 3 degrees and move forward for 3 seconds
-
-            // We move -> check if entity is in front of us
-            // if there is an entity -> we rotate away
-            // if there is no entity -> we move for few more seconds and face towards player
-
             transform.position += transform.forward * (speed * Time.deltaTime);
             
             if (IsEntitySensed())
@@ -54,7 +55,7 @@ namespace Creatures.Mobs.Behaviour
         /// <summary>
         /// Calls a boxcast in front of player to check if there is an active object with entityLayerMask.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Bool value if there is an entity right in front of us</returns>
         private bool IsEntitySensed()
         {
             return Physics.BoxCast(transform.position, _mobSize / 2, transform.forward, Quaternion.identity, 5f,
