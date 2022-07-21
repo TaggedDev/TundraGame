@@ -165,7 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d095480ecc04248b6a842a77a513236, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxCameraRotationCooldown: 0
+  maxCameraRotationCooldown: 0.25
 --- !u!1 &64539578
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,15 +7,25 @@ using UnityEngine;
 
 namespace Player.Inventory
 {
+    [CreateAssetMenu(fileName = "New ItemConfiguration", menuName = "Items")]
     public class ItemConfiguration : ScriptableObject
     {
-		public Sprite Icon { get; private set; }
+        [SerializeField]
+        private Sprite icon;
+        [SerializeField]
+        private string title;
+        [SerializeField]
+        private string description;
+        [SerializeField]
+        private GameObject itemInWorldPrefab;
 
-        public string Title { get; private set; }
+        public Sprite Icon { get => icon; private set => icon=value; }
 
-        public string Description { get; private set; }
+        public string Title { get => title; private set => title=value; }
 
-        public GameObject ItemInWorldPrefab { get; private set; }
+        public string Description { get => description; private set => description=value; }
+
+        public GameObject ItemInWorldPrefab { get => itemInWorldPrefab; private set => itemInWorldPrefab=value; }
 
         public GameObject ThrowAway(Vector3 originPosition, Vector3 throwForce)
         {
