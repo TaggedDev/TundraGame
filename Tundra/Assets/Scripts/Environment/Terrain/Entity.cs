@@ -28,6 +28,7 @@ namespace Environment.Terrain
             transform.localScale *= Random.Range(0.8f, 1.2f);
             transform.rotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0);
             transform.position = position;
+            transform.gameObject.layer = 10; // Environment layer 
         }
 
         /// <summary>
