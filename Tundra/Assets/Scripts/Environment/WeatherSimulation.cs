@@ -6,7 +6,7 @@ namespace Environment
     {
         [SerializeField] private Transform player;
         [SerializeField] private float EmissionMultiplyer;
-        [SerializeField] private float maxChangeWindDirectionCooldown;
+        [SerializeField] private float maxChangeWindDirectionCooldown = 5;
         
         private float changeWindDirectionCooldown;
         
@@ -22,12 +22,13 @@ namespace Environment
                 WindUpdate();
             }
         }
-
-
+        
         private ParticleSystem _snowSystem;
         private Vector3 _wind;
-
-
+        
+        /// <summary>
+        /// Generates random wind direction and resets the cooldown timer
+        /// </summary>
         private void GenerateRandomWind()
         {
             Wind = Vector3.ClampMagnitude(new Vector3(Random.Range(-100, 100), 0, Random.Range(-100, 100)), Random.Range(0, 16));
