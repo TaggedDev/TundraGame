@@ -474,6 +474,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1324381167}
   EmissionMultiplyer: 25
+  maxChangeWindDirectionCooldown: 5
 --- !u!65 &729234456
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -485,7 +486,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 60, y: 10, z: 60}
+  m_Size: {x: 30, y: 10, z: 30}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!199 &729234457
 ParticleSystemRenderer:
@@ -5538,6 +5539,7 @@ GameObject:
   - component: {fileID: 1324381164}
   - component: {fileID: 1324381162}
   - component: {fileID: 1324381163}
+  - component: {fileID: 1324381168}
   m_Layer: 8
   m_Name: PlayerObject
   m_TagString: Untagged
@@ -5651,6 +5653,19 @@ Transform:
   m_Father: {fileID: 1704736030}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1324381168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1324381161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d45e24a4609ffd84a89f8284f2731f34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
 --- !u!1 &1704736029
 GameObject:
   m_ObjectHideFlags: 0
@@ -5727,7 +5742,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d095480ecc04248b6a842a77a513236, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _focusObject: {fileID: 1324381161}
+  _player: {fileID: 1324381168}
   maxCameraRotationCooldown: 0.1
 --- !u!1 &1922622782
 GameObject:
