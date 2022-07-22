@@ -6,20 +6,18 @@ namespace CameraConfiguration
     public class CameraMovement : MonoBehaviour
     {
         private Camera _mainCamera;
-        private PlayerMovement _playerMovement;
-        [SerializeField] private GameObject _focusObject;
+        [SerializeField] private PlayerMovement _player;
         [SerializeField] private float maxCameraRotationCooldown;
         private float _currentCameraRotationCooldown;
 
         private void Start()
         {
             _mainCamera = Camera.main;
-            _playerMovement = transform.parent.GetComponentInChildren<PlayerMovement>();
         }
         
         private void Update()
         {
-            var pos = _focusObject.transform.position;
+            var pos = _player.transform.position;
             transform.position = new Vector3(pos.x, pos.y, pos.z - 3);
             if (Input.GetKey(KeyCode.Q)) RotateCamera(true);
             if (Input.GetKey(KeyCode.E)) RotateCamera(false);
@@ -36,7 +34,7 @@ namespace CameraConfiguration
             
             var multiplier = turnDirection ? 1 : -1 ;
             _mainCamera.transform.RotateAround(transform.position, Vector3.up, 45*multiplier);
-            _playerMovement.UpdateDirections();
+            _player.UpdateDirections();
             _currentCameraRotationCooldown = maxCameraRotationCooldown;
         }
     }
