@@ -2,7 +2,7 @@
 
 namespace Creatures.Mobs.Fox
 {
-    public class FoxMovement : MonoBehaviour, IMob
+    public class FoxMovement : Mob
     {
         [SerializeField] private Transform player;
         [SerializeField] private float maxDeltaRotate;
@@ -14,7 +14,7 @@ namespace Creatures.Mobs.Fox
         private Vector3 _mobSize;
         private Renderer _renderer;
         
-        public void Initialise(Transform playerParameter)
+        public override void Initialise(Transform playerParameter)
         {
             player = playerParameter;
             transform.gameObject.layer = MOB_LAYER;

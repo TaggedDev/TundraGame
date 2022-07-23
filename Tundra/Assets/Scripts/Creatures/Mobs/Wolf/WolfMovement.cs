@@ -2,7 +2,7 @@
 
 namespace Creatures.Mobs.Wolf
 {
-    public class WolfMovement : MonoBehaviour, IMob
+    public class WolfMovement : Mob
     {
         [SerializeField] private Transform player;
         [SerializeField] private float maxDeltaRotate;
@@ -14,7 +14,7 @@ namespace Creatures.Mobs.Wolf
         private Vector3 _mobSize;
         private Renderer _renderer;
 
-        public void Initialise(Transform playerParameter)
+        public override void Initialise(Transform playerParameter)
         {
             player = playerParameter;
             transform.gameObject.layer = MOB_LAYER;
