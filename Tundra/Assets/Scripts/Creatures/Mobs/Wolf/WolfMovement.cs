@@ -10,7 +10,7 @@ namespace Creatures.Mobs.Wolf
         [SerializeField] private int entityLayerMaskIndex;
 
         private const int MOB_LAYER = 11;
-        private float _deltaRotate;
+        [SerializeField] private float _deltaRotate;
         private Vector3 _mobSize;
         private Renderer _renderer;
 
@@ -25,12 +25,34 @@ namespace Creatures.Mobs.Wolf
             _renderer = GetComponent<Renderer>();
             _mobSize = _renderer.bounds.size;
             _deltaRotate = maxDeltaRotate;
-            FaceTowardsPlayer();
             _deltaRotate = maxDeltaRotate;
+            FaceTowardsPlayer();
+        }
+
+        private void FixedUpdate()
+        {
+            transform.Translate(speed * Time.fixedDeltaTime * transform.forward);
+
+            if (IsEntitySensed())
+            {
+                RotateAwayFromSolidEntity();
+                _deltaRotate = maxDeltaRotate;
+            }
+            else
+            {
+                if (_deltaRotate > 0)
+                {
+                    _deltaRotate -= Time.deltaTime;
+                }
+                else
+                {
+                    FaceTowardsPlayer();
+                }
+            }
         }
 
         // Update is called once per frame
-        private void Update()
+        /*private void Update()
         {
             transform.position += transform.forward * (speed * Time.deltaTime);
             
@@ -50,7 +72,7 @@ namespace Creatures.Mobs.Wolf
                     FaceTowardsPlayer();
                 }
             }
-        }
+        }*/
 
         /// <summary>
         /// Calls a boxcast in front of player to check if there is an active object with entityLayerMask.
@@ -83,8 +105,8 @@ namespace Creatures.Mobs.Wolf
         {
             Vector3 playerPosition = player.transform.position;
             Vector3 mobPosition = transform.position;
-            Vector3 direction = playerPosition - mobPosition; 
-            Debug.Log("Faced player");
+            Vector3 direction = playerPosition - mobPosition;
+            
             //new Vector3(playerPosition.x - mobPosition.x, 0, playerPosition.z - mobPosition.z);
             transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
         }
