@@ -83,7 +83,9 @@ namespace Creatures.Mobs.Wolf
         {
             Vector3 playerPosition = player.transform.position;
             Vector3 mobPosition = transform.position;
-            Vector3 direction = new Vector3(playerPosition.x - mobPosition.x, 0, playerPosition.z - mobPosition.z);
+            Vector3 direction = playerPosition - mobPosition; 
+            Debug.Log("Faced player");
+            //new Vector3(playerPosition.x - mobPosition.x, 0, playerPosition.z - mobPosition.z);
             transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
         }
     }

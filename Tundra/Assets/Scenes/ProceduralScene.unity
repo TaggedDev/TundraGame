@@ -345,7 +345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f69ab5d3707147a3ac22bcaf08ed13be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxMobsCapacity: 5
+  maxMobsCapacity: 3
   player: {fileID: 1324381167}
   mobPrefab: {fileID: 1182028872119186059, guid: 403785f619ad9db4fbc33d4b5340a3af,
     type: 3}
@@ -835,7 +835,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f69ab5d3707147a3ac22bcaf08ed13be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxMobsCapacity: 7
+  maxMobsCapacity: 2
   player: {fileID: 1324381167}
   mobPrefab: {fileID: 7205391003004235204, guid: 435c098d30e6abf47a5497862903a08d,
     type: 3}

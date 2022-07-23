@@ -83,7 +83,7 @@ namespace Creatures.Mobs.Fox
         {
             Vector3 playerPosition = player.transform.position;
             Vector3 mobPosition = transform.position;
-            Vector3 direction = new Vector3(playerPosition.x - mobPosition.x, 0, playerPosition.z - mobPosition.z);
+            Vector3 direction = playerPosition - mobPosition;
             transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
         }
     }
