@@ -4,7 +4,8 @@ namespace Creatures.Mobs
 {
     public abstract class Mob : MonoBehaviour
     {
-        [SerializeField] private bool _isEntitySensed;
+        private bool _isEntitySensed;
+        private bool _ignoreSensor;
 
         public bool IsEntitySensed
         {
@@ -12,6 +13,11 @@ namespace Creatures.Mobs
             set => _isEntitySensed = value;
         }
         
+        public bool IgnoreSensor
+        {
+            get => _ignoreSensor;
+            set => _ignoreSensor = value;
+        }
         
         /// <summary>
         /// Initialises basic parameters. Can't use constructor because objects with this class are initialized by

@@ -6,6 +6,7 @@ namespace Creatures.Mobs
     public class MobEntitySensor : MonoBehaviour
     {
         private const int ENTITY_LAYER_INDEX = 10;
+        private const int PLAYER_LAYER_INDEX = 9;
         private Mob _owner;
 
         private void Start()
@@ -15,6 +16,10 @@ namespace Creatures.Mobs
 
         private void OnTriggerEnter(Collider other)
         {
+            if (other.gameObject.layer == PLAYER_LAYER_INDEX)
+            {
+                _owner.IgnoreSensor = true;
+            }
 
             if (other.gameObject.layer == ENTITY_LAYER_INDEX)
             {
@@ -25,6 +30,11 @@ namespace Creatures.Mobs
 
         private void OnTriggerExit(Collider other)
         {
+            if (other.gameObject.layer == PLAYER_LAYER_INDEX)
+            {
+                _owner.IgnoreSensor = false;
+            }
+            
             if (other.gameObject.layer == ENTITY_LAYER_INDEX)
             {
                 Debug.Log($"Exit + {other.name}");
