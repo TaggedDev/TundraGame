@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace Creatures.Mobs.Wolf
 {
@@ -7,12 +8,14 @@ namespace Creatures.Mobs.Wolf
         [SerializeField] private Transform player;
         [SerializeField] private float maxDeltaRotate;
         [SerializeField] private float speed;
-        [SerializeField] private int entityLayerMaskIndex;
-
+        [SerializeField] private float rotationSpeed;
+        
+        
         private const int MOB_LAYER = 11;
-        [SerializeField] private float _deltaRotate;
-        private Vector3 _mobSize;
-        private Renderer _renderer;
+        
+        private RaycastHit _slopeHit;
+        private Rigidbody _rigidbody;
+        private float _deltaRotate;
 
         public override void Initialise(Transform playerParameter)
         {
@@ -22,41 +25,19 @@ namespace Creatures.Mobs.Wolf
         
         private void Start()
         {
-            _renderer = GetComponent<Renderer>();
-            _mobSize = _renderer.bounds.size;
+            _rigidbody = GetComponent<Rigidbody>();
             _deltaRotate = maxDeltaRotate;
-            _deltaRotate = maxDeltaRotate;
-            FaceTowardsPlayer();
         }
 
         private void FixedUpdate()
         {
-            transform.Translate(speed * Time.fixedDeltaTime * transform.forward);
-
-            if (IsEntitySensed())
-            {
-                RotateAwayFromSolidEntity();
-                _deltaRotate = maxDeltaRotate;
-            }
-            else
-            {
-                if (_deltaRotate > 0)
-                {
-                    _deltaRotate -= Time.deltaTime;
-                }
-                else
-                {
-                    FaceTowardsPlayer();
-                }
-            }
-        }
-
-        // Update is called once per frame
-        /*private void Update()
-        {
-            transform.position += transform.forward * (speed * Time.deltaTime);
+            transform.Translate(speed * Time.fixedDeltaTime * NormalizeSlopeMovement());
             
-            if (IsEntitySensed())
+            // Prevent sliding down when on high slope
+            if (_rigidbody.velocity.y > 0)
+                _rigidbody.AddForce(Vector3.down * 80f, ForceMode.Force);
+            
+            if (IsEntitySensed)
             {
                 RotateAwayFromSolidEntity();
                 _deltaRotate = maxDeltaRotate;
@@ -69,46 +50,43 @@ namespace Creatures.Mobs.Wolf
                 }
                 else
                 {
-                    FaceTowardsPlayer();
+                    StartCoroutine(FacePlayer());
                 }
             }
-        }*/
-
-        /// <summary>
-        /// Calls a boxcast in front of player to check if there is an active object with entityLayerMask.
-        /// </summary>
-        /// <returns></returns>
-        private bool IsEntitySensed()
-        {
-            return Physics.BoxCast(transform.position, _mobSize / 2, transform.forward, Quaternion.identity, 5f,
-                1 << entityLayerMaskIndex);
         }
-
+        
         /// <summary>
         /// Rotates mob away from the entity.
         /// </summary>
         private void RotateAwayFromSolidEntity()
         {
-            for (int i = 0; i <= 30; i++)
-            {
-                if (IsEntitySensed())
-                    transform.eulerAngles += new Vector3(0, 3f, 0);
-                else
-                    return;
-            }
+            if (IsEntitySensed)
+                transform.Rotate(0, 15,0 );
+            
         }
 
         /// <summary>
-        /// Calculates the destination by subtracting two V3 (but doesn't affect Y) 
+        /// Rotates mob towards player
         /// </summary>
-        private void FaceTowardsPlayer()
+        private IEnumerator FacePlayer()
         {
-            Vector3 playerPosition = player.transform.position;
-            Vector3 mobPosition = transform.position;
-            Vector3 direction = playerPosition - mobPosition;
-            
-            //new Vector3(playerPosition.x - mobPosition.x, 0, playerPosition.z - mobPosition.z);
-            transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
+            Quaternion lookRotation = Quaternion.LookRotation(player.position - transform.position);
+            float time = 0;
+            while (time < 1f)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, time);
+                time += Time.fixedDeltaTime * rotationSpeed;
+                yield return null;
+            }
+        }
+        
+        /// <summary>
+        /// Normalizes movement on higher slopes
+        /// </summary>
+        /// <returns>Normalized Vector 3 - direction to move</returns>
+        private Vector3 NormalizeSlopeMovement()
+        {
+            return Vector3.ProjectOnPlane(Vector3.forward, _slopeHit.normal).normalized;
         }
     }
 }
