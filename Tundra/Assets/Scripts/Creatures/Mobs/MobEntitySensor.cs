@@ -16,31 +16,28 @@ namespace Creatures.Mobs
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.layer == PLAYER_LAYER_INDEX)
+            switch (other.gameObject.layer)
             {
-                _owner.IgnoreSensor = true;
-            }
-
-            if (other.gameObject.layer == ENTITY_LAYER_INDEX)
-            {
-                Debug.Log($"Enter + {other.name}");
-                _owner.IsEntitySensed = true;
+                case PLAYER_LAYER_INDEX:
+                    _owner.IgnoreSensor = true;
+                    break;
+                case ENTITY_LAYER_INDEX:
+                    _owner.IsEntitySensed = true;
+                    break;
             }
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.gameObject.layer == PLAYER_LAYER_INDEX)
+            switch (other.gameObject.layer)
             {
-                _owner.IgnoreSensor = false;
+                case PLAYER_LAYER_INDEX:
+                    _owner.IgnoreSensor = false;
+                    break;
+                case ENTITY_LAYER_INDEX:
+                    _owner.IsEntitySensed = false;
+                    break;
             }
-            
-            if (other.gameObject.layer == ENTITY_LAYER_INDEX)
-            {
-                Debug.Log($"Exit + {other.name}");
-                _owner.IsEntitySensed = false;
-            }
-                
         }
     }
 }
