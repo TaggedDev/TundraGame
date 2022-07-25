@@ -15,11 +15,11 @@ namespace Creatures.Player.Behaviour
         {
             //cameraDistance = Vector3.Distance(Camera.main.transform.position, transform.position);
             _playerMovement = GetComponent<PlayerMovement>();
-            _allStates = new List<BasicPlayerState>()
+            _allStates = new List<BasicPlayerState>
             {
                 new IdlePlayerState(_playerMovement, this),
                 new WalkingPlayerState(_playerMovement,  this),
-                new SprintingPlayerState(_playerMovement, this),
+                new SprintingPlayerState(_playerMovement, this)
             };
             _currentPlayerState = _allStates[0];
             _currentPlayerState.Start();

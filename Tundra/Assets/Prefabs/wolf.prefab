@@ -109,11 +109,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c2793968aca4611b520691b8ee1a560, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isEntitySensed: 0
+  _moveSpeed: 5
+  _rotationSpeed: 3
+  _maxDeltaRotate: 0.5
   player: {fileID: 0}
-  maxDeltaRotate: 0.4
-  speed: 3
-  rotationSpeed: 1
 --- !u!54 &8568824640439189495
 Rigidbody:
   m_ObjectHideFlags: 0
