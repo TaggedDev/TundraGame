@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Creatures.Mobs.Wolf
+namespace Creatures.Mobs
 {
     public abstract class MobBasicState
     {

@@ -1,4 +1,4 @@
-﻿namespace Creatures.Mobs.Wolf
+﻿namespace Creatures.Mobs
 {
     public interface IMobStateSwitcher
     {
