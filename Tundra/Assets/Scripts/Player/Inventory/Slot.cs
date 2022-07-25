@@ -14,7 +14,7 @@ namespace Player.Inventory
         public const int MaxStackVolume = 5;
 
         private int _itemsAmount;
-        private ItemConfiguration _item;
+        private BasicItemConfiguration _item;
         /// <summary>
         /// Создаёт новый пустой слот.
         /// </summary>
@@ -27,7 +27,7 @@ namespace Player.Inventory
         /// </summary>
         /// <param name="itemsAmount">Количество предметов.</param>
         /// <param name="item">Сам по себе предмет.</param>
-        public Slot(int itemsAmount, ItemConfiguration item)
+        public Slot(int itemsAmount, BasicItemConfiguration item)
         {
             _itemsAmount=itemsAmount;
             _item=item;
@@ -43,7 +43,7 @@ namespace Player.Inventory
         /// <summary>
         /// Предмет, лежащий внутри слота.
         /// </summary>
-        public ItemConfiguration Item 
+        public BasicItemConfiguration Item 
         { 
             get => _item; 
             private set => _item=value; 
@@ -79,7 +79,7 @@ namespace Player.Inventory
         /// <param name="amount">Количество предметов.</param>
         /// <returns>Возвращет True в случае, если предмет удалось поместить в слот (слот был пустой или в нём был предмет того же типа).</returns>
         /// <exception cref="ArgumentOutOfRangeException">Возникает в случае превышения лимита вместимости слота.</exception>
-        public bool PushItem(ItemConfiguration item, int amount)
+        public bool PushItem(BasicItemConfiguration item, int amount)
         {
             if (amount > MaxStackVolume || amount < 0) throw new ArgumentOutOfRangeException(nameof(amount), "Amount of items to push inside the slot is more than maximum or less than zero.");
             if (ItemsAmount > 0 && Item.Title != item.Title) return false;
@@ -112,7 +112,7 @@ namespace Player.Inventory
             return true;
         }
 
-        public bool Fill(ItemConfiguration item)
+        public bool Fill(BasicItemConfiguration item)
         {
             if (Item != item) return false;
             ItemsAmount = MaxStackVolume;

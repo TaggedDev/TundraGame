@@ -14,7 +14,7 @@ namespace Player.Inventory
 		public Slot[] Slots { get; private set; }
 
         //TODO: организовать сохранение предметов и т.д
-        public bool AddItem(ItemConfiguration item, int amount, out int rem)
+        public bool AddItem(BasicItemConfiguration item, int amount, out int rem)
         {
             while (amount > 0)
             {
@@ -38,18 +38,18 @@ namespace Player.Inventory
             return true;
         }
 
-        public List<Slot> FindSlotsWithItem(ItemConfiguration item)
+        public List<Slot> FindSlotsWithItem(BasicItemConfiguration item)
         {
             List<Slot> slots = Slots.Where(x => x.Item == item).ToList();
             return slots;
         }
 
-        public int CountItemOfTypeInTheInventory(ItemConfiguration item)
+        public int CountItemOfTypeInTheInventory(BasicItemConfiguration item)
         {
             return Slots.Aggregate(0, (x, y) => x += y.Item == item ? y.ItemsAmount : 0);//Исхожу из ситуации, что ItemConfiguration существует в единственном экземпляре для каждого предмета
         }
 
-        private Slot FindNearestSlot(ItemConfiguration item, int amount, out int remainder)
+        private Slot FindNearestSlot(BasicItemConfiguration item, int amount, out int remainder)
         {
             remainder = 0;
             Slot found = Slots.FirstOrDefault(x => x.IsEmpty || x.Item == item && !x.IsFull);
