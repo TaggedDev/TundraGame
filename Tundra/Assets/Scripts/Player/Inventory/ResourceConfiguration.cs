@@ -10,7 +10,7 @@ namespace Player.Inventory
     /// <summary>
     /// Класс для создания конфигурации ресурса.
     /// </summary>
-    [CreateAssetMenu(fileName = "New ItemConfiguration", menuName = "Items")]
+    [CreateAssetMenu(fileName = "New Resource Configuration", menuName = "Items/Resource Configuration")]
     public class ResourceConfiguration : BasicItemConfiguration
     {
 

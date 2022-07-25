@@ -12,6 +12,9 @@ public class HitProgressChanger : MonoBehaviour
 
     public Image HitProgress;
 
+    [SerializeField]
+    private GameObject player;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +24,7 @@ public class HitProgressChanger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        transform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, player.transform.position) + new Vector2(0, 80);
         if (Input.GetMouseButton(0))
         {
             progress += Time.smoothDeltaTime;

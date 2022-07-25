@@ -15,7 +15,13 @@ namespace Player.States
         public override void MoveCharacter()
         {
             if (Input.GetKey(KeyCode.LeftShift))
-                StateSwitcher.SwitchState<SprintingState>();
+            {
+                if (StateSwitcher is PlayerBehaviour behaviour)
+                {
+                    if (behaviour._currentStamina > 0) StateSwitcher.SwitchState<SprintingState>();
+                }
+            }
+               
 
             _h = Input.GetAxis("Horizontal");
             _v = Input.GetAxis("Vertical");
@@ -40,7 +46,7 @@ namespace Player.States
         public override void Start()
         {
             //_playerMovement.Animator.SetFloat("Speed", .5f);
-            PlayerMovement.Speed = 3f;
+            PlayerMovement.Speed = PlayerBehaviour.IsOverweight ? 2f : 3f;
         }
 
         public override void Stop()

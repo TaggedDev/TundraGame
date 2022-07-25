@@ -18,6 +18,14 @@ namespace Player.States
 
             if (Mathf.Abs(_h) > 0 || Mathf.Abs(_v) > 0)
                 StateSwitcher.SwitchState<WalkingState>();
+
+            if (StateSwitcher is PlayerBehaviour behaviour)
+            {
+                if (behaviour._currentStamina < behaviour.MaxStamina)
+                {
+                    behaviour._currentStamina += (3 * Time.deltaTime);
+                }
+            }
         }
 
         public override void Start()

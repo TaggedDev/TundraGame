@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Player.Inventory
 {
-    [CreateAssetMenu(fileName = "New Ranged Configuration", menuName = "Items")]
+    [CreateAssetMenu(fileName = "New Ranged Configuration", menuName = "Items/Ranged Configuration")]
     public class RangedWeaponConfiguration : WeaponConfiguration
     {
         [SerializeField]

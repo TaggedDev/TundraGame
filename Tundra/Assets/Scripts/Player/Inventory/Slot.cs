@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Player.Inventory
@@ -8,20 +9,9 @@ namespace Player.Inventory
     /// </summary>
     public class Slot
     {
-        /// <summary>
-        /// Максимальный объём предметов, которые могут поместиться в слоте.
-        /// </summary>
-        public const int MaxStackVolume = 5;
 
         private int _itemsAmount;
         private BasicItemConfiguration _item;
-        /// <summary>
-        /// Создаёт новый пустой слот.
-        /// </summary>
-        public Slot() 
-        {
-
-        }
         /// <summary>
         /// Создаёт новый слот с предметом внутри.
         /// </summary>
@@ -32,6 +22,12 @@ namespace Player.Inventory
             _itemsAmount=itemsAmount;
             _item=item;
         }
+
+        public Slot()
+        {
+
+        }
+
         /// <summary>
         /// Указывает, является ли слот пустым.
         /// </summary>
@@ -39,7 +35,7 @@ namespace Player.Inventory
         /// <summary>
         /// Указывает, является ли слот заполненным.
         /// </summary>
-        public bool IsFull => ItemsAmount == MaxStackVolume;
+        public bool IsFull => ItemsAmount == (_item == null ? -1 : _item.MaxStackVolume);
         /// <summary>
         /// Предмет, лежащий внутри слота.
         /// </summary>
@@ -79,13 +75,27 @@ namespace Player.Inventory
         /// <param name="amount">Количество предметов.</param>
         /// <returns>Возвращет True в случае, если предмет удалось поместить в слот (слот был пустой или в нём был предмет того же типа).</returns>
         /// <exception cref="ArgumentOutOfRangeException">Возникает в случае превышения лимита вместимости слота.</exception>
+        /// <exception cref="ArgumentNullException">Возникает в случае, если <see cref="item"/> имеет значение null.</exception>
         public bool PushItem(BasicItemConfiguration item, int amount)
         {
-            if (amount > MaxStackVolume || amount < 0) throw new ArgumentOutOfRangeException(nameof(amount), "Amount of items to push inside the slot is more than maximum or less than zero.");
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            if (amount > item.MaxStackVolume || amount < 0) throw new ArgumentOutOfRangeException(nameof(amount), "Amount of items to push inside the slot is more than maximum or less than zero.");
             if (ItemsAmount > 0 && Item.Title != item.Title) return false;
             Item = item;
             ItemsAmount = amount;
             return true;
+        }
+
+        public int AddItems(int amount)
+        {
+            if (amount + ItemsAmount > Item.MaxStackVolume)
+            {
+                int rem = amount + ItemsAmount - Item.MaxStackVolume;
+                ItemsAmount = Item.MaxStackVolume;
+                return rem;
+            }
+            else ItemsAmount += amount;
+            return 0;
         }
         /// <summary>
         /// Выбрасывает предметы из слота в окружающий мир.
@@ -94,11 +104,11 @@ namespace Player.Inventory
         /// <param name="position">Местоположение объекта, который будет выбрасывать предмет.</param>
         /// <param name="force">Сила и направление, с которыми будет выброшен предмет (при наличии у объекта предмета компонента <see cref="Rigidbody"/>).</param>
         /// <exception cref="ArgumentOutOfRangeException">Возникает в случае, если нет такого количества предметов.</exception>
-        public void ThrowItems(int amount, Vector3 position, Vector3 force)
+        public List<GameObject> ThrowItems(int amount, Vector3 position, Vector3 force)
         {
             if (amount > ItemsAmount) throw new ArgumentOutOfRangeException(nameof(amount), "Amount of items to throw is more than amount of items inside the slot.");
-            Item.MassThrowAway(amount, position, force);
             ItemsAmount -= amount;
+            return Item.MassThrowAway(amount, position, force);
         }
         /// <summary>
         /// Убирает предметы из слота в указанном количестве.
@@ -112,10 +122,17 @@ namespace Player.Inventory
             return true;
         }
 
+        /// <summary>
+        /// Заполняет слот указаннными предметами.
+        /// </summary>
+        /// <param name="item">Предмет, которым производится заполнение.</param>
+        /// <returns>True в случае, если получилось заполнить слот.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public bool Fill(BasicItemConfiguration item)
         {
-            if (Item != item) return false;
-            ItemsAmount = MaxStackVolume;
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            if (Item != item && Item != null) return false;
+            ItemsAmount = item.MaxStackVolume;
             if (Item == null) Item = item;
             return true;
         }

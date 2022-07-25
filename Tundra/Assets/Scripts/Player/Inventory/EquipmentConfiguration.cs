@@ -7,25 +7,25 @@ using UnityEngine;
 
 namespace Player.Inventory
 {
-    [CreateAssetMenu(fileName = "New Equipment Configuration", menuName = "Items")]
+    [CreateAssetMenu(fileName = "New Equipment Configuration", menuName = "Items/Equipment Configuration")]
     public class EquipmentConfiguration : BasicItemConfiguration
     {
-        private EquipmentSlotPosition equipmentSlot;
-        private int additionalSlots;
-        private float warmEconomyCoefficient;
+        private EquipmentSlotPosition _equipmentSlot;
+        private int _additionalSlots;
+        private float _warmEconomyCoefficient;
 
         /// <summary>
         /// Слот снаряжения, которому соответствует данный элемент экипировки.
         /// </summary>
-        public EquipmentSlotPosition EquipmentSlot { get => equipmentSlot; set => equipmentSlot=value; }
+        public EquipmentSlotPosition EquipmentSlot { get => _equipmentSlot; set => _equipmentSlot=value; }
         /// <summary>
         /// Число дополнительных слотов, которое даёт этот элемент экипировки.
         /// </summary>
-        public int AdditionalSlots { get => additionalSlots; set => additionalSlots=value; }
+        public int AdditionalSlots { get => _additionalSlots; set => _additionalSlots=value; }
         /// <summary>
         /// Коэффициент теплосбережения экипировки.
         /// </summary>
-        public float WarmEconomyCoefficient { get => warmEconomyCoefficient; set => warmEconomyCoefficient=value; }
+        public float WarmEconomyCoefficient { get => _warmEconomyCoefficient; set => _warmEconomyCoefficient=value; }
 
         public override GameObject ThrowAway(Vector3 originPosition, Vector3 throwForce)
         {
@@ -69,6 +69,10 @@ namespace Player.Inventory
         /// Шея.
         /// </summary>
         /// <example>Шарфы.</example>
-        Neck
+        Neck,
+        /// <summary>
+        /// Слот для рюкзака. Он же тоже по сути должен считаться снаряжением.
+        /// </summary>
+        Backpack
     }
 }

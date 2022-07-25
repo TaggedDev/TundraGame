@@ -33,6 +33,8 @@ namespace Player.Behaviour
         public float MaxWarmLevel => maxWarmLevel;
 
         public float CurrentWarmLevel => _currentWarmLevel;
+
+        public bool IsOverweight => _inventoryController.Inventory.TotalWeight > maxLoadCapacity;
         // Fields
         [SerializeField] private float maxStarve;
         [SerializeField] private float saturationTime;
@@ -45,6 +47,7 @@ namespace Player.Behaviour
         [SerializeField] private float maxHealth;
 
         [SerializeField] private float maxStamina;
+        [SerializeField] private float maxLoadCapacity;
         // Variables
         //TODO: Здесь нужно думаю, по-хорошему, как-нибудь закрыть эти поля для доступа, но разрешить их изменение в классах States
         internal float _currentStarveCapacity;
@@ -62,6 +65,7 @@ namespace Player.Behaviour
         private List<BasicState> _allStates;
         private CameraMovement _cameraHolder;
         private Camera _mainCamera;
+        private PlayerInventoryController _inventoryController;
         
         //private float cameraDistance;
 
@@ -72,6 +76,7 @@ namespace Player.Behaviour
             _mainCamera = Camera.main;
             _cameraHolder = transform.parent.GetComponentInChildren<CameraMovement>();
             _playerMovement = GetComponent<PlayerMovement>();
+            _inventoryController = GetComponent<PlayerInventoryController>();
             _allStates = new List<BasicState>()
             {
                 new IdleState(_playerMovement, this),
@@ -90,6 +95,8 @@ namespace Player.Behaviour
             _currentTemperature = PerfectTemperature;
 
             _currentHealth = maxHealth;
+
+            _currentStamina = maxStamina;
         }
 
         private void Update()

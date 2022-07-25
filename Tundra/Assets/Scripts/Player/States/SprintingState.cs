@@ -32,17 +32,23 @@ namespace Player.States
             position += _rightMovement;
             position += _forwardMovement;
             transform.position = position;
+
+            if (StateSwitcher is PlayerBehaviour behaviour)
+            {
+                if (behaviour._currentStamina > 0) behaviour._currentStamina -= (5 * Time.deltaTime);
+                if (behaviour._currentStamina <= 0) StateSwitcher.SwitchState<WalkingState>();
+            }
         }
 
         public override void Start()
         {
             //_playerMovement.Animator.SetFloat("Speed", 1f);
-            PlayerMovement.Speed = 3.5f;
+            PlayerMovement.Speed = PlayerBehaviour.IsOverweight ? 2.5f : 3.5f;
         }
 
         public override void Stop()
         {
-            PlayerMovement.Speed = 3f;
+            PlayerMovement.Speed = PlayerBehaviour.IsOverweight ? 2f : 3f;
         }
 
         public override void ContinueStarving()

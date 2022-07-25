@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Player.Inventory
 {
-    [CreateAssetMenu(fileName = "New Melee Configuration", menuName = "Items")]
+    [CreateAssetMenu(fileName = "New Melee Configuration", menuName = "Items/Melee Configuration")]
     public class MeleeWeaponConfiguration : WeaponConfiguration
     {
         [SerializeField]
