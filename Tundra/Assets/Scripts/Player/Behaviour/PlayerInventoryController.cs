@@ -10,6 +10,8 @@ namespace Player.Behaviour
     {
         public static float ItemPickingUpTime => 3f;
 
+        private PlayerBehaviour _playerBehaviour;
+
         public InventoryContainer Inventory { get; private set; }
 
         public GameObject NearestInteractableItem { get; private set; }
@@ -18,10 +20,13 @@ namespace Player.Behaviour
 
         public float ItemPickingProgress { get; private set; } = 0f;
 
+        public int SelectedInventorySlot { get; set; }
+
         // Start is called before the first frame update
         void Start()
         {
             Inventory = new InventoryContainer();
+            _playerBehaviour = GetComponent<PlayerBehaviour>();
         }
 
         // Update is called once per frame
@@ -36,19 +41,30 @@ namespace Player.Behaviour
                 }
             }
             else ItemPickingProgress = 0f;
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                ThrowItemAway();
+            }
+        }
+
+        private void ThrowItemAway()
+        {
+            Inventory.Slots[SelectedInventorySlot].ThrowItem(transform.position, transform.forward * 3 + Vector3.up);
         }
 
         private void PickItemUp()
         {
-            var drop = NearestInteractableItem.GetComponent<DroppedItemBehaviour>();
-            if (Inventory.AddItem(drop.AssociatedItem, 
-                drop.DroppedItemsAmount, out int rem))
+            if (_playerBehaviour.OverweightCoefficient < 2)
             {
-                if (rem == 0)
+                var drop = NearestInteractableItem.GetComponent<DroppedItemBehaviour>();
+                if (Inventory.AddItem(drop.AssociatedItem,
+                    drop.DroppedItemsAmount, out int rem))
                 {
-                    drop.OnPickupHandler();
+                    if (rem == 0)
+                    {
+                        drop.OnPickupHandler();
+                    }
                 }
-                NearestInteractableItem = null;
             }
             NearestInteractableItem = null;
             ItemPickingProgress = 0f;

@@ -35,6 +35,7 @@ public class InventoryUISlotsController : MonoBehaviour
                 _slotId = value;
                 slot = GameObject.Find("InventorySlot" + _slotId);
                 SetSlotActive(slot, true);
+                _inventoryController.SelectedInventorySlot = _slotId - 1;
             }
         }
     }

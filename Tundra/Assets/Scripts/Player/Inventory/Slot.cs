@@ -110,6 +110,14 @@ namespace Player.Inventory
             ItemsAmount -= amount;
             return Item.MassThrowAway(amount, position, force);
         }
+
+        public GameObject ThrowItem(Vector3 position, Vector3 force)
+        {
+            if (ItemsAmount == 0) throw new InvalidOperationException("Недостаточно предметов, чтобы выбросить.");
+            var res = Item.ThrowAway(position, force);
+            ItemsAmount--;
+            return res;
+        }
         /// <summary>
         /// Убирает предметы из слота в указанном количестве.
         /// </summary>

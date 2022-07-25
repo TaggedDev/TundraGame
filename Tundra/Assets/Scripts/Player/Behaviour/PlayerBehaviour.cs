@@ -35,6 +35,8 @@ namespace Player.Behaviour
         public float CurrentWarmLevel => _currentWarmLevel;
 
         public bool IsOverweight => _inventoryController.Inventory.TotalWeight > maxLoadCapacity;
+
+        public float OverweightCoefficient => _inventoryController.Inventory.TotalWeight / maxLoadCapacity;
         // Fields
         [SerializeField] private float maxStarve;
         [SerializeField] private float saturationTime;

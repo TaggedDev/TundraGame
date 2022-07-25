@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83745694e86d60c4b8a259cbb723d285, type: 3}
   m_Name: Stone
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 468f44d9005453441a79005ab5bfb25a, type: 3}
+  icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   title: Stone
   description: Just a stone
   itemInWorldPrefab: {fileID: 1215538471623678579, guid: 7ae60b74f6831c74a9fc22dc030ece92,
