@@ -47,28 +47,34 @@ namespace Creatures.Mobs
             get => _isEntitySensed;
             set => _isEntitySensed = value;
         }
-        public bool IgnoreSensor
+        public bool IsIgnoringSensor
         {
-            get => _ignoreSensor;
-            set => _ignoreSensor = value;
+            get => _isIgnoringSensor;
+            set => _isIgnoringSensor = value;
         }
         public float RoamingRadius
         {
             get => _roamingRadius;
             set => _roamingRadius = value;
         }
+        public float SniffingRadius
+        {
+            get => _sniffingRadius;
+            set => _sniffingRadius = value;
+        }
 
         [SerializeField] private float _moveSpeed;
         [SerializeField] private float _rotationSpeed;
         [SerializeField] private float _maxDeltaRotate;
         [SerializeField] private float _roamingRadius;
-        
+        [SerializeField] private float _sniffingRadius;
+
         private RaycastHit _slopeHit;
         private Rigidbody _mobRigidbody;
         private Vector3 _spawnPosition;
         private float _deltaRotate;
         private bool _isEntitySensed;
-        private bool _ignoreSensor;
+        private bool _isIgnoringSensor;
 
         /// <summary>
         /// Initialises basic parameters. Can't use constructor because objects with this class are initialized by

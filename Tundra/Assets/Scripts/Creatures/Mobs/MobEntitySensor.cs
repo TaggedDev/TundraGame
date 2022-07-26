@@ -19,7 +19,7 @@ namespace Creatures.Mobs
             switch (other.gameObject.layer)
             {
                 case PLAYER_LAYER_INDEX:
-                    _owner.IgnoreSensor = true;
+                    _owner.IsIgnoringSensor = true;
                     break;
                 case ENTITY_LAYER_INDEX:
                     _owner.IsEntitySensed = true;
@@ -32,7 +32,7 @@ namespace Creatures.Mobs
             switch (other.gameObject.layer)
             {
                 case PLAYER_LAYER_INDEX:
-                    _owner.IgnoreSensor = false;
+                    _owner.IsIgnoringSensor = false;
                     break;
                 case ENTITY_LAYER_INDEX:
                     _owner.IsEntitySensed = false;
