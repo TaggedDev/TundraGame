@@ -14,7 +14,8 @@ namespace Creatures.Mobs.Wolf
         {
             _allMobStates = new List<MobBasicState>
             {
-                new WolfRoamingState(player, this, this)
+                new WolfPatrollingState(player, this, this),
+                new WolfHuntingState(player, this, this)
             };
             _currentMobState = _allMobStates[0];
         }
@@ -34,6 +35,7 @@ namespace Creatures.Mobs.Wolf
         {
             player = playerParameter;
             transform.gameObject.layer = MOB_LAYER_INDEX;
+            SpawnPosition = transform.position;
         }
     }
 }

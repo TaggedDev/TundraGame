@@ -4,8 +4,8 @@ namespace Creatures.Mobs
 {
     public abstract class MobBasicState
     {
-        protected Transform _player;
-        protected Mob _mob;
+        protected readonly Transform _player;
+        protected readonly Mob _mob;
         protected IMobStateSwitcher _switcher;
 
         protected MobBasicState(Transform player, Mob mob, IMobStateSwitcher switcher)

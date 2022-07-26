@@ -5,16 +5,22 @@ namespace Creatures.Mobs
     public abstract class Mob : MonoBehaviour
     {
         protected const int MOB_LAYER_INDEX = 11;
+        protected const int TERRAIN_LAYER_INDEX = 8;
         
         public RaycastHit SlopeHit
         {
             get => _slopeHit;
             set => _slopeHit = value;
         }
+        public Vector3 SpawnPosition
+        {
+            get => _spawnPosition;
+            set => _spawnPosition = value;
+        }
         public Rigidbody MobRigidbody
         {
-            get => _mobMobRigidbody;
-            set => _mobMobRigidbody = value;
+            get => _mobRigidbody;
+            set => _mobRigidbody = value;
         }
         public float DeltaRotate
         {
@@ -46,15 +52,21 @@ namespace Creatures.Mobs
             get => _ignoreSensor;
             set => _ignoreSensor = value;
         }
+        public float RoamingRadius
+        {
+            get => _roamingRadius;
+            set => _roamingRadius = value;
+        }
 
         [SerializeField] private float _moveSpeed;
         [SerializeField] private float _rotationSpeed;
         [SerializeField] private float _maxDeltaRotate;
-
+        [SerializeField] private float _roamingRadius;
+        
         private RaycastHit _slopeHit;
-        private Rigidbody _mobMobRigidbody;
+        private Rigidbody _mobRigidbody;
+        private Vector3 _spawnPosition;
         private float _deltaRotate;
-
         private bool _isEntitySensed;
         private bool _ignoreSensor;
 
@@ -64,5 +76,11 @@ namespace Creatures.Mobs
         /// </summary>
         /// <param name="playerParameter">Link to player in scene</param>
         public abstract void Initialise(Transform playerParameter);
+
+        private void OnValidate()
+        {
+            if (_roamingRadius < 5)
+                _roamingRadius = 5;
+        }
     }
 }
