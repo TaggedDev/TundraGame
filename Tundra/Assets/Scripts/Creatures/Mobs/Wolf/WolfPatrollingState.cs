@@ -6,29 +6,26 @@ namespace Creatures.Mobs.Wolf
 {
     public class WolfPatrollingState : MobBasicState
     {
-        private Vector3 _destinationPoint;
-        private const int TERRAIN_LAYER_INDEX = 8;
-        
         private const float _maxPatrolTime = 5f;
         private float patrolTime = _maxPatrolTime;
         
-        public WolfPatrollingState(Transform player, Mob mob, IMobStateSwitcher switcher) : base(player, mob, switcher)
+        public WolfPatrollingState(Mob mob, IMobStateSwitcher switcher) : base(mob, switcher)
         {
             _mob.DeltaRotate = _mob.MaxDeltaRotate;
             _mob.MobRigidbody = _mob.GetComponent<Rigidbody>();
-            _destinationPoint = _mob.SpawnPosition;
-            Debug.Log(_destinationPoint);
         }
 
         public override void MoveMob()
         {
+            // Thresholding time mob is able to get to target if it's too high
             patrolTime -= Time.fixedDeltaTime;
-            if (Vector3.Distance(_mob.transform.position, _destinationPoint) <= 4f || patrolTime <= 0f)
+            if (Vector3.Distance(_mob.transform.position, _targetPosition) <= 4f || patrolTime <= 0f)
             {
                 GenerateNewPatrolPoint();
                 patrolTime = _maxPatrolTime;
             }
 
+            // Thresholding mob's velocity on slopes
             if (_mob.MobRigidbody.velocity.magnitude > _mob.MoveSpeed)
                 _mob.MobRigidbody.velocity = _mob.MobRigidbody.velocity.normalized * _mob.MoveSpeed;
             
@@ -38,7 +35,7 @@ namespace Creatures.Mobs.Wolf
             if (_mob.MobRigidbody.velocity.y > 0)
                 _mob.MobRigidbody.AddForce(Vector3.down * 80f, ForceMode.Force);
 
-            if (_mob.IsEntitySensed && !_mob.IgnoreSensor)
+            if (_mob.IsEntitySensed && !_mob.IsIgnoringSensor)
             {
                 _mob.transform.Rotate(0, 22.5f, 0);
                 _mob.DeltaRotate = _mob.MaxDeltaRotate;
@@ -68,7 +65,7 @@ namespace Creatures.Mobs.Wolf
             if (Physics.Raycast(point, Vector3.down, out RaycastHit hit,
                     Mathf.Infinity, 1 << TERRAIN_LAYER_INDEX))
             {
-                _destinationPoint = new Vector3(point.x, hit.point.y, point.z);
+                _targetPosition = new Vector3(point.x, hit.point.y, point.z);
             }
         } 
 
@@ -78,7 +75,7 @@ namespace Creatures.Mobs.Wolf
         /// <returns></returns>
         private IEnumerator FaceTarget()
         {            
-            Quaternion lookRotation = Quaternion.LookRotation(_destinationPoint - _mob.transform.position);
+            Quaternion lookRotation = Quaternion.LookRotation(_targetPosition - _mob.transform.position);
             float time = 0;
             while (time < .3f)
             {

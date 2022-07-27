@@ -5,7 +5,7 @@ namespace Creatures.Mobs.Wolf
 {
     public class WolfHuntingState : MobBasicState
     {
-        public WolfHuntingState(Transform player, Mob mob, IMobStateSwitcher switcher) : base(player, mob, switcher)
+        public WolfHuntingState(Mob mob, IMobStateSwitcher switcher) : base(mob, switcher)
         {
             _mob.DeltaRotate = _mob.MaxDeltaRotate;
             _mob.MobRigidbody = _mob.GetComponent<Rigidbody>();
@@ -22,7 +22,7 @@ namespace Creatures.Mobs.Wolf
             if (_mob.MobRigidbody.velocity.y > 0)
                 _mob.MobRigidbody.AddForce(Vector3.down * 80f, ForceMode.Force);
 
-            if (_mob.IsEntitySensed && !_mob.IgnoreSensor)
+            if (_mob.IsEntitySensed && !_mob.IsIgnoringSensor)
             {
                 _mob.transform.Rotate(0, 22.5f, 0);
                 _mob.DeltaRotate = _mob.MaxDeltaRotate;
@@ -39,10 +39,10 @@ namespace Creatures.Mobs.Wolf
                 }
             }
         }
-        
+
         private IEnumerator FacePlayer()
         {           
-            Quaternion lookRotation = Quaternion.LookRotation(_player.position - _mob.transform.position);
+            Quaternion lookRotation = Quaternion.LookRotation(_targetPosition - _mob.transform.position);
             float time = 0;
             while (time < .3f)
             {

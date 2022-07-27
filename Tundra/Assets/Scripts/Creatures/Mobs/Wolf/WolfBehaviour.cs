@@ -6,16 +6,20 @@ namespace Creatures.Mobs.Wolf
 {
     public class WolfBehaviour : Mob, IMobStateSwitcher
     {
-        private Transform player;
+        private const float _maxSniffingTime = 2f;
+        
         private MobBasicState _currentMobState;
         private List<MobBasicState> _allMobStates;
 
+        private float currentSniffingTime;
+        
         private void Start()
         {
+            currentSniffingTime = _maxSniffingTime;
             _allMobStates = new List<MobBasicState>
             {
-                new WolfPatrollingState(player, this, this),
-                new WolfHuntingState(player, this, this)
+                new WolfPatrollingState(this, this),
+                new WolfHuntingState(this, this)
             };
             _currentMobState = _allMobStates[0];
         }
@@ -23,6 +27,10 @@ namespace Creatures.Mobs.Wolf
         private void FixedUpdate()
         {
             _currentMobState.MoveMob();
+            
+            /*currentSniffingTime -= Time.fixedDeltaTime;
+            if (currentSniffingTime <= _maxSniffingTime)
+                _currentMobState.SniffForTarget();*/
         }
         
         public void SwitchState<T>() where T : MobBasicState
@@ -33,9 +41,17 @@ namespace Creatures.Mobs.Wolf
 
         public override void Initialise(Transform playerParameter)
         {
-            player = playerParameter;
             transform.gameObject.layer = MOB_LAYER_INDEX;
             SpawnPosition = transform.position;
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            // Draw a yellow sphere at the transform's position
+            Gizmos.color = Color.green;
+            Gizmos.DrawSphere(_currentMobState._targetPosition, 1f);
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(transform.position, SniffingRadius);
         }
     }
 }
