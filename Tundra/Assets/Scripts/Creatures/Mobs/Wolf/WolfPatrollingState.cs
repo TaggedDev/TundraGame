@@ -122,6 +122,8 @@ namespace Creatures.Mobs.Wolf
         public override void Start()
         {
             GenerateNewPatrolPoint();
+            _mob.MaxMobHealth = _mob.CurrentMobHealth;
+            _mob.FearHealthThreshold = _mob.MaxMobHealth * .1f;
         }
 
         public override void Stop()

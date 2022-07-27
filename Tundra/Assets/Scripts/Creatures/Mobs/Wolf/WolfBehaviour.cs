@@ -15,17 +15,27 @@ namespace Creatures.Mobs.Wolf
         
         private void Start()
         {
+            // Define Fear Health Threshold as 10% of max health
+            FearHealthThreshold = MaxMobHealth * .1f;
+            CurrentMobHealth = MaxMobHealth;
+            
             currentSniffingTime = MAX_SNIFFING_TIME;
+            
             _allMobStates = new List<MobBasicState>
             {
                 new WolfPatrollingState(this, this),
-                new WolfHuntingState(this, this)
+                new WolfHuntingState(this, this),
+                new WolfEscapingState(this, this)
             };
             _currentMobState = _allMobStates[0];
+            
         }
 
         private void FixedUpdate()
         {
+            if (Input.GetKeyDown(KeyCode.X))
+                CurrentMobHealth -= 5f;
+
             _currentMobState.MoveMob();
             
             currentSniffingTime -= Time.fixedDeltaTime;
@@ -34,7 +44,6 @@ namespace Creatures.Mobs.Wolf
                 _currentMobState.SniffForTarget();
                 currentSniffingTime = MAX_SNIFFING_TIME;
             }
-                
         }
         
         public void SwitchState<T>() where T : MobBasicState

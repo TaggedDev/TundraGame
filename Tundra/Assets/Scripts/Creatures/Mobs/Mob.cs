@@ -46,6 +46,16 @@ namespace Creatures.Mobs
             get => rotationSpeed;
             set => rotationSpeed = value;
         }
+        public float MaxMobHealth
+        {
+            get => maxMobHealth;
+            set => maxMobHealth = value;
+        }
+        public float CurrentMobHealth
+        {
+            get => _currentMobHealth;
+            set => _currentMobHealth = value;
+        }
         public bool IsEntitySensed
         {
             get => _isEntitySensed;
@@ -71,6 +81,11 @@ namespace Creatures.Mobs
             get => mobID;
             set => mobID = value;
         }
+        public float FearHealthThreshold
+        {
+            get => _fearHealthThreshold;
+            set => _fearHealthThreshold = value;
+        }
 
         [SerializeField] private int mobID;
         [SerializeField] private float moveSpeed;
@@ -78,15 +93,18 @@ namespace Creatures.Mobs
         [SerializeField] private float maxDeltaRotate;
         [SerializeField] private float roamingRadius;
         [SerializeField] private float sniffingRadius;
+        [SerializeField] private float maxMobHealth;
 
         private MobEntitySensor _sensor;
         private RaycastHit _slopeHit;
         private Rigidbody _mobRigidbody;
         private Vector3 _spawnPosition;
+        [SerializeField] private float _currentMobHealth;
+        private float _fearHealthThreshold;
         private float _deltaRotate;
         private bool _isEntitySensed;
         private bool _isIgnoringSensor;
-
+        
         /// <summary>
         /// Initialises basic parameters. Can't use constructor because objects with this class are initialized by
         /// instantiate method during the game

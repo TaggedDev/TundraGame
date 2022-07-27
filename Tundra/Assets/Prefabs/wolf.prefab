@@ -160,6 +160,7 @@ MonoBehaviour:
   maxDeltaRotate: 0.5
   roamingRadius: 20
   sniffingRadius: 20
+  maxMobHealth: 100
 --- !u!54 &8568824640439189495
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -3,19 +3,23 @@ using UnityEngine;
 
 namespace Creatures.Mobs.Wolf
 {
-    public class WolfHuntingState : MobBasicState
+    public class WolfEscapingState : MobBasicState
     {
-        public WolfHuntingState(Mob mob, IMobStateSwitcher switcher) : base(mob, switcher)
+        private Transform _dangerSource;
+        private bool _isFearless;
+        
+        public WolfEscapingState(Mob mob, IMobStateSwitcher switcher) : base(mob, switcher) { }
+
+        public override void Start()
         {
-            _mob.DeltaRotate = _mob.MaxDeltaRotate;
-            _mob.MobRigidbody = _mob.GetComponent<Rigidbody>();
+            _dangerSource = _mob.Sensor.Target;
         }
+
+        public override void Stop()
+        { }
 
         public override void MoveMob()
         {
-            if (_mob.CurrentMobHealth <= _mob.FearHealthThreshold)
-                _switcher.SwitchState<WolfEscapingState>();
-            
             if (_mob.MobRigidbody.velocity.magnitude > _mob.MoveSpeed)
                 _mob.MobRigidbody.velocity = _mob.MobRigidbody.velocity.normalized * _mob.MoveSpeed;
             
@@ -38,23 +42,20 @@ namespace Creatures.Mobs.Wolf
                 }
                 else
                 {
-                    _mob.StartCoroutine(FacePlayer());
+                    _mob.StartCoroutine(TurnAsideDangerSource());
                 }
             }
         }
-
-        public override void SniffForTarget()
+        
+        private Vector3 NormalizeSlopeMovement()
         {
-            var colliders = Physics.OverlapSphere(_mob.transform.position, _mob.SniffingRadius,
-                (1 << MOBS_LAYER_INDEX) | (1 << PLAYER_LAYER_INDEX));
-            
-            // There is always 1 object in overlap sphere (self)
-            if (colliders.Length <= 1) _switcher.SwitchState<WolfPatrollingState>();
+            return Vector3.ProjectOnPlane(_mob.transform.forward, _mob.SlopeHit.normal).normalized;
         }
-
-        private IEnumerator FacePlayer()
+        
+        private IEnumerator TurnAsideDangerSource()
         {           
-            Quaternion lookRotation = Quaternion.LookRotation(_mob.Sensor.Target.position - _mob.transform.position);
+            Quaternion lookRotation = Quaternion.LookRotation(_dangerSource.position - _mob.transform.position);
+            lookRotation *= Quaternion.Euler(0f, 180f, 0f);
             float time = 0;
             while (time < .3f)
             {
@@ -64,19 +65,16 @@ namespace Creatures.Mobs.Wolf
             }
         }
 
-        private Vector3 NormalizeSlopeMovement()
+        public override void SniffForTarget()
         {
-            return Vector3.ProjectOnPlane(_mob.transform.forward, _mob.SlopeHit.normal).normalized;
-        }
-        
-        public override void Start()
-        {
+            if (_isFearless)
+                return;
             
-        }
-
-        public override void Stop()
-        {
+            var colliders = Physics.OverlapSphere(_mob.transform.position, _mob.SniffingRadius,
+                (1 << MOBS_LAYER_INDEX) | (1 << PLAYER_LAYER_INDEX));
             
+            // There is always 1 object in overlap sphere (self)
+            if (colliders.Length == 1) _switcher.SwitchState<WolfPatrollingState>();
         }
     }
 }
