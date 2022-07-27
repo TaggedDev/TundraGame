@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Creatures.Player.Behaviour;
 using UnityEngine;
 
 namespace Creatures.Mobs.Wolf
@@ -7,7 +8,8 @@ namespace Creatures.Mobs.Wolf
     public class WolfBehaviour : Mob, IMobStateSwitcher
     {
         private const float _maxSniffingTime = 2f;
-        
+
+        public Transform player;
         private MobBasicState _currentMobState;
         private List<MobBasicState> _allMobStates;
 
@@ -15,11 +17,12 @@ namespace Creatures.Mobs.Wolf
         
         private void Start()
         {
+            player = FindObjectOfType<PlayerMovement>().transform;
             currentSniffingTime = _maxSniffingTime;
             _allMobStates = new List<MobBasicState>
             {
                 new WolfPatrollingState(this, this),
-                new WolfHuntingState(this, this)
+                new WolfHuntingState(this, this, player)
             };
             _currentMobState = _allMobStates[0];
         }
@@ -28,9 +31,9 @@ namespace Creatures.Mobs.Wolf
         {
             _currentMobState.MoveMob();
             
-            /*currentSniffingTime -= Time.fixedDeltaTime;
+            currentSniffingTime -= Time.fixedDeltaTime;
             if (currentSniffingTime <= _maxSniffingTime)
-                _currentMobState.SniffForTarget();*/
+                _currentMobState.SniffForTarget();
         }
         
         public void SwitchState<T>() where T : MobBasicState

@@ -62,7 +62,13 @@ namespace Creatures.Mobs
             get => _sniffingRadius;
             set => _sniffingRadius = value;
         }
+        public int MobID
+        {
+            get => _mobID;
+            set => _mobID = value;
+        }
 
+        [SerializeField] private int _mobID;
         [SerializeField] private float _moveSpeed;
         [SerializeField] private float _rotationSpeed;
         [SerializeField] private float _maxDeltaRotate;

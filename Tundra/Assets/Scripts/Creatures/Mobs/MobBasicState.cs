@@ -11,6 +11,7 @@ namespace Creatures.Mobs
         protected readonly Mob _mob;
         protected IMobStateSwitcher _switcher;
         public Vector3 _targetPosition;
+        public Transform _target;
 
         protected MobBasicState(Mob mob, IMobStateSwitcher switcher)
         {
@@ -26,6 +27,6 @@ namespace Creatures.Mobs
         /// <summary>
         /// Checks if there are mobs within sniffing radius 
         /// </summary>
-        //public abstract void SniffForTarget();
+        public abstract void SniffForTarget();
     }
 }

@@ -6,7 +6,7 @@ namespace Creatures.Mobs.Wolf
 {
     public class WolfPatrollingState : MobBasicState
     {
-        private const float _maxPatrolTime = 5f;
+        private const float _maxPatrolTime = 10f;
         private float patrolTime = _maxPatrolTime;
         
         public WolfPatrollingState(Mob mob, IMobStateSwitcher switcher) : base(mob, switcher)
@@ -53,6 +53,33 @@ namespace Creatures.Mobs.Wolf
             }
         }
 
+        public override void SniffForTarget()
+        {
+            var colliders = Physics.OverlapSphere(_mob.transform.position, _mob.SniffingRadius,
+               (1 << MOBS_LAYER_INDEX) | (1 << PLAYER_LAYER_INDEX));
+            
+            // There is always 1 object in overlap sphere (self)
+            if (colliders.Length <= 1) return;
+            
+            for (int i = 1; i < colliders.Length; i++)
+            {
+                var mob = colliders[i].GetComponent<Mob>();
+                if (!mob)
+                {
+                    // if mob is null -> object is a player;
+                    _target = colliders[i].transform;
+                    _switcher.SwitchState<WolfHuntingState>();
+                }
+                else
+                {
+                    // if mob is not null -> check mobID -> differs? go hunting
+                    if (mob.MobID == _mob.MobID)
+                        continue;
+                    _target = mob.transform;
+                }
+            }
+        }
+
         /// <summary>
         /// Gets a random point to roam to within _roamRadius
         /// </summary>
@@ -74,7 +101,7 @@ namespace Creatures.Mobs.Wolf
         /// </summary>
         /// <returns></returns>
         private IEnumerator FaceTarget()
-        {            
+        {
             Quaternion lookRotation = Quaternion.LookRotation(_targetPosition - _mob.transform.position);
             float time = 0;
             while (time < .3f)
