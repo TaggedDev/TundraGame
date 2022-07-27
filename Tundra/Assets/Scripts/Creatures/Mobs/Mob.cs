@@ -7,6 +7,11 @@ namespace Creatures.Mobs
         protected const int MOB_LAYER_INDEX = 11;
         protected const int TERRAIN_LAYER_INDEX = 8;
         
+        public MobEntitySensor Sensor
+        {
+            get => _sensor;
+            set => _sensor = value;
+        }
         public RaycastHit SlopeHit
         {
             get => _slopeHit;
@@ -75,6 +80,7 @@ namespace Creatures.Mobs
         [SerializeField] private float _roamingRadius;
         [SerializeField] private float _sniffingRadius;
 
+        private MobEntitySensor _sensor;
         private RaycastHit _slopeHit;
         private Rigidbody _mobRigidbody;
         private Vector3 _spawnPosition;

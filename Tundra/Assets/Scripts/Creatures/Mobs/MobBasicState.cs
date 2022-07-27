@@ -10,14 +10,22 @@ namespace Creatures.Mobs
         
         protected readonly Mob _mob;
         protected IMobStateSwitcher _switcher;
-        public Vector3 _targetPosition;
-        public Transform _target;
 
         protected MobBasicState(Mob mob, IMobStateSwitcher switcher)
         {
             _mob = mob;
             _switcher = switcher;
         }
+
+        /// <summary>
+        /// Is called on state launch 
+        /// </summary>
+        public abstract void Start();
+
+        /// <summary>
+        /// Is called on when state was switched 
+        /// </summary>
+        public abstract void Stop();
 
         /// <summary>
         /// Moves mob to chosen target

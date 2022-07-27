@@ -11,6 +11,7 @@ namespace Creatures.Mobs.Wolf
         
         public WolfPatrollingState(Mob mob, IMobStateSwitcher switcher) : base(mob, switcher)
         {
+            _mob.Sensor = _mob.GetComponentInChildren<MobEntitySensor>();
             _mob.DeltaRotate = _mob.MaxDeltaRotate;
             _mob.MobRigidbody = _mob.GetComponent<Rigidbody>();
         }
@@ -19,7 +20,7 @@ namespace Creatures.Mobs.Wolf
         {
             // Thresholding time mob is able to get to target if it's too high
             patrolTime -= Time.fixedDeltaTime;
-            if (Vector3.Distance(_mob.transform.position, _targetPosition) <= 4f || patrolTime <= 0f)
+            if (Vector3.Distance(_mob.transform.position, _mob.Sensor.TargetPosition) <= 4f || patrolTime <= 0f)
             {
                 GenerateNewPatrolPoint();
                 patrolTime = _maxPatrolTime;
@@ -67,7 +68,7 @@ namespace Creatures.Mobs.Wolf
                 if (!mob)
                 {
                     // if mob is null -> object is a player;
-                    _target = colliders[i].transform;
+                    _mob.Sensor.Target = colliders[i].transform;
                     _switcher.SwitchState<WolfHuntingState>();
                 }
                 else
@@ -75,7 +76,7 @@ namespace Creatures.Mobs.Wolf
                     // if mob is not null -> check mobID -> differs? go hunting
                     if (mob.MobID == _mob.MobID)
                         continue;
-                    _target = mob.transform;
+                    _mob.Sensor.Target = mob.transform;
                 }
             }
         }
@@ -92,7 +93,7 @@ namespace Creatures.Mobs.Wolf
             if (Physics.Raycast(point, Vector3.down, out RaycastHit hit,
                     Mathf.Infinity, 1 << TERRAIN_LAYER_INDEX))
             {
-                _targetPosition = new Vector3(point.x, hit.point.y, point.z);
+                _mob.Sensor.TargetPosition = new Vector3(point.x, hit.point.y, point.z);
             }
         } 
 
@@ -102,7 +103,7 @@ namespace Creatures.Mobs.Wolf
         /// <returns></returns>
         private IEnumerator FaceTarget()
         {
-            Quaternion lookRotation = Quaternion.LookRotation(_targetPosition - _mob.transform.position);
+            Quaternion lookRotation = Quaternion.LookRotation(_mob.Sensor.TargetPosition - _mob.transform.position);
             float time = 0;
             while (time < .3f)
             {
@@ -115,6 +116,16 @@ namespace Creatures.Mobs.Wolf
         private Vector3 NormalizeSlopeMovement()
         {
             return Vector3.ProjectOnPlane(_mob.transform.forward, _mob.SlopeHit.normal).normalized;
+        }
+        
+        public override void Start()
+        {
+            GenerateNewPatrolPoint();
+        }
+
+        public override void Stop()
+        {
+            
         }
     }
 }

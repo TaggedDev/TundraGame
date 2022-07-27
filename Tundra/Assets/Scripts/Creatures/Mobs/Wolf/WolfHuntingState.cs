@@ -51,7 +51,7 @@ namespace Creatures.Mobs.Wolf
 
         private IEnumerator FacePlayer()
         {           
-            Quaternion lookRotation = Quaternion.LookRotation(_target.position - _mob.transform.position);
+            Quaternion lookRotation = Quaternion.LookRotation(_mob.Sensor.Target.position - _mob.transform.position);
             float time = 0;
             while (time < .3f)
             {
@@ -64,6 +64,16 @@ namespace Creatures.Mobs.Wolf
         private Vector3 NormalizeSlopeMovement()
         {
             return Vector3.ProjectOnPlane(_mob.transform.forward, _mob.SlopeHit.normal).normalized;
+        }
+        
+        public override void Start()
+        {
+            
+        }
+
+        public override void Stop()
+        {
+            
         }
     }
 }

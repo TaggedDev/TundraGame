@@ -154,6 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c2793968aca4611b520691b8ee1a560, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mobID: 0
   _moveSpeed: 2
   _rotationSpeed: 1.5
   _maxDeltaRotate: 0.5
@@ -204,7 +205,7 @@ GameObject:
   - component: {fileID: 4176005465324609138}
   - component: {fileID: 2146879364691287166}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Sensor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

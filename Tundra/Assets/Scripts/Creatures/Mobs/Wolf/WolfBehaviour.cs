@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Creatures.Player.Behaviour;
 using UnityEngine;
 
 namespace Creatures.Mobs.Wolf
@@ -41,6 +40,8 @@ namespace Creatures.Mobs.Wolf
         public void SwitchState<T>() where T : MobBasicState
         {
             var state = _allMobStates.FirstOrDefault(s => s is T);
+            _currentMobState.Stop();
+            state.Start();
             _currentMobState = state;
         }
 
@@ -48,15 +49,6 @@ namespace Creatures.Mobs.Wolf
         {
             transform.gameObject.layer = MOB_LAYER_INDEX;
             SpawnPosition = transform.position;
-        }
-
-        private void OnDrawGizmosSelected()
-        {
-            // Draw a yellow sphere at the transform's position
-            Gizmos.color = Color.green;
-            Gizmos.DrawSphere(_currentMobState._targetPosition, 1f);
-            Gizmos.color = Color.red;
-            Gizmos.DrawSphere(transform.position, SniffingRadius);
         }
     }
 }
