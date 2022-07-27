@@ -12,6 +12,7 @@ namespace Creatures.Mobs.Wolf
         private List<MobBasicState> _allMobStates;
 
         private float currentSniffingTime;
+        private float mobHeight;
         
         private void Start()
         {
@@ -28,14 +29,24 @@ namespace Creatures.Mobs.Wolf
                 new WolfEscapingState(this, this)
             };
             _currentMobState = _allMobStates[0];
-            
+            mobHeight = GetComponent<Collider>().bounds.extents.y;
+
         }
 
         private void FixedUpdate()
         {
+            // Temporary solution
             if (Input.GetKeyDown(KeyCode.X))
                 CurrentMobHealth -= 5f;
 
+            Debug.DrawRay(transform.position, Vector3.down * (mobHeight + 0.2f), Color.blue);
+            IsGrounded = Physics.Raycast(transform.position, Vector3.down, mobHeight + 0.2f, 1 << TERRAIN_LAYER_INDEX);
+            
+            if (IsGrounded)
+                MobRigidbody.useGravity = false;
+            else
+                MobRigidbody.useGravity = true;
+                
             _currentMobState.MoveMob();
             
             currentSniffingTime -= Time.fixedDeltaTime;

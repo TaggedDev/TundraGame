@@ -5,6 +5,7 @@ namespace Creatures.Mobs
     public abstract class Mob : MonoBehaviour
     {
         protected const int MOB_LAYER_INDEX = 11;
+        protected const int TERRAIN_LAYER_INDEX = 8;
 
         public MobEntitySensor Sensor
         {
@@ -81,10 +82,20 @@ namespace Creatures.Mobs
             get => mobID;
             set => mobID = value;
         }
+        public bool IsGrounded
+        {
+            get => _isGrounded;
+            set => _isGrounded = value;
+        }
         public float FearHealthThreshold
         {
             get => _fearHealthThreshold;
             set => _fearHealthThreshold = value;
+        }
+        public Rigidbody Rigidbody
+        {
+            get => _rigidbody;
+            set => _rigidbody = value;
         }
 
         [SerializeField] private int mobID;
@@ -94,6 +105,7 @@ namespace Creatures.Mobs
         [SerializeField] private float roamingRadius;
         [SerializeField] private float sniffingRadius;
         [SerializeField] private float maxMobHealth;
+        
 
         private MobEntitySensor _sensor;
         private RaycastHit _slopeHit;
@@ -104,7 +116,9 @@ namespace Creatures.Mobs
         private float _deltaRotate;
         private bool _isEntitySensed;
         private bool _isIgnoringSensor;
-        
+        [SerializeField] private bool _isGrounded;
+        private Rigidbody _rigidbody;
+
         /// <summary>
         /// Initialises basic parameters. Can't use constructor because objects with this class are initialized by
         /// instantiate method during the game

@@ -1,49 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &590240343011285379
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7249098301864563893}
-  - component: {fileID: 547911484747011366}
-  m_Layer: 0
-  m_Name: GroundChecker
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7249098301864563893
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 590240343011285379}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.564, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1182028872119186060}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &547911484747011366
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 590240343011285379}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.5, z: 0.5}
-  m_Center: {x: 0, y: 0.06, z: 0}
 --- !u!1 &1182028872119186058
 GameObject:
   m_ObjectHideFlags: 0
@@ -58,7 +14,6 @@ GameObject:
   - component: {fileID: 1182028872119186057}
   - component: {fileID: 7205391003004235204}
   - component: {fileID: 8568824640439189495}
-  - component: {fileID: 1950996321068028536}
   m_Layer: 0
   m_Name: wolf
   m_TagString: Untagged
@@ -78,7 +33,6 @@ Transform:
   m_LocalScale: {x: 3, y: 1.25, z: 1.33}
   m_Children:
   - {fileID: 1535280878898411731}
-  - {fileID: 7249098301864563893}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -161,6 +115,8 @@ MonoBehaviour:
   roamingRadius: 20
   sniffingRadius: 20
   maxMobHealth: 100
+  _currentMobHealth: 0
+  _isGrounded: 0
 --- !u!54 &8568824640439189495
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -169,7 +125,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1182028872119186058}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 50
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -177,21 +133,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 16
   m_CollisionDetection: 0
---- !u!114 &1950996321068028536
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1182028872119186058}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3acfc1161dbc04644ac82d6a387245c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  centerOfMass: {x: 0, y: -0.625, z: 0}
-  isAwaken: 0
-  _rigidbody: {fileID: 8568824640439189495}
 --- !u!1 &6190668889289721930
 GameObject:
   m_ObjectHideFlags: 0
