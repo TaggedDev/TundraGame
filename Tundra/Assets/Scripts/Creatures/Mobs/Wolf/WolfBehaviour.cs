@@ -7,7 +7,7 @@ namespace Creatures.Mobs.Wolf
 {
     public class WolfBehaviour : Mob, IMobStateSwitcher
     {
-        private const float _maxSniffingTime = 2f;
+        private const float _maxSniffingTime = 1.2f;
 
         public Transform player;
         private MobBasicState _currentMobState;
@@ -32,8 +32,12 @@ namespace Creatures.Mobs.Wolf
             _currentMobState.MoveMob();
             
             currentSniffingTime -= Time.fixedDeltaTime;
-            if (currentSniffingTime <= _maxSniffingTime)
+            if (currentSniffingTime <= 0)
+            {
                 _currentMobState.SniffForTarget();
+                currentSniffingTime = _maxSniffingTime;
+            }
+                
         }
         
         public void SwitchState<T>() where T : MobBasicState
