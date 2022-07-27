@@ -14,6 +14,7 @@ namespace Creatures.Mobs.Wolf
             _mob.Sensor = _mob.GetComponentInChildren<MobEntitySensor>();
             _mob.DeltaRotate = _mob.MaxDeltaRotate;
             _mob.MobRigidbody = _mob.GetComponent<Rigidbody>();
+            GenerateNewPatrolPoint();
         }
 
         public override void MoveMob()
@@ -93,7 +94,7 @@ namespace Creatures.Mobs.Wolf
             if (Physics.Raycast(point, Vector3.down, out RaycastHit hit,
                     Mathf.Infinity, 1 << TERRAIN_LAYER_INDEX))
             {
-                _mob.Sensor.TargetPosition = new Vector3(point.x, hit.point.y, point.z);
+                _mob.Sensor.TargetPosition = new Vector3(point.x, hit.point.y + .5f, point.z);
             }
         } 
 
@@ -112,7 +113,7 @@ namespace Creatures.Mobs.Wolf
                 yield return null;
             }
         }
-
+        
         private Vector3 NormalizeSlopeMovement()
         {
             return Vector3.ProjectOnPlane(_mob.transform.forward, _mob.SlopeHit.normal).normalized;

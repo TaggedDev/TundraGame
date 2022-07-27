@@ -50,5 +50,14 @@ namespace Creatures.Mobs.Wolf
             transform.gameObject.layer = MOB_LAYER_INDEX;
             SpawnPosition = transform.position;
         }
+        
+        private void OnDrawGizmosSelected()
+        {
+            // Draw a yellow sphere at the transform's position
+            Gizmos.color = Color.green;
+            Gizmos.DrawSphere(Sensor.TargetPosition, 1f);
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(transform.position, SniffingRadius);
+        }
     }
 }

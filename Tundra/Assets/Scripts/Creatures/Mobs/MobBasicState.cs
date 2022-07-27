@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace Creatures.Mobs
+﻿namespace Creatures.Mobs
 {
     public abstract class MobBasicState
     {
@@ -9,7 +7,7 @@ namespace Creatures.Mobs
         protected const int PLAYER_LAYER_INDEX = 9;
         
         protected readonly Mob _mob;
-        protected IMobStateSwitcher _switcher;
+        protected readonly IMobStateSwitcher _switcher;
 
         protected MobBasicState(Mob mob, IMobStateSwitcher switcher)
         {
