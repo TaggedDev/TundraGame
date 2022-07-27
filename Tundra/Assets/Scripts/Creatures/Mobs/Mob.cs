@@ -5,8 +5,7 @@ namespace Creatures.Mobs
     public abstract class Mob : MonoBehaviour
     {
         protected const int MOB_LAYER_INDEX = 11;
-        protected const int TERRAIN_LAYER_INDEX = 8;
-        
+
         public MobEntitySensor Sensor
         {
             get => _sensor;
@@ -34,18 +33,18 @@ namespace Creatures.Mobs
         }
         public float MaxDeltaRotate
         {
-            get => _maxDeltaRotate;
-            set => _maxDeltaRotate = value;
+            get => maxDeltaRotate;
+            set => maxDeltaRotate = value;
         }
         public float MoveSpeed
         {
-            get => _moveSpeed;
-            set => _moveSpeed = value;
+            get => moveSpeed;
+            set => moveSpeed = value;
         }
         public float RotationSpeed
         {
-            get => _rotationSpeed;
-            set => _rotationSpeed = value;
+            get => rotationSpeed;
+            set => rotationSpeed = value;
         }
         public bool IsEntitySensed
         {
@@ -59,26 +58,26 @@ namespace Creatures.Mobs
         }
         public float RoamingRadius
         {
-            get => _roamingRadius;
-            set => _roamingRadius = value;
+            get => roamingRadius;
+            set => roamingRadius = value;
         }
         public float SniffingRadius
         {
-            get => _sniffingRadius;
-            set => _sniffingRadius = value;
+            get => sniffingRadius;
+            set => sniffingRadius = value;
         }
         public int MobID
         {
-            get => _mobID;
-            set => _mobID = value;
+            get => mobID;
+            set => mobID = value;
         }
 
-        [SerializeField] private int _mobID;
-        [SerializeField] private float _moveSpeed;
-        [SerializeField] private float _rotationSpeed;
-        [SerializeField] private float _maxDeltaRotate;
-        [SerializeField] private float _roamingRadius;
-        [SerializeField] private float _sniffingRadius;
+        [SerializeField] private int mobID;
+        [SerializeField] private float moveSpeed;
+        [SerializeField] private float rotationSpeed;
+        [SerializeField] private float maxDeltaRotate;
+        [SerializeField] private float roamingRadius;
+        [SerializeField] private float sniffingRadius;
 
         private MobEntitySensor _sensor;
         private RaycastHit _slopeHit;
@@ -96,8 +95,8 @@ namespace Creatures.Mobs
 
         private void OnValidate()
         {
-            if (_roamingRadius < 5)
-                _roamingRadius = 5;
+            if (roamingRadius < 5)
+                roamingRadius = 5;
         }
     }
 }

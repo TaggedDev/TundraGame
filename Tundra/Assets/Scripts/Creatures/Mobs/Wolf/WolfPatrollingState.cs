@@ -6,8 +6,8 @@ namespace Creatures.Mobs.Wolf
 {
     public class WolfPatrollingState : MobBasicState
     {
-        private const float _maxPatrolTime = 10f;
-        private float patrolTime = _maxPatrolTime;
+        private const float MAX_PATROL_TIME = 10f;
+        private float patrolTime = MAX_PATROL_TIME;
         
         public WolfPatrollingState(Mob mob, IMobStateSwitcher switcher) : base(mob, switcher)
         {
@@ -24,7 +24,7 @@ namespace Creatures.Mobs.Wolf
             if (Vector3.Distance(_mob.transform.position, _mob.Sensor.TargetPosition) <= 4f || patrolTime <= 0f)
             {
                 GenerateNewPatrolPoint();
-                patrolTime = _maxPatrolTime;
+                patrolTime = MAX_PATROL_TIME;
             }
 
             // Thresholding mob's velocity on slopes

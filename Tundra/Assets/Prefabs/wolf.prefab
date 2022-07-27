@@ -154,12 +154,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c2793968aca4611b520691b8ee1a560, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mobID: 0
-  _moveSpeed: 2
-  _rotationSpeed: 1.5
-  _maxDeltaRotate: 0.5
-  _roamingRadius: 20
-  _sniffingRadius: 20
+  mobID: 0
+  moveSpeed: 3
+  rotationSpeed: 1.5
+  maxDeltaRotate: 0.5
+  roamingRadius: 20
+  sniffingRadius: 20
 --- !u!54 &8568824640439189495
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -188,9 +188,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3acfc1161dbc04644ac82d6a387245c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CenterOfMass: {x: 0, y: -0.625, z: 0}
-  IsAwaken: 0
-  _rigidbody: {fileID: 0}
+  centerOfMass: {x: 0, y: -0.625, z: 0}
+  isAwaken: 0
+  _rigidbody: {fileID: 8568824640439189495}
 --- !u!1 &6190668889289721930
 GameObject:
   m_ObjectHideFlags: 0

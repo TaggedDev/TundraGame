@@ -8,14 +8,14 @@ namespace Creatures.Mobs
     /// </summary>
     public class MobFabric : MonoBehaviour
     {
-        private const float innerCircleRadius = 50f;
-        private const float outerCircleRadius = 60f;
+        private const float INNER_CIRCLE_RADIUS = 50f;
+        private const float OUTER_CIRCLE_RADIUS = 60f;
+        private const int TERRAIN_LAYER_INDEX = 8;
+        
         [SerializeField] private int maxMobsCapacity;
-        [SerializeField] private Transform player;
         [SerializeField] private Mob mobPrefab;
         private float halfYSize;
         private int currentMobsCount;
-        private const int TERRAIN_LAYER_INDEX = 8;
 
         private void Start()
         {
@@ -53,7 +53,7 @@ namespace Creatures.Mobs
         /// a terrain</returns>
         private Vector3 GenerateMobPosition()
         {
-            float radius = Random.Range(innerCircleRadius, outerCircleRadius);
+            float radius = Random.Range(INNER_CIRCLE_RADIUS, OUTER_CIRCLE_RADIUS);
             float angle = Random.Range(1, 360);
             float xPosition = Mathf.Cos(angle) * radius;
             float zPosition = Mathf.Sin(angle) * radius;

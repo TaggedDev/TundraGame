@@ -5,6 +5,9 @@ namespace Creatures.Mobs
     [RequireComponent(typeof(BoxCollider))]
     public class MobEntitySensor : MonoBehaviour
     {
+        private const int ENTITY_LAYER_INDEX = 10;
+        private const int PLAYER_LAYER_INDEX = 9;
+        
         public Transform Target
         {
             get => _target;
@@ -18,9 +21,6 @@ namespace Creatures.Mobs
         
         private Transform _target;
         private Vector3 _targetPosition;
-        
-        private const int ENTITY_LAYER_INDEX = 10;
-        private const int PLAYER_LAYER_INDEX = 9;
         private Mob _owner;
 
         private void Start()
