@@ -42,7 +42,7 @@ namespace Creatures.Mobs
                 return;
             
             Mob mob = Instantiate(mobPrefab, position, Quaternion.identity, transform);
-            mob.Initialise(player);
+            mob.Initialise();
             currentMobsCount++;
         }
 

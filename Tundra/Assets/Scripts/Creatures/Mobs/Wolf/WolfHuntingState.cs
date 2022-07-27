@@ -5,9 +5,8 @@ namespace Creatures.Mobs.Wolf
 {
     public class WolfHuntingState : MobBasicState
     {
-        public WolfHuntingState(Mob mob, IMobStateSwitcher switcher, Transform player) : base(mob, switcher)
+        public WolfHuntingState(Mob mob, IMobStateSwitcher switcher) : base(mob, switcher)
         {
-            _target = player;
             _mob.DeltaRotate = _mob.MaxDeltaRotate;
             _mob.MobRigidbody = _mob.GetComponent<Rigidbody>();
         }

@@ -8,8 +8,7 @@ namespace Creatures.Mobs.Wolf
     public class WolfBehaviour : Mob, IMobStateSwitcher
     {
         private const float _maxSniffingTime = 1.2f;
-
-        public Transform player;
+        
         private MobBasicState _currentMobState;
         private List<MobBasicState> _allMobStates;
 
@@ -17,12 +16,11 @@ namespace Creatures.Mobs.Wolf
         
         private void Start()
         {
-            player = FindObjectOfType<PlayerMovement>().transform;
             currentSniffingTime = _maxSniffingTime;
             _allMobStates = new List<MobBasicState>
             {
                 new WolfPatrollingState(this, this),
-                new WolfHuntingState(this, this, player)
+                new WolfHuntingState(this, this)
             };
             _currentMobState = _allMobStates[0];
         }
@@ -46,7 +44,7 @@ namespace Creatures.Mobs.Wolf
             _currentMobState = state;
         }
 
-        public override void Initialise(Transform playerParameter)
+        public override void Initialise()
         {
             transform.gameObject.layer = MOB_LAYER_INDEX;
             SpawnPosition = transform.position;

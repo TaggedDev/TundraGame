@@ -86,8 +86,7 @@ namespace Creatures.Mobs
         /// Initialises basic parameters. Can't use constructor because objects with this class are initialized by
         /// instantiate method during the game
         /// </summary>
-        /// <param name="playerParameter">Link to player in scene</param>
-        public abstract void Initialise(Transform playerParameter);
+        public abstract void Initialise();
 
         private void OnValidate()
         {
