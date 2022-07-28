@@ -12,7 +12,7 @@ namespace System
         [SerializeField] private MapGenerator mapGenerator;
         [SerializeField] private ChunksGenerator chunksGenerator;
         [SerializeField] private PlayerSpawner playerHolder;
-        [SerializeField] private EntityGenerator entityGenerator;
+        [SerializeField] private EntityRenderer entityRenderer;
         [SerializeField] private MobFabric[] fabrics;
 
         /*
@@ -34,7 +34,7 @@ namespace System
             yield return new WaitUntil(() => mapGenerator.mapDataCount == 9 && mapGenerator.meshDataCount == 9);
             playerHolder.gameObject.SetActive(true);
             playerHolder.SpawnPlayer();
-            entityGenerator.gameObject.SetActive(true);
+            entityRenderer.gameObject.SetActive(true);
             foreach (var fabric in fabrics)
                 fabric.transform.gameObject.SetActive(true);
         }
