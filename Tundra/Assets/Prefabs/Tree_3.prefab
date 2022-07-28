@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4796055755971548}
   - component: {fileID: 33862529069753526}
   - component: {fileID: 23005653954299074}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Leaves_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89,7 +89,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4345878849055200}
   - component: {fileID: 4127295616235328013}
-  m_Layer: 0
+  - component: {fileID: 6044253378586293161}
+  - component: {fileID: 2228339153167768951}
+  m_Layer: 10
   m_Name: Tree_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +127,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnRateForLevel: 0.3
-  maxScaleDifference: 1.5
+--- !u!65 &6044253378586293161
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1218347679047942}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.7871567, y: 3.7022967, z: 0.7377841}
+  m_Center: {x: 0.21849233, y: 1.7226055, z: 0.016581029}
+--- !u!54 &2228339153167768951
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1218347679047942}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &1363467826424036
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,7 +167,7 @@ GameObject:
   - component: {fileID: 4782924333931078}
   - component: {fileID: 33674980657963814}
   - component: {fileID: 23084094499193252}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Leaves_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -216,7 +246,7 @@ GameObject:
   - component: {fileID: 4156965540426916}
   - component: {fileID: 33607138604387714}
   - component: {fileID: 23769861151005894}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Leaves_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -295,7 +325,7 @@ GameObject:
   - component: {fileID: 4494329581689332}
   - component: {fileID: 33591743523650964}
   - component: {fileID: 23968443958065590}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Leaves_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -374,7 +404,7 @@ GameObject:
   - component: {fileID: 4745129428687622}
   - component: {fileID: 33937757552896668}
   - component: {fileID: 23962305470541650}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Leaves_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -453,7 +483,7 @@ GameObject:
   - component: {fileID: 4546768433327348}
   - component: {fileID: 33303436672164488}
   - component: {fileID: 23860695082177804}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Leaves_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -532,7 +562,7 @@ GameObject:
   - component: {fileID: 4165376534382912}
   - component: {fileID: 33633330959154196}
   - component: {fileID: 23439739506746048}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Tree_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -609,7 +639,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4163324227597750}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Leaves
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -1,4 +1,4 @@
-﻿using Player.Behaviour;
+﻿using Creatures.Player.Behaviour;
 using UnityEngine;
 
 namespace CameraConfiguration

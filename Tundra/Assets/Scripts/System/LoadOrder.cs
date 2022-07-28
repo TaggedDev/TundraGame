@@ -1,7 +1,8 @@
 ﻿using System.Collections;
+using Creatures.Mobs;
+using Creatures.Player.Behaviour;
 using Environment;
 using Environment.Terrain;
-using Player.Behaviour;
 using UnityEngine;
 
 namespace System
@@ -11,6 +12,7 @@ namespace System
         [SerializeField] private MapGenerator mapGenerator;
         [SerializeField] private PlayerSpawner playerHolder;
         [SerializeField] private EntityGenerator entityGenerator;
+        [SerializeField] private MobFabric[] fabrics;
 
         /*
          * 1. Terrain generation
@@ -31,6 +33,8 @@ namespace System
             playerHolder.gameObject.SetActive(true);
             playerHolder.SpawnPlayer();
             entityGenerator.gameObject.SetActive(true);
+            foreach (var fabric in fabrics)
+                fabric.transform.gameObject.SetActive(true);
         }
     }
 }

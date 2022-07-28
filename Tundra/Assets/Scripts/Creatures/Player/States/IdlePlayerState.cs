@@ -1,11 +1,11 @@
-﻿using Player.Behaviour;
+﻿using Creatures.Player.Behaviour;
 using UnityEngine;
 
-namespace Player.States
+namespace Creatures.Player.States
 {
-    public class IdleState : BasicState
+    public class IdlePlayerState : BasicPlayerState
     {
-        public IdleState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher) 
+        public IdlePlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher) 
             : base (playerMovement, switcher)
         { }
 
@@ -17,7 +17,7 @@ namespace Player.States
             _v = Input.GetAxis("Vertical");
 
             if (Mathf.Abs(_h) > 0 || Mathf.Abs(_v) > 0)
-                StateSwitcher.SwitchState<WalkingState>();
+                PlayerStateSwitcher.SwitchState<WalkingPlayerState>();
         }
 
         public override void Start()

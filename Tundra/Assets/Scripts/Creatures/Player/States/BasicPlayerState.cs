@@ -1,16 +1,16 @@
-﻿using Player.Behaviour;
+﻿using Creatures.Player.Behaviour;
 
-namespace Player.States
+namespace Creatures.Player.States
 {
-    public abstract class BasicState
+    public abstract class BasicPlayerState
     {
         protected readonly PlayerMovement PlayerMovement;
-        protected readonly IPlayerStateSwitcher StateSwitcher;
+        protected readonly IPlayerStateSwitcher PlayerStateSwitcher;
 
-        protected BasicState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher)
+        protected BasicPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher)
         {
-            this.PlayerMovement = playerMovement;
-            StateSwitcher = switcher;
+            PlayerMovement = playerMovement;
+            PlayerStateSwitcher = switcher;
     }
 
         /// <summary>

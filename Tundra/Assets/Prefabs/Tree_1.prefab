@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4788910170961894}
   - component: {fileID: 33821873960699894}
   - component: {fileID: 23146695305503030}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Leaves_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4572371009978430}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Leaves
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123,7 +123,7 @@ GameObject:
   - component: {fileID: 4116181563489164}
   - component: {fileID: 33095094257205094}
   - component: {fileID: 23518617130621118}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Tree_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -203,7 +203,8 @@ GameObject:
   - component: {fileID: 4949955557972128}
   - component: {fileID: 3128177532440805380}
   - component: {fileID: 2032046020135244795}
-  m_Layer: 0
+  - component: {fileID: 4238956976954777030}
+  m_Layer: 10
   m_Name: Tree_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -240,7 +241,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 14
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!114 &2032046020135244795
 MonoBehaviour:
@@ -255,7 +256,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnRateForLevel: 0.3
-  maxScaleDifference: 1.5
+--- !u!65 &4238956976954777030
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1400461039152700}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 5.741063, z: 1.7439182}
+  m_Center: {x: 0, y: 2.3118834, z: 0.17359126}
 --- !u!1 &1434833193004250
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,7 +280,7 @@ GameObject:
   - component: {fileID: 4111077316299332}
   - component: {fileID: 33468820743178374}
   - component: {fileID: 23947302332069680}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Leaves_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -346,7 +359,7 @@ GameObject:
   - component: {fileID: 4485107368453936}
   - component: {fileID: 33645838407686050}
   - component: {fileID: 23885246353490692}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Leaves_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
