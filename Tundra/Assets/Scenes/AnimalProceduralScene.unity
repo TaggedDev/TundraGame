@@ -787,8 +787,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f69ab5d3707147a3ac22bcaf08ed13be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxMobsCapacity: 1
-  player: {fileID: 1324381167}
+  maxMobsCapacity: 3
   mobPrefab: {fileID: 7205391003004235204, guid: 435c098d30e6abf47a5497862903a08d,
     type: 3}
 --- !u!1 &1324381161
