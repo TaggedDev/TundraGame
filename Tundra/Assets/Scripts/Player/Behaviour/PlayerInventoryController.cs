@@ -49,7 +49,7 @@ namespace Player.Behaviour
 
         private void ThrowItemAway()
         {
-            Inventory.Slots[SelectedInventorySlot].ThrowItem(transform.position, transform.forward * 3 + Vector3.up);
+            Inventory.Slots[SelectedInventorySlot].DropItem(transform.position, transform.forward * 3 + Vector3.up);
         }
 
         private void PickItemUp()

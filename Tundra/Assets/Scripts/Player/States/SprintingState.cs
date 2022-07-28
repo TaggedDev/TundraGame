@@ -74,5 +74,10 @@ namespace Player.States
              * If temperature is greater then 'hot' temperature -> burning. Hit player
              */
         }
+
+        public override void LoadForThrow()
+        {
+            PlayerBehaviour.SwitchState<WalkingState>();
+        }
     }
 }

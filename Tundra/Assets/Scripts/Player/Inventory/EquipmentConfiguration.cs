@@ -27,16 +27,10 @@ namespace Player.Inventory
         /// </summary>
         public float WarmEconomyCoefficient { get => _warmEconomyCoefficient; set => _warmEconomyCoefficient=value; }
 
-        public override GameObject ThrowAway(Vector3 originPosition, Vector3 throwForce)
+        public override GameObject Throw(Vector3 originPosition, Vector3 force)
         {
             //Пусть пока что будет делать ничего.
             //throw new InvalidOperationException("Throwing items is prohibited!");
-            return null;
-        }
-
-        public override List<GameObject> MassThrowAway(int amount, Vector3 originPosition, Vector3 throwForce)
-        {
-            //И тут тоже ничего.
             return null;
         }
     }

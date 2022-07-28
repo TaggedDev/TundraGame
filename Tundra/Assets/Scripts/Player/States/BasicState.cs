@@ -39,6 +39,11 @@ namespace Player.States
         /// Updates temperature in <see cref="PlayerBehaviour"/>
         /// </summary>
         public abstract void UpdateTemperature();
+
+        /// <summary>
+        /// Loads weapon for throwing.
+        /// </summary>
+        public abstract void LoadForThrow();
     }
 
 }

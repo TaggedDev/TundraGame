@@ -103,5 +103,10 @@ namespace Player.Inventory
                 Slots[i] = new Slot();
             }
         }
+
+        internal void ResizeInventory(int additionalSlotsAmount)
+        {
+            MaxInventoryCapacity = 4 + additionalSlotsAmount;
+        }
     }
 }

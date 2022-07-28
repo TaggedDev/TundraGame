@@ -50,7 +50,7 @@ namespace Player.Inventory
         /// </summary>
         public float Weight { get => weight; protected set => weight=value; }
 
-        public virtual GameObject ThrowAway(Vector3 originPosition, Vector3 throwForce)
+        public virtual GameObject Drop(Vector3 originPosition, Vector3 throwForce)
         {
             var obj = Instantiate(ItemInWorldPrefab, originPosition, Quaternion.identity);
             obj.TryGetComponent(out Rigidbody rigidbody);
@@ -59,14 +59,23 @@ namespace Player.Inventory
             return obj;
         }
 
-        public virtual List<GameObject> MassThrowAway(int amount, Vector3 originPosition, Vector3 throwForce)
+        public virtual List<GameObject> MassDrop(int amount, Vector3 originPosition, Vector3 throwForce)
         {
             List<GameObject> result = new List<GameObject>();
             for (int i = 0; i < amount; i++)
             {
-                result.Add(ThrowAway(originPosition, throwForce));
+                result.Add(Drop(originPosition, throwForce));
             }
             return result;
+        }
+
+        public virtual GameObject Throw(Vector3 originPosition, Vector3 force)//TODO: реализация должна быть другой, т.к. предмет должен выбрасываться со скоростью и уроном. Как это сделать, я пока не знаю.
+        {
+            var obj = Instantiate(ItemInWorldPrefab, originPosition + force / 10, Quaternion.identity);
+            obj.TryGetComponent(out Rigidbody rigidbody);
+            if (rigidbody != null)
+                rigidbody.AddForce(force);
+            return obj;
         }
     }
 }

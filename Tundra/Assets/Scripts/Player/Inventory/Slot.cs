@@ -104,17 +104,31 @@ namespace Player.Inventory
         /// <param name="position">Местоположение объекта, который будет выбрасывать предмет.</param>
         /// <param name="force">Сила и направление, с которыми будет выброшен предмет (при наличии у объекта предмета компонента <see cref="Rigidbody"/>).</param>
         /// <exception cref="ArgumentOutOfRangeException">Возникает в случае, если нет такого количества предметов.</exception>
-        public List<GameObject> ThrowItems(int amount, Vector3 position, Vector3 force)
+        public List<GameObject> DropItems(int amount, Vector3 position, Vector3 force)
         {
             if (amount > ItemsAmount) throw new ArgumentOutOfRangeException(nameof(amount), "Amount of items to throw is more than amount of items inside the slot.");
             ItemsAmount -= amount;
-            return Item.MassThrowAway(amount, position, force);
+            return Item.MassDrop(amount, position, force);
         }
 
-        public GameObject ThrowItem(Vector3 position, Vector3 force)
+        public GameObject DropItem(Vector3 position, Vector3 force)
         {
             if (ItemsAmount == 0) throw new InvalidOperationException("Недостаточно предметов, чтобы выбросить.");
-            var res = Item.ThrowAway(position, force);
+            var res = Item.Drop(position, force);
+            ItemsAmount--;
+            return res;
+        }
+        /// <summary>
+        /// Бросает предмет из слота в противника.
+        /// </summary>
+        /// <param name="position">Местоположение игрока (чей инвентарь).</param>
+        /// <param name="target">Направление, по которому нужно сделать бросок.</param>
+        /// <returns>Брошенный объект.</returns>
+        /// <exception cref="NotImplementedException">Пока не реализовано, т.к. нужно написать логику для брошенного предмета, а это вряд ли получится сделать сейчас.</exception>
+        public GameObject ThrowItem(Vector3 position, Vector3 target)//TODO: возможно придётся несколько переделать после нормальной реализации броска предмета. 
+        {
+            if (ItemsAmount == 0) throw new InvalidOperationException("Недостаточно предметов, чтобы кинуть.");
+            var res = Item.Drop(position, target * 20);
             ItemsAmount--;
             return res;
         }

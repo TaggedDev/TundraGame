@@ -83,5 +83,19 @@ namespace Player.States
                 }
             }
         }
+
+        public override void LoadForThrow()
+        {
+            if (Input.GetMouseButton(2))
+            {
+                PlayerBehaviour._throwLoadingProgress -= Time.deltaTime;
+                if (PlayerBehaviour._throwLoadingProgress <= 0) PlayerBehaviour._throwLoadingProgress = 0;
+            }
+            else
+            {
+                if (PlayerBehaviour._throwLoadingProgress <= 0) PlayerBehaviour.ThrowItem();
+                PlayerBehaviour._throwLoadingProgress = PlayerBehaviour.ThrowPrepareTime;
+            }
+        }
     }
 }

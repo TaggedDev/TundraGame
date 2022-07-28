@@ -17,6 +17,7 @@ public class InventoryUISlotsController : MonoBehaviour
     private PlayerInventoryController _inventoryController;
     private GameObject _pickupPanel;
     public float mouseScrollCoefficient = 10f;
+    private GameObject[] _visualSlots;
 
     public int SelectedInventorySlot
     {
@@ -28,12 +29,12 @@ public class InventoryUISlotsController : MonoBehaviour
         {
             if (_slotId != value)
             {
-                GameObject slot = GameObject.Find("InventorySlot" + _slotId);
+                GameObject slot = _visualSlots[_slotId - 1];
                 SetSlotActive(slot, false);
                 if (value < 1) value = 1;
                 if (value > MaxSlotsNumber) value = MaxSlotsNumber;
                 _slotId = value;
-                slot = GameObject.Find("InventorySlot" + _slotId);
+                slot = _visualSlots[_slotId - 1];
                 SetSlotActive(slot, true);
                 _inventoryController.SelectedInventorySlot = _slotId - 1;
             }
@@ -54,6 +55,11 @@ public class InventoryUISlotsController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _visualSlots = new GameObject[9];
+        for (int i = 1; i < 10; i++)
+        {
+            _visualSlots[i - 1] = GameObject.Find("InventorySlot" + i);
+        }
         _inventoryController = _player.GetComponent<PlayerInventoryController>();
         _pickupPanel = GameObject.Find("ItemPickupPanel");
         _inventoryController.Inventory.MaxInventoryCapacityChanging += ResetSlots;
@@ -65,7 +71,7 @@ public class InventoryUISlotsController : MonoBehaviour
         MaxSlotsNumber = e;
         for (int i = 1; i < 10; i++)
         {
-            GameObject slot = GameObject.Find("InventorySlot" + i);
+            GameObject slot = _visualSlots[i - 1];
             if (i <= e) slot.SetActive(true);
             else slot.SetActive(false);
         }
@@ -90,7 +96,7 @@ public class InventoryUISlotsController : MonoBehaviour
         int i = 0;
         foreach (var slot in _inventoryController.Inventory.Slots)
         {
-            GameObject uislot = GameObject.Find("InventorySlot" + ++i);
+            GameObject uislot = _visualSlots[i++];
             uislot.transform.Find("ItemIcon").gameObject.GetComponent<Image>().sprite = slot.Item != null ? slot.Item.Icon : _transparent;
             uislot.transform.Find("AmountIndicator").gameObject.GetComponent<Text>().text = slot.ItemsAmount.ToString();
         }

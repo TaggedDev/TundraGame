@@ -37,6 +37,8 @@ namespace Player.Behaviour
         public bool IsOverweight => _inventoryController.Inventory.TotalWeight > maxLoadCapacity;
 
         public float OverweightCoefficient => _inventoryController.Inventory.TotalWeight / maxLoadCapacity;
+
+        public float ThrowPrepareTime => throwPrepareTime;
         // Fields
         [SerializeField] private float maxStarve;
         [SerializeField] private float saturationTime;
@@ -50,6 +52,7 @@ namespace Player.Behaviour
 
         [SerializeField] private float maxStamina;
         [SerializeField] private float maxLoadCapacity;
+        [SerializeField] private float throwPrepareTime;
         // Variables
         //TODO: Здесь нужно думаю, по-хорошему, как-нибудь закрыть эти поля для доступа, но разрешить их изменение в классах States
         internal float _currentStarveCapacity;
@@ -61,6 +64,7 @@ namespace Player.Behaviour
         internal float _currentHealth;
 
         internal float _currentStamina;
+        internal float _throwLoadingProgress;
 
         private BasicState _currentState;
         private PlayerMovement _playerMovement;
@@ -107,6 +111,7 @@ namespace Player.Behaviour
             _cameraHolder.transform.position = transform.position;
             ContinueStarving();
             UpdateTemperature();
+            LoadForThrow();
         }
 
         private void MoveCharacter() => _currentState.MoveCharacter();
@@ -115,12 +120,24 @@ namespace Player.Behaviour
 
         private void UpdateTemperature() => _currentState.UpdateTemperature();
 
+        private void LoadForThrow() => _currentState.LoadForThrow();
+
+        public void ThrowItem()
+        {
+            _throwLoadingProgress = ThrowPrepareTime;//Вся эта странная история нужна для того, чтобы он кидал в нужую сторону. 
+            Vector3 target = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+            target = Quaternion.Euler(0, 90, 0) * new Vector3(target.x, 0, target.z).normalized;
+            print(target);
+            _inventoryController.Inventory.Slots[_inventoryController.SelectedInventorySlot].ThrowItem(transform.position, (target).normalized);//TODO: возможно целью всё же будет мышь.
+        }
+
         public void SwitchState<T>() where T : BasicState
         {
             var state = _allStates.FirstOrDefault(st => st is T);
             _currentState.Stop();
             state.Start();
             _currentState = state;
+            _throwLoadingProgress = ThrowPrepareTime;
         }
     }
 }

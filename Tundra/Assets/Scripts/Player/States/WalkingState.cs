@@ -14,7 +14,7 @@ namespace Player.States
 
         public override void MoveCharacter()
         {
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (Input.GetKey(KeyCode.LeftShift) && !Input.GetMouseButton(2))
             {
                 if (StateSwitcher is PlayerBehaviour behaviour)
                 {
@@ -74,6 +74,20 @@ namespace Player.States
              * If the current temperature is above the perfect + absolute amplitude - start increasing the temperature
              * If temperature is greater then 'hot' temperature -> burning. Hit player
              */
+        }
+
+        public override void LoadForThrow()
+        {
+            if (Input.GetMouseButton(2))
+            {
+                PlayerBehaviour._throwLoadingProgress -= Time.deltaTime;
+                if (PlayerBehaviour._throwLoadingProgress <= 0) PlayerBehaviour._throwLoadingProgress = 0;
+            }
+            else
+            {
+                if (PlayerBehaviour._throwLoadingProgress <= 0) PlayerBehaviour.ThrowItem();
+                PlayerBehaviour._throwLoadingProgress = PlayerBehaviour.ThrowPrepareTime;
+            }
         }
     }
 }
