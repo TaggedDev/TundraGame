@@ -10,6 +10,7 @@ namespace System
     public class LoadOrder : MonoBehaviour
     {
         [SerializeField] private MapGenerator mapGenerator;
+        [SerializeField] private ChunksGenerator chunksGenerator;
         [SerializeField] private PlayerSpawner playerHolder;
         [SerializeField] private EntityGenerator entityGenerator;
         [SerializeField] private MobFabric[] fabrics;
@@ -24,6 +25,7 @@ namespace System
         private void Start()
         {
             mapGenerator.gameObject.SetActive(true);
+            chunksGenerator.gameObject.SetActive(true);
             StartCoroutine(InstantiateWorld());
         }
 

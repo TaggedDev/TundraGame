@@ -130,126 +130,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 185302902}
-  - component: {fileID: 185302901}
-  - component: {fileID: 185302900}
   - component: {fileID: 185302903}
   m_Layer: 0
-  m_Name: MapGenerator
+  m_Name: ChunksGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &185302900
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 185302899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc6cb73b44800bd4097f6ee9d448558b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  textureRender: {fileID: 979650150}
-  meshFilter: {fileID: 979650151}
-  meshRenderer: {fileID: 979650150}
---- !u!114 &185302901
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 185302899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ebf3b5e1f9e54c4cb2d532791a355f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  editorPreviewLOD: 0
-  persistance: 0.5
-  noiseScale: 48
-  octaves: 8
-  lacunarity: 2
-  seed: 146
-  offset: {x: 10.47, y: 36.2}
-  meshHeightMultiplier: 15
-  meshHeightCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0.005222399
-      value: 0.05125442
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.46158782
-      value: 0.12653996
-      inSlope: 0.029205197
-      outSlope: 0.029205197
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.20002392
-    - serializedVersion: 3
-      time: 0.7436257
-      value: 0.21838635
-      inSlope: 0.20783459
-      outSlope: 0.20783459
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.501502
-    - serializedVersion: 3
-      time: 0.78002834
-      value: 0.52439195
-      inSlope: 6.390471
-      outSlope: 6.390471
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.14220494
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.80808485
-      value: 0.814028
-      inSlope: 4.7198453
-      outSlope: 4.7198453
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.1409979
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.9710295
-      value: 1.6021444
-      inSlope: 0.1890926
-      outSlope: 0.1890926
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.16611752
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  autoUpdate: 0
-  regions:
-  - name: snow_fields
-    height: 0
-    colour: {r: 0.995283, g: 0.999492, b: 1, a: 0}
-  - name: rocky_mountains
-    height: 0.7
-    colour: {r: 0.3764706, g: 0.33333334, b: 0.2901961, a: 0}
-  - name: snow_peaks
-    height: 0.9
-    colour: {r: 1, g: 0.9882075, b: 0.9764151, a: 0}
-  mapDataCount: 0
-  meshDataCount: 0
-  drawMode: 2
-  normalizeMode: 1
 --- !u!4 &185302902
 Transform:
   m_ObjectHideFlags: 0
@@ -257,12 +145,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 185302899}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 164.4997, y: -32.88305, z: -891.0574}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_Father: {fileID: 1930570507}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &185302903
 MonoBehaviour:
@@ -423,7 +311,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 930eeae5c449405eb9d824fafee144cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapGenerator: {fileID: 185302901}
+  mapGenerator: {fileID: 974813766}
+  chunksGenerator: {fileID: 185302903}
   playerHolder: {fileID: 1324381163}
   entityGenerator: {fileID: 1035914547}
   fabrics:
@@ -442,6 +331,132 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &974813764
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 974813765}
+  - component: {fileID: 974813766}
+  m_Layer: 0
+  m_Name: MapSettings
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &974813765
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 974813764}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1930570507}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &974813766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 974813764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ebf3b5e1f9e54c4cb2d532791a355f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  editorPreviewLOD: 0
+  persistance: 0.5
+  noiseScale: 48
+  octaves: 8
+  lacunarity: 2
+  seed: 146
+  offset: {x: 10.47, y: 36.2}
+  meshHeightMultiplier: 15
+  meshHeightCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.005222399
+      value: 0.05125442
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.46158782
+      value: 0.12653996
+      inSlope: 0.029205197
+      outSlope: 0.029205197
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.20002392
+    - serializedVersion: 3
+      time: 0.7436257
+      value: 0.21838635
+      inSlope: 0.20783459
+      outSlope: 0.20783459
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.501502
+    - serializedVersion: 3
+      time: 0.78002834
+      value: 0.52439195
+      inSlope: 6.390471
+      outSlope: 6.390471
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.14220494
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.80808485
+      value: 0.814028
+      inSlope: 4.7198453
+      outSlope: 4.7198453
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.1409979
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.9710295
+      value: 1.6021444
+      inSlope: 0.1890926
+      outSlope: 0.1890926
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.16611752
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  autoUpdate: 0
+  regions:
+  - name: snow_fields
+    height: 0
+    colour: {r: 0.995283, g: 0.999492, b: 1, a: 0}
+  - name: rocky_mountains
+    height: 0.7
+    colour: {r: 0.3764706, g: 0.33333334, b: 0.2901961, a: 0}
+  - name: snow_peaks
+    height: 0.9
+    colour: {r: 1, g: 0.9882075, b: 0.9764151, a: 0}
+  mapDataCount: 0
+  meshDataCount: 0
+  drawMode: 0
+  normalizeMode: 1
 --- !u!1 &979650148
 GameObject:
   m_ObjectHideFlags: 0
@@ -534,7 +549,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1035914546
 GameObject:
@@ -574,12 +589,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1035914546}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 164.4997, y: -32.88305, z: -891.0574}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_Father: {fileID: 1930570507}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1197648072
 Mesh:
@@ -960,7 +975,7 @@ Transform:
   m_Children:
   - {fileID: 1294261272}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1704736029
 GameObject:
@@ -1038,7 +1053,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d095480ecc04248b6a842a77a513236, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _focusObject: {fileID: 1324381161}
+  _player: {fileID: 1324381168}
   maxCameraRotationCooldown: 0.1
 --- !u!1 &1922622782
 GameObject:
@@ -1131,6 +1146,39 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1930570506
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1930570507}
+  m_Layer: 0
+  m_Name: Nature
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1930570507
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930570506}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -164.4997, y: 32.88305, z: 891.0574}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 185302902}
+  - {fileID: 1035914548}
+  - {fileID: 974813765}
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2032988266
 GameObject:
