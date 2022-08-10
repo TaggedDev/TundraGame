@@ -1,7 +1,9 @@
-﻿using System.Collections;
+
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.PostProcessing;
+
 
 namespace Environment
 {
@@ -10,13 +12,10 @@ namespace Environment
         [SerializeField] private Transform player;
         [SerializeField] private float EmissionMultiplyer;
         [SerializeField] private float maxChangeWindDirectionCooldown = 5;
-
+        
         private PostProcessVolume _postProcessingVolume;
-
-
         private float _changeWindDirectionCooldown;
         
-
         public Vector3 Wind
         {
             get
@@ -109,6 +108,7 @@ namespace Environment
         private void Start()
         {
             _postProcessingVolume = GetComponent<PostProcessVolume>();
+
             _snowSystem = GetComponent<ParticleSystem>();
             GenerateRandomWind();
         }
@@ -116,6 +116,7 @@ namespace Environment
         private void Update()
         {
             transform.position = player.position;
+
             _changeWindDirectionCooldown -= Time.deltaTime;
             if (_changeWindDirectionCooldown <= 0)
                 GenerateRandomWind();
@@ -153,4 +154,5 @@ namespace Environment
         
     }
     
+
 }

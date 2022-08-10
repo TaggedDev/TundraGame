@@ -7,6 +7,20 @@ namespace Creatures.Mobs
     {
         private const int ENTITY_LAYER_INDEX = 10;
         private const int PLAYER_LAYER_INDEX = 9;
+        
+        public Transform Target
+        {
+            get => _target;
+            set => _target = value;
+        }
+        public Vector3 TargetPosition
+        {
+            get => _targetPosition;
+            set => _targetPosition = value;
+        }
+        
+        private Transform _target;
+        private Vector3 _targetPosition;
         private Mob _owner;
 
         private void Start()
@@ -19,7 +33,7 @@ namespace Creatures.Mobs
             switch (other.gameObject.layer)
             {
                 case PLAYER_LAYER_INDEX:
-                    _owner.IgnoreSensor = true;
+                    _owner.IsIgnoringSensor = true;
                     break;
                 case ENTITY_LAYER_INDEX:
                     _owner.IsEntitySensed = true;
@@ -32,7 +46,7 @@ namespace Creatures.Mobs
             switch (other.gameObject.layer)
             {
                 case PLAYER_LAYER_INDEX:
-                    _owner.IgnoreSensor = false;
+                    _owner.IsIgnoringSensor = false;
                     break;
                 case ENTITY_LAYER_INDEX:
                     _owner.IsEntitySensed = false;

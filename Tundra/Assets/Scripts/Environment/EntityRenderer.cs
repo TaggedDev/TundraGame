@@ -7,7 +7,7 @@ namespace Environment
     /// GameObject with this class must be only 1 in the scene. This class checks the current player position
     /// and updates entities' positions and visibility.
     /// </summary>
-    public class EntityGenerator : MonoBehaviour
+    public class EntityRenderer : MonoBehaviour
     {
         // Fields
         [SerializeField] private ChunksGenerator chunksGenerator;
