@@ -13,16 +13,10 @@ TagManager:
   - UI
   - 
   - 
-  - Terrain
-<<<<<<< Updated upstream
-  - Player
-  - Environment
-  - Mob
-=======
-  - PostProcessing
   - 
   - 
->>>>>>> Stashed changes
+  - 
+  - 
   - 
   - 
   - 
