@@ -6,12 +6,15 @@ namespace Creatures.Player.States
     {
         protected readonly PlayerMovement PlayerMovement;
         protected readonly IPlayerStateSwitcher PlayerStateSwitcher;
+        protected readonly PlayerBehaviour PlayerBehaviour;
 
         protected BasicPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher)
         {
-            PlayerMovement = playerMovement;
+            PlayerBehaviour = (PlayerBehaviour)switcher;
+            this.PlayerMovement = playerMovement;
             PlayerStateSwitcher = switcher;
-    }
+            PlayerMovement = playerMovement;
+        }
 
         /// <summary>
         /// On State changed | Start
@@ -27,6 +30,21 @@ namespace Creatures.Player.States
         /// Basic movement with sprint
         /// </summary>
         public abstract void MoveCharacter();
+        
+        /// <summary>
+        /// Updates starving state in <see cref="PlayerBehaviour"/>
+        /// </summary>
+        public abstract void ContinueStarving();
+
+        /// <summary>
+        /// Updates temperature in <see cref="PlayerBehaviour"/>
+        /// </summary>
+        public abstract void UpdateTemperature();
+
+        /// <summary>
+        /// Loads weapon for throwing.
+        /// </summary>
+        public abstract void LoadForThrow();
     }
 
 }

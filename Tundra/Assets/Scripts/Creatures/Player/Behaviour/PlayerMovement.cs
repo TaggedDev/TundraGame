@@ -7,7 +7,6 @@ namespace Creatures.Player.Behaviour
         [SerializeField] private float speed;
         //private Animator _animator;
         private Camera _mainCamera;
-
         public float Speed { get => speed; set => speed = value; }
         //public Animator Animator { get => _animator; set => _animator = value; }
         public Vector3 Forward { get; private set; }
