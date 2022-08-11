@@ -18,7 +18,7 @@ namespace Creatures.Player.States
             {
                 if (PlayerStateSwitcher is PlayerBehaviour behaviour)
                 {
-                    if (behaviour._currentStamina > 0) PlayerStateSwitcher.SwitchState<SprintingState>();
+                    if (behaviour._currentStamina > 0) PlayerStateSwitcher.SwitchState<SprintingPlayerState>();
                 }
             }
 

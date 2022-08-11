@@ -17,7 +17,7 @@ namespace Creatures.Player.States
             _v = Input.GetAxis("Vertical");
 
             if (Mathf.Abs(_h) > 0 || Mathf.Abs(_v) > 0)
-                PlayerStateSwitcher.SwitchState<WalkingState>();
+                PlayerStateSwitcher.SwitchState<WalkingPlayerState>();
 
             if (PlayerStateSwitcher is PlayerBehaviour behaviour)
             {

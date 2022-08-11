@@ -35,7 +35,7 @@ namespace Creatures.Player.States
             if (PlayerStateSwitcher is PlayerBehaviour behaviour)
             {
                 if (behaviour._currentStamina > 0) behaviour._currentStamina -= (5 * Time.deltaTime);
-                if (behaviour._currentStamina <= 0) PlayerStateSwitcher.SwitchState<WalkingState>();
+                if (behaviour._currentStamina <= 0) PlayerStateSwitcher.SwitchState<WalkingPlayerState>();
             }
         }
 
@@ -76,7 +76,7 @@ namespace Creatures.Player.States
 
         public override void LoadForThrow()
         {
-            PlayerBehaviour.SwitchState<WalkingState>();
+            PlayerBehaviour.SwitchState<WalkingPlayerState>();
         }
     }
 }
