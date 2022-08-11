@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Player.Inventory
+namespace Creatures.Player.Inventory
 {
     /// <summary>
     /// Базовый класс для конфигураций оружий ближнего и дальнего боя.

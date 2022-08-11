@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Player.Inventory
+namespace Creatures.Player.Inventory
 {
     [CreateAssetMenu(fileName = "New Ranged Configuration", menuName = "Items/Ranged Configuration")]
     public class RangedWeaponConfiguration : WeaponConfiguration

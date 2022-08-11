@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Player.Inventory
+namespace Creatures.Player.Inventory
 {
     [CreateAssetMenu(fileName = "New Melee Configuration", menuName = "Items/Melee Configuration")]
     public class MeleeWeaponConfiguration : WeaponConfiguration

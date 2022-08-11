@@ -26,7 +26,7 @@ namespace Creatures.Player.Behaviour
 
         public void UpdateDirections()
         {
-            var cameraForward = _mainCamera.transform.forward;
+            var cameraForward = (_mainCamera != null ? _mainCamera : Camera.main).transform.forward;
             Forward = new Vector3(cameraForward.x, 0, cameraForward.z);
             Forward = Vector3.Normalize(Forward);
             Right = Quaternion.Euler(new Vector3(0, 90, 0)) * Forward;

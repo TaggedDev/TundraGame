@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CameraConfiguration;
 using Creatures.Player.States;
-using Player.Behaviour;
+using Creatures.Player.Behaviour;
 using UnityEngine;
 
 namespace Creatures.Player.Behaviour
@@ -104,6 +104,8 @@ namespace Creatures.Player.Behaviour
             _currentHealth = maxHealth;
 
             _currentStamina = maxStamina;
+
+            _throwLoadingProgress = throwPrepareTime;
         }
 
         private void Update()

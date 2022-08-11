@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Player.Inventory
+namespace Creatures.Player.Inventory
 {
     /// <summary>
     /// Класс, представляющий собой слот инвентаря для хранения предметов игрока.

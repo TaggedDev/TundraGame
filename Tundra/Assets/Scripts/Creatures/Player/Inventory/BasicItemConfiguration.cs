@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Player.Inventory
+namespace Creatures.Player.Inventory
 {
     /// <summary>
     /// Базовый класс для создания конфигураций предметов в игре.

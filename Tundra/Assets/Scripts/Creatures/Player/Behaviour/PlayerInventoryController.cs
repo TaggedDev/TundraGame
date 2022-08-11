@@ -1,19 +1,29 @@
 ﻿using Creatures.Player.Behaviour;
-using Player.Inventory;
+using Creatures.Player.Inventory;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Player.Behaviour
+namespace Creatures.Player.Behaviour
 {
     public class PlayerInventoryController : MonoBehaviour
     {
+        private InventoryContainer inventory;
+
         public static float ItemPickingUpTime => 3f;
 
         private PlayerBehaviour _playerBehaviour;
 
-        public InventoryContainer Inventory { get; private set; }
+        public InventoryContainer Inventory 
+        { 
+            get
+            {
+                if (inventory == null) Init();
+                return inventory;
+            }
+            private set => inventory = value;
+        }
 
         public GameObject NearestInteractableItem { get; private set; }
 
@@ -25,6 +35,11 @@ namespace Player.Behaviour
 
         // Start is called before the first frame update
         void Start()
+        {
+            if (inventory == null) Init();
+        }
+
+        private void Init()
         {
             Inventory = new InventoryContainer();
             _playerBehaviour = GetComponent<PlayerBehaviour>();

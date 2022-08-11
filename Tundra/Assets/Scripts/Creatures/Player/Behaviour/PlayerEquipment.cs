@@ -1,5 +1,5 @@
-﻿using Player.Behaviour;
-using Player.Inventory;
+﻿using Creatures.Player.Behaviour;
+using Creatures.Player.Inventory;
 using System;
 using System.Collections;
 using System.Collections.Generic;

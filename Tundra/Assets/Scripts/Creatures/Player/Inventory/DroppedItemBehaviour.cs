@@ -1,10 +1,10 @@
-﻿using Player.Behaviour;
+﻿using Creatures.Player.Behaviour;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace Player.Inventory
+namespace Creatures.Player.Inventory
 {
     public class DroppedItemBehaviour : MonoBehaviour
     {
