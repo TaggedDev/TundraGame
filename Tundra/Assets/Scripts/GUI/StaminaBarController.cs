@@ -9,21 +9,21 @@ public class StaminaBarController : MonoBehaviour
     [SerializeField] GameObject player;
 
 
-    PlayerBehaviour playerBehaviour;
+    PlayerProperties playerProperties;
     Image imageComponent;
 
     // Start is called before the first frame update
     void Start()
     {
         imageComponent = GetComponent<Image>();
-        playerBehaviour = player.GetComponent<PlayerBehaviour>();
+        playerProperties = player.GetComponent<PlayerProperties>();
     }
 
     // Update is called once per frame
     void Update()
     {
         transform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, player.transform.position) - new Vector2(0, 50);
-        float displayValue = playerBehaviour.CurrentStamina / playerBehaviour.MaxStamina;
+        float displayValue = playerProperties.CurrentStamina / playerProperties.MaxStamina;
         imageComponent.fillAmount = displayValue;
     }
 }

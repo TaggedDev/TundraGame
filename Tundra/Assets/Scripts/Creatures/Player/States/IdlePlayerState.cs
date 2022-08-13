@@ -5,8 +5,8 @@ namespace Creatures.Player.States
 {
     public class IdlePlayerState : BasicPlayerState
     {
-        public IdlePlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher) 
-            : base (playerMovement, switcher)
+        public IdlePlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher, PlayerProperties playerProperties) 
+            : base (playerMovement, switcher, playerProperties)
         { }
 
         private float _h = 0, _v = 0;
@@ -21,9 +21,9 @@ namespace Creatures.Player.States
 
             if (PlayerStateSwitcher is PlayerBehaviour behaviour)
             {
-                if (behaviour._currentStamina < behaviour.MaxStamina)
+                if (PlayerProperties.CurrentStamina < PlayerProperties.MaxStamina)
                 {
-                    behaviour._currentStamina += (3 * Time.deltaTime);
+                    PlayerProperties.CurrentStamina += (3 * Time.deltaTime);
                 }
             }
         }
@@ -38,13 +38,13 @@ namespace Creatures.Player.States
 
         public override void ContinueStarving()
         {
-            if (PlayerBehaviour._currentSaturationTime > 0)
+            if (PlayerProperties._currentStarvationTime > 0)
             {
-                PlayerBehaviour._currentSaturationTime -= Time.deltaTime;
+                PlayerProperties._currentStarvationTime -= Time.deltaTime;
                 return;
             }
-            PlayerBehaviour._currentStarveCapacity -= 1;
-            if (PlayerBehaviour._currentStarveCapacity < 0) PlayerBehaviour._currentStarveCapacity = 0;
+            PlayerProperties.CurrentStarvationCapacity -= 1;
+            if (PlayerProperties.CurrentStarvationCapacity < 0) PlayerProperties.CurrentStarvationCapacity = 0;
         }
 
         public override void UpdateTemperature()
@@ -64,22 +64,22 @@ namespace Creatures.Player.States
             {
                 if (Input.GetKey(KeyCode.Equals))
                 {
-                    PlayerBehaviour._currentTemperature += 0.02f;
+                    PlayerProperties.CurrentWarmLevel += 0.02f;
                 }
                 if (Input.GetKey(KeyCode.Minus))
                 {
-                    PlayerBehaviour._currentTemperature -= 0.02f;
+                    PlayerProperties.CurrentWarmLevel -= 0.02f;
                 }
             }
             if (Input.GetKey(KeyCode.H))
             {
                 if (Input.GetKey(KeyCode.Equals))
                 {
-                    PlayerBehaviour._currentHealth += 1f;
+                    PlayerProperties.CurrentHealth += 1f;
                 }
                 if (Input.GetKey(KeyCode.Minus))
                 {
-                    PlayerBehaviour._currentHealth -= 1f;
+                    PlayerProperties.CurrentHealth -= 1f;
                 }
             }
         }
@@ -88,13 +88,13 @@ namespace Creatures.Player.States
         {
             if (Input.GetMouseButton(2))
             {
-                PlayerBehaviour._throwLoadingProgress -= Time.deltaTime;
-                if (PlayerBehaviour._throwLoadingProgress <= 0) PlayerBehaviour._throwLoadingProgress = 0;
+                PlayerProperties._throwLoadingProgress -= Time.deltaTime;
+                if (PlayerProperties._throwLoadingProgress <= 0) PlayerProperties._throwLoadingProgress = 0;
             }
             else
             {
-                if (PlayerBehaviour._throwLoadingProgress <= 0) PlayerBehaviour.ThrowItem();
-                PlayerBehaviour._throwLoadingProgress = PlayerBehaviour.ThrowPrepareTime;
+                if (PlayerProperties._throwLoadingProgress <= 0) PlayerBehaviour.ThrowItem();
+                PlayerProperties._throwLoadingProgress = PlayerProperties.ThrowPrepareTime;
             }
         }
     }

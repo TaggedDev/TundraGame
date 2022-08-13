@@ -5,8 +5,8 @@ namespace Creatures.Player.States
 {
     public class WalkingPlayerState : BasicPlayerState
     {
-        public WalkingPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher)
-            : base(playerMovement, switcher)
+        public WalkingPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher, PlayerProperties playerProperties)
+            : base(playerMovement, switcher, playerProperties)
         { }
 
         private float _h = 0, _v = 0;
@@ -16,10 +16,7 @@ namespace Creatures.Player.States
         {
             if (Input.GetKey(KeyCode.LeftShift) && !Input.GetMouseButton(2))
             {
-                if (PlayerStateSwitcher is PlayerBehaviour behaviour)
-                {
-                    if (behaviour._currentStamina > 0) PlayerStateSwitcher.SwitchState<SprintingPlayerState>();
-                }
+                if (PlayerProperties.CurrentStamina > 0) PlayerStateSwitcher.SwitchState<SprintingPlayerState>();
             }
 
             _h = Input.GetAxis("Horizontal");
@@ -53,13 +50,13 @@ namespace Creatures.Player.States
 
         public override void ContinueStarving()
         {
-            if (PlayerBehaviour._currentSaturationTime > 0)
+            if (PlayerProperties._currentStarvationTime > 0)
             {
-                PlayerBehaviour._currentSaturationTime -= Time.deltaTime;
+                PlayerProperties._currentStarvationTime -= Time.deltaTime;
                 return;
             }
-            PlayerBehaviour._currentStarveCapacity -= 1;
-            if (PlayerBehaviour._currentStarveCapacity < 0) PlayerBehaviour._currentStarveCapacity = 0;
+            PlayerProperties.CurrentStarvationCapacity -= 1;
+            if (PlayerProperties.CurrentStarvationCapacity < 0) PlayerProperties.CurrentStarvationCapacity = 0;
         }
 
         public override void UpdateTemperature()
@@ -79,13 +76,13 @@ namespace Creatures.Player.States
         {
             if (Input.GetMouseButton(2))
             {
-                PlayerBehaviour._throwLoadingProgress -= Time.deltaTime;
-                if (PlayerBehaviour._throwLoadingProgress <= 0) PlayerBehaviour._throwLoadingProgress = 0;
+                PlayerProperties._throwLoadingProgress -= Time.deltaTime;
+                if (PlayerProperties._throwLoadingProgress <= 0) PlayerProperties._throwLoadingProgress = 0;
             }
             else
             {
-                if (PlayerBehaviour._throwLoadingProgress <= 0) PlayerBehaviour.ThrowItem();
-                PlayerBehaviour._throwLoadingProgress = PlayerBehaviour.ThrowPrepareTime;
+                if (PlayerProperties._throwLoadingProgress <= 0) PlayerBehaviour.ThrowItem();
+                PlayerProperties._throwLoadingProgress = PlayerProperties.ThrowPrepareTime;
             }
         }
     }

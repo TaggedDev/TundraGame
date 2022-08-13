@@ -7,13 +7,15 @@ namespace Creatures.Player.States
         protected readonly PlayerMovement PlayerMovement;
         protected readonly IPlayerStateSwitcher PlayerStateSwitcher;
         protected readonly PlayerBehaviour PlayerBehaviour;
+        protected readonly PlayerProperties PlayerProperties;
 
-        protected BasicPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher)
+        protected BasicPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher, PlayerProperties playerProperties)
         {
             PlayerBehaviour = (PlayerBehaviour)switcher;
-            this.PlayerMovement = playerMovement;
+            PlayerMovement = playerMovement;
             PlayerStateSwitcher = switcher;
             PlayerMovement = playerMovement;
+            PlayerProperties = playerProperties;
         }
 
         /// <summary>

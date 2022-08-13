@@ -11,61 +11,15 @@ namespace Creatures.Player.Behaviour
     {
 
         //Properites
-        public float MaxStarve => maxStarve;
-        public float CurrentStarveCapacity => _currentStarveCapacity;
 
-        public float PerfectTemperature => perfectTemperature;
-        public float CurrentTemperature => _currentTemperature;
+        public bool IsOverweight => _inventoryController.Inventory.TotalWeight > _playerProperties.MaxLoadCapacity;
 
-        public float AbsoluteTemperatureAmplitude => absoluteTemperatureAmplitude;
-
-        public float MaxHealth
-        {
-            get => maxHealth;
-            set => maxHealth = value;
-        }
-
-        public float CurrentHealth => _currentHealth;
-
-        public float CurrentStamina => _currentStamina;
-
-        public float MaxStamina => maxStamina;
-
-        public float MaxWarmLevel => maxWarmLevel;
-
-        public float CurrentWarmLevel => _currentWarmLevel;
-
-        public bool IsOverweight => _inventoryController.Inventory.TotalWeight > maxLoadCapacity;
-
-        public float OverweightCoefficient => _inventoryController.Inventory.TotalWeight / maxLoadCapacity;
-
-        public float ThrowPrepareTime => throwPrepareTime;
+        public float OverweightCoefficient => _inventoryController.Inventory.TotalWeight / _playerProperties.MaxLoadCapacity;
         // Fields
-        [SerializeField] private float maxStarve;
-        [SerializeField] private float saturationTime;
 
-        [SerializeField] private float perfectTemperature;
-        [SerializeField] private float absoluteTemperatureAmplitude;
-        [SerializeField] private float hotTemperature;
-        [SerializeField] private float maxWarmLevel;
-
-        [SerializeField] private float maxHealth;
-
-        [SerializeField] private float maxStamina;
-        [SerializeField] private float maxLoadCapacity;
-        [SerializeField] private float throwPrepareTime;
         // Variables
         //TODO: Здесь нужно думаю, по-хорошему, как-нибудь закрыть эти поля для доступа, но разрешить их изменение в классах States
-        internal float _currentStarveCapacity;
-        internal float _currentSaturationTime;
-
-        internal float _currentTemperature;
-        internal float _currentWarmLevel;
-
-        internal float _currentHealth;
-
-        internal float _currentStamina;
-        internal float _throwLoadingProgress;
+        
 
         private BasicPlayerState _currentState;
         private PlayerMovement _playerMovement;
@@ -73,6 +27,7 @@ namespace Creatures.Player.Behaviour
         private CameraMovement _cameraHolder;
         private Camera _mainCamera;
         private PlayerInventoryController _inventoryController;
+        private PlayerProperties _playerProperties;
 
         //private float cameraDistance;
 
@@ -84,11 +39,12 @@ namespace Creatures.Player.Behaviour
             _cameraHolder = transform.parent.GetComponentInChildren<CameraMovement>();
             _playerMovement = GetComponent<PlayerMovement>();
             _inventoryController = GetComponent<PlayerInventoryController>();
+            _playerProperties = GetComponent<PlayerProperties>();
             _allStates = new List<BasicPlayerState>()
             {
-                new IdlePlayerState(_playerMovement, this),
-                new WalkingPlayerState(_playerMovement,  this),
-                new SprintingPlayerState(_playerMovement, this),
+                new IdlePlayerState(_playerMovement, this, _playerProperties),
+                new WalkingPlayerState(_playerMovement,  this, _playerProperties),
+                new SprintingPlayerState(_playerMovement, this, _playerProperties),
             };
             _currentState = _allStates[0];
             _currentState.Start();
@@ -96,16 +52,6 @@ namespace Creatures.Player.Behaviour
             _playerMovement.UpdateDirections();
 
             //Initialize health, starvation and temperature:
-            _currentStarveCapacity = maxStarve;
-            _currentSaturationTime = saturationTime;
-
-            _currentTemperature = PerfectTemperature;
-
-            _currentHealth = maxHealth;
-
-            _currentStamina = maxStamina;
-
-            _throwLoadingProgress = throwPrepareTime;
         }
 
         private void Update()
@@ -127,11 +73,13 @@ namespace Creatures.Player.Behaviour
 
         public void ThrowItem()
         {
-            _throwLoadingProgress = ThrowPrepareTime;//Вся эта странная история нужна для того, чтобы он кидал в нужую сторону. 
+            _playerProperties._throwLoadingProgress = _playerProperties.ThrowPrepareTime;
+            //Вся эта странная история нужна для того, чтобы он кидал в нужую сторону. 
+            //TODO: Не работает, надо фиксить.
             Vector3 target = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
             target = Quaternion.Euler(0, 90, 0) * new Vector3(target.x, 0, target.z).normalized;
             print(target);
-            _inventoryController.Inventory.Slots[_inventoryController.SelectedInventorySlot].ThrowItem(transform.position, (target).normalized);//TODO: возможно целью всё же будет мышь.
+            _inventoryController.Inventory.Slots[_inventoryController.SelectedInventorySlot].ThrowItem(transform.position, (target).normalized);
         }
 
         public void SwitchState<T>() where T : BasicPlayerState
@@ -140,7 +88,7 @@ namespace Creatures.Player.Behaviour
             _currentState.Stop();
             state.Start();
             _currentState = state;
-            _throwLoadingProgress = ThrowPrepareTime;
+            _playerProperties._throwLoadingProgress = _playerProperties.ThrowPrepareTime;
         }
     }
 }

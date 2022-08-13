@@ -5,8 +5,8 @@ namespace Creatures.Player.States
 {
     public class SprintingPlayerState : BasicPlayerState
     {
-        public SprintingPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher)
-            : base(playerMovement, switcher)
+        public SprintingPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher, PlayerProperties playerProperties)
+            : base(playerMovement, switcher, playerProperties)
         { }
 
         private float _h = 0, _v = 0;
@@ -34,8 +34,8 @@ namespace Creatures.Player.States
 
             if (PlayerStateSwitcher is PlayerBehaviour behaviour)
             {
-                if (behaviour._currentStamina > 0) behaviour._currentStamina -= (5 * Time.deltaTime);
-                if (behaviour._currentStamina <= 0) PlayerStateSwitcher.SwitchState<WalkingPlayerState>();
+                if (PlayerProperties.CurrentStamina > 0) PlayerProperties.CurrentStamina -= (5 * Time.deltaTime);
+                if (PlayerProperties.CurrentStamina <= 0) PlayerStateSwitcher.SwitchState<WalkingPlayerState>();
             }
         }
 
@@ -52,13 +52,13 @@ namespace Creatures.Player.States
 
         public override void ContinueStarving()
         {
-            if (PlayerBehaviour._currentSaturationTime > 0)
+            if (PlayerProperties._currentStarvationTime > 0)
             {
-                PlayerBehaviour._currentSaturationTime -= Time.deltaTime;
+                PlayerProperties._currentStarvationTime -= Time.deltaTime;
                 return;
             }
-            PlayerBehaviour._currentStarveCapacity -= 1;
-            if (PlayerBehaviour._currentStarveCapacity < 0) PlayerBehaviour._currentStarveCapacity = 0;
+            PlayerProperties.CurrentStarvationCapacity -= 1;
+            if (PlayerProperties.CurrentStarvationCapacity < 0) PlayerProperties.CurrentStarvationCapacity = 0;
         }
 
         public override void UpdateTemperature()
