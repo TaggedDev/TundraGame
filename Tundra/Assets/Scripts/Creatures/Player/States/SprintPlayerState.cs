@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace Creatures.Player.States
 {
-    public class WalkingPlayerState : BasicPlayerState
+    public class SprintPlayerState : BasicPlayerState
     {
-        public WalkingPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher, PlayerProperties playerProperties)
+        public SprintPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher, PlayerProperties playerProperties)
             : base(playerMovement, switcher, playerProperties)
         { }
 
@@ -14,17 +14,11 @@ namespace Creatures.Player.States
 
         public override void MoveCharacter()
         {
-            if (Input.GetKey(KeyCode.LeftShift) && !Input.GetMouseButton(2))
-            {
-                if (PlayerProperties.CurrentStamina > 0) PlayerStateSwitcher.SwitchState<SprintingPlayerState>();
-            }
+            if (Input.GetKeyUp(KeyCode.LeftShift))
+                PlayerStateSwitcher.SwitchState<WalkPlayerState>();
 
             _h = Input.GetAxis("Horizontal");
             _v = Input.GetAxis("Vertical");
-
-            if (_h == 0 && _v == 0)
-                PlayerStateSwitcher.SwitchState<IdlePlayerState>();
-
             _rightMovement = PlayerMovement.Right * (PlayerMovement.Speed * Time.deltaTime * _h);
             _forwardMovement = PlayerMovement.Forward * (PlayerMovement.Speed * Time.deltaTime * _v);
 
@@ -37,16 +31,24 @@ namespace Creatures.Player.States
             position += _rightMovement;
             position += _forwardMovement;
             transform.position = position;
+
+            if (PlayerStateSwitcher is PlayerBehaviour behaviour)
+            {
+                if (PlayerProperties.CurrentStamina > 0) PlayerProperties.CurrentStamina -= (5 * Time.deltaTime);
+                if (PlayerProperties.CurrentStamina <= 0) PlayerStateSwitcher.SwitchState<WalkPlayerState>();
+            }
         }
 
         public override void Start()
         {
-            //_playerMovement.Animator.SetFloat("Speed", .5f);
-            PlayerMovement.Speed = PlayerBehaviour.IsOverweight ? 2f : 3f;
+            //_playerMovement.Animator.SetFloat("Speed", 1f);
+            PlayerMovement.Speed = PlayerBehaviour.IsOverweight ? 2.5f : 3.5f;
         }
 
         public override void Stop()
-        { }
+        {
+            PlayerMovement.Speed = PlayerBehaviour.IsOverweight ? 2f : 3f;
+        }
 
         public override void ContinueStarving()
         {
@@ -74,16 +76,7 @@ namespace Creatures.Player.States
 
         public override void LoadForThrow()
         {
-            if (Input.GetMouseButton(2))
-            {
-                PlayerProperties._throwLoadingProgress -= Time.deltaTime;
-                if (PlayerProperties._throwLoadingProgress <= 0) PlayerProperties._throwLoadingProgress = 0;
-            }
-            else
-            {
-                if (PlayerProperties._throwLoadingProgress <= 0) PlayerBehaviour.ThrowItem();
-                PlayerProperties._throwLoadingProgress = PlayerProperties.ThrowPrepareTime;
-            }
+            PlayerBehaviour.SwitchState<WalkPlayerState>();
         }
     }
 }

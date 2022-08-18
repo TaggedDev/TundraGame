@@ -43,8 +43,8 @@ namespace Creatures.Player.Behaviour
             _allStates = new List<BasicPlayerState>()
             {
                 new IdlePlayerState(_playerMovement, this, _playerProperties),
-                new WalkingPlayerState(_playerMovement,  this, _playerProperties),
-                new SprintingPlayerState(_playerMovement, this, _playerProperties),
+                new WalkPlayerState(_playerMovement,  this, _playerProperties),
+                new SprintPlayerState(_playerMovement, this, _playerProperties),
             };
             _currentState = _allStates[0];
             _currentState.Start();

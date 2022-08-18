@@ -8,6 +8,22 @@ namespace Creatures.Player.States
         protected readonly IPlayerStateSwitcher PlayerStateSwitcher;
         protected readonly PlayerBehaviour PlayerBehaviour;
         protected readonly PlayerProperties PlayerProperties;
+        /// <summary>
+        /// The hunger consumption value of this state.
+        /// </summary>
+        protected abstract float StarvingConsumptionCoeeficient { get; }
+        /// <summary>
+        /// The stamina consumption value of this state.
+        /// </summary>
+        protected abstract float StaminaConsumption { get; }
+        /// <summary>
+        /// Player speed multiplier.
+        /// </summary>
+        protected abstract float SpeedCoefficient { get; }
+        /// <summary>
+        /// The warm consumption coefficient of this state.
+        /// </summary>
+        protected abstract float WarmConsumptionCoefficient { get; }
 
         protected BasicPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher, PlayerProperties playerProperties)
         {
@@ -39,9 +55,9 @@ namespace Creatures.Player.States
         public abstract void ContinueStarving();
 
         /// <summary>
-        /// Updates temperature in <see cref="PlayerBehaviour"/>
+        /// Updates player warm with current state coefficient.
         /// </summary>
-        public abstract void UpdateTemperature();
+        public abstract void ContinueFreeze();
 
         /// <summary>
         /// Loads weapon for throwing.
