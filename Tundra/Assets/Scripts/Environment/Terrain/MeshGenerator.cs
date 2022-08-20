@@ -20,7 +20,7 @@ namespace Environment.Terrain
 	    {
 		    AnimationCurve heightCurve = new AnimationCurve(heightCurveKeys.keys);
 
-		    int meshSimplificationIncrement = levelOfDetail == 0 ? 1 : levelOfDetail * 2;
+		    int meshSimplificationIncrement = 1;
 
 		    int borderedSize = heightMap.GetLength(0);
 		    int meshSize = borderedSize - 2 * meshSimplificationIncrement;
@@ -73,9 +73,9 @@ namespace Environment.Terrain
 				    if (x < borderedSize - 1 && y < borderedSize - 1)
 				    {
 					    int a = vertexIndicesMap[x, y];
-					    int b = vertexIndicesMap[x + meshSimplificationIncrement, y];
-					    int c = vertexIndicesMap[x, y + meshSimplificationIncrement];
-					    int d = vertexIndicesMap[x + meshSimplificationIncrement, y + meshSimplificationIncrement];
+					    int b = vertexIndicesMap[x + 1, y];
+					    int c = vertexIndicesMap[x, y + 1];
+					    int d = vertexIndicesMap[x + 1, y + 1];
 					    meshData.AddTriangle(a, d, c);
 					    meshData.AddTriangle(d, a, b);
 				    }
@@ -133,9 +133,9 @@ namespace Environment.Terrain
             }
             else
             {
-                _triangles [_triangleIndex] = a;
-                _triangles [_triangleIndex + 1] = b;
-                _triangles [_triangleIndex + 2] = c;
+	            _triangles[_triangleIndex] = a;
+	            _triangles[_triangleIndex + 1] = b;
+	            _triangles[_triangleIndex + 2] = c;
                 _triangleIndex += 3;   
             }
         }

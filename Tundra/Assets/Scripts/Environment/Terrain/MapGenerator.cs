@@ -49,7 +49,7 @@ namespace Environment.Terrain
 		
 
 		// Constants
-		public const int mapChunkSize = 47;
+		public const int mapChunkSize = 11;
 		
 		// Fields
 		[SerializeField] [Range(0, 6)] private int editorPreviewLOD;
@@ -67,8 +67,8 @@ namespace Environment.Terrain
 		private readonly Queue<MapThreadInfo<MapData>> mapDataThreadInfoQueue = new Queue<MapThreadInfo<MapData>>();
 		private readonly Queue<MapThreadInfo<MeshData>> meshDataThreadInfoQueue = new Queue<MapThreadInfo<MeshData>>();
 
-		[HideInInspector] public int mapDataCount;
-		[HideInInspector] public int meshDataCount;
+		/*[HideInInspector]*/ public int mapDataCount;
+		/*[HideInInspector]*/ public int meshDataCount;
 		
 		// Variables
 		public DrawMode drawMode;
