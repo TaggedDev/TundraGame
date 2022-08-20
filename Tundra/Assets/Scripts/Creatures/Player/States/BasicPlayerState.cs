@@ -1,4 +1,5 @@
 ﻿using Creatures.Player.Behaviour;
+using UnityEngine;
 
 namespace Creatures.Player.States
 {
@@ -8,10 +9,11 @@ namespace Creatures.Player.States
         protected readonly IPlayerStateSwitcher PlayerStateSwitcher;
         protected readonly PlayerBehaviour PlayerBehaviour;
         protected readonly PlayerProperties PlayerProperties;
+        protected readonly Rigidbody PlayerRigidBody;
         /// <summary>
         /// The hunger consumption value of this state.
         /// </summary>
-        protected abstract float StarvingConsumptionCoeeficient { get; }
+        protected abstract float StarvingConsumptionCoefficient { get; }
         /// <summary>
         /// The stamina consumption value of this state.
         /// </summary>
@@ -32,6 +34,7 @@ namespace Creatures.Player.States
             PlayerStateSwitcher = switcher;
             PlayerMovement = playerMovement;
             PlayerProperties = playerProperties;
+            PlayerRigidBody = PlayerBehaviour.gameObject.GetComponent<Rigidbody>();
         }
 
         /// <summary>
@@ -47,22 +50,97 @@ namespace Creatures.Player.States
         /// <summary>
         /// Basic movement with sprint
         /// </summary>
-        public abstract void MoveCharacter();
-        
+        public virtual void MoveCharacter()
+        {
+            if (Input.GetKey(KeyCode.LeftShift) && !Input.GetMouseButton(2) && !(this is SprintPlayerState))
+            {
+                if (PlayerProperties.CurrentStamina > 0) PlayerStateSwitcher.SwitchState<SprintPlayerState>();
+            }
+            else if (this is SprintPlayerState && !Input.GetKey(KeyCode.LeftShift))
+            {
+                PlayerStateSwitcher.SwitchState<WalkPlayerState>();
+            }
+
+            float _h = Input.GetAxis("Horizontal");
+            float _v = Input.GetAxis("Vertical");
+
+            if (_h == 0 && _v == 0 && !(this is IdlePlayerState))
+                PlayerStateSwitcher.SwitchState<IdlePlayerState>();
+
+            Vector3 _rightMovement = PlayerMovement.Right * (PlayerMovement.Speed * SpeedCoefficient * Time.deltaTime * _h);
+            Vector3 _forwardMovement = PlayerMovement.Forward * (PlayerMovement.Speed * SpeedCoefficient * Time.deltaTime * _v);
+
+            PlayerMovement.Heading = Vector3.Normalize(_rightMovement + _forwardMovement);
+
+            //PlayerRigidBody.AddForce(_rightMovement + _forwardMovement);
+            var transform = PlayerMovement.transform;
+            transform.forward += PlayerMovement.Heading;
+
+            var position = transform.position;
+            position += _rightMovement;
+            position += _forwardMovement;
+            transform.position = position;
+        }
+
         /// <summary>
         /// Updates starving state in <see cref="PlayerBehaviour"/>
         /// </summary>
-        public abstract void ContinueStarving();
+        public virtual void ContinueStarving()
+        {
+            //TODO: Maybe this algorithm is not as good as I think
+            if (PlayerProperties._currentStarvationTime > 0)
+            {
+                PlayerProperties._currentStarvationTime -= Time.deltaTime;
+                return;
+            }
+            PlayerProperties.CurrentStarvationCapacity -= StarvingConsumptionCoefficient;
+            if (PlayerProperties.CurrentStarvationCapacity < 0)
+            {
+                PlayerProperties.CurrentStarvationCapacity = 0;
+                PlayerProperties.CurrentHealth -= 1f * Time.deltaTime;
+                if (PlayerProperties.CurrentHealth < 0) PlayerProperties.CurrentHealth = 0;
+            }
+        }
 
         /// <summary>
         /// Updates player warm with current state coefficient.
         /// </summary>
-        public abstract void ContinueFreeze();
+        public virtual void ContinueFreeze()
+        {
+            //TODO: Do something with it.
+            PlayerProperties.CurrentWarmLevel -= WarmConsumptionCoefficient * Time.deltaTime;
+            if (PlayerProperties.CurrentWarmLevel < 0)
+            {
+                PlayerProperties.CurrentWarmLevel = 0;
+                PlayerProperties.CurrentHealth -= 1f * Time.deltaTime;
+                if (PlayerProperties.CurrentHealth < 0) PlayerProperties.CurrentHealth = 0;
+            }
+        }
+
+        public virtual void SpendStamina()
+        {
+            if (PlayerProperties.CurrentStamina > 0) PlayerProperties.CurrentStamina -= (StaminaConsumption * Time.deltaTime);
+            if (PlayerProperties.CurrentStamina <= 0) StaminaIsOver();
+        }
+
+        protected abstract void StaminaIsOver();
 
         /// <summary>
         /// Loads weapon for throwing.
         /// </summary>
-        public abstract void LoadForThrow();
+        public virtual void LoadForThrow()
+        {
+            if (Input.GetMouseButton(2))
+            {
+                PlayerProperties._throwLoadingProgress -= Time.deltaTime;
+                if (PlayerProperties._throwLoadingProgress <= 0) PlayerProperties._throwLoadingProgress = 0;
+            }
+            else
+            {
+                if (PlayerProperties._throwLoadingProgress <= 0) PlayerBehaviour.ThrowItem();
+                PlayerProperties._throwLoadingProgress = PlayerProperties.ThrowPrepareTime;
+            }
+        }
     }
 
 }

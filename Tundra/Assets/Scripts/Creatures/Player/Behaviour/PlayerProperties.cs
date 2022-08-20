@@ -11,7 +11,7 @@ namespace Creatures.Player.Behaviour
     /// <summary>
     /// Хранит состояние основных параметров персонажа игрока.
     /// </summary>
-    public class PlayerProperties : Component
+    public class PlayerProperties : MonoBehaviour
     {
         /// <summary>
         /// Максимальный запас голода у игрока.
@@ -208,9 +208,8 @@ namespace Creatures.Player.Behaviour
             }
         }
 
-        public void Initialize(BasicPlayerRaceConfiguration race)
+        void Start()
         {
-            if (playerRace == null) playerRace = race;
             if (playerRace != null)
             {
                 maxStarve = playerRace.MaxStarve;

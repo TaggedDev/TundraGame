@@ -11,6 +11,14 @@ namespace Creatures.Player.States
 
         private float _h = 0, _v = 0;
 
+        protected override float StarvingConsumptionCoefficient => 1f;
+
+        protected override float StaminaConsumption => -1f;
+
+        protected override float SpeedCoefficient => 0;
+
+        protected override float WarmConsumptionCoefficient => 2f;
+
         public override void MoveCharacter()
         {
             _h = Input.GetAxis("Horizontal");
@@ -18,84 +26,25 @@ namespace Creatures.Player.States
 
             if (Mathf.Abs(_h) > 0 || Mathf.Abs(_v) > 0)
                 PlayerStateSwitcher.SwitchState<WalkPlayerState>();
-
-            if (PlayerStateSwitcher is PlayerBehaviour behaviour)
-            {
-                if (PlayerProperties.CurrentStamina < PlayerProperties.MaxStamina)
-                {
-                    PlayerProperties.CurrentStamina += (3 * Time.deltaTime);
-                }
-            }
         }
 
         public override void Start()
         {
-            //_playerMovement.Animator.SetFloat("Speed", 0f);
+            Debug.Log("Got Idle State");
         }
 
         public override void Stop()
+        {
+            Debug.Log("Lost Idle State");
+        }
+
+        public override void SpendStamina()
+        {
+            PlayerProperties.CurrentStamina -= (StaminaConsumption * Time.deltaTime);
+            if (PlayerProperties.CurrentStamina > PlayerProperties.MaxStamina) PlayerProperties.CurrentStamina = PlayerProperties.MaxStamina;
+        }
+
+        protected override void StaminaIsOver()
         { }
-
-        public override void ContinueStarving()
-        {
-            if (PlayerProperties._currentStarvationTime > 0)
-            {
-                PlayerProperties._currentStarvationTime -= Time.deltaTime;
-                return;
-            }
-            PlayerProperties.CurrentStarvationCapacity -= 1;
-            if (PlayerProperties.CurrentStarvationCapacity < 0) PlayerProperties.CurrentStarvationCapacity = 0;
-        }
-
-        public override void UpdateTemperature()
-        {
-            //TODO: make temperature logic
-
-            /*
-             * Check if current temperature is below the perfect + absolute amplitude
-             * If so, start decreasing the temperature of player
-             * If player is in comfy place, keep him warm
-             * If the current temperature is above the perfect + absolute amplitude - start increasing the temperature
-             * If temperature is greater then 'hot' temperature -> burning. Hit player
-             */
-
-            //debug
-            if (Input.GetKey(KeyCode.T))
-            {
-                if (Input.GetKey(KeyCode.Equals))
-                {
-                    PlayerProperties.CurrentWarmLevel += 0.02f;
-                }
-                if (Input.GetKey(KeyCode.Minus))
-                {
-                    PlayerProperties.CurrentWarmLevel -= 0.02f;
-                }
-            }
-            if (Input.GetKey(KeyCode.H))
-            {
-                if (Input.GetKey(KeyCode.Equals))
-                {
-                    PlayerProperties.CurrentHealth += 1f;
-                }
-                if (Input.GetKey(KeyCode.Minus))
-                {
-                    PlayerProperties.CurrentHealth -= 1f;
-                }
-            }
-        }
-
-        public override void LoadForThrow()
-        {
-            if (Input.GetMouseButton(2))
-            {
-                PlayerProperties._throwLoadingProgress -= Time.deltaTime;
-                if (PlayerProperties._throwLoadingProgress <= 0) PlayerProperties._throwLoadingProgress = 0;
-            }
-            else
-            {
-                if (PlayerProperties._throwLoadingProgress <= 0) PlayerBehaviour.ThrowItem();
-                PlayerProperties._throwLoadingProgress = PlayerProperties.ThrowPrepareTime;
-            }
-        }
     }
 }

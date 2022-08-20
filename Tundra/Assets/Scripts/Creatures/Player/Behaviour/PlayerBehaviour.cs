@@ -45,31 +45,25 @@ namespace Creatures.Player.Behaviour
                 new IdlePlayerState(_playerMovement, this, _playerProperties),
                 new WalkPlayerState(_playerMovement,  this, _playerProperties),
                 new SprintPlayerState(_playerMovement, this, _playerProperties),
+                new BusyPlayerState(_playerMovement, this, _playerProperties)
             };
             _currentState = _allStates[0];
             _currentState.Start();
             _mainCamera.transform.RotateAround(transform.position, Vector3.up, 45);
             _playerMovement.UpdateDirections();
-
+            _playerMovement.Speed = 2f;
             //Initialize health, starvation and temperature:
         }
 
         private void Update()
         {
-            MoveCharacter();
+            _currentState.MoveCharacter();
             _cameraHolder.transform.position = transform.position;
-            ContinueStarving();
-            UpdateTemperature();
-            LoadForThrow();
+            _currentState.ContinueStarving();
+            _currentState.ContinueFreeze();
+            if (Input.GetMouseButton(2)) _currentState.LoadForThrow();
+            _currentState.SpendStamina();
         }
-
-        private void MoveCharacter() => _currentState.MoveCharacter();
-
-        private void ContinueStarving() => _currentState.ContinueStarving();
-
-        private void UpdateTemperature() => _currentState.UpdateTemperature();
-
-        private void LoadForThrow() => _currentState.LoadForThrow();
 
         public void ThrowItem()
         {
@@ -78,7 +72,7 @@ namespace Creatures.Player.Behaviour
             //TODO: Не работает, надо фиксить.
             Vector3 target = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
             target = Quaternion.Euler(0, 90, 0) * new Vector3(target.x, 0, target.z).normalized;
-            print(target);
+            //print(target);
             _inventoryController.Inventory.Slots[_inventoryController.SelectedInventorySlot].ThrowItem(transform.position, (target).normalized);
         }
 
