@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
 namespace Environment.Terrain
@@ -62,6 +63,13 @@ namespace Environment.Terrain
 			if (sqrSpatial > WorldConstants.SqrChunkUpdateThreshold)
 			{
 				viewerPositionOld = _viewerPosition;
+				
+				// Get current chunk and bake the navmesh for it 
+				int currentChunkCoordX = Mathf.RoundToInt (_viewerPosition.x / _chunkSize);
+				int currentChunkCoordY = Mathf.RoundToInt (_viewerPosition.y / _chunkSize);
+				_terrainChunkDictionary[new Vector2(currentChunkCoordX, currentChunkCoordY)].BakeNavMesh();
+				
+				// Update all chunks due level of distance
 				UpdateVisibleChunks();
 				foreach (TerrainChunk chunk in _terrainChunksVisibleLastUpdate)
 					chunk.UpdateCollisionMesh();
@@ -77,19 +85,23 @@ namespace Environment.Terrain
 
 			foreach (var chunk in _terrainChunksVisibleLastUpdate)
 				chunk.SetVisibility (false);
-			
-			_terrainChunksVisibleLastUpdate.Clear ();
+
+			_terrainChunksVisibleLastUpdate.Clear();
 				
 			int currentChunkCoordX = Mathf.RoundToInt (_viewerPosition.x / _chunkSize);
 			int currentChunkCoordY = Mathf.RoundToInt (_viewerPosition.y / _chunkSize);
-			
-			for (int yOffset = -chunksVisibleInViewDst; yOffset <= chunksVisibleInViewDst; yOffset++) {
-				for (int xOffset = -chunksVisibleInViewDst; xOffset <= chunksVisibleInViewDst; xOffset++) {
-					Vector2 viewedChunkCoord = new Vector2 (currentChunkCoordX + xOffset, currentChunkCoordY + yOffset);
 
-					if (_terrainChunkDictionary.ContainsKey (viewedChunkCoord)) {
-						_terrainChunkDictionary [viewedChunkCoord].UpdateTerrainChunk ();
-					} else
+			for (int yOffset = -chunksVisibleInViewDst; yOffset <= chunksVisibleInViewDst; yOffset++)
+			{
+				for (int xOffset = -chunksVisibleInViewDst; xOffset <= chunksVisibleInViewDst; xOffset++)
+				{
+					Vector2 viewedChunkCoord = new Vector2(currentChunkCoordX + xOffset, currentChunkCoordY + yOffset);
+
+					if (_terrainChunkDictionary.ContainsKey(viewedChunkCoord))
+					{
+						_terrainChunkDictionary[viewedChunkCoord].UpdateTerrainChunk();
+					}
+					else
 					{
 						var chunk = new TerrainChunk(viewedChunkCoord, _chunkSize, detailLevels, colliderLODIndex,
 							transform, mapMaterial, entityInfo, viewer.transform);
@@ -123,7 +135,8 @@ namespace Environment.Terrain
 			private bool _hasSetCollider;
 			private Bounds _bounds;
 			private MapData _mapData;
-			
+			private NavMeshSurface _navMeshSurface;
+
 			//Entities
 			private readonly EntityLevel[] _entitiesInfo;
 			private readonly Dictionary<Vector2, Entity> _entities;
@@ -191,6 +204,8 @@ namespace Environment.Terrain
 					_meshObject.transform.localScale = Vector3.one * WorldConstants.Scale;
 					_meshObject.isStatic = true;
 				}
+				
+				_navMeshSurface = _meshObject.AddComponent<NavMeshSurface>();
 			}
 
 			/// <summary>
@@ -234,10 +249,17 @@ namespace Environment.Terrain
 					}
 
 					_terrainChunksVisibleLastUpdate.Add(this);
-
 				}
-
 				SetVisibility (visible);
+			}
+
+			/// <summary>
+			/// Bakes the navmesh for current chunk map
+			/// </summary>
+			public void BakeNavMesh()
+			{
+				Debug.Log($"Baking with {_meshObject.name}");
+				_navMeshSurface.BuildNavMesh();
 			}
 
 			/// <summary>
