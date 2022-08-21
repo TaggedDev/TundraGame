@@ -57,13 +57,17 @@ namespace Creatures.Player.Behaviour
 
         private void Update()
         {
-            _currentState.MoveCharacter();
             _cameraHolder.transform.position = transform.position;
             _currentState.ContinueStarving();
             _currentState.ContinueFreeze();
             if (Input.GetMouseButton(2)) _currentState.LoadForThrow();
             _currentState.SpendStamina();
             _currentState.HandleUserInput();
+        }
+
+        void FixedUpdate()
+        {
+            _currentState.MoveCharacter();
         }
 
         public void ThrowItem()

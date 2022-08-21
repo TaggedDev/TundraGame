@@ -23,7 +23,11 @@ public class ThrowProgressController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, player.transform.position) + new Vector2(0, 80);
         progressBar.fillAmount = (properties.ThrowPrepareTime - properties._throwLoadingProgress) / properties.ThrowPrepareTime;
+    }
+
+    private void FixedUpdate()
+    {
+        transform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, player.transform.position) + new Vector2(0, 80);
     }
 }

@@ -22,8 +22,12 @@ public class StaminaBarController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, player.transform.position) - new Vector2(0, 50);
         float displayValue = playerProperties.CurrentStamina / playerProperties.MaxStamina;
         imageComponent.fillAmount = displayValue;
+    }
+
+    private void FixedUpdate()
+    {
+        transform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, player.transform.position) - new Vector2(0, 50);
     }
 }
