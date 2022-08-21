@@ -63,6 +63,7 @@ namespace Creatures.Player.Behaviour
             _currentState.ContinueFreeze();
             if (Input.GetMouseButton(2)) _currentState.LoadForThrow();
             _currentState.SpendStamina();
+            _currentState.HandleUserInput();
         }
 
         public void ThrowItem()

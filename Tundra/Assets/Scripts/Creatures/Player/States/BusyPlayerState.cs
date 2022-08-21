@@ -30,8 +30,6 @@ namespace Creatures.Player.States
         public override void ContinueFreeze()
         {
             //I guess it's like a pause, player should not spend temperature on it
-            //And there I can leave this mode by pressing 'ESC' I think
-            if (Input.GetKeyDown(KeyCode.Escape)) PlayerStateSwitcher.SwitchState<IdlePlayerState>();
         }
 
         public override void ContinueStarving()

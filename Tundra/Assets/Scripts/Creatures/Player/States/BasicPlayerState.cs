@@ -27,6 +27,8 @@ namespace Creatures.Player.States
         /// </summary>
         protected abstract float WarmConsumptionCoefficient { get; }
 
+        private Vector3 velocity;
+
         protected BasicPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher, PlayerProperties playerProperties)
         {
             PlayerBehaviour = (PlayerBehaviour)switcher;
@@ -72,14 +74,18 @@ namespace Creatures.Player.States
 
             PlayerMovement.Heading = Vector3.Normalize(_rightMovement + _forwardMovement);
 
-            //PlayerRigidBody.AddForce(_rightMovement + _forwardMovement);
             var transform = PlayerMovement.transform;
             transform.forward += PlayerMovement.Heading;
+            velocity = Vector3.Lerp(velocity, (_rightMovement + _forwardMovement) * 75f, 0.5f);//TODO: Multiplier is needed to increase force with which player can reach environment
+            //Debug.Log(velocity);
+            //PlayerRigidBody.AddForce(force);
 
-            var position = transform.position;
-            position += _rightMovement;
-            position += _forwardMovement;
-            transform.position = position;
+            PlayerRigidBody.velocity = new Vector3(velocity.x, PlayerRigidBody.velocity.y, velocity.z);
+
+            //var position = transform.position;
+            //position += _rightMovement;
+            //position += _forwardMovement;
+            //transform.position = position;
         }
 
         /// <summary>
@@ -139,6 +145,18 @@ namespace Creatures.Player.States
             {
                 if (PlayerProperties._throwLoadingProgress <= 0) PlayerBehaviour.ThrowItem();
                 PlayerProperties._throwLoadingProgress = PlayerProperties.ThrowPrepareTime;
+            }
+        }
+
+        public virtual void HandleUserInput()
+        {
+            if (!(this is BusyPlayerState) && Input.GetKeyDown(KeyCode.B))
+            {
+                PlayerStateSwitcher.SwitchState<BusyPlayerState>();
+            }
+            else if (this is BusyPlayerState && Input.GetKeyDown(KeyCode.Escape))
+            {
+                PlayerStateSwitcher.SwitchState<IdlePlayerState>();
             }
         }
     }
