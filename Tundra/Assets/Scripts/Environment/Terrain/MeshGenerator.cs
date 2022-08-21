@@ -13,26 +13,22 @@ namespace Environment.Terrain
 	    /// <param name="heightMap">Noise map for current coordinates</param>
 	    /// <param name="heightMultiplier">Multiplier of how hilly will terrain be</param>
 	    /// <param name="heightCurveKeys">Curve for certain heightmap</param>
-	    /// <param name="levelOfDetail">Level of detail for current chunk</param>
 	    /// <returns>MeshData to build chunk mesh from</returns>
 	    public static MeshData GenerateTerrainMesh(float[,] heightMap, float heightMultiplier,
-		    AnimationCurve heightCurveKeys, int levelOfDetail)
+		    AnimationCurve heightCurveKeys)
 	    {
 		    AnimationCurve heightCurve = new AnimationCurve(heightCurveKeys.keys);
 
 		    int meshSimplificationIncrement = 1;
 
 		    int borderedSize = heightMap.GetLength(0);
-		    int meshSize = borderedSize - 2 * meshSimplificationIncrement;
+		    int meshSize = borderedSize - 2;
 		    int meshSizeUnsimplified = borderedSize - 2;
 
 		    float topLeftX = (meshSizeUnsimplified - 1) / -2f;
 		    float topLeftZ = (meshSizeUnsimplified - 1) / 2f;
 
-
-		    int verticesPerLine = (meshSize - 1) / meshSimplificationIncrement + 1;
-
-		    MeshData meshData = new MeshData(verticesPerLine);
+		    MeshData meshData = new MeshData(meshSize);
 
 		    int[,] vertexIndicesMap = new int[borderedSize, borderedSize];
 		    int meshVertexIndex = 0;
@@ -79,8 +75,6 @@ namespace Environment.Terrain
 					    meshData.AddTriangle(a, d, c);
 					    meshData.AddTriangle(d, a, b);
 				    }
-
-				    vertexIndex++;
 			    }
 		    }
 

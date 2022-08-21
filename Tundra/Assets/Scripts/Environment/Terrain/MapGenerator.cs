@@ -96,8 +96,7 @@ namespace Environment.Terrain
 			else if (drawMode == DrawMode.Mesh)
 			{
 				display.DrawMesh(
-					MeshGenerator.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve,
-						editorPreviewLOD),
+					MeshGenerator.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve),
 					TextureGenerator.TextureFromColourMap(mapData.colourMap, mapChunkSize, mapChunkSize));
 			}
 		}
@@ -188,7 +187,7 @@ namespace Environment.Terrain
 		private void ProcessMeshDataThread(MapData mapData, int lod, Action<MeshData> callback)
 		{
 			MeshData meshData =
-				MeshGenerator.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve, lod);
+				MeshGenerator.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve);
 			lock (meshDataThreadInfoQueue)
 			{
 				meshDataThreadInfoQueue.Enqueue(new MapThreadInfo<MeshData>(callback, meshData));
