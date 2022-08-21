@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -45,8 +46,8 @@ namespace Environment.Terrain
 		{
 			_mapGenerator = FindObjectOfType<MapGenerator>();
 
-			_maxViewDst = detailLevels [detailLevels.Length - 1].visibleDstThreshold;
-			_chunkSize = MapGenerator.mapChunkSize - 1;
+			_maxViewDst = detailLevels[detailLevels.Length - 1].visibleDstThreshold;
+			_chunkSize = MapGenerator.mapChunkSize - 1; // 10
 			chunksVisibleInViewDst = Mathf.RoundToInt(_maxViewDst / _chunkSize);
 
 			UpdateVisibleChunks();
@@ -64,10 +65,11 @@ namespace Environment.Terrain
 			{
 				viewerPositionOld = _viewerPosition;
 				
-				// Get current chunk and bake the navmesh for it 
+				// Get current chunk and update the navmesh for it 
 				int currentChunkCoordX = Mathf.RoundToInt (_viewerPosition.x / _chunkSize);
 				int currentChunkCoordY = Mathf.RoundToInt (_viewerPosition.y / _chunkSize);
-				_terrainChunkDictionary[new Vector2(currentChunkCoordX, currentChunkCoordY)].BakeNavMesh();
+				StartCoroutine(_terrainChunkDictionary[new Vector2(currentChunkCoordX, currentChunkCoordY)]
+					.UpdateNavMeshCoroutine());
 				
 				// Update all chunks due level of distance
 				UpdateVisibleChunks();
@@ -126,6 +128,7 @@ namespace Environment.Terrain
 			private readonly Transform _player;
 			private readonly int _chunkSize;
 			private readonly int _colliderLODIndex;
+			private readonly NavMeshSurface _navMeshSurface;
 			private GameObject _meshObject;
 			private MeshRenderer _meshRenderer;
 			private MeshFilter _meshFilter;
@@ -135,7 +138,6 @@ namespace Environment.Terrain
 			private bool _hasSetCollider;
 			private Bounds _bounds;
 			private MapData _mapData;
-			private NavMeshSurface _navMeshSurface;
 
 			//Entities
 			private readonly EntityLevel[] _entitiesInfo;
@@ -206,6 +208,7 @@ namespace Environment.Terrain
 				}
 				
 				_navMeshSurface = _meshObject.AddComponent<NavMeshSurface>();
+				BakeNavMesh();
 			}
 
 			/// <summary>
@@ -256,10 +259,19 @@ namespace Environment.Terrain
 			/// <summary>
 			/// Bakes the navmesh for current chunk map
 			/// </summary>
-			public void BakeNavMesh()
+			private void BakeNavMesh()
 			{
 				Debug.Log($"Baking with {_meshObject.name}");
 				_navMeshSurface.BuildNavMesh();
+			}
+
+			public IEnumerator UpdateNavMeshCoroutine()
+			{
+				var operation = _navMeshSurface.UpdateNavMesh(_navMeshSurface.navMeshData);
+				do
+				{
+					yield return null;
+				} while (!operation.isDone);
 			}
 
 			/// <summary>

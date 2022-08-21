@@ -31,7 +31,7 @@ namespace System
 
         private IEnumerator InstantiateWorld()
         {
-            yield return new WaitUntil(() => mapGenerator.mapDataCount == 121 && mapGenerator.meshDataCount == 101);
+            yield return new WaitUntil(() => mapGenerator.mapDataCount == 9 && mapGenerator.meshDataCount == 9);
             playerHolder.gameObject.SetActive(true);
             playerHolder.SpawnPlayer();
             entityRenderer.gameObject.SetActive(true);
