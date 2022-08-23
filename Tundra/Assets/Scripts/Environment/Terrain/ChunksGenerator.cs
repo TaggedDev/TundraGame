@@ -261,7 +261,6 @@ namespace Environment.Terrain
 			/// </summary>
 			private void BakeNavMesh()
 			{
-				Debug.Log($"Baking with {_meshObject.name}");
 				_navMeshSurface.BuildNavMesh();
 			}
 
