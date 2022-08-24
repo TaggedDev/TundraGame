@@ -17,7 +17,7 @@ namespace Creatures.Mobs.Fox.States
 
         public override void MoveMob()
         {
-            // Thresholding time mob is able to get to target if it's too high
+            // Thresholding time mob is able to get to target if it's too far away
             patrolTime -= Time.fixedDeltaTime;
             if (patrolTime <= 0f || Vector3.Distance(_mob.targetPoint, _mob.transform.position) <= .5f)
             {
@@ -28,7 +28,10 @@ namespace Creatures.Mobs.Fox.States
 
         public override void SniffForTarget()
         {
-            
+            if (Vector3.Distance(_mob.Player.position, _mob.transform.position) <= _mob.SniffingRadius)
+            {
+                _switcher.SwitchState<FoxHuntingState>();
+            }
         }
 
         /// <summary>

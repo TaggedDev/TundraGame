@@ -330,6 +330,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -4013395312205519178, guid: 403785f619ad9db4fbc33d4b5340a3af,
+        type: 3}
+      propertyPath: _player
+      value: 
+      objectReference: {fileID: 1324381167}
+    - target: {fileID: -4013395312205519178, guid: 403785f619ad9db4fbc33d4b5340a3af,
+        type: 3}
+      propertyPath: moveSpeed
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1182028872119186058, guid: 403785f619ad9db4fbc33d4b5340a3af,
         type: 3}
       propertyPath: m_Name

@@ -15,32 +15,17 @@ namespace Creatures.Mobs.Fox.States
         {
             if (_mob.CurrentMobHealth <= _mob.FearHealthThreshold)
                 _switcher.SwitchState<FoxEscapingState>();
-            
-            if (_mob.IsEntitySensed && !_mob.IsIgnoringSensor)
-            {
-                _mob.transform.Rotate(0, 22.5f, 0);
-                _mob.DeltaRotate = _mob.MaxDeltaRotate;
-            }
-            else
-            {
-                if (_mob.DeltaRotate > 0)
-                {
-                    _mob.DeltaRotate -= Time.deltaTime;
-                }
-                else
-                {
-                    //_mob.StartCoroutine(FacePlayer());
-                }
-            }
+
+            _agent.SetDestination(_mob.Player.position);
         }
 
         public override void SniffForTarget()
         {
-            var colliders = Physics.OverlapSphere(_mob.transform.position, _mob.SniffingRadius,
+            /*var colliders = Physics.OverlapSphere(_mob.transform.position, _mob.SniffingRadius,
                 (1 << MOBS_LAYER_INDEX) | (1 << PLAYER_LAYER_INDEX));
             
             // There is always 1 object in overlap sphere (self)
-            if (colliders.Length <= 1) _switcher.SwitchState<FoxPatrollingState>();
+            if (colliders.Length <= 1) _switcher.SwitchState<FoxPatrollingState>();*/
         }
 
         /*private IEnumerator FacePlayer()
@@ -58,7 +43,7 @@ namespace Creatures.Mobs.Fox.States
         private Vector3 NormalizeSlopeMovement() =>
             Vector3.ProjectOnPlane(_mob.transform.forward, _mob.SlopeHit.normal).normalized;
         
-        public override void Start() { }
+        public override void Start() { Debug.Log("Hunting state");}
 
         public override void Stop() { }
     }

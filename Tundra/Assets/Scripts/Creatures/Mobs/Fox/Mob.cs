@@ -8,7 +8,12 @@ namespace Creatures.Mobs.Fox
         protected const int MOB_LAYER_INDEX = 11;
         protected const int TERRAIN_LAYER_INDEX = 8;
         public Vector3 targetPoint;
-        
+
+        public Transform Player
+        {
+            get => _player;
+            set => _player = value;
+        }
         public RaycastHit SlopeHit
         {
             get => _slopeHit;
@@ -107,6 +112,7 @@ namespace Creatures.Mobs.Fox
         [SerializeField] private float roamingRadius;
         [SerializeField] private float sniffingRadius;
         [SerializeField] private float maxMobHealth;
+        [SerializeField] private Transform _player;
 
         private NavMeshAgent _agent;
         private RaycastHit _slopeHit;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Creatures.Mobs.Fox.States;
+using Creatures.Player.Behaviour;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -26,6 +27,8 @@ namespace Creatures.Mobs.Fox
             currentSniffingTime = MAX_SNIFFING_TIME;
             mobHeight = GetComponent<Collider>().bounds.extents.y;
             Agent = gameObject.GetComponent<NavMeshAgent>();
+
+            Player = FindObjectOfType<PlayerMovement>().transform;
             
             _allMobStates = new List<MobBasicState>
             {
