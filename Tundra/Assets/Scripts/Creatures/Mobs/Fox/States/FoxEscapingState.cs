@@ -15,36 +15,11 @@ namespace Creatures.Mobs.Fox.States
 
         public override void MoveMob()
         {
-            _mob.StartCoroutine(SetEscapeDestinationPoint());
-            _agent.Move(Vector3.forward);
+            Vector3 awayDirection = _mob.transform.position - _mob.Player.transform.position;
+            _agent.SetDestination(_mob.transform.position + awayDirection);
         }
 
-        private IEnumerator SetEscapeDestinationPoint()
-        {
-            Quaternion lookRotation = Quaternion.LookRotation(_mob.Player.position - _mob.transform.position);
-            lookRotation *= Quaternion.Euler(0f, 180f, 0f);
-            float time = 0;
-            while (time < .3f)
-            {
-                _mob.transform.rotation = Quaternion.Slerp(_mob.transform.rotation, lookRotation, time);
-                time += Time.fixedDeltaTime * _mob.RotationSpeed;
-                yield return null;
-            }
-        }
         
-        /*private IEnumerator TurnAsideDangerSource()
-        {           
-            Quaternion lookRotation = Quaternion.LookRotation(_dangerSource.position - _mob.transform.position);
-            lookRotation *= Quaternion.Euler(0f, 180f, 0f);
-            float time = 0;
-            while (time < .3f)
-            {
-                _mob.transform.rotation = Quaternion.Slerp(_mob.transform.rotation, lookRotation, time);
-                time += Time.fixedDeltaTime * _mob.RotationSpeed;
-                yield return null;
-            }
-        }*/
-
         public override void SniffForTarget()
         {
             if (Vector3.Distance(_mob.Player.position, _mob.transform.position) > _mob.SniffingRadius)
