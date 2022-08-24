@@ -29,6 +29,7 @@ namespace Creatures.Mobs.Fox
             Agent = gameObject.GetComponent<NavMeshAgent>();
 
             Player = FindObjectOfType<PlayerMovement>().transform;
+            Agent.speed = MoveSpeed;
             
             _allMobStates = new List<MobBasicState>
             {

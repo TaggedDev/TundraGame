@@ -6,9 +6,6 @@ namespace Creatures.Mobs.Fox.States
 {
     public class FoxEscapingState : MobBasicState
     {
-        private Transform _dangerSource;
-        private bool _isFearless;
-        
         public FoxEscapingState(Mob mob, IMobStateSwitcher switcher, NavMeshAgent agent) : base(mob, switcher, agent) { }
 
         public override void Start() { }
@@ -24,7 +21,7 @@ namespace Creatures.Mobs.Fox.States
 
         private IEnumerator SetEscapeDestinationPoint()
         {
-            Quaternion lookRotation = Quaternion.LookRotation(_dangerSource.position - _mob.transform.position);
+            Quaternion lookRotation = Quaternion.LookRotation(_mob.Player.position - _mob.transform.position);
             lookRotation *= Quaternion.Euler(0f, 180f, 0f);
             float time = 0;
             while (time < .3f)
@@ -35,7 +32,7 @@ namespace Creatures.Mobs.Fox.States
             }
         }
         
-        private IEnumerator TurnAsideDangerSource()
+        /*private IEnumerator TurnAsideDangerSource()
         {           
             Quaternion lookRotation = Quaternion.LookRotation(_dangerSource.position - _mob.transform.position);
             lookRotation *= Quaternion.Euler(0f, 180f, 0f);
@@ -46,18 +43,14 @@ namespace Creatures.Mobs.Fox.States
                 time += Time.fixedDeltaTime * _mob.RotationSpeed;
                 yield return null;
             }
-        }
+        }*/
 
         public override void SniffForTarget()
         {
-            if (_isFearless)
-                return;
-            
-            var colliders = Physics.OverlapSphere(_mob.transform.position, _mob.SniffingRadius,
-                (1 << MOBS_LAYER_INDEX) | (1 << PLAYER_LAYER_INDEX));
-            
-            // There is always 1 object in overlap sphere (self)
-            if (colliders.Length == 1) _switcher.SwitchState<FoxPatrollingState>();
+            if (Vector3.Distance(_mob.Player.position, _mob.transform.position) > _mob.SniffingRadius)
+            {
+                _switcher.SwitchState<FoxPatrollingState>();
+            }
         }
     }
 }
