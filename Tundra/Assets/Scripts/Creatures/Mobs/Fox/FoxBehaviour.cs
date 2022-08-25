@@ -17,31 +17,18 @@ namespace Creatures.Mobs.Fox
         private float currentSniffingTime;
         private float mobHeight;
         
-        private void Start()
-        {
-            // Define Fear Health Threshold as 10% of max health
-            FearHealthThreshold = MaxMobHealth * .1f;
-            CurrentMobHealth = MaxMobHealth;
-            
-            currentSniffingTime = MAX_SNIFFING_TIME;
-            mobHeight = GetComponent<Collider>().bounds.extents.y;
-            Agent = gameObject.GetComponent<NavMeshAgent>();
-
-            Player = FindObjectOfType<PlayerMovement>().transform;  
-            _allMobStates = new List<MobBasicState>
-            {
-                new FoxPatrollingState(this, this, Agent),
-                new FoxHuntingState(this, this, Agent),
-                new FoxEscapingState(this, this, Agent)
-            };
-            _currentMobState = _allMobStates[0];
-        }
-
         private void FixedUpdate()
         {
-            // Temporary solution to kill mob
             if (Input.GetKeyDown(KeyCode.X))
+            {
                 CurrentMobHealth -= 5f;
+                if (CurrentMobHealth <= 0)
+                {
+                    Fabric.ReturnToPool(this);
+                    return;
+                }
+            }
+                
 
             Debug.DrawRay(transform.position, Vector3.down * (mobHeight + 0.2f), Color.blue);
             IsGrounded = Physics.Raycast(transform.position, Vector3.down, mobHeight + 0.2f, 1 << TERRAIN_LAYER_INDEX);
@@ -61,10 +48,32 @@ namespace Creatures.Mobs.Fox
             }
         }
 
-        public override void Initialise()
+        public override void Initialise(MobFabric fabric)
         {
+            Fabric = fabric;
             transform.gameObject.layer = MOB_LAYER_INDEX;
             SpawnPosition = transform.position;
+        }
+
+        public override void SpawnSelf()
+        {
+            FearHealthThreshold = MaxMobHealth * .1f;
+            CurrentMobHealth = MaxMobHealth;
+            
+            currentSniffingTime = MAX_SNIFFING_TIME;
+            mobHeight = GetComponent<Collider>().bounds.extents.y;
+            Agent = gameObject.GetComponent<NavMeshAgent>();
+
+            Player = FindObjectOfType<PlayerMovement>().transform;  
+            gameObject.SetActive(true);
+            _allMobStates = new List<MobBasicState>
+            {
+                new FoxPatrollingState(this, this, Agent),
+                new FoxHuntingState(this, this, Agent),
+                new FoxEscapingState(this, this, Agent)
+            };
+            _currentMobState = _allMobStates[0];
+            
         }
 
         public void SwitchState<T>() where T : MobBasicState

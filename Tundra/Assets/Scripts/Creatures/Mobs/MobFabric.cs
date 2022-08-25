@@ -14,7 +14,7 @@ namespace Creatures.Mobs
             InstantiateMobs();
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             if (Input.GetKeyDown(KeyCode.P))
                 SpawnNextMob();
@@ -24,8 +24,9 @@ namespace Creatures.Mobs
         {
             foreach (var mobObject in _mobsList)
             {
-                Mob mob = Instantiate(mobObject);
+                Mob mob = Instantiate(mobObject, transform);
                 mob.transform.gameObject.SetActive(false);
+                mob.Initialise(this);
                 _mobsPool.Enqueue(mob);
             }
         }
@@ -36,9 +37,13 @@ namespace Creatures.Mobs
                 return;
             
             var mob = _mobsPool.Dequeue();
-            mob.gameObject.SetActive(true);
+            mob.SpawnSelf();
         }
-        
-        
+
+        public void ReturnToPool(Mob mob)
+        {
+            _mobsPool.Enqueue(mob);
+            mob.gameObject.SetActive(false);
+        }
     }
 }

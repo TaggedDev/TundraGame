@@ -99,6 +99,12 @@ namespace Creatures.Mobs
             get => _agent;
             set => _agent = value;
         }
+        public MobFabric Fabric
+        {
+            get => _fabric;
+            set => _fabric = value;
+        }
+
 
         [SerializeField] private int mobID;
         [SerializeField] private float rotationSpeed;
@@ -107,7 +113,8 @@ namespace Creatures.Mobs
         [SerializeField] private float sniffingRadius;
         [SerializeField] private float maxMobHealth;
         [SerializeField] private Transform _player;
-
+        
+        private MobFabric _fabric;
         private NavMeshAgent _agent;
         private RaycastHit _slopeHit;
         private Rigidbody _mobRigidbody;
@@ -124,7 +131,12 @@ namespace Creatures.Mobs
         /// Initialises basic parameters. Can't use constructor because objects with this class are initialized by
         /// instantiate method during the game
         /// </summary>
-        public abstract void Initialise();
+        public abstract void Initialise(MobFabric fabric);
+
+        /// <summary>
+        /// Sets the spawn position, turns on the object and sets default values. Basically replaces the Start() method
+        /// </summary>
+        public abstract void SpawnSelf();
 
         private void OnValidate()
         {
