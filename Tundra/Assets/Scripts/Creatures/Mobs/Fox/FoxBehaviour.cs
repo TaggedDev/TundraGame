@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Creatures.Mobs.Fox.States;
 using Creatures.Player.Behaviour;
@@ -28,9 +27,7 @@ namespace Creatures.Mobs.Fox
             mobHeight = GetComponent<Collider>().bounds.extents.y;
             Agent = gameObject.GetComponent<NavMeshAgent>();
 
-            Player = FindObjectOfType<PlayerMovement>().transform;
-            Agent.speed = MoveSpeed;
-            
+            Player = FindObjectOfType<PlayerMovement>().transform;  
             _allMobStates = new List<MobBasicState>
             {
                 new FoxPatrollingState(this, this, Agent),

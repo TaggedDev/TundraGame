@@ -39,11 +39,6 @@ namespace Creatures.Mobs.Fox
             get => maxDeltaRotate;
             set => maxDeltaRotate = value;
         }
-        public float MoveSpeed
-        {
-            get => moveSpeed;
-            set => moveSpeed = value;
-        }
         public float RotationSpeed
         {
             get => rotationSpeed;
@@ -106,7 +101,6 @@ namespace Creatures.Mobs.Fox
         }
 
         [SerializeField] private int mobID;
-        [SerializeField] private float moveSpeed;
         [SerializeField] private float rotationSpeed;
         [SerializeField] private float maxDeltaRotate;
         [SerializeField] private float roamingRadius;
