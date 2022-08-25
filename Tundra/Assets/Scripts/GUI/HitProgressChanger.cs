@@ -24,7 +24,6 @@ public class HitProgressChanger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, player.transform.position) + new Vector2(0, 80);
         if (Input.GetMouseButton(0))
         {
             progress += Time.smoothDeltaTime;
@@ -32,5 +31,10 @@ public class HitProgressChanger : MonoBehaviour
         else progress -= Time.deltaTime;
         progress = Mathf.Clamp(progress, 0, HitLoadTime);
         HitProgress.fillAmount = progress / HitLoadTime;
+    }
+
+    private void FixedUpdate()
+    {
+        transform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, player.transform.position) + new Vector2(0, 80);
     }
 }

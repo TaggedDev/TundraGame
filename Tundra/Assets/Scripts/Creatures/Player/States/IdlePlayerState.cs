@@ -5,11 +5,19 @@ namespace Creatures.Player.States
 {
     public class IdlePlayerState : BasicPlayerState
     {
-        public IdlePlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher) 
-            : base (playerMovement, switcher)
+        public IdlePlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher, PlayerProperties playerProperties) 
+            : base (playerMovement, switcher, playerProperties)
         { }
 
         private float _h = 0, _v = 0;
+
+        protected override float StarvingConsumptionCoefficient => 1f;
+
+        protected override float StaminaConsumption => -1f;
+
+        protected override float SpeedCoefficient => 0;
+
+        protected override float WarmConsumptionCoefficient => 2f;
 
         public override void MoveCharacter()
         {
@@ -17,85 +25,26 @@ namespace Creatures.Player.States
             _v = Input.GetAxis("Vertical");
 
             if (Mathf.Abs(_h) > 0 || Mathf.Abs(_v) > 0)
-                PlayerStateSwitcher.SwitchState<WalkingPlayerState>();
-
-            if (PlayerStateSwitcher is PlayerBehaviour behaviour)
-            {
-                if (behaviour._currentStamina < behaviour.MaxStamina)
-                {
-                    behaviour._currentStamina += (3 * Time.deltaTime);
-                }
-            }
+                PlayerStateSwitcher.SwitchState<WalkPlayerState>();
         }
 
         public override void Start()
         {
-            //_playerMovement.Animator.SetFloat("Speed", 0f);
+            Debug.Log("Got Idle State");
         }
 
         public override void Stop()
+        {
+            Debug.Log("Lost Idle State");
+        }
+
+        public override void SpendStamina()
+        {
+            PlayerProperties.CurrentStamina -= (StaminaConsumption * Time.deltaTime);
+            if (PlayerProperties.CurrentStamina > PlayerProperties.MaxStamina) PlayerProperties.CurrentStamina = PlayerProperties.MaxStamina;
+        }
+
+        protected override void StaminaIsOver()
         { }
-
-        public override void ContinueStarving()
-        {
-            if (PlayerBehaviour._currentSaturationTime > 0)
-            {
-                PlayerBehaviour._currentSaturationTime -= Time.deltaTime;
-                return;
-            }
-            PlayerBehaviour._currentStarveCapacity -= 1;
-            if (PlayerBehaviour._currentStarveCapacity < 0) PlayerBehaviour._currentStarveCapacity = 0;
-        }
-
-        public override void UpdateTemperature()
-        {
-            //TODO: make temperature logic
-
-            /*
-             * Check if current temperature is below the perfect + absolute amplitude
-             * If so, start decreasing the temperature of player
-             * If player is in comfy place, keep him warm
-             * If the current temperature is above the perfect + absolute amplitude - start increasing the temperature
-             * If temperature is greater then 'hot' temperature -> burning. Hit player
-             */
-
-            //debug
-            if (Input.GetKey(KeyCode.T))
-            {
-                if (Input.GetKey(KeyCode.Equals))
-                {
-                    PlayerBehaviour._currentTemperature += 0.02f;
-                }
-                if (Input.GetKey(KeyCode.Minus))
-                {
-                    PlayerBehaviour._currentTemperature -= 0.02f;
-                }
-            }
-            if (Input.GetKey(KeyCode.H))
-            {
-                if (Input.GetKey(KeyCode.Equals))
-                {
-                    PlayerBehaviour._currentHealth += 1f;
-                }
-                if (Input.GetKey(KeyCode.Minus))
-                {
-                    PlayerBehaviour._currentHealth -= 1f;
-                }
-            }
-        }
-
-        public override void LoadForThrow()
-        {
-            if (Input.GetMouseButton(2))
-            {
-                PlayerBehaviour._throwLoadingProgress -= Time.deltaTime;
-                if (PlayerBehaviour._throwLoadingProgress <= 0) PlayerBehaviour._throwLoadingProgress = 0;
-            }
-            else
-            {
-                if (PlayerBehaviour._throwLoadingProgress <= 0) PlayerBehaviour.ThrowItem();
-                PlayerBehaviour._throwLoadingProgress = PlayerBehaviour.ThrowPrepareTime;
-            }
-        }
     }
 }

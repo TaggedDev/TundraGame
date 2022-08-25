@@ -1,10 +1,14 @@
 ﻿using Creatures.Player.Behaviour;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CameraConfiguration
 {
     public class CameraMovement : MonoBehaviour
     {
+        public const float speedModifier = 5f;
+
         private Camera _mainCamera;
         [SerializeField] private PlayerMovement _player;
         [SerializeField] private float maxCameraRotationCooldown;
@@ -32,10 +36,31 @@ namespace CameraConfiguration
         {
             if (!(_currentCameraRotationCooldown <= 0)) return;
             
-            var multiplier = turnDirection ? 1 : -1 ;
-            _mainCamera.transform.RotateAround(transform.position, Vector3.up, 45*multiplier);
+            var multiplier = turnDirection ? 1 : -1;
+            StartCoroutine(StartSmoothCameraRotation(45*multiplier));
+            //_mainCamera.transform.RotateAround(transform.position, Vector3.up, 45*multiplier);
             _player.UpdateDirections();
             _currentCameraRotationCooldown = maxCameraRotationCooldown;
+        }
+
+        private IEnumerator StartSmoothCameraRotation(float rotationValue)
+        {
+            if (45 - rotationValue < 0.0001f)
+            {
+                for (float i = 0f; i < rotationValue; i+=speedModifier)
+                {
+                    _mainCamera.transform.RotateAround(transform.position, Vector3.up, speedModifier);
+                    yield return new WaitForFixedUpdate();
+                }
+            }
+            else
+            {
+                for (float i = 0f; i > rotationValue; i-=speedModifier)
+                {
+                    _mainCamera.transform.RotateAround(transform.position, Vector3.up, -speedModifier);
+                    yield return new WaitForFixedUpdate();
+                }
+            }
         }
     }
 }

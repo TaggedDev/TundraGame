@@ -9,21 +9,25 @@ public class ThrowProgressController : MonoBehaviour
     [SerializeField]
     private GameObject player;
 
-    private PlayerBehaviour behaviour;
+    private PlayerProperties properties;
     private Image progressBar;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        behaviour = player.GetComponent<PlayerBehaviour>();
+        properties = player.GetComponent<PlayerProperties>();
         progressBar = GetComponent<Image>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        progressBar.fillAmount = (properties.ThrowPrepareTime - properties._throwLoadingProgress) / properties.ThrowPrepareTime;
+    }
+
+    private void FixedUpdate()
+    {
         transform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, player.transform.position) + new Vector2(0, 80);
-        progressBar.fillAmount = (behaviour.ThrowPrepareTime - behaviour._throwLoadingProgress) / behaviour.ThrowPrepareTime;
     }
 }

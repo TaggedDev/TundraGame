@@ -14,7 +14,7 @@ namespace GUI
         /// <summary>
         /// Ссылка на компонент, отвечающий за температуру игрока.
         /// </summary>
-        private PlayerBehaviour PlayerBehaviour => Player.GetComponent<PlayerBehaviour>();
+        private PlayerProperties PlayerProperties => Player.GetComponent<PlayerProperties>();
 
         // Public fields
         /// <summary>
@@ -60,7 +60,7 @@ namespace GUI
         // Update is called once per frame
         void Update()
         {
-            _targetScale = PlayerBehaviour.CurrentWarmLevel / PlayerBehaviour.MaxWarmLevel;
+            _targetScale = PlayerProperties.CurrentWarmLevel / PlayerProperties.MaxWarmLevel;
             float deltaScaleValue = (float)Math.Round((_targetScale - _currentScale), 3) * animationSpeedModifier * Time.deltaTime;
             if (Math.Abs(deltaScaleValue) < 0.00002)
             {

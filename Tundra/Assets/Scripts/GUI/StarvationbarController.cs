@@ -12,7 +12,7 @@ namespace GUI
         /// <summary>
         /// Ссылка на компонент, отвечающий за голод игрока.
         /// </summary>
-        private PlayerBehaviour playerStarvation => Player.GetComponent<PlayerBehaviour>();
+        private PlayerProperties PlayerProperties => Player.GetComponent<PlayerProperties>();
 
         // Public fields
         /// <summary>
@@ -58,7 +58,7 @@ namespace GUI
         // Update is called once per frame
         void Update()
         {
-            _targetScale = playerStarvation.CurrentStarveCapacity / playerStarvation.MaxStarve;
+            _targetScale = PlayerProperties.CurrentStarvationCapacity / PlayerProperties.MaxStarve;
             float deltaScaleValue = (float)Math.Round((_targetScale - _currentScale), 3) * animationSpeedModifier * Time.deltaTime;
             if (Math.Abs(deltaScaleValue) < 0.00002)
             {
