@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
+using Creatures.Player.Behaviour;
 using UnityEngine;
 
 namespace Creatures.Mobs
 {
     public class MobFabric : MonoBehaviour
     {
-        [SerializeField] private Mob[] _mobsList;
+        [SerializeField] private Mob[] mobsList;
+        [SerializeField] private PlayerMovement player;
         private Queue<Mob> _mobsPool;
 
         private void Start()
@@ -22,11 +24,11 @@ namespace Creatures.Mobs
 
         private void InstantiateMobs()
         {
-            foreach (var mobObject in _mobsList)
+            foreach (var mobObject in mobsList)
             {
                 Mob mob = Instantiate(mobObject, transform);
                 mob.transform.gameObject.SetActive(false);
-                mob.Initialise(this);
+                mob.Initialise(this, player.transform);
                 _mobsPool.Enqueue(mob);
             }
         }

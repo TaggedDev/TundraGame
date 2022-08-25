@@ -49,11 +49,12 @@ namespace Creatures.Mobs.Wolf
             }
         }
 
-        public override void Initialise(MobFabric fabric)
+        public override void Initialise(MobFabric fabric, Transform player)
         {
+            Player = player;
             Fabric = fabric;
             transform.gameObject.layer = MOB_LAYER_INDEX;
-            SpawnPosition = transform.position;
+            SpawnPosition = player.position;
         }
 
         public override void SpawnSelf()
@@ -61,12 +62,14 @@ namespace Creatures.Mobs.Wolf
             // Define Fear Health Threshold as 10% of max health
             FearHealthThreshold = MaxMobHealth * .1f;
             CurrentMobHealth = MaxMobHealth;
-            
             currentSniffingTime = MAX_SNIFFING_TIME;
+            
+            SpawnPosition = Player.position;
+            transform.position = SpawnPosition;
+            
             mobHeight = GetComponent<Collider>().bounds.extents.y;
             Agent = gameObject.GetComponent<NavMeshAgent>();
-
-            Player = FindObjectOfType<PlayerMovement>().transform;  
+            
             gameObject.SetActive(true);
             _allMobStates = new List<MobBasicState>
             {

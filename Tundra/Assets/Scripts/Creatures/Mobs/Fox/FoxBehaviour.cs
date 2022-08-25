@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Creatures.Mobs.Fox.States;
-using Creatures.Player.Behaviour;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -28,8 +27,7 @@ namespace Creatures.Mobs.Fox
                     return;
                 }
             }
-                
-
+            
             Debug.DrawRay(transform.position, Vector3.down * (mobHeight + 0.2f), Color.blue);
             IsGrounded = Physics.Raycast(transform.position, Vector3.down, mobHeight + 0.2f, 1 << TERRAIN_LAYER_INDEX);
             
@@ -48,24 +46,28 @@ namespace Creatures.Mobs.Fox
             }
         }
 
-        public override void Initialise(MobFabric fabric)
+        public override void Initialise(MobFabric fabric, Transform player)
         {
+            Player = player;
             Fabric = fabric;
             transform.gameObject.layer = MOB_LAYER_INDEX;
-            SpawnPosition = transform.position;
         }
 
         public override void SpawnSelf()
         {
             FearHealthThreshold = MaxMobHealth * .1f;
             CurrentMobHealth = MaxMobHealth;
-            
             currentSniffingTime = MAX_SNIFFING_TIME;
+            
+            SpawnPosition = Player.position;
+            transform.position = SpawnPosition;
+            
+            
             mobHeight = GetComponent<Collider>().bounds.extents.y;
             Agent = gameObject.GetComponent<NavMeshAgent>();
-
-            Player = FindObjectOfType<PlayerMovement>().transform;  
+            
             gameObject.SetActive(true);
+
             _allMobStates = new List<MobBasicState>
             {
                 new FoxPatrollingState(this, this, Agent),

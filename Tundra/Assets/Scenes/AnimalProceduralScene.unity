@@ -935,14 +935,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ce0ec54cd044e4fb6805039898eed60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mobsList:
-  - {fileID: -4013395312205519178, guid: 403785f619ad9db4fbc33d4b5340a3af, type: 3}
+  mobsList:
   - {fileID: -4013395312205519178, guid: 403785f619ad9db4fbc33d4b5340a3af, type: 3}
   - {fileID: -4013395312205519178, guid: 403785f619ad9db4fbc33d4b5340a3af, type: 3}
   - {fileID: -4013395312205519178, guid: 403785f619ad9db4fbc33d4b5340a3af, type: 3}
   - {fileID: -4013395312205519178, guid: 403785f619ad9db4fbc33d4b5340a3af, type: 3}
   - {fileID: 2456120132901063369, guid: 435c098d30e6abf47a5497862903a08d, type: 3}
   - {fileID: 2456120132901063369, guid: 435c098d30e6abf47a5497862903a08d, type: 3}
+  - {fileID: 2456120132901063369, guid: 435c098d30e6abf47a5497862903a08d, type: 3}
+  player: {fileID: 1324381168}
 --- !u!1 &1561603226
 GameObject:
   m_ObjectHideFlags: 0

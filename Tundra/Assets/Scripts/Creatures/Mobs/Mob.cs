@@ -118,7 +118,7 @@ namespace Creatures.Mobs
         private NavMeshAgent _agent;
         private RaycastHit _slopeHit;
         private Rigidbody _mobRigidbody;
-        private Vector3 _spawnPosition;
+        [SerializeField] private Vector3 _spawnPosition;
         [SerializeField] private float _currentMobHealth;
         private float _fearHealthThreshold;
         private float _deltaRotate;
@@ -131,7 +131,7 @@ namespace Creatures.Mobs
         /// Initialises basic parameters. Can't use constructor because objects with this class are initialized by
         /// instantiate method during the game
         /// </summary>
-        public abstract void Initialise(MobFabric fabric);
+        public abstract void Initialise(MobFabric fabric, Transform player);
 
         /// <summary>
         /// Sets the spawn position, turns on the object and sets default values. Basically replaces the Start() method
