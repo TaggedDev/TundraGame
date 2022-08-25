@@ -1,4 +1,4 @@
-﻿namespace Creatures.Mobs.Fox
+﻿namespace Creatures.Mobs
 {
     public interface IMobStateSwitcher
     {

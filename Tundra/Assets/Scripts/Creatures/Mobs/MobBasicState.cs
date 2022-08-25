@@ -1,6 +1,6 @@
 ﻿using UnityEngine.AI;
 
-namespace Creatures.Mobs.Fox
+namespace Creatures.Mobs
 {
     public abstract  class MobBasicState
     {
