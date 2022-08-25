@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Creatures.Mobs.Fox;
 using UnityEngine;
 
 namespace Creatures.Mobs
