@@ -4,7 +4,7 @@ namespace Creatures.Mobs
 {
     public abstract class MobBasicState
     {
-        protected const int TERRAIN_LAYER_INDEX = 8;
+        protected const int TERRAIN_LAYER_INDEX = 10;
         protected const int MOBS_LAYER_INDEX = 11;
         protected const int PLAYER_LAYER_INDEX = 9;
         

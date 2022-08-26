@@ -6,7 +6,7 @@ namespace Creatures.Mobs
     public abstract class Mob : MonoBehaviour
     {
         protected const int MOB_LAYER_INDEX = 11;
-        protected const int TERRAIN_LAYER_INDEX = 8;
+        protected const int TERRAIN_LAYER_INDEX = 10;
         public Vector3 targetPoint;
 
         public Transform Player

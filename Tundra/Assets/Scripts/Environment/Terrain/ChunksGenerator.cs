@@ -120,7 +120,7 @@ namespace Environment.Terrain
 		{
 			public EntityLevel[] EntitiesInfo => _entitiesInfo;
 
-			private const int TERRAIN_LAYER_MASK = 8; 
+			private const int TERRAIN_LAYER_MASK = 10; 
 			
 			// Fields
 			private readonly LODInfo[] _detailLevels;
