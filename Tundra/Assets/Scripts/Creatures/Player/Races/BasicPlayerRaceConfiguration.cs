@@ -25,39 +25,39 @@ namespace Creatures.Player.Races
         private float throwPrepareTime;
 
         /// <summary>
-        /// Максимальный запас голода у игрока.
+        /// Maximal player starvation capacity.
         /// </summary>
         public float MaxStarve => maxStarve;
         /// <summary>
-        /// Время в секундах, в течение которого игрок не будет терять голод.
+        /// TIme in seconds while which player won't spend saturation.
         /// </summary>
         public float SaturationTime => saturationTime;
         /// <summary>
-        /// Идеальная температура для персонажа.
+        /// Ideal player character temperature.
         /// </summary>
         public float PerfectTemperature => perfectTemperature;
         /// <summary>
-        /// Величина по модулю, которая определяет приемлемую мин/макс температуру здорового организма персонажа игрока
+        /// Value which represents amplitude of comfort temperature for player.
         /// </summary>
         public float AbsoluteTemperatureAmplitude => absoluteTemperatureAmplitude;
         /// <summary>
-        /// Максимальный объём запаса тепла игрока.
+        /// Maximal player warm level.
         /// </summary>
         public float MaxWarmLevel => maxWarmLevel;
         /// <summary>
-        /// Максимальное здоровье персонажа игрока.
+        /// Maximal player character HP level.
         /// </summary>
         public float MaxHealth => maxHealth;
         /// <summary>
-        /// Максимальная величина выносливости персонажа игрока.
+        /// Maximal player character stamina.
         /// </summary>
         public float MaxStamina => maxStamina;
         /// <summary>
-        /// Максимальная приемлемая нагрузка для персонажа.
+        /// Maximal player load capacity.
         /// </summary>
         public float MaxLoadCapacity => maxLoadCapacity;
         /// <summary>
-        /// Время подготовки к броску предмета.
+        /// Preparation time before item throwing.
         /// </summary>
         public float ThrowPrepareTime => throwPrepareTime;
     }

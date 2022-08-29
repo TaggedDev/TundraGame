@@ -1,17 +1,32 @@
 ﻿using Creatures.Player.Behaviour;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace CameraConfiguration
 {
     public class CameraMovement : MonoBehaviour
     {
-        public const float speedModifier = 5f;
-
+<<<<<<< Updated upstream
+=======
+        /// <summary>
+        /// Camera movement speed coefficient.
+        /// </summary>
+        [SerializeField] private float speedModifier = 5f;
+        /// <summary>
+        /// Main camera reference.
+        /// </summary>
+>>>>>>> Stashed changes
         private Camera _mainCamera;
+        /// <summary>
+        /// Player movement script reference.
+        /// </summary>
         [SerializeField] private PlayerMovement _player;
+        /// <summary>
+        /// Maximal cooldown for the camera rotation.
+        /// </summary>
         [SerializeField] private float maxCameraRotationCooldown;
+        /// <summary>
+        /// Internal rotation cooldown value.
+        /// </summary>
         private float _currentCameraRotationCooldown;
 
         private void Start()
@@ -35,32 +50,39 @@ namespace CameraConfiguration
         private void RotateCamera(bool turnDirection)
         {
             if (!(_currentCameraRotationCooldown <= 0)) return;
+<<<<<<< Updated upstream
             
+            var multiplier = turnDirection ? 1 : -1 ;
+            _mainCamera.transform.RotateAround(transform.position, Vector3.up, 45*multiplier);
+=======
+            //Selects rotation direction.
             var multiplier = turnDirection ? 1 : -1;
-            StartCoroutine(StartSmoothCameraRotation(45*multiplier));
-            //_mainCamera.transform.RotateAround(transform.position, Vector3.up, 45*multiplier);
+            //Starts smooth camera rotation of 45 degrees by Y axis.
+            StartCoroutine(StartSmoothCameraRotation(45, multiplier));
+            //Updates player movement directions.
+>>>>>>> Stashed changes
             _player.UpdateDirections();
+            //Resets rotation cooldown.
             _currentCameraRotationCooldown = maxCameraRotationCooldown;
         }
+<<<<<<< Updated upstream
+=======
 
-        private IEnumerator StartSmoothCameraRotation(float rotationValue)
+        /// <summary>
+        /// Starts smooth camera rotation by Y axis.
+        /// </summary>
+        /// <param name="rotationValue">Value in degrees which should be camera rotated by.</param>
+        /// <param name="multiplier">Multiplier which represents rotation direction.</param>
+        /// <returns></returns>
+        private IEnumerator StartSmoothCameraRotation(float rotationValue, float multiplier)
         {
-            if (45 - rotationValue < 0.0001f)
+            //Updates camera rotation by speed coefficient every fixed update.
+            for (float i = 0f; i < rotationValue; i+=speedModifier)
             {
-                for (float i = 0f; i < rotationValue; i+=speedModifier)
-                {
-                    _mainCamera.transform.RotateAround(transform.position, Vector3.up, speedModifier);
-                    yield return new WaitForFixedUpdate();
-                }
-            }
-            else
-            {
-                for (float i = 0f; i > rotationValue; i-=speedModifier)
-                {
-                    _mainCamera.transform.RotateAround(transform.position, Vector3.up, -speedModifier);
-                    yield return new WaitForFixedUpdate();
-                }
+                _mainCamera.transform.RotateAround(transform.position, Vector3.up, speedModifier * multiplier);
+                yield return new WaitForFixedUpdate();
             }
         }
+>>>>>>> Stashed changes
     }
 }
