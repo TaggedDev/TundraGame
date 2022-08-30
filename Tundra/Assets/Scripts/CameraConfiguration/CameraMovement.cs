@@ -1,12 +1,11 @@
 ﻿using Creatures.Player.Behaviour;
+using System.Collections;
 using UnityEngine;
 
 namespace CameraConfiguration
 {
     public class CameraMovement : MonoBehaviour
     {
-<<<<<<< Updated upstream
-=======
         /// <summary>
         /// Camera movement speed coefficient.
         /// </summary>
@@ -14,7 +13,6 @@ namespace CameraConfiguration
         /// <summary>
         /// Main camera reference.
         /// </summary>
->>>>>>> Stashed changes
         private Camera _mainCamera;
         /// <summary>
         /// Player movement script reference.
@@ -50,23 +48,15 @@ namespace CameraConfiguration
         private void RotateCamera(bool turnDirection)
         {
             if (!(_currentCameraRotationCooldown <= 0)) return;
-<<<<<<< Updated upstream
-            
-            var multiplier = turnDirection ? 1 : -1 ;
-            _mainCamera.transform.RotateAround(transform.position, Vector3.up, 45*multiplier);
-=======
             //Selects rotation direction.
             var multiplier = turnDirection ? 1 : -1;
             //Starts smooth camera rotation of 45 degrees by Y axis.
             StartCoroutine(StartSmoothCameraRotation(45, multiplier));
             //Updates player movement directions.
->>>>>>> Stashed changes
             _player.UpdateDirections();
             //Resets rotation cooldown.
             _currentCameraRotationCooldown = maxCameraRotationCooldown;
         }
-<<<<<<< Updated upstream
-=======
 
         /// <summary>
         /// Starts smooth camera rotation by Y axis.
@@ -83,6 +73,5 @@ namespace CameraConfiguration
                 yield return new WaitForFixedUpdate();
             }
         }
->>>>>>> Stashed changes
     }
 }
