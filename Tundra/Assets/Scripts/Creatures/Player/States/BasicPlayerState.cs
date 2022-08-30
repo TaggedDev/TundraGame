@@ -156,7 +156,11 @@ namespace Creatures.Player.States
             }
             else PlayerProperties.CurrentHitProgress -= Time.deltaTime;
             if (PlayerProperties.CurrentHitProgress < 0) PlayerProperties.CurrentHitProgress = 0;
-            if (PlayerProperties.CurrentHitProgress > PlayerProperties.HitPreparationTime) PlayerBehaviour.Hit();
+            if (PlayerProperties.CurrentHitProgress > PlayerProperties.HitPreparationTime)
+            {
+                PlayerBehaviour.Hit();
+                PlayerProperties.CurrentHitProgress = 0;
+            }
         }
 
         public virtual void HandleUserInput()
