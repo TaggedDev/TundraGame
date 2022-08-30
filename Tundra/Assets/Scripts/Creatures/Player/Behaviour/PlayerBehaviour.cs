@@ -20,7 +20,7 @@ namespace Creatures.Player.Behaviour
         // Variables
         //TODO: Здесь нужно думаю, по-хорошему, как-нибудь закрыть эти поля для доступа, но разрешить их изменение в классах States
         
-
+        private Animator _animator;
         private BasicPlayerState _currentState;
         private PlayerMovement _playerMovement;
         private List<BasicPlayerState> _allStates;
@@ -28,7 +28,7 @@ namespace Creatures.Player.Behaviour
         private Camera _mainCamera;
         private PlayerInventoryController _inventoryController;
         private PlayerProperties _playerProperties;
-
+        private Rigidbody _rigidbody;
         //private float cameraDistance;
 
 
@@ -40,6 +40,8 @@ namespace Creatures.Player.Behaviour
             _playerMovement = GetComponent<PlayerMovement>();
             _inventoryController = GetComponent<PlayerInventoryController>();
             _playerProperties = GetComponent<PlayerProperties>();
+            _rigidbody = GetComponent<Rigidbody>();
+            _animator = GetComponent<Animator>();
             _allStates = new List<BasicPlayerState>()
             {
                 new IdlePlayerState(_playerMovement, this, _playerProperties),
@@ -60,7 +62,7 @@ namespace Creatures.Player.Behaviour
             _cameraHolder.transform.position = transform.position;
             _currentState.ContinueStarving();
             _currentState.ContinueFreeze();
-            if (Input.GetMouseButton(2)) _currentState.LoadForThrow();
+            _currentState.LoadForThrow();
             _currentState.SpendStamina();
             _currentState.HandleUserInput();
         }
@@ -68,10 +70,13 @@ namespace Creatures.Player.Behaviour
         void FixedUpdate()
         {
             _currentState.MoveCharacter();
+            _animator.SetFloat("Speed", _rigidbody.velocity.magnitude);
+            print($"Speed has set to {_rigidbody.velocity.magnitude}");
         }
 
         public void ThrowItem()
         {
+            _animator.SetTrigger("Throw");
             _playerProperties._throwLoadingProgress = _playerProperties.ThrowPrepareTime;
             //Вся эта странная история нужна для того, чтобы он кидал в нужую сторону. 
             //TODO: Не работает, надо фиксить.
