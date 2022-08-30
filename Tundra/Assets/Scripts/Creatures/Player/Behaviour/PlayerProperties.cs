@@ -9,120 +9,143 @@ using UnityEngine;
 namespace Creatures.Player.Behaviour
 {
     /// <summary>
-    /// Хранит состояние основных параметров персонажа игрока.
+    /// Keeps current player character properties
     /// </summary>
     public class PlayerProperties : MonoBehaviour
     {
         /// <summary>
-        /// Максимальный запас голода у игрока.
+        /// Maximal starvation capacity.
         /// </summary>
         [SerializeField] private float maxStarve;
         /// <summary>
-        /// Время в секундах, в течение которого игрок не будет терять голод.
+        /// Time in seconds while which player won't spend saturation.
         /// </summary>
         [SerializeField] private float saturationTime;
         /// <summary>
-        /// Идеальная температура для персонажа.
+        /// Ideal player character temperature.
         /// </summary>
         [SerializeField] private float perfectTemperature;
         /// <summary>
-        /// Величина по модулю, которая определяет приемлемую мин/макс температуру здорового организма персонажа игрока
+        /// Value which represents amplitude of comfort temperature for player.
         /// </summary>
         [SerializeField] private float absoluteTemperatureAmplitude;
         /// <summary>
-        /// Максимальный объём запаса тепла игрока.
+        /// Maximal player warm level.
         /// </summary>
         [SerializeField] private float maxWarmLevel;
         /// <summary>
-        /// Максимальное здоровье персонажа игрока.
+        /// Maximal player character HP level.
         /// </summary>
         [SerializeField] private float maxHealth;
         /// <summary>
-        /// Максимальная величина выносливости персонажа игрока.
+        /// Maximal player character stamina.
         /// </summary>
         [SerializeField] private float maxStamina;
         /// <summary>
-        /// Максимальная приемлемая нагрузка для персонажа.
+        /// Maximal player load capacity.
         /// </summary>
         [SerializeField] private float maxLoadCapacity;
         /// <summary>
-        /// Время подготовки к броску предмета.
+        /// Preparation time before item throwing.
         /// </summary>
         [SerializeField] private float throwPrepareTime;
         /// <summary>
-        /// Раса персонажа игрока.
+        /// Total time to prepare for throw.
+        /// </summary>
+        [SerializeField] private float hitPreparationTime;
+        /// <summary>
+        /// Player character race.
         /// </summary>
         [SerializeField] private BasicPlayerRaceConfiguration playerRace;
         /// <summary>
-        /// Текущее здоровье игрока (внутреннее поле).
+        /// Internal field for the current player's HP.
         /// </summary>
         private float _currentHealth;
         /// <summary>
-        /// Текущая скорость игрока (внутреннее поле).
+        /// Internal field for the current player speed coefficient.
         /// </summary>
         private float _currentSpeed;
         /// <summary>
-        /// Запас тепла игрока (внутреннее поле).
+        /// Internal field for the current player warm level.
         /// </summary>
         private float _currentWarm;
         /// <summary>
-        /// Запас голода игрока (внутреннее поле).
+        /// Internal field for the current player starvation level.
         /// </summary>
         private float _currentStarvation;
         /// <summary>
-        /// Запас насыщения игрока (внутреннее поле).
+        /// Internal field for the current player saturation.
         /// </summary>
         private float _currentSaturation;
         /// <summary>
-        /// Запас выносливости игрока (внутреннее поле).
+        /// Internal field for the current player stamina.
         /// </summary>
         private float _currentStamina;
         /// <summary>
-        /// Прогресс подготовки к броску предмета.
+        /// Time of preparing for the hit.
+        /// </summary>
+        private float _currentHitPreparingTime;
+        /// <summary>
+        /// Internal field for the progress of the item throwing.
         /// </summary>
         internal float _throwLoadingProgress;
         /// <summary>
-        /// Время, в течение которого игрок голодает (ничего уже не ел).
+        /// Time while which player hasn't eaten anything.
         /// </summary>
         internal float _currentStarvationTime;
         /// <summary>
-        /// Идеальная температура для персонажа игрока. 
+        /// Ideal player tempaerture. 
         /// </summary>
         public float PerfectTemperature => perfectTemperature;
         /// <summary>
-        /// Амплитуда температуры персонажа.
+        /// Player character temperature amplitude.
         /// </summary>
         public float AbsoluteTemperatureAmplitude => absoluteTemperatureAmplitude;
         /// <summary>
-        /// Время подготовки к броску. 
+        /// Throw preparation time.
         /// </summary>
         public float ThrowPrepareTime => throwPrepareTime;
         /// <summary>
-        /// Максимальное значение голода.
+        /// Maximal starvation level.
         /// </summary>
         public float MaxStarve => maxStarve;
         /// <summary>
-        /// Максимальное здоровье.
+        /// Maximal player health.
         /// </summary>
         public float MaxHealth => maxHealth;
         /// <summary>
-        /// Максимальная выносливость.
+        /// Maximal player stamina.
         /// </summary>
         public float MaxStamina => maxStamina;
         /// <summary>
-        /// Максимальный запас тепла.
+        /// Maximal warm level. 
         /// </summary>
         public float MaxWarmLevel => maxWarmLevel;
         /// <summary>
-        /// Время, в течение которого персонаж будет сыт.
+        /// Time while which player will be saturated.
         /// </summary>
         public float SaturationTime => saturationTime;
         /// <summary>
-        /// Максимальная грузоподъёмность персонажа.
+        /// Maximal player load capacity.
         /// </summary>
         public float MaxLoadCapacity => maxLoadCapacity;
         /// <summary>
-        /// Текущее здоровье.
+        /// Total hit preparation time.
+        /// </summary>
+        public float HitPreparationTime => hitPreparationTime;
+        /// <summary>
+        /// Current hit preparation progress.
+        /// </summary>
+        public float CurrentHitProgress
+        {
+            get => _currentHitPreparingTime;
+            internal set
+            {
+                _currentHitPreparingTime = value;
+            }
+        }
+        /// <summary>
+        /// Current player health.
         /// </summary>
         public float CurrentHealth 
         {
@@ -136,7 +159,7 @@ namespace Creatures.Player.Behaviour
             }
         }
         /// <summary>
-        /// Текущая выносливость.
+        /// Current player stamina.
         /// </summary>
         public float CurrentStamina
         {
@@ -151,7 +174,7 @@ namespace Creatures.Player.Behaviour
         }
 
         /// <summary>
-        /// Текущая скорость.
+        /// Current speed coefficient.
         /// </summary>
         public float CurrentSpeed
         {
@@ -166,7 +189,7 @@ namespace Creatures.Player.Behaviour
         }
 
         /// <summary>
-        /// Текущий запас тепла.
+        /// Current warm level. 
         /// </summary>
         public float CurrentWarmLevel 
         {
@@ -180,7 +203,7 @@ namespace Creatures.Player.Behaviour
             }
         }
         /// <summary>
-        /// Текущее значение голода.
+        /// Current starvation capacity.
         /// </summary>
         public float CurrentStarvationCapacity 
         {
@@ -194,7 +217,7 @@ namespace Creatures.Player.Behaviour
             }
         }
         /// <summary>
-        /// Текущее насыщение.
+        /// Current saturation.
         /// </summary>
         public float CurrentSaturation 
         {
@@ -221,6 +244,7 @@ namespace Creatures.Player.Behaviour
                 absoluteTemperatureAmplitude = playerRace.AbsoluteTemperatureAmplitude;
                 throwPrepareTime = playerRace.ThrowPrepareTime;
                 maxLoadCapacity = playerRace.MaxLoadCapacity;
+                hitPreparationTime = playerRace.HitPrepareTime;
             }
             _currentStarvation = maxStarve;
             _currentHealth = maxHealth;

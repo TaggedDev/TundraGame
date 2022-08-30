@@ -148,6 +148,17 @@ namespace Creatures.Player.States
             }
         }
 
+        public virtual void PrepareForHit()
+        {
+            if (Input.GetMouseButton(0))
+            {
+                PlayerProperties.CurrentHitProgress += Time.smoothDeltaTime;
+            }
+            else PlayerProperties.CurrentHitProgress -= Time.deltaTime;
+            if (PlayerProperties.CurrentHitProgress < 0) PlayerProperties.CurrentHitProgress = 0;
+            if (PlayerProperties.CurrentHitProgress > PlayerProperties.HitPreparationTime) PlayerBehaviour.Hit();
+        }
+
         public virtual void HandleUserInput()
         {
             if (!(this is BusyPlayerState) && Input.GetKeyDown(KeyCode.B))

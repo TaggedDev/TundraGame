@@ -21,3 +21,4 @@ MonoBehaviour:
   maxStamina: 100
   maxLoadCapacity: 30
   throwPrepareTime: 1
+  hitPrepareTime: 1.5

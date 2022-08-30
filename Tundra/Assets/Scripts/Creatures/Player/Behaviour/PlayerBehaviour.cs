@@ -4,6 +4,7 @@ using CameraConfiguration;
 using Creatures.Player.States;
 using Creatures.Player.Behaviour;
 using UnityEngine;
+using System;
 
 namespace Creatures.Player.Behaviour
 {
@@ -65,13 +66,15 @@ namespace Creatures.Player.Behaviour
             _currentState.LoadForThrow();
             _currentState.SpendStamina();
             _currentState.HandleUserInput();
+            _currentState.PrepareForHit();
         }
 
         void FixedUpdate()
         {
             _currentState.MoveCharacter();
             _animator.SetFloat("Speed", _rigidbody.velocity.magnitude);
-            print($"Speed has set to {_rigidbody.velocity.magnitude}");
+            _animator.SetBool("Shift Pressed", Input.GetKey(KeyCode.LeftShift));
+            //print($"Speed has set to {_rigidbody.velocity.magnitude}");
         }
 
         public void ThrowItem()
@@ -88,11 +91,19 @@ namespace Creatures.Player.Behaviour
 
         public void SwitchState<T>() where T : BasicPlayerState
         {
+            _animator.SetBool("Busy Mode", typeof(T) == typeof(BusyPlayerState));
             var state = _allStates.FirstOrDefault(st => st is T);
             _currentState.Stop();
             state.Start();
             _currentState = state;
             _playerProperties._throwLoadingProgress = _playerProperties.ThrowPrepareTime;
+        }
+
+        internal void Hit()
+        {
+            //Now it does almost nothing.
+            //TODO: make hit logic.
+            _animator.SetTrigger("Fist Attack");
         }
     }
 }
