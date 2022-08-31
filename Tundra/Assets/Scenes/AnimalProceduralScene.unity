@@ -314,7 +314,7 @@ MonoBehaviour:
   mapGenerator: {fileID: 974813766}
   chunksGenerator: {fileID: 185302903}
   playerHolder: {fileID: 1324381163}
-  entityGenerator: {fileID: 1035914547}
+  entityRenderer: {fileID: 1035914547}
   fabrics:
   - {fileID: 1294261273}
 --- !u!4 &528677538
@@ -1053,6 +1053,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d095480ecc04248b6a842a77a513236, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speedModifier: 5
   _player: {fileID: 1324381168}
   maxCameraRotationCooldown: 0.1
 --- !u!1 &1922622782

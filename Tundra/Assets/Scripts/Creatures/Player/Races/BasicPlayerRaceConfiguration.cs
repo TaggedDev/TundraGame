@@ -23,13 +23,14 @@ namespace Creatures.Player.Races
         private float maxLoadCapacity;       
         [SerializeField]
         private float throwPrepareTime;
-
+        [SerializeField]
+        private float hitPrepareTime;
         /// <summary>
         /// Maximal player starvation capacity.
         /// </summary>
         public float MaxStarve => maxStarve;
         /// <summary>
-        /// TIme in seconds while which player won't spend saturation.
+        /// Time in seconds while which player won't spend saturation.
         /// </summary>
         public float SaturationTime => saturationTime;
         /// <summary>
@@ -60,5 +61,9 @@ namespace Creatures.Player.Races
         /// Preparation time before item throwing.
         /// </summary>
         public float ThrowPrepareTime => throwPrepareTime;
+        /// <summary>
+        /// Total hit preparation time.
+        /// </summary>
+        public float HitPrepareTime => hitPrepareTime; 
     }
 }

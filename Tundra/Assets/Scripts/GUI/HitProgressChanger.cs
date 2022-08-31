@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Creatures.Player.Behaviour;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,31 +7,22 @@ using UnityEngine.UI;
 
 public class HitProgressChanger : MonoBehaviour
 {
-    private float progress = 0;
-
-    public float HitLoadTime = 1.5f;
 
     public Image HitProgress;
 
     [SerializeField]
     private GameObject player;
-
+    private PlayerProperties _playerProperties;
     // Start is called before the first frame update
     void Start()
     {
-        
+        _playerProperties = player.GetComponent<PlayerProperties>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(0))
-        {
-            progress += Time.smoothDeltaTime;
-        }
-        else progress -= Time.deltaTime;
-        progress = Mathf.Clamp(progress, 0, HitLoadTime);
-        HitProgress.fillAmount = progress / HitLoadTime;
+        HitProgress.fillAmount = _playerProperties.CurrentHitProgress / _playerProperties.HitPreparationTime;
     }
 
     private void FixedUpdate()
