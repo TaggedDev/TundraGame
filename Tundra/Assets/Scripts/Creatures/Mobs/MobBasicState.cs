@@ -1,18 +1,22 @@
-﻿namespace Creatures.Mobs
+﻿using UnityEngine.AI;
+
+namespace Creatures.Mobs
 {
     public abstract class MobBasicState
     {
-        protected const int TERRAIN_LAYER_INDEX = 8;
+        protected const int TERRAIN_LAYER_INDEX = 10;
         protected const int MOBS_LAYER_INDEX = 11;
         protected const int PLAYER_LAYER_INDEX = 9;
         
         protected readonly Mob _mob;
         protected readonly IMobStateSwitcher _switcher;
+        protected readonly NavMeshAgent _agent;
 
-        protected MobBasicState(Mob mob, IMobStateSwitcher switcher)
+        protected MobBasicState(Mob mob, IMobStateSwitcher switcher, NavMeshAgent agent)
         {
             _mob = mob;
             _switcher = switcher;
+            _agent = agent;
         }
 
         /// <summary>
@@ -21,7 +25,7 @@
         public abstract void Start();
 
         /// <summary>
-        /// Is called on when state was switched 
+        /// Is called before state is switched to another one  
         /// </summary>
         public abstract void Stop();
 

@@ -49,7 +49,7 @@ namespace Environment.Terrain
 		
 
 		// Constants
-		public const int mapChunkSize = 47;
+		public const int mapChunkSize = 11;
 		
 		// Fields
 		[SerializeField] [Range(0, 6)] private int editorPreviewLOD;
@@ -67,8 +67,8 @@ namespace Environment.Terrain
 		private readonly Queue<MapThreadInfo<MapData>> mapDataThreadInfoQueue = new Queue<MapThreadInfo<MapData>>();
 		private readonly Queue<MapThreadInfo<MeshData>> meshDataThreadInfoQueue = new Queue<MapThreadInfo<MeshData>>();
 
-		[HideInInspector] public int mapDataCount;
-		[HideInInspector] public int meshDataCount;
+		/*[HideInInspector]*/ public int mapDataCount;
+		/*[HideInInspector]*/ public int meshDataCount;
 		
 		// Variables
 		public DrawMode drawMode;
@@ -96,8 +96,7 @@ namespace Environment.Terrain
 			else if (drawMode == DrawMode.Mesh)
 			{
 				display.DrawMesh(
-					MeshGenerator.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve,
-						editorPreviewLOD),
+					MeshGenerator.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve),
 					TextureGenerator.TextureFromColourMap(mapData.colourMap, mapChunkSize, mapChunkSize));
 			}
 		}
@@ -188,7 +187,7 @@ namespace Environment.Terrain
 		private void ProcessMeshDataThread(MapData mapData, int lod, Action<MeshData> callback)
 		{
 			MeshData meshData =
-				MeshGenerator.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve, lod);
+				MeshGenerator.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve);
 			lock (meshDataThreadInfoQueue)
 			{
 				meshDataThreadInfoQueue.Enqueue(new MapThreadInfo<MeshData>(callback, meshData));

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
 namespace Environment.Terrain
@@ -44,8 +46,8 @@ namespace Environment.Terrain
 		{
 			_mapGenerator = FindObjectOfType<MapGenerator>();
 
-			_maxViewDst = detailLevels [detailLevels.Length - 1].visibleDstThreshold;
-			_chunkSize = MapGenerator.mapChunkSize - 1;
+			_maxViewDst = detailLevels[detailLevels.Length - 1].visibleDstThreshold;
+			_chunkSize = MapGenerator.mapChunkSize - 1; // 10
 			chunksVisibleInViewDst = Mathf.RoundToInt(_maxViewDst / _chunkSize);
 
 			UpdateVisibleChunks();
@@ -62,6 +64,14 @@ namespace Environment.Terrain
 			if (sqrSpatial > WorldConstants.SqrChunkUpdateThreshold)
 			{
 				viewerPositionOld = _viewerPosition;
+				
+				// Get current chunk and update the navmesh for it 
+				int currentChunkCoordX = Mathf.RoundToInt (_viewerPosition.x / _chunkSize);
+				int currentChunkCoordY = Mathf.RoundToInt (_viewerPosition.y / _chunkSize);
+				StartCoroutine(_terrainChunkDictionary[new Vector2(currentChunkCoordX, currentChunkCoordY)]
+					.UpdateNavMeshCoroutine());
+				
+				// Update all chunks due level of distance
 				UpdateVisibleChunks();
 				foreach (TerrainChunk chunk in _terrainChunksVisibleLastUpdate)
 					chunk.UpdateCollisionMesh();
@@ -77,19 +87,23 @@ namespace Environment.Terrain
 
 			foreach (var chunk in _terrainChunksVisibleLastUpdate)
 				chunk.SetVisibility (false);
-			
-			_terrainChunksVisibleLastUpdate.Clear ();
+
+			_terrainChunksVisibleLastUpdate.Clear();
 				
 			int currentChunkCoordX = Mathf.RoundToInt (_viewerPosition.x / _chunkSize);
 			int currentChunkCoordY = Mathf.RoundToInt (_viewerPosition.y / _chunkSize);
-			
-			for (int yOffset = -chunksVisibleInViewDst; yOffset <= chunksVisibleInViewDst; yOffset++) {
-				for (int xOffset = -chunksVisibleInViewDst; xOffset <= chunksVisibleInViewDst; xOffset++) {
-					Vector2 viewedChunkCoord = new Vector2 (currentChunkCoordX + xOffset, currentChunkCoordY + yOffset);
 
-					if (_terrainChunkDictionary.ContainsKey (viewedChunkCoord)) {
-						_terrainChunkDictionary [viewedChunkCoord].UpdateTerrainChunk ();
-					} else
+			for (int yOffset = -chunksVisibleInViewDst; yOffset <= chunksVisibleInViewDst; yOffset++)
+			{
+				for (int xOffset = -chunksVisibleInViewDst; xOffset <= chunksVisibleInViewDst; xOffset++)
+				{
+					Vector2 viewedChunkCoord = new Vector2(currentChunkCoordX + xOffset, currentChunkCoordY + yOffset);
+
+					if (_terrainChunkDictionary.ContainsKey(viewedChunkCoord))
+					{
+						_terrainChunkDictionary[viewedChunkCoord].UpdateTerrainChunk();
+					}
+					else
 					{
 						var chunk = new TerrainChunk(viewedChunkCoord, _chunkSize, detailLevels, colliderLODIndex,
 							transform, mapMaterial, entityInfo, viewer.transform);
@@ -106,7 +120,7 @@ namespace Environment.Terrain
 		{
 			public EntityLevel[] EntitiesInfo => _entitiesInfo;
 
-			private const int TERRAIN_LAYER_MASK = 8; 
+			private const int TERRAIN_LAYER_MASK = 10; 
 			
 			// Fields
 			private readonly LODInfo[] _detailLevels;
@@ -114,6 +128,7 @@ namespace Environment.Terrain
 			private readonly Transform _player;
 			private readonly int _chunkSize;
 			private readonly int _colliderLODIndex;
+			private readonly NavMeshSurface _navMeshSurface;
 			private GameObject _meshObject;
 			private MeshRenderer _meshRenderer;
 			private MeshFilter _meshFilter;
@@ -123,7 +138,7 @@ namespace Environment.Terrain
 			private bool _hasSetCollider;
 			private Bounds _bounds;
 			private MapData _mapData;
-			
+
 			//Entities
 			private readonly EntityLevel[] _entitiesInfo;
 			private readonly Dictionary<Vector2, Entity> _entities;
@@ -191,6 +206,9 @@ namespace Environment.Terrain
 					_meshObject.transform.localScale = Vector3.one * WorldConstants.Scale;
 					_meshObject.isStatic = true;
 				}
+				
+				_navMeshSurface = _meshObject.AddComponent<NavMeshSurface>();
+				BakeNavMesh();
 			}
 
 			/// <summary>
@@ -234,10 +252,25 @@ namespace Environment.Terrain
 					}
 
 					_terrainChunksVisibleLastUpdate.Add(this);
-
 				}
-
 				SetVisibility (visible);
+			}
+
+			/// <summary>
+			/// Bakes the navmesh for current chunk map
+			/// </summary>
+			private void BakeNavMesh()
+			{
+				_navMeshSurface.BuildNavMesh();
+			}
+
+			public IEnumerator UpdateNavMeshCoroutine()
+			{
+				var operation = _navMeshSurface.UpdateNavMesh(_navMeshSurface.navMeshData);
+				do
+				{
+					yield return null;
+				} while (!operation.isDone);
 			}
 
 			/// <summary>

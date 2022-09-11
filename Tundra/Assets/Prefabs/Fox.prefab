@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 1182028872119186060}
   - component: {fileID: 1182028872119186063}
   - component: {fileID: 1182028872119186062}
-  - component: {fileID: 1182028872119186057}
-  - component: {fileID: 1182028872119186059}
   - component: {fileID: 4518012793596724199}
-  - component: {fileID: 2038628779310332801}
+  - component: {fileID: 7869285840841989216}
+  - component: {fileID: -4013395312205519178}
+  - component: {fileID: 788447466288898222}
   m_Layer: 0
   m_Name: Fox
   m_TagString: Untagged
@@ -30,8 +30,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1182028872119186058}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 100, y: 20, z: 100}
-  m_LocalScale: {x: 3, y: 1.25, z: 1.33}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.375, y: 0.15625, z: 0.16625}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -83,35 +83,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &1182028872119186057
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1182028872119186058}
-  m_Material: {fileID: 13400000, guid: c6dcb80925ee68a43aa67474c6e1de62, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1182028872119186059
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1182028872119186058}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 623a98c0ae984a14a0db9d58eb547822, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  maxDeltaRotate: 0.9
-  speed: 5
-  entityLayerMaskIndex: 10
 --- !u!54 &4518012793596724199
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -128,7 +99,29 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2038628779310332801
+--- !u!195 &7869285840841989216
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1182028872119186058}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 1
+  m_Acceleration: 2
+  avoidancePriority: 50
+  m_AngularSpeed: 0
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1
+  m_BaseOffset: 0.5
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &-4013395312205519178
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -137,9 +130,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 1182028872119186058}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3acfc1161dbc04644ac82d6a387245c9, type: 3}
+  m_Script: {fileID: 11500000, guid: 42aa5f4a704f4d5cb2fc0b1014897033, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CenterOfMass: {x: 0, y: -0.625, z: 0}
-  IsAwaken: 0
-  _rigidbody: {fileID: 0}
+  targetPoint: {x: 0, y: 0, z: 0}
+  mobID: 1
+  rotationSpeed: 2
+  maxDeltaRotate: 0.6
+  roamingRadius: 5
+  sniffingRadius: 5
+  maxMobHealth: 25
+  _player: {fileID: 0}
+  _currentMobHealth: 0
+  _isGrounded: 0
+--- !u!65 &788447466288898222
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1182028872119186058}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}

@@ -1,72 +1,51 @@
-﻿using UnityEngine;
-using Random = UnityEngine.Random;
+﻿using System.Collections.Generic;
+using Creatures.Player.Behaviour;
+using UnityEngine;
 
 namespace Creatures.Mobs
 {
-    /// <summary>
-    /// Abstract fabric class that is used to instantiate mobs around player
-    /// </summary>
     public class MobFabric : MonoBehaviour
     {
-        private const float INNER_CIRCLE_RADIUS = 50f;
-        private const float OUTER_CIRCLE_RADIUS = 60f;
-        private const int TERRAIN_LAYER_INDEX = 8;
-        
-        [SerializeField] private int maxMobsCapacity;
-        [SerializeField] private Mob mobPrefab;
-        private float halfYSize;
-        private int currentMobsCount;
+        [SerializeField] private Mob[] mobsList;
+        [SerializeField] private PlayerMovement player;
+        private Queue<Mob> _mobsPool;
 
         private void Start()
         {
-            halfYSize = mobPrefab.GetComponent<Collider>().bounds.size.y / 2;
-            currentMobsCount = 0;
-            if (maxMobsCapacity == 0)
-                Debug.Log($"Max Mob Capacity is 0 for {name}");
+            _mobsPool = new Queue<Mob>();
+            InstantiateMobs();
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
-            if (currentMobsCount < maxMobsCapacity)
-                SpawnMob();
+            if (Input.GetKeyDown(KeyCode.P))
+                SpawnNextMob();
         }
 
-        /// <summary>
-        /// Spawn mob somewhere in the world with patrolling as a basic state 
-        /// </summary>
-        private void SpawnMob()
+        private void InstantiateMobs()
         {
-            Vector3 position = GenerateMobPosition();
-            // V3 zero means that mob has spawned not on terrain layer
-            if (position == Vector3.zero)
+            foreach (var mobObject in mobsList)
+            {
+                Mob mob = Instantiate(mobObject, transform);
+                mob.transform.gameObject.SetActive(false);
+                mob.Initialise(this, player.transform);
+                _mobsPool.Enqueue(mob);
+            }
+        }
+        
+        private void SpawnNextMob()
+        {
+            if (_mobsPool.Count == 0)
                 return;
             
-            Mob mob = Instantiate(mobPrefab, position, Quaternion.identity, transform);
-            mob.Initialise();
-            currentMobsCount++;
+            var mob = _mobsPool.Dequeue();
+            mob.SpawnSelf();
         }
 
-        /// <summary>
-        /// Generates Vector3 position where animal will be spawned
-        /// </summary>
-        /// <returns>Vector3 coordinates - coordinates for animal to spawn. Returns V3.zero if spawn point is not
-        /// a terrain</returns>
-        private Vector3 GenerateMobPosition()
+        public void ReturnToPool(Mob mob)
         {
-            float radius = Random.Range(INNER_CIRCLE_RADIUS, OUTER_CIRCLE_RADIUS);
-            float angle = Random.Range(1, 360);
-            float xPosition = Mathf.Cos(angle) * radius;
-            float zPosition = Mathf.Sin(angle) * radius;
-
-            // Raycasts at XZ down to check if we land on the ground (not a tree or other entity)
-            if (Physics.Raycast(new Vector3(xPosition, 500, zPosition), Vector3.down, out RaycastHit hit, Mathf.Infinity))
-            {
-                // Check if we land on environment layer
-                if (hit.transform.gameObject.layer == TERRAIN_LAYER_INDEX)
-                    return new Vector3(xPosition, hit.point.y + halfYSize + 1f, zPosition);
-                return Vector3.zero;
-            }
-            return Vector3.zero;
+            _mobsPool.Enqueue(mob);
+            mob.gameObject.SetActive(false);
         }
     }
 }

@@ -13,26 +13,22 @@ namespace Environment.Terrain
 	    /// <param name="heightMap">Noise map for current coordinates</param>
 	    /// <param name="heightMultiplier">Multiplier of how hilly will terrain be</param>
 	    /// <param name="heightCurveKeys">Curve for certain heightmap</param>
-	    /// <param name="levelOfDetail">Level of detail for current chunk</param>
 	    /// <returns>MeshData to build chunk mesh from</returns>
 	    public static MeshData GenerateTerrainMesh(float[,] heightMap, float heightMultiplier,
-		    AnimationCurve heightCurveKeys, int levelOfDetail)
+		    AnimationCurve heightCurveKeys)
 	    {
 		    AnimationCurve heightCurve = new AnimationCurve(heightCurveKeys.keys);
 
-		    int meshSimplificationIncrement = levelOfDetail == 0 ? 1 : levelOfDetail * 2;
+		    int meshSimplificationIncrement = 1;
 
 		    int borderedSize = heightMap.GetLength(0);
-		    int meshSize = borderedSize - 2 * meshSimplificationIncrement;
+		    int meshSize = borderedSize - 2;
 		    int meshSizeUnsimplified = borderedSize - 2;
 
 		    float topLeftX = (meshSizeUnsimplified - 1) / -2f;
 		    float topLeftZ = (meshSizeUnsimplified - 1) / 2f;
 
-
-		    int verticesPerLine = (meshSize - 1) / meshSimplificationIncrement + 1;
-
-		    MeshData meshData = new MeshData(verticesPerLine);
+		    MeshData meshData = new MeshData(meshSize);
 
 		    int[,] vertexIndicesMap = new int[borderedSize, borderedSize];
 		    int meshVertexIndex = 0;
@@ -73,14 +69,12 @@ namespace Environment.Terrain
 				    if (x < borderedSize - 1 && y < borderedSize - 1)
 				    {
 					    int a = vertexIndicesMap[x, y];
-					    int b = vertexIndicesMap[x + meshSimplificationIncrement, y];
-					    int c = vertexIndicesMap[x, y + meshSimplificationIncrement];
-					    int d = vertexIndicesMap[x + meshSimplificationIncrement, y + meshSimplificationIncrement];
+					    int b = vertexIndicesMap[x + 1, y];
+					    int c = vertexIndicesMap[x, y + 1];
+					    int d = vertexIndicesMap[x + 1, y + 1];
 					    meshData.AddTriangle(a, d, c);
 					    meshData.AddTriangle(d, a, b);
 				    }
-
-				    vertexIndex++;
 			    }
 		    }
 
@@ -133,9 +127,9 @@ namespace Environment.Terrain
             }
             else
             {
-                _triangles [_triangleIndex] = a;
-                _triangles [_triangleIndex + 1] = b;
-                _triangles [_triangleIndex + 2] = c;
+	            _triangles[_triangleIndex] = a;
+	            _triangles[_triangleIndex + 1] = b;
+	            _triangles[_triangleIndex + 2] = c;
                 _triangleIndex += 3;   
             }
         }

@@ -1,16 +1,18 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 
 namespace Creatures.Mobs
 {
     public abstract class Mob : MonoBehaviour
     {
         protected const int MOB_LAYER_INDEX = 11;
-        protected const int TERRAIN_LAYER_INDEX = 8;
+        protected const int TERRAIN_LAYER_INDEX = 10;
+        public Vector3 targetPoint;
 
-        public MobEntitySensor Sensor
+        public Transform Player
         {
-            get => _sensor;
-            set => _sensor = value;
+            get => _player;
+            set => _player = value;
         }
         public RaycastHit SlopeHit
         {
@@ -36,11 +38,6 @@ namespace Creatures.Mobs
         {
             get => maxDeltaRotate;
             set => maxDeltaRotate = value;
-        }
-        public float MoveSpeed
-        {
-            get => moveSpeed;
-            set => moveSpeed = value;
         }
         public float RotationSpeed
         {
@@ -97,20 +94,31 @@ namespace Creatures.Mobs
             get => _rigidbody;
             set => _rigidbody = value;
         }
+        public NavMeshAgent Agent
+        {
+            get => _agent;
+            set => _agent = value;
+        }
+        public MobFabric Fabric
+        {
+            get => _fabric;
+            set => _fabric = value;
+        }
+
 
         [SerializeField] private int mobID;
-        [SerializeField] private float moveSpeed;
         [SerializeField] private float rotationSpeed;
         [SerializeField] private float maxDeltaRotate;
         [SerializeField] private float roamingRadius;
         [SerializeField] private float sniffingRadius;
         [SerializeField] private float maxMobHealth;
+        [SerializeField] private Transform _player;
         
-
-        private MobEntitySensor _sensor;
+        private MobFabric _fabric;
+        private NavMeshAgent _agent;
         private RaycastHit _slopeHit;
         private Rigidbody _mobRigidbody;
-        private Vector3 _spawnPosition;
+        [SerializeField] private Vector3 _spawnPosition;
         [SerializeField] private float _currentMobHealth;
         private float _fearHealthThreshold;
         private float _deltaRotate;
@@ -123,7 +131,12 @@ namespace Creatures.Mobs
         /// Initialises basic parameters. Can't use constructor because objects with this class are initialized by
         /// instantiate method during the game
         /// </summary>
-        public abstract void Initialise();
+        public abstract void Initialise(MobFabric fabric, Transform player);
+
+        /// <summary>
+        /// Sets the spawn position, turns on the object and sets default values. Basically replaces the Start() method
+        /// </summary>
+        public abstract void SpawnSelf();
 
         private void OnValidate()
         {

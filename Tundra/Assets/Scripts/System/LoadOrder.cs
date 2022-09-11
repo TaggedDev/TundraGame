@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using Creatures.Mobs;
+//using Creatures.Mobs;
 using Creatures.Player.Behaviour;
 using Environment;
 using Environment.Terrain;
@@ -13,7 +13,7 @@ namespace System
         [SerializeField] private ChunksGenerator chunksGenerator;
         [SerializeField] private PlayerSpawner playerHolder;
         [SerializeField] private EntityRenderer entityRenderer;
-        [SerializeField] private MobFabric[] fabrics;
+        /*[SerializeField] private MobFabric[] fabrics;*/
 
         /*
          * 1. Terrain generation
@@ -35,8 +35,8 @@ namespace System
             playerHolder.gameObject.SetActive(true);
             playerHolder.SpawnPlayer();
             entityRenderer.gameObject.SetActive(true);
-            foreach (var fabric in fabrics)
-                fabric.transform.gameObject.SetActive(true);
+            /*foreach (var fabric in fabrics)
+                fabric.transform.gameObject.SetActive(true);*/
         }
     }
 }
