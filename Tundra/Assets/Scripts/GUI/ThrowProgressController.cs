@@ -6,8 +6,7 @@ using UnityEngine.UI;
 
 public class ThrowProgressController : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject player;
+    private GameObject _player;
 
     private PlayerProperties properties;
     private Image progressBar;
@@ -16,7 +15,8 @@ public class ThrowProgressController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        properties = player.GetComponent<PlayerProperties>();
+        _player = UIController._rootCanvas.GetComponent<UIController>()._player;
+        properties = _player.GetComponent<PlayerProperties>();
         progressBar = GetComponent<Image>();
     }
 
@@ -28,6 +28,6 @@ public class ThrowProgressController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, player.transform.position) + new Vector2(0, 80);
+        transform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, _player.transform.position) + new Vector2(0, 80);
     }
 }

@@ -27,7 +27,7 @@ namespace Creatures.Player.Behaviour
         private List<BasicPlayerState> _allStates;
         private CameraMovement _cameraHolder;
         private Camera _mainCamera;
-        private PlayerInventoryController _inventoryController;
+        private PlayerInventory _inventoryController;
         private PlayerProperties _playerProperties;
         private Rigidbody _rigidbody;
         //private float cameraDistance;
@@ -39,7 +39,7 @@ namespace Creatures.Player.Behaviour
             _mainCamera = Camera.main;
             _cameraHolder = transform.parent.GetComponentInChildren<CameraMovement>();
             _playerMovement = GetComponent<PlayerMovement>();
-            _inventoryController = GetComponent<PlayerInventoryController>();
+            _inventoryController = GetComponent<PlayerInventory>();
             _playerProperties = GetComponent<PlayerProperties>();
             _rigidbody = GetComponent<Rigidbody>();
             _animator = GetComponent<Animator>();

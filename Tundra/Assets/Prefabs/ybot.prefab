@@ -333,7 +333,7 @@ GameObject:
   - component: {fileID: 8136389551658076273}
   - component: {fileID: 1575123189508082843}
   - component: {fileID: 1575123189508082842}
-  - component: {fileID: 1575123189508082845}
+  - component: {fileID: 6139960695416826512}
   - component: {fileID: 1575123189508082844}
   - component: {fileID: 1575123189508082847}
   m_Layer: 0
@@ -434,7 +434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c03cfd42317533f43b1f60e037046418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1575123189508082845
+--- !u!114 &6139960695416826512
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -443,7 +443,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1808934001542508993}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 004622ace0580bb4ea6d2df9c444c5d3, type: 3}
+  m_Script: {fileID: 11500000, guid: 310c41ff2346f874f895e93cda8cf71b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1575123189508082844
@@ -485,6 +485,7 @@ MonoBehaviour:
   maxStamina: 0
   maxLoadCapacity: 0
   throwPrepareTime: 0
+  hitPreparationTime: 0
   playerRace: {fileID: 11400000, guid: 0ba9c8e9c67db184daf1c9a0e52a6909, type: 2}
 --- !u!1 &1936256120027927194
 GameObject:

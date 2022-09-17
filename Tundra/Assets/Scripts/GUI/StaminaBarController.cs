@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class StaminaBarController : MonoBehaviour
 {
-    [SerializeField] GameObject player;
+    GameObject _player;
 
 
     PlayerProperties playerProperties;
@@ -15,8 +15,9 @@ public class StaminaBarController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _player = UIController._rootCanvas.GetComponent<UIController>()._player;
         imageComponent = GetComponent<Image>();
-        playerProperties = player.GetComponent<PlayerProperties>();
+        playerProperties = _player.GetComponent<PlayerProperties>();
     }
 
     // Update is called once per frame
@@ -28,6 +29,6 @@ public class StaminaBarController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, player.transform.position) - new Vector2(0, 50);
+        transform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, _player.transform.position) - new Vector2(0, 50);
     }
 }

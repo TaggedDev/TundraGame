@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Creatures.Player.Behaviour
 {
-    public class PlayerInventoryController : MonoBehaviour
+    public class PlayerInventory : MonoBehaviour
     {
         private InventoryContainer inventory;
 
@@ -48,7 +48,7 @@ namespace Creatures.Player.Behaviour
         // Update is called once per frame
         void Update()
         {
-            if (Input.GetKey(KeyCode.F) && NearestInteractableItem != null)
+            if (Input.GetKey(KeyCode.E) && NearestInteractableItem != null)
             {
                 ItemPickingProgress += Time.deltaTime;
                 if (ItemPickingProgress > ItemPickingUpTime)

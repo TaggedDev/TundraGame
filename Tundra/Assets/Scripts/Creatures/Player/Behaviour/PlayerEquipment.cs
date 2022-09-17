@@ -20,7 +20,7 @@ public class PlayerEquipment : MonoBehaviour
     [SerializeField]
     private EquipmentConfiguration backpack;
 
-    private PlayerInventoryController _inventoryController;
+    private PlayerInventory _inventoryController;
 
     public EquipmentConfiguration Helmet
     {
@@ -138,7 +138,7 @@ public class PlayerEquipment : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _inventoryController = GetComponent<PlayerInventoryController>();
+        _inventoryController = GetComponent<PlayerInventory>();
     }
 
     // Update is called once per frame

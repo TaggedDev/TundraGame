@@ -10,11 +10,10 @@ public class InventoryUISlotsController : MonoBehaviour
 
     private int _maxSlotsNumber;
 
-    [SerializeField]
     private GameObject _player;
     [SerializeField]
     private Sprite _transparent;
-    private PlayerInventoryController _inventoryController;
+    private PlayerInventory _inventoryController;
     private GameObject _pickupPanel;
     public float mouseScrollCoefficient = 10f;
     private GameObject[] _visualSlots;
@@ -55,12 +54,13 @@ public class InventoryUISlotsController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _player = UIController._rootCanvas.GetComponent<UIController>()._player;
         _visualSlots = new GameObject[9];
         for (int i = 1; i < 10; i++)
         {
             _visualSlots[i - 1] = GameObject.Find("InventorySlot" + i);
         }
-        _inventoryController = _player.GetComponent<PlayerInventoryController>();
+        _inventoryController = _player.GetComponent<PlayerInventory>();
         _pickupPanel = GameObject.Find("ItemPickupPanel");
         _inventoryController.Inventory.MaxInventoryCapacityChanging += ResetSlots;
         ResetSlots(this, _inventoryController.Inventory.MaxInventoryCapacity);
@@ -108,7 +108,7 @@ public class InventoryUISlotsController : MonoBehaviour
         {
             _pickupPanel.SetActive(true);
             (_pickupPanel.transform as RectTransform).position = RectTransformUtility.WorldToScreenPoint(Camera.main, _inventoryController.NearestInteractableItem.transform.position) + new Vector2(0, 40);
-            _pickupPanel.transform.Find("Progress").gameObject.GetComponent<Image>().fillAmount = _inventoryController.ItemPickingProgress / PlayerInventoryController.ItemPickingUpTime;
+            _pickupPanel.transform.Find("Progress").gameObject.GetComponent<Image>().fillAmount = _inventoryController.ItemPickingProgress / PlayerInventory.ItemPickingUpTime;
         }
     }
 }

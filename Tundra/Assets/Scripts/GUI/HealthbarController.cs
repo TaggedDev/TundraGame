@@ -15,7 +15,7 @@ namespace GUI
         /// <summary>
         /// Ссылка на компонент, отвечающий за здоровье игрока.
         /// </summary>
-        private PlayerProperties PlayerProperties => Player.GetComponent<PlayerProperties>();
+        private PlayerProperties PlayerProperties => _player.GetComponent<PlayerProperties>();
         /// <summary>
         /// Глобальная координата начала этого индикатора.
         /// </summary>
@@ -23,17 +23,11 @@ namespace GUI
         /// <summary>
         /// Реальная ширина индикатора в мире, нужна для преобразований.
         /// </summary>
-        private float ActualWidth => (transform as RectTransform).sizeDelta.x * Canvas.scaleFactor;
+        private float ActualWidth => (transform as RectTransform).sizeDelta.x * _rootCanvas.scaleFactor;
 
         // Public fields
-        /// <summary>
-        /// Ссылка на игрока (нужна только для скрипта со здоровьем).
-        /// </summary>
-        public GameObject Player;
-        /// <summary>
-        /// Ссылка на холст, нужна для получения данных о масштабировании холста.
-        /// </summary>
-        public Canvas Canvas;
+        private Canvas _rootCanvas;
+        private GameObject _player;
 
         /// <summary>
         /// Модификатор, определяющий скорость анимации. 
@@ -71,6 +65,9 @@ namespace GUI
         void Start()
         {
             //Инициализируем некоторые значения.
+            UIController controller = UIController._rootCanvas.GetComponent<UIController>();
+            _rootCanvas = controller.GetComponent<Canvas>();
+            _player = controller._player;
             _indicator = transform.Find("HealthBarInner") as RectTransform;
             _deltaIndicator = transform.Find("DeltaHealthBarInner") as RectTransform;
             _currentScale = _indicator.localScale.x;

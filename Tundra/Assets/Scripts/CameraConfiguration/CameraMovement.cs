@@ -36,8 +36,11 @@ namespace CameraConfiguration
         {
             var pos = _player.transform.position;
             transform.position = new Vector3(pos.x, pos.y, pos.z - 3);
-            if (Input.GetKey(KeyCode.Q)) RotateCamera(true);
-            if (Input.GetKey(KeyCode.E)) RotateCamera(false);
+            if (Input.GetKey(KeyCode.LeftControl))
+            {
+                if (Input.GetKey(KeyCode.Q)) RotateCamera(true);
+                if (Input.GetKey(KeyCode.E)) RotateCamera(false);
+            }
             if (_currentCameraRotationCooldown > 0) _currentCameraRotationCooldown -= Time.deltaTime;
         }
         
