@@ -30,6 +30,7 @@ namespace Creatures.Player.Behaviour
         private PlayerInventory _inventoryController;
         private PlayerProperties _playerProperties;
         private Rigidbody _rigidbody;
+        private PlayerMagic _playerMagic;
         //private float cameraDistance;
 
 
@@ -41,6 +42,7 @@ namespace Creatures.Player.Behaviour
             _playerMovement = GetComponent<PlayerMovement>();
             _inventoryController = GetComponent<PlayerInventory>();
             _playerProperties = GetComponent<PlayerProperties>();
+            _playerMagic = GetComponent<PlayerMagic>();
             _rigidbody = GetComponent<Rigidbody>();
             _animator = GetComponent<Animator>();
             _allStates = new List<BasicPlayerState>()
@@ -48,7 +50,8 @@ namespace Creatures.Player.Behaviour
                 new IdlePlayerState(_playerMovement, this, _playerProperties),
                 new WalkPlayerState(_playerMovement,  this, _playerProperties),
                 new SprintPlayerState(_playerMovement, this, _playerProperties),
-                new BusyPlayerState(_playerMovement, this, _playerProperties)
+                new BusyPlayerState(_playerMovement, this, _playerProperties),
+                new MagicCastingPlayerState(_playerMovement, this, _playerProperties, _playerMagic)
             };
             _currentState = _allStates[0];
             _currentState.Start();

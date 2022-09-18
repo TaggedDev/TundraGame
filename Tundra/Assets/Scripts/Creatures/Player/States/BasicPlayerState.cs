@@ -150,26 +150,38 @@ namespace Creatures.Player.States
 
         public virtual void PrepareForHit()
         {
-            if (Input.GetMouseButton(0))
+            if (!(this is BusyPlayerState) && !(this is MagicCastingPlayerState))
             {
-                PlayerProperties.CurrentHitProgress += Time.smoothDeltaTime;
+                if (Input.GetMouseButton(0))
+                {
+                    PlayerProperties.CurrentHitProgress += Time.smoothDeltaTime;
+                }
+                else PlayerProperties.CurrentHitProgress -= Time.deltaTime;
+                if (PlayerProperties.CurrentHitProgress < 0) PlayerProperties.CurrentHitProgress = 0;
+                if (PlayerProperties.CurrentHitProgress > PlayerProperties.HitPreparationTime)
+                {
+                    PlayerBehaviour.Hit();
+                    PlayerProperties.CurrentHitProgress = 0;
+                }
             }
-            else PlayerProperties.CurrentHitProgress -= Time.deltaTime;
-            if (PlayerProperties.CurrentHitProgress < 0) PlayerProperties.CurrentHitProgress = 0;
-            if (PlayerProperties.CurrentHitProgress > PlayerProperties.HitPreparationTime)
-            {
-                PlayerBehaviour.Hit();
-                PlayerProperties.CurrentHitProgress = 0;
-            }
+            else PlayerProperties.CurrentHitProgress = 0;
         }
 
         public virtual void HandleUserInput()
         {
-            if (!(this is BusyPlayerState) && Input.GetKeyDown(KeyCode.B))
+            if (!(this is BusyPlayerState) && !(this is MagicCastingPlayerState) && Input.GetKeyDown(KeyCode.B))
             {
                 PlayerStateSwitcher.SwitchState<BusyPlayerState>();
             }
             else if (this is BusyPlayerState && Input.GetKeyDown(KeyCode.Escape))
+            {
+                PlayerStateSwitcher.SwitchState<IdlePlayerState>();
+            }
+            if (!(this is BusyPlayerState) && !(this is MagicCastingPlayerState) && Input.GetKeyDown(KeyCode.F))
+            {
+                PlayerStateSwitcher.SwitchState<MagicCastingPlayerState>();
+            }
+            else if (this is MagicCastingPlayerState && Input.GetKeyDown(KeyCode.F))
             {
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
             }
