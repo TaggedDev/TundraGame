@@ -45,6 +45,7 @@ namespace Creatures.Player.Inventory
 
         private void OnTriggerEnter(Collider other)
         {
+            print("eneter trigger");
             if (!isThrown && other.gameObject.CompareTag("Player"))
             {
                 CheckPlayerNearestItem(other.gameObject);

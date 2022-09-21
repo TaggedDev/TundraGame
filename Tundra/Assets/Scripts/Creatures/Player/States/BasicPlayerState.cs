@@ -147,7 +147,9 @@ namespace Creatures.Player.States
                 PlayerProperties._throwLoadingProgress = PlayerProperties.ThrowPrepareTime;
             }
         }
-
+        /// <summary>
+        /// Loads to hit.
+        /// </summary>
         public virtual void PrepareForHit()
         {
             if (!(this is BusyPlayerState) && !(this is MagicCastingPlayerState))
@@ -166,7 +168,9 @@ namespace Creatures.Player.States
             }
             else PlayerProperties.CurrentHitProgress = 0;
         }
-
+        /// <summary>
+        /// Recievs player input for changing states with opening related menus.
+        /// </summary>
         public virtual void HandleUserInput()
         {
             if (!(this is BusyPlayerState) && !(this is MagicCastingPlayerState) && Input.GetKeyDown(KeyCode.B))
@@ -184,6 +188,7 @@ namespace Creatures.Player.States
             else if (this is MagicCastingPlayerState && Input.GetKeyDown(KeyCode.F))
             {
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
+                (this as MagicCastingPlayerState).Dispell();
             }
         }
     }

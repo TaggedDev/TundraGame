@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using Creatures.Player.Magic;
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class MagicPanelController : MonoBehaviour
     private PlayerMagic _playerMagic;
     private GameObject _segmentHolder;
     private GameObject[] _draftElements;
+    private GameObject _spellIcon;
     private int _selectedSegment;
 
     // Start is called before the first frame update
@@ -22,6 +24,7 @@ public class MagicPanelController : MonoBehaviour
         _draftElements = new GameObject[2];
         _draftElements[0] = transform.Find("ElementSelectionCircle").Find("CenterCircle").Find("SelectedElementIcon1").gameObject;
         _draftElements[1] = transform.Find("ElementSelectionCircle").Find("CenterCircle").Find("SelectedElementIcon2").gameObject;
+        _spellIcon = UIController._rootCanvas.transform.Find("SpellIcon").gameObject;
         gameObject.SetActive(false);
     }
 
@@ -64,7 +67,7 @@ public class MagicPanelController : MonoBehaviour
         _segmentHolder.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, rot));
         if (Input.GetMouseButtonDown(0))
         {
-            if (_playerMagic.IsEnabled)
+            if (_playerMagic.IsSpellingPanelOpened)
             {
                 _playerMagic.AddElement(_selectedSegment);
                 print($"Element with index {_selectedSegment} has been added!");

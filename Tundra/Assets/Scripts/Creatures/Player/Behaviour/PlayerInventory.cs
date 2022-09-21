@@ -89,6 +89,7 @@ namespace Creatures.Player.Behaviour
         public void ResetNearestItem(GameObject item)
         {
             NearestInteractableItem = item;
+            print($"New item: {item}");
         }
     }
 }

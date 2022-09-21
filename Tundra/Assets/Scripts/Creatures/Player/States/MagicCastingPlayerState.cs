@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Creatures.Player.Behaviour;
+using UnityEngine;
 
 namespace Creatures.Player.States
 {
@@ -53,16 +54,30 @@ namespace Creatures.Player.States
 
         public override void Start()
         {
-            _playerMagic.IsEnabled = true;
+            _playerMagic.StartSpelling();
         }
 
         public override void Stop()
         {
-            _playerMagic.IsEnabled = false;
+            
         }
 
         protected override void StaminaIsOver()
         {
+        }
+
+        public override void HandleUserInput()
+        {
+            base.HandleUserInput();
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (_playerMagic.IsReadyForCasting) _playerMagic.CastSpell();
+            }
+        }
+
+        internal void Dispell()
+        {
+            _playerMagic.Dispell();
         }
     }
 }
