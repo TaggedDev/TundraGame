@@ -20,6 +20,10 @@ public class MagicPanelController : MonoBehaviour
     private List<Color> elementColors;
     [SerializeField]
     private Sprite defaultSlotIcon;
+    [SerializeField]
+    private Sprite filledStoneProgressIcon;
+    [SerializeField]
+    private Sprite nonFilledStoneProgressIcon;
     private PlayerMagic _playerMagic;
     private PlayerEquipment _playerEquipment;
     private GameObject _elementsPanel;
@@ -84,7 +88,7 @@ public class MagicPanelController : MonoBehaviour
                 bookImage.sprite = _currentMagicBook.Icon;
             bookImage.color = new Color(bookImage.color.r, bookImage.color.g, bookImage.color.b, 1f);
             float width = _currentMagicBook.FreeSheets * 150;
-            Vector3 start = new Vector3(-width / 2, 75);
+            Vector3 start = new Vector3(75 - width / 2, 75);
             for (int i = 0; i < _currentMagicBook.FreeSheets; i++)
             {
                 var sheet = Instantiate(bookSheetSlot, _elementsPanel.transform);
@@ -102,7 +106,7 @@ public class MagicPanelController : MonoBehaviour
 
     private void SwitchVisibility(object sender, EventArgs e)
     {
-        _elementsPanel.SetActive(!_elementsPanel.activeSelf);
+        _elementsPanel.SetActive(_playerMagic.IsSpellingPanelOpened);
     }
 
     // Update is called once per frame
@@ -127,7 +131,11 @@ public class MagicPanelController : MonoBehaviour
             for (int i = 0; i < _bookSheets.Count; i++)
             {
                 Image sheetIcon = _bookSheets[i].transform.Find("InternalIcon").gameObject.GetComponent<Image>();
-                if (i < _playerMagic.MaxSpellElementCount)
+                if (i < _playerMagic.DraftSpell.Count)
+                {
+                    sheetIcon.color = Color.green;
+                }
+                else if (i < _playerMagic.MaxSpellElementCount)
                 {
                     sheetIcon.color = new Color(0.56f, 0f, 1f);
                 }
@@ -142,7 +150,16 @@ public class MagicPanelController : MonoBehaviour
                 text.text = element.CurrentStonesAmount.ToString();
                 Image progress = stonesNode.Find("ProgressIndicator").gameObject.GetComponent<Image>();
                 progress.color = elementColors[1 + (int)Math.Log((int)_currentMagicBook.MagicElements[i].Element, 2)];
-                progress.fillAmount = element.ReloadProgress;
+                if (element.CurrentStonesAmount == element.MaxStonesAmount)
+                {
+                    progress.sprite = filledStoneProgressIcon;
+                    progress.fillAmount = 1f;
+                }
+                else
+                {
+                    progress.sprite = nonFilledStoneProgressIcon;
+                    progress.fillAmount = element.ReloadProgress;
+                }
                 Image icon = _elements[i].transform.Find("ElementIcon").gameObject.GetComponent<Image>();
                 if (element.CurrentStonesAmount == 0)
                 {

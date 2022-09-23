@@ -3,6 +3,7 @@ using Creatures.Player.States;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class InventoryUISlotsController : MonoBehaviour
@@ -56,6 +57,11 @@ public class InventoryUISlotsController : MonoBehaviour
     void Start()
     {
         _player = UIController._rootCanvas.GetComponent<UIController>()._player;
+        _player.GetComponent<PlayerBehaviour>().StateChanged += (sender, args) =>
+        {
+            bool visibility = !((sender as PlayerBehaviour).CurrentState is BusyPlayerState || (sender as PlayerBehaviour).CurrentState is MagicCastingPlayerState);
+            gameObject.SetActive(visibility);
+        };
         _visualSlots = new GameObject[9];
         for (int i = 1; i < 10; i++)
         {
@@ -81,39 +87,35 @@ public class InventoryUISlotsController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var behaviour = _player.GetComponent<PlayerBehaviour>();
-        if (!(behaviour.CurrentState is BusyPlayerState || behaviour.CurrentState is MagicCastingPlayerState))
+        if (Input.GetKeyDown(KeyCode.Alpha1)) SelectedInventorySlot = 1;
+        if (Input.GetKeyDown(KeyCode.Alpha2)) SelectedInventorySlot = 2;
+        if (Input.GetKeyDown(KeyCode.Alpha3)) SelectedInventorySlot = 3;
+        if (Input.GetKeyDown(KeyCode.Alpha4)) SelectedInventorySlot = 4;
+        if (Input.GetKeyDown(KeyCode.Alpha5)) SelectedInventorySlot = 5;
+        if (Input.GetKeyDown(KeyCode.Alpha6)) SelectedInventorySlot = 6;
+        if (Input.GetKeyDown(KeyCode.Alpha7)) SelectedInventorySlot = 7;
+        if (Input.GetKeyDown(KeyCode.Alpha8)) SelectedInventorySlot = 8;
+        if (Input.GetKeyDown(KeyCode.Alpha9)) SelectedInventorySlot = 9;
+        float wheel = Input.GetAxis("Mouse ScrollWheel") * mouseScrollCoefficient;
+        if (SelectedInventorySlot + wheel > MaxSlotsNumber) SelectedInventorySlot = 1;
+        else if (SelectedInventorySlot + wheel < 1) SelectedInventorySlot = MaxSlotsNumber;
+        else SelectedInventorySlot += (int)Mathf.Round(wheel);
+        int i = 0;
+        foreach (var slot in _inventoryController.Inventory.Slots)
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1)) SelectedInventorySlot = 1;
-            if (Input.GetKeyDown(KeyCode.Alpha2)) SelectedInventorySlot = 2;
-            if (Input.GetKeyDown(KeyCode.Alpha3)) SelectedInventorySlot = 3;
-            if (Input.GetKeyDown(KeyCode.Alpha4)) SelectedInventorySlot = 4;
-            if (Input.GetKeyDown(KeyCode.Alpha5)) SelectedInventorySlot = 5;
-            if (Input.GetKeyDown(KeyCode.Alpha6)) SelectedInventorySlot = 6;
-            if (Input.GetKeyDown(KeyCode.Alpha7)) SelectedInventorySlot = 7;
-            if (Input.GetKeyDown(KeyCode.Alpha8)) SelectedInventorySlot = 8;
-            if (Input.GetKeyDown(KeyCode.Alpha9)) SelectedInventorySlot = 9;
-            float wheel = Input.GetAxis("Mouse ScrollWheel") * mouseScrollCoefficient;
-            if (SelectedInventorySlot + wheel > MaxSlotsNumber) SelectedInventorySlot = 1;
-            else if (SelectedInventorySlot + wheel < 1) SelectedInventorySlot = MaxSlotsNumber;
-            else SelectedInventorySlot += (int)Mathf.Round(wheel);
-            int i = 0;
-            foreach (var slot in _inventoryController.Inventory.Slots)
-            {
-                GameObject uislot = _visualSlots[i++];
-                uislot.transform.Find("ItemIcon").gameObject.GetComponent<Image>().sprite = slot.Item != null ? slot.Item.Icon : _transparent;
-                uislot.transform.Find("AmountIndicator").gameObject.GetComponent<Text>().text = slot.ItemsAmount.ToString();
-            }
-            if (_inventoryController.NearestInteractableItem == null)
-            {
-                _pickupPanel.SetActive(false);
-            }
-            else
-            {
-                _pickupPanel.SetActive(true);
-                (_pickupPanel.transform as RectTransform).position = RectTransformUtility.WorldToScreenPoint(Camera.main, _inventoryController.NearestInteractableItem.transform.position) + new Vector2(0, 40);
-                _pickupPanel.transform.Find("Progress").gameObject.GetComponent<Image>().fillAmount = _inventoryController.ItemPickingProgress / PlayerInventory.ItemPickingUpTime;
-            }
+            GameObject uislot = _visualSlots[i++];
+            uislot.transform.Find("ItemIcon").gameObject.GetComponent<Image>().sprite = slot.Item != null ? slot.Item.Icon : _transparent;
+            uislot.transform.Find("AmountIndicator").gameObject.GetComponent<Text>().text = slot.ItemsAmount.ToString();
+        }
+        if (_inventoryController.NearestInteractableItem == null)
+        {
+            _pickupPanel.SetActive(false);
+        }
+        else
+        {
+            _pickupPanel.SetActive(true);
+            (_pickupPanel.transform as RectTransform).position = RectTransformUtility.WorldToScreenPoint(Camera.main, _inventoryController.NearestInteractableItem.transform.position) + new Vector2(0, 40);
+            _pickupPanel.transform.Find("Progress").gameObject.GetComponent<Image>().fillAmount = _inventoryController.ItemPickingProgress / PlayerInventory.ItemPickingUpTime;
         }
     }
 }

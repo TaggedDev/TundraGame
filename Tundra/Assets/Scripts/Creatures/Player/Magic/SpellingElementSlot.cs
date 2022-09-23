@@ -19,7 +19,7 @@ namespace Creatures.Player.Magic
 
         public MagicElement Element { get => element; set => element=value; }
 
-        public int MaxStoneAmount { get => maxStoneAmount; set => maxStoneAmount=value; }
+        public int MaxStonesAmount { get => maxStoneAmount; set => maxStoneAmount=value; }
 
         public int CurrentStonesAmount { get => currentStonesAmount; set => currentStonesAmount=value; }
 
@@ -30,8 +30,9 @@ namespace Creatures.Player.Magic
         public MagicElementSlot(MagicElement element, int maxAmount, float reloadTime)
         {
             Element = element;
-            CurrentStonesAmount = MaxStoneAmount = maxAmount;
+            CurrentStonesAmount = MaxStonesAmount = maxAmount;
             StoneReloadTime = reloadTime;
+            _reloadCooldown = reloadTime;
         }
 
         public MagicElementSlot()
@@ -41,7 +42,7 @@ namespace Creatures.Player.Magic
 
         public void UpdateReloadState(float deltaTime)
         {
-            if (CurrentStonesAmount < MaxStoneAmount)
+            if (CurrentStonesAmount < MaxStonesAmount)
             {
                 _reloadCooldown -= deltaTime;
                 if (_reloadCooldown <= 0)
@@ -50,6 +51,7 @@ namespace Creatures.Player.Magic
                     _reloadCooldown = StoneReloadTime;
                 }
             }
+            else _reloadCooldown = StoneReloadTime;
         }
     }
 

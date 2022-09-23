@@ -35,6 +35,8 @@ namespace Creatures.Player.Behaviour
 
         public BasicPlayerState CurrentState => _currentState;
 
+        public event EventHandler StateChanged;
+
         private void Start()
         {
             //cameraDistance = Vector3.Distance(Camera.main.transform.position, transform.position);
@@ -101,6 +103,7 @@ namespace Creatures.Player.Behaviour
             state.Start();
             _currentState = state;
             _playerProperties._throwLoadingProgress = _playerProperties.ThrowPrepareTime;
+            StateChanged?.Invoke(this, null);
         }
 
         internal void Hit()
