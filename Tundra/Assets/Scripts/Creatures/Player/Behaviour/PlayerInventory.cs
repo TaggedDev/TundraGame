@@ -48,7 +48,7 @@ namespace Creatures.Player.Behaviour
         // Update is called once per frame
         void Update()
         {
-            if (Input.GetKey(KeyCode.E) && NearestInteractableItem != null)
+            if (Input.GetKey(KeyCode.E) && !Input.GetKey(KeyCode.LeftControl) && NearestInteractableItem != null)
             {
                 ItemPickingProgress += Time.deltaTime;
                 if (ItemPickingProgress > ItemPickingUpTime)
@@ -57,7 +57,7 @@ namespace Creatures.Player.Behaviour
                 }
             }
             else ItemPickingProgress = 0f;
-            if (Input.GetKeyDown(KeyCode.X))
+            if (Input.GetKeyDown(KeyCode.Q) && !Input.GetKey(KeyCode.LeftControl))
             {
                 ThrowItemAway();
             }

@@ -1,4 +1,5 @@
 ﻿using Creatures.Player.Behaviour;
+using System.Linq;
 using UnityEngine;
 
 namespace Creatures.Player.States
@@ -10,6 +11,7 @@ namespace Creatures.Player.States
         protected readonly PlayerBehaviour PlayerBehaviour;
         protected readonly PlayerProperties PlayerProperties;
         protected readonly Rigidbody PlayerRigidBody;
+        protected readonly PlayerEquipment PlayerEquipment;
         /// <summary>
         /// The hunger consumption value of this state.
         /// </summary>
@@ -37,6 +39,7 @@ namespace Creatures.Player.States
             PlayerMovement = playerMovement;
             PlayerProperties = playerProperties;
             PlayerRigidBody = PlayerBehaviour.gameObject.GetComponent<Rigidbody>();
+            PlayerEquipment = PlayerBehaviour.gameObject.GetComponent<PlayerEquipment>();
         }
 
         /// <summary>
@@ -181,11 +184,12 @@ namespace Creatures.Player.States
             {
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
             }
-            if (!(this is BusyPlayerState) && !(this is MagicCastingPlayerState) && Input.GetKeyDown(KeyCode.F))
+            if (!(this is BusyPlayerState) && !(this is MagicCastingPlayerState)
+                && PlayerEquipment.Book != null && Input.GetKeyDown(KeyCode.X))
             {
                 PlayerStateSwitcher.SwitchState<MagicCastingPlayerState>();
             }
-            else if (this is MagicCastingPlayerState && Input.GetKeyDown(KeyCode.F))
+            else if (this is MagicCastingPlayerState && Input.GetKeyDown(KeyCode.X))
             {
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
                 (this as MagicCastingPlayerState).Dispell();

@@ -1,4 +1,5 @@
-﻿using Creatures.Player.Magic;
+﻿using Creatures.Player.Inventory;
+using Creatures.Player.Magic;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,34 +9,28 @@ using UnityEngine;
 
 public class PlayerMagic : MonoBehaviour
 {
-    private bool isSpellingPanelOpened;
+    private bool _isSpellingPanelOpened;
 
-    public int MaxSpellElementCount { get; private set; } = 2;
+    internal BookEquipmentConfiguration _config;
+
+    public int MaxSpellElementCount { get; set; }
 
     public bool IsSpellingPanelOpened
     {
         get 
         { 
-            return isSpellingPanelOpened; 
+            return _isSpellingPanelOpened; 
         }
         private set
         {
-            isSpellingPanelOpened=value;
+            _isSpellingPanelOpened=value;
             MagicPanelVisibilityChange?.Invoke(this, null);
         }
     }
 
     public bool IsReadyForCasting { get; private set; }
 
-    public List<SpellingElementSlot> MagicSlots { get; private set; } = new List<SpellingElementSlot>() 
-    { 
-        new SpellingElementSlot(MagicElement.Air, 5, 5f), 
-        new SpellingElementSlot(MagicElement.Fire, 3, 6f), 
-        new SpellingElementSlot(MagicElement.Ground, 4, 7f), 
-        new SpellingElementSlot(MagicElement.Water, 4, 5f) 
-    };
-
-    public List<MagicElement> DraftSpell { get; private set; } = new List<MagicElement>() { MagicElement.Empty, MagicElement.Empty };
+    public List<MagicElement> DraftSpell { get; private set; } = new List<MagicElement>();
 
     public event EventHandler MagicPanelVisibilityChange;
 
@@ -53,35 +48,25 @@ public class PlayerMagic : MonoBehaviour
 
     public void AddElement(int elementIndex)
     {
-        if (MagicSlots[elementIndex].CurrentStonesAmount > 0)
+        if (elementIndex < 5)
         {
-            int index = DraftSpell.IndexOf(MagicElement.Empty);
-            if (index == -1)
+            MagicElementSlot slot = _config.MagicElements[elementIndex];
+            if (slot.CurrentStonesAmount > 0)
             {
-                DraftSpell = new List<MagicElement>() { MagicElement.Empty, MagicElement.Empty };
-            }
-            DraftSpell[index] = MagicSlots[elementIndex].Element;
-            MagicSlots[elementIndex].CurrentStonesAmount--;
-            print($"Element {MagicSlots[elementIndex]} has been added!");
-            if (index == DraftSpell.Count - 1)
-            {
-                PrepareForCasting();
+                slot.CurrentStonesAmount--;
+                DraftSpell.Add(slot.Element);
+                if (DraftSpell.Count == _config.FreeSheets)
+                {
+                    PrepareForCasting();
+                }
             }
         }
     }
 
     public void Dispell()
     {
-        if (DraftSpell.IndexOf(MagicElement.Empty) == -1)
-        {
-            PrepareForCasting();
-        }
-        else
-        {
-            DraftSpell = new List<MagicElement>() { MagicElement.Empty, MagicElement.Empty };
-            IsSpellingPanelOpened = false;
-            IsReadyForCasting = false;
-        }
+        DraftSpell.Clear();
+        IsSpellingPanelOpened = false;
     }
 
     public void StartSpelling()
@@ -97,21 +82,15 @@ public class PlayerMagic : MonoBehaviour
 
     public void CastSpell()
     {
-        if (IsReadyForCasting)
-        {
-            MagicElement resultingSpellCode = DraftSpell.Aggregate((s, x) => s | x);
-            //TODO: cast resulting spell.
-        }
+
     }
 
     IEnumerator ReloadStones()
     {
         while (true)
         {
-            foreach (var slot in MagicSlots)
-            {
-                slot.UpdateReloadState(Time.deltaTime);
-            }
+            if (_config != null)
+                _config.ReloadStones();
             yield return new WaitForEndOfFrame();
         }
     }

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Creatures.Player.Behaviour;
 using UnityEngine;
+using Creatures.Player.Inventory;
 
 namespace Creatures.Player.States
 {
@@ -54,6 +55,7 @@ namespace Creatures.Player.States
 
         public override void Start()
         {
+            _playerMagic._config = (BookEquipmentConfiguration)PlayerEquipment.Book;
             _playerMagic.StartSpelling();
         }
 
@@ -69,9 +71,13 @@ namespace Creatures.Player.States
         public override void HandleUserInput()
         {
             base.HandleUserInput();
-            if (Input.GetMouseButtonDown(0))
+            _playerMagic.MaxSpellElementCount += (int)(Input.GetAxis("Mouse ScrollWheel") * 10);
+            if (_playerMagic.MaxSpellElementCount > _playerMagic._config.FreeSheets) _playerMagic.MaxSpellElementCount = _playerMagic._config.FreeSheets;
+            else if (_playerMagic.MaxSpellElementCount < 1) _playerMagic.MaxSpellElementCount = 1;
+            if (Input.GetKeyDown(KeyCode.F))
             {
-                if (_playerMagic.IsReadyForCasting) _playerMagic.CastSpell();
+                if (_playerMagic.IsSpellingPanelOpened) _playerMagic.PrepareForCasting();
+                else if (_playerMagic.IsReadyForCasting) _playerMagic.CastSpell();
             }
         }
 

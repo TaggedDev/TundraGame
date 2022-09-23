@@ -19,6 +19,8 @@ public class PlayerEquipment : MonoBehaviour
     private EquipmentConfiguration neck;
     [SerializeField]
     private EquipmentConfiguration backpack;
+    [SerializeField]
+    private EquipmentConfiguration book;
 
     private PlayerInventory _inventoryController;
 
@@ -118,6 +120,22 @@ public class PlayerEquipment : MonoBehaviour
         }
     }
 
+    public EquipmentConfiguration Book
+    {
+        get => book;
+        set
+        {
+            if (book.EquipmentSlot == EquipmentSlotPosition.Book)
+            {
+                var temp = book;
+                backpack = value;
+                EquipmentChanged?.Invoke(this, temp);
+                OnEquipmentChanged();
+            }
+            else throw new ArgumentException("This item cannot be equipped to this slot.", nameof(value));
+        }
+    }
+
     public int TotalAdditionalSlots
     {
         get 
@@ -129,6 +147,8 @@ public class PlayerEquipment : MonoBehaviour
             if (feet != null) total += feet.AdditionalSlots;
             if (neck != null) total += neck.AdditionalSlots;
             if (backpack != null) total += backpack.AdditionalSlots;
+            // Shoud the book have additional inventory slots!? Well, it's magic book anyways, maybe it has a pocket dimension to keep items or sth like that.
+            if (book != null) total += book.AdditionalSlots;
             return total;
         }
     }

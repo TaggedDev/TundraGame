@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5442735179c16940b977a75a4f31864, type: 3}
+  m_Name: The Grimuar Of Debug
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: cbd017adfcb65ff4296b69ec9a1aeeee, type: 3}
+  title: The Dark Grimuar of The Debug
+  description: 'Legendary magic book which contains a lot of debug remarks.
+
+    This
+    is the first magic artefact which I made. (C) IOExcept10n'
+  itemInWorldPrefab: {fileID: 80471051928898420, guid: e2898ac7038f486428a17a6cdbb3a923,
+    type: 3}
+  maxStackVolume: 1
+  weight: 100
+  _equipmentSlot: 6
+  _additionalSlots: 0
+  _warmEconomyCoefficient: 0
+  _magicElements:
+  - element: 1
+    maxStoneAmount: 4
+    currentStonesAmount: 4
+    stoneReloadTime: 3
+  - element: 2
+    maxStoneAmount: 3
+    currentStonesAmount: 3
+    stoneReloadTime: 6
+  - element: 4
+    maxStoneAmount: 4
+    currentStonesAmount: 4
+    stoneReloadTime: 4
+  - element: 8
+    maxStoneAmount: 5
+    currentStonesAmount: 5
+    stoneReloadTime: 5
+  - element: 16
+    maxStoneAmount: 3
+    currentStonesAmount: 3
+    stoneReloadTime: 5
+  _freeSheets: 4

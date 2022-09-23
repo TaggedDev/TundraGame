@@ -33,6 +33,7 @@ namespace Creatures.Player.Behaviour
         private PlayerMagic _playerMagic;
         //private float cameraDistance;
 
+        public BasicPlayerState CurrentState => _currentState;
 
         private void Start()
         {

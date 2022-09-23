@@ -10,9 +10,13 @@ namespace Creatures.Player.Magic
     public enum MagicElement
     {
         Empty = 0,
-        Air = 1,
+        Water = 1,
         Fire = 2,
-        Ground = 4,
-        Water = 8,
+        Air = 4,
+        Ice = 8,
+        Electro = 0x10,
+        Ground = 0x20,
+        Mood = 0x40,
+        Sound = 0x80,
     }
 }
