@@ -46,4 +46,4 @@ MonoBehaviour:
     maxStoneAmount: 3
     currentStonesAmount: 3
     stoneReloadTime: 5
-  _freeSheets: 4
+  _freeSheets: 8

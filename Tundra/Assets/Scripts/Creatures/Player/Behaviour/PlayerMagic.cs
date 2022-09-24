@@ -33,6 +33,7 @@ public class PlayerMagic : MonoBehaviour
     public List<MagicElement> DraftSpell { get; private set; } = new List<MagicElement>();
 
     public event EventHandler MagicPanelVisibilityChange;
+    public event EventHandler SpellCast;
 
     // Start is called before the first frame update
     void Start()
@@ -67,6 +68,7 @@ public class PlayerMagic : MonoBehaviour
     {
         DraftSpell.Clear();
         IsSpellingPanelOpened = false;
+        IsReadyForCasting = false;
     }
 
     public void StartSpelling()
@@ -82,7 +84,14 @@ public class PlayerMagic : MonoBehaviour
 
     public void CastSpell()
     {
+        // TODO: make spellcasting logic
+        // Check spell for the recipes
 
+        // Apply additional elements
+
+        // Delete spell
+        Dispell();
+        SpellCast?.Invoke(this, null);
     }
 
     IEnumerator ReloadStones()

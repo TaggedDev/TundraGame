@@ -26,6 +26,12 @@ namespace Creatures.Player.States
             : base(playerMovement, switcher, playerProperties)
         {
             _playerMagic=playerMagic;
+            _playerMagic.SpellCast += ExitState;
+        }
+
+        private void ExitState(object sender, EventArgs e)
+        {
+            PlayerStateSwitcher.SwitchState<IdlePlayerState>();
         }
 
         public override void MoveCharacter()
@@ -74,6 +80,11 @@ namespace Creatures.Player.States
             _playerMagic.MaxSpellElementCount += (int)(Input.GetAxis("Mouse ScrollWheel") * 10);
             if (_playerMagic.MaxSpellElementCount > _playerMagic._config.FreeSheets) _playerMagic.MaxSpellElementCount = _playerMagic._config.FreeSheets;
             else if (_playerMagic.MaxSpellElementCount < 1) _playerMagic.MaxSpellElementCount = 1;
+            if (Input.GetKeyDown(KeyCode.Alpha1)) _playerMagic.AddElement(1);
+            if (Input.GetKeyDown(KeyCode.Alpha2)) _playerMagic.AddElement(2);
+            if (Input.GetKeyDown(KeyCode.Alpha3)) _playerMagic.AddElement(3);
+            if (Input.GetKeyDown(KeyCode.Alpha4)) _playerMagic.AddElement(4);
+            if (Input.GetKeyDown(KeyCode.Alpha5)) _playerMagic.AddElement(5);
             if (Input.GetKeyDown(KeyCode.F))
             {
                 if (_playerMagic.IsSpellingPanelOpened) _playerMagic.PrepareForCasting();
