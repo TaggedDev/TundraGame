@@ -56,10 +56,10 @@ public class PlayerMagic : MonoBehaviour
             {
                 slot.CurrentStonesAmount--;
                 DraftSpell.Add(slot.Element);
-                if (DraftSpell.Count == _config.FreeSheets)
-                {
-                    PrepareForCasting();
-                }
+                //if (DraftSpell.Count == _config.FreeSheets)
+                //{
+                //    PrepareForCasting();
+                //}
             }
         }
     }
@@ -78,7 +78,8 @@ public class PlayerMagic : MonoBehaviour
 
     public void PrepareForCasting()
     {
-        IsSpellingPanelOpened = false;
+        //IsSpellingPanelOpened = false;
+        print("Spell is ready for casting!");
         IsReadyForCasting = true;
     }
 
@@ -90,8 +91,10 @@ public class PlayerMagic : MonoBehaviour
         // Apply additional elements
 
         // Delete spell
-        Dispell();
-        SpellCast?.Invoke(this, null);
+
+        IsReadyForCasting = false;
+        DraftSpell.Clear();
+        print("Spell has been casted!");
     }
 
     IEnumerator ReloadStones()
