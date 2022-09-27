@@ -87,7 +87,8 @@
 			
 			
 			// move vertices up where snow is, and where there is no path	
-			v.vertex.xyz += normalize(v.normal) * _SnowHeight * saturate(1 - RTEffect.g * _SnowPathStrength);
+			//v.vertex.xyz += normalize(v.normal) * _SnowHeight * saturate(1 - RTEffect.g * _SnowPathStrength);
+			v.vertex.y += _SnowHeight * saturate(1 - RTEffect.g * _SnowPathStrength);
 		}
 		void surf(Input IN, inout SurfaceOutput o) {
 			// Effects RenderTexture Reading

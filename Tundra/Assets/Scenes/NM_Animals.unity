@@ -182,7 +182,7 @@ MonoBehaviour:
     blankChance: 0.5
     topSpawnHeightThreshold: 150
   viewer: {fileID: 1324381167}
-  mapMaterial: {fileID: 2100000, guid: a45ba4aa6a876814fa7fc89f700cff2b, type: 2}
+  mapMaterial: {fileID: 2100000, guid: 76d650729fdfbd2419bff91f3eccc945, type: 2}
   colliderLODIndex: 0
 --- !u!1 &494034827
 GameObject:
@@ -200,7 +200,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!108 &494034828
 Light:
   m_ObjectHideFlags: 0
@@ -801,9 +801,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e54c7bd846984a54918aa8e3c432eda8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  terrainLayer:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!136 &1324381164
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1051,6 +1048,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d095480ecc04248b6a842a77a513236, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speedModifier: 5
   _player: {fileID: 1324381168}
   maxCameraRotationCooldown: 0.1
 --- !u!1 &1922622782
@@ -1069,7 +1067,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!108 &1922622783
 Light:
   m_ObjectHideFlags: 0
@@ -1277,7 +1275,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2105628265
 MonoBehaviour:
   m_ObjectHideFlags: 0
