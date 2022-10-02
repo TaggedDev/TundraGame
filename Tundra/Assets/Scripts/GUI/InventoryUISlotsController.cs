@@ -1,5 +1,6 @@
 ﻿using Creatures.Player.Behaviour;
 using Creatures.Player.States;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -76,11 +77,22 @@ public class InventoryUISlotsController : MonoBehaviour
     private void ResetSlots(object sender, int e)
     {
         MaxSlotsNumber = e;
+        float offset = 150 * (UIController._rootCanvas.GetComponent<Canvas>()).scaleFactor;
+        var rect = (transform as RectTransform).rect;
+        float posX = rect.center.x + rect.width / 2 - 75 - e * offset;
         for (int i = 1; i < 10; i++)
         {
             GameObject slot = _visualSlots[i - 1];
-            if (i <= e) slot.SetActive(true);
-            else slot.SetActive(false);
+            if (i <= e)
+            {
+                slot.SetActive(true);
+                slot.transform.position = new Vector3(posX, slot.transform.position.y, slot.transform.position.z);
+                posX += offset;
+            }
+            else
+            {
+                slot.SetActive(false);
+            }
         }
     }
 
