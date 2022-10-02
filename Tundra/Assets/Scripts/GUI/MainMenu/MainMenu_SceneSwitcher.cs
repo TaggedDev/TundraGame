@@ -1,25 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace GUI.MainMenu
 {
     public class MainMenu_SceneSwitcher : MonoBehaviour
     {
-        /// <summary>
-        /// Is called when player clicks on 'Start Game' button
-        /// </summary>
-        public void OnStartGameBTNClicked()
-        {
-            Debug.Log("Switching to game creation scene");
-        }
-        
-        /// <summary>
-        /// Is called when player clicks on 'Load Game' button
-        /// </summary>
-        public void OnLoadGameBTNClicked()
-        {
-            Debug.Log("Switching to game loading scene");
-        }
-
         /// <summary>
         /// Is called when player clicks on 'Exit' button
         /// </summary>
@@ -27,6 +12,15 @@ namespace GUI.MainMenu
         {
             Debug.Log("Leaving game...");
             Application.Quit();
+        }
+
+        /// <summary>
+        /// Loads level by it's ID in Build Settings
+        /// </summary>
+        /// <param name="id">ID of the scene in Build Settings</param>
+        public void LoadLevelByID(int id)
+        {
+            SceneManager.LoadScene(id);
         }
     }
 }
