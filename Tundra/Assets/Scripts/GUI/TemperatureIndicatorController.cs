@@ -14,17 +14,13 @@ namespace GUI
         /// <summary>
         /// Ссылка на компонент, отвечающий за температуру игрока.
         /// </summary>
-        private PlayerProperties PlayerProperties => Player.GetComponent<PlayerProperties>();
+        private PlayerProperties PlayerProperties => _player.GetComponent<PlayerProperties>();
 
         // Public fields
         /// <summary>
         /// Ссылка на игрока.
         /// </summary>
-        public GameObject Player;
-        /// <summary>
-        /// Ссылка на холст, нужна для получения данных о масштабировании холста.
-        /// </summary>
-        public Canvas Canvas;
+        private GameObject _player;
 
         /// <summary>
         /// Модификатор, определяющий скорость анимации. 
@@ -53,6 +49,8 @@ namespace GUI
         // Start is called before the first frame update
         void Start()
         {
+            UIController controller = UIController._rootCanvas.GetComponent<UIController>();
+            _player = controller._player;
             _indicator = transform.Find("HeatBarInner") as RectTransform;
             _currentScale = _indicator.localScale.x;
         }

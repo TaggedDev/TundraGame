@@ -30,12 +30,12 @@ namespace Creatures.Player.States
 
         public override void Start()
         {
-            Debug.Log("Got Idle State");
+            //Debug.Log("Got Idle State");
         }
 
         public override void Stop()
         {
-            Debug.Log("Lost Idle State");
+            //Debug.Log("Lost Idle State");
         }
 
         public override void SpendStamina()

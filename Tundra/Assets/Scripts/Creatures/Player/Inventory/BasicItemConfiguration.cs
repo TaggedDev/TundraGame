@@ -18,6 +18,7 @@ namespace Creatures.Player.Inventory
         [SerializeField]
         private string title;
         [SerializeField]
+        [Multiline(5)]
         private string description;
         [SerializeField]
         private GameObject itemInWorldPrefab;

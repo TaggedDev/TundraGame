@@ -1,4 +1,5 @@
 ﻿using Creatures.Player.Behaviour;
+using System.Linq;
 using UnityEngine;
 
 namespace Creatures.Player.States
@@ -10,6 +11,7 @@ namespace Creatures.Player.States
         protected readonly PlayerBehaviour PlayerBehaviour;
         protected readonly PlayerProperties PlayerProperties;
         protected readonly Rigidbody PlayerRigidBody;
+        protected readonly PlayerEquipment PlayerEquipment;
         /// <summary>
         /// The hunger consumption value of this state.
         /// </summary>
@@ -37,6 +39,7 @@ namespace Creatures.Player.States
             PlayerMovement = playerMovement;
             PlayerProperties = playerProperties;
             PlayerRigidBody = PlayerBehaviour.gameObject.GetComponent<Rigidbody>();
+            PlayerEquipment = PlayerBehaviour.gameObject.GetComponent<PlayerEquipment>();
         }
 
         /// <summary>
@@ -147,31 +150,49 @@ namespace Creatures.Player.States
                 PlayerProperties._throwLoadingProgress = PlayerProperties.ThrowPrepareTime;
             }
         }
-
+        /// <summary>
+        /// Loads to hit.
+        /// </summary>
         public virtual void PrepareForHit()
         {
-            if (Input.GetMouseButton(0))
+            if (!(this is BusyPlayerState) && !(this is MagicCastingPlayerState))
             {
-                PlayerProperties.CurrentHitProgress += Time.smoothDeltaTime;
+                if (Input.GetMouseButton(0))
+                {
+                    PlayerProperties.CurrentHitProgress += Time.smoothDeltaTime;
+                }
+                else PlayerProperties.CurrentHitProgress -= Time.deltaTime;
+                if (PlayerProperties.CurrentHitProgress < 0) PlayerProperties.CurrentHitProgress = 0;
+                if (PlayerProperties.CurrentHitProgress > PlayerProperties.HitPreparationTime)
+                {
+                    PlayerBehaviour.Hit();
+                    PlayerProperties.CurrentHitProgress = 0;
+                }
             }
-            else PlayerProperties.CurrentHitProgress -= Time.deltaTime;
-            if (PlayerProperties.CurrentHitProgress < 0) PlayerProperties.CurrentHitProgress = 0;
-            if (PlayerProperties.CurrentHitProgress > PlayerProperties.HitPreparationTime)
-            {
-                PlayerBehaviour.Hit();
-                PlayerProperties.CurrentHitProgress = 0;
-            }
+            else PlayerProperties.CurrentHitProgress = 0;
         }
-
+        /// <summary>
+        /// Recievs player input for changing states with opening related menus.
+        /// </summary>
         public virtual void HandleUserInput()
         {
-            if (!(this is BusyPlayerState) && Input.GetKeyDown(KeyCode.B))
+            if (!(this is BusyPlayerState) && !(this is MagicCastingPlayerState) && Input.GetKeyDown(KeyCode.B))
             {
                 PlayerStateSwitcher.SwitchState<BusyPlayerState>();
             }
             else if (this is BusyPlayerState && Input.GetKeyDown(KeyCode.Escape))
             {
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
+            }
+            if (!(this is BusyPlayerState) && !(this is MagicCastingPlayerState)
+                && PlayerEquipment.Book != null && Input.GetKeyDown(KeyCode.X))
+            {
+                PlayerStateSwitcher.SwitchState<MagicCastingPlayerState>();
+            }
+            else if (this is MagicCastingPlayerState && Input.GetKeyDown(KeyCode.X))
+            {
+                PlayerStateSwitcher.SwitchState<IdlePlayerState>();
+                (this as MagicCastingPlayerState).Dispell();
             }
         }
     }

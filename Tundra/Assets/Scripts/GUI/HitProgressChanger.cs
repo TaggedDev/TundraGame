@@ -10,13 +10,13 @@ public class HitProgressChanger : MonoBehaviour
 
     public Image HitProgress;
 
-    [SerializeField]
-    private GameObject player;
+    private GameObject _player;
     private PlayerProperties _playerProperties;
     // Start is called before the first frame update
     void Start()
     {
-        _playerProperties = player.GetComponent<PlayerProperties>();
+        _player = UIController._rootCanvas.GetComponent<UIController>()._player;
+        _playerProperties = _player.GetComponent<PlayerProperties>();
     }
 
     // Update is called once per frame
@@ -27,6 +27,6 @@ public class HitProgressChanger : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, player.transform.position) + new Vector2(0, 80);
+        transform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, _player.transform.position) + new Vector2(0, 80);
     }
 }
