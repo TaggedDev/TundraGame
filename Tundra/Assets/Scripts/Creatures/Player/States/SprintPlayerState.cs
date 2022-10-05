@@ -21,12 +21,12 @@ namespace Creatures.Player.States
 
         public override void Start()
         {
-            Debug.Log("Got sprint State");
+            //Debug.Log("Got sprint State");
         }
 
         public override void Stop()
         {
-            Debug.Log("Lost sprint State");
+            //Debug.Log("Lost sprint State");
         }
 
         public override void LoadForThrow()

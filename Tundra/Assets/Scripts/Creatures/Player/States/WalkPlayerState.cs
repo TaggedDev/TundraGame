@@ -21,14 +21,14 @@ namespace Creatures.Player.States
 
         public override void Start()
         {
-            Debug.Log("Got Walk State");
+            //Debug.Log("Got Walk State");
             //_playerMovement.Animator.SetFloat("Speed", .5f);
             //PlayerMovement.Speed = PlayerBehaviour.IsOverweight ? 2f : 3f;
         }
 
         public override void Stop()
         {
-            Debug.Log("Lost Walk State");
+            //Debug.Log("Lost Walk State");
         }
 
         protected override void StaminaIsOver()

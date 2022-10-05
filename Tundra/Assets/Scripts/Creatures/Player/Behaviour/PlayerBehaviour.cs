@@ -27,11 +27,15 @@ namespace Creatures.Player.Behaviour
         private List<BasicPlayerState> _allStates;
         private CameraMovement _cameraHolder;
         private Camera _mainCamera;
-        private PlayerInventoryController _inventoryController;
+        private PlayerInventory _inventoryController;
         private PlayerProperties _playerProperties;
         private Rigidbody _rigidbody;
+        private PlayerMagic _playerMagic;
         //private float cameraDistance;
 
+        public BasicPlayerState CurrentState => _currentState;
+
+        public event EventHandler StateChanged;
 
         private void Start()
         {
@@ -39,8 +43,9 @@ namespace Creatures.Player.Behaviour
             _mainCamera = Camera.main;
             _cameraHolder = transform.parent.GetComponentInChildren<CameraMovement>();
             _playerMovement = GetComponent<PlayerMovement>();
-            _inventoryController = GetComponent<PlayerInventoryController>();
+            _inventoryController = GetComponent<PlayerInventory>();
             _playerProperties = GetComponent<PlayerProperties>();
+            _playerMagic = GetComponent<PlayerMagic>();
             _rigidbody = GetComponent<Rigidbody>();
             _animator = GetComponent<Animator>();
             _allStates = new List<BasicPlayerState>()
@@ -48,7 +53,8 @@ namespace Creatures.Player.Behaviour
                 new IdlePlayerState(_playerMovement, this, _playerProperties),
                 new WalkPlayerState(_playerMovement,  this, _playerProperties),
                 new SprintPlayerState(_playerMovement, this, _playerProperties),
-                new BusyPlayerState(_playerMovement, this, _playerProperties)
+                new BusyPlayerState(_playerMovement, this, _playerProperties),
+                new MagicCastingPlayerState(_playerMovement, this, _playerProperties, _playerMagic)
             };
             _currentState = _allStates[0];
             _currentState.Start();
@@ -97,6 +103,7 @@ namespace Creatures.Player.Behaviour
             state.Start();
             _currentState = state;
             _playerProperties._throwLoadingProgress = _playerProperties.ThrowPrepareTime;
+            StateChanged?.Invoke(this, null);
         }
 
         internal void Hit()

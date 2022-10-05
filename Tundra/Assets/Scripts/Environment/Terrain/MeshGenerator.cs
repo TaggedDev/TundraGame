@@ -78,7 +78,7 @@ namespace Environment.Terrain
 			    }
 		    }
 
-		    meshData.ProcessMeshType();
+		    //meshData.ProcessMeshType();
 		    return meshData;
 	    }
 	}
@@ -169,13 +169,13 @@ namespace Environment.Terrain
             return mesh;
         }
 
-        /// <summary>
+        /*// <summary>
         /// Applies low poly appearance to triangles.
         /// </summary>
         public void ProcessMeshType()
         {
 	        FlatShading();
-        }
+        }*/
         
         /// <summary>
         /// Makes triangles' shadows look more in low-poly style.
