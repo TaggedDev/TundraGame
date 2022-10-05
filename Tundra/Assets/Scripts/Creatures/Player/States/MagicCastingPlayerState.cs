@@ -14,13 +14,17 @@ namespace Creatures.Player.States
     {
         private PlayerMagic _playerMagic;
 
-        protected override float StarvingConsumptionCoefficient => throw new NotImplementedException();
+        private const float speed = 1f;
 
-        protected override float StaminaConsumption => throw new NotImplementedException();
+        protected override float StarvingConsumptionCoefficient => 2f;
 
-        protected override float SpeedCoefficient => throw new NotImplementedException();
+        protected override float StaminaConsumption => 0f;
 
-        protected override float WarmConsumptionCoefficient => throw new NotImplementedException();
+        protected override float SpeedCoefficient => speed * (PlayerBehaviour.IsOverweight ? 0.5f : 1f);
+
+        protected override float WarmConsumptionCoefficient => 2f;
+
+        private Vector3 velocity;
 
         public MagicCastingPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher, PlayerProperties playerProperties, PlayerMagic playerMagic)
             : base(playerMovement, switcher, playerProperties)
@@ -36,27 +40,19 @@ namespace Creatures.Player.States
 
         public override void MoveCharacter()
         {
-            //Here's nothing. Player should'nt move in this state.
-        }
+            float _h = Input.GetAxis("Horizontal");
+            float _v = Input.GetAxis("Vertical");
 
-        public override void ContinueFreeze()
-        {
-            //I guess it's like a pause, player should not spend temperature on it
-        }
+            Vector3 _rightMovement = PlayerMovement.Right * (PlayerMovement.Speed * SpeedCoefficient * Time.deltaTime * _h);
+            Vector3 _forwardMovement = PlayerMovement.Forward * (PlayerMovement.Speed * SpeedCoefficient * Time.deltaTime * _v);
 
-        public override void ContinueStarving()
-        {
-            //And so I can say for starving.
-        }
+            PlayerMovement.Heading = Vector3.Normalize(_rightMovement + _forwardMovement);
 
-        public override void LoadForThrow()
-        {
-            //Player cannot throw items while he's in magic spelling.
-        }
+            var transform = PlayerMovement.transform;
+            transform.forward += PlayerMovement.Heading;
+            velocity = Vector3.Lerp(velocity, (_rightMovement + _forwardMovement) * 75f, 0.5f);
 
-        public override void SpendStamina()
-        {
-            //Player doesn't spend stamina while he creates magic.
+            PlayerRigidBody.velocity = new Vector3(velocity.x, PlayerRigidBody.velocity.y, velocity.z);
         }
 
         public override void Start()

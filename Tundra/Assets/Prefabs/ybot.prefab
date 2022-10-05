@@ -330,7 +330,6 @@ GameObject:
   - component: {fileID: 1319923368440458107}
   - component: {fileID: 8076501778258139858}
   - component: {fileID: 2869082690474710}
-  - component: {fileID: 8136389551658076273}
   - component: {fileID: 1575123189508082843}
   - component: {fileID: 1575123189508082842}
   - component: {fileID: 6139960695416826512}
@@ -390,25 +389,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!95 &8136389551658076273
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1808934001542508993}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 3ccf6180aeb6ed2479dd8e0763d86587, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &1575123189508082843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -464,6 +444,7 @@ MonoBehaviour:
   feet: {fileID: 0}
   neck: {fileID: 0}
   backpack: {fileID: 0}
+  book: {fileID: 0}
 --- !u!114 &1575123189508082847
 MonoBehaviour:
   m_ObjectHideFlags: 0
