@@ -1,5 +1,4 @@
 ﻿using Creatures.Player.Behaviour;
-using System.Linq;
 using UnityEngine;
 
 namespace Creatures.Player.States
@@ -51,6 +50,11 @@ namespace Creatures.Player.States
         /// On State changed | Stop
         /// </summary>
         public abstract void Stop();
+
+        /// <summary>
+        /// Handles the logic of pressing escape in different states
+        /// </summary>
+        public abstract void HandleEscapeButton();
 
         /// <summary>
         /// Basic movement with sprint
@@ -196,5 +200,4 @@ namespace Creatures.Player.States
             }
         }
     }
-
 }

@@ -1,9 +1,4 @@
-﻿using Unity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using Creatures.Player.Behaviour;
 using UnityEngine;
 using Creatures.Player.Inventory;
@@ -13,6 +8,7 @@ namespace Creatures.Player.States
     public class MagicCastingPlayerState : BasicPlayerState
     {
         private PlayerMagic _playerMagic;
+        private Canvas _escapeCanvas;
 
         private const float speed = 1f;
 
@@ -26,16 +22,23 @@ namespace Creatures.Player.States
 
         private Vector3 velocity;
 
-        public MagicCastingPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher, PlayerProperties playerProperties, PlayerMagic playerMagic)
+        public MagicCastingPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
+            PlayerProperties playerProperties, PlayerMagic playerMagic, Canvas escapeCanvas)
             : base(playerMovement, switcher, playerProperties)
         {
-            _playerMagic=playerMagic;
+            _playerMagic = playerMagic;
             _playerMagic.SpellCast += ExitState;
+            _escapeCanvas = escapeCanvas;
         }
 
         private void ExitState(object sender, EventArgs e)
         {
             PlayerStateSwitcher.SwitchState<IdlePlayerState>();
+        }
+
+        public override void HandleEscapeButton()
+        {
+            _escapeCanvas.enabled = !_escapeCanvas.enabled;
         }
 
         public override void MoveCharacter()

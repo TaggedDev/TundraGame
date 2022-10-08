@@ -10,19 +10,17 @@ namespace Creatures.Player.Behaviour
 {
     public class PlayerBehaviour : MonoBehaviour, IPlayerStateSwitcher
     {
-
+        
         //Properites
-
         public bool IsOverweight => _inventoryController.Inventory.TotalWeight > _playerProperties.MaxLoadCapacity;
-
         public float OverweightCoefficient => _inventoryController.Inventory.TotalWeight / _playerProperties.MaxLoadCapacity;
-        // Fields
 
         // Variables
         //TODO: Здесь нужно думаю, по-хорошему, как-нибудь закрыть эти поля для доступа, но разрешить их изменение в классах States
-        
+
+        [SerializeField] private Canvas escapeCanvas;
         private Animator _animator;
-        private BasicPlayerState _currentState;
+        [SerializeField] private BasicPlayerState _currentState;
         private PlayerMovement _playerMovement;
         private List<BasicPlayerState> _allStates;
         private CameraMovement _cameraHolder;
@@ -39,6 +37,10 @@ namespace Creatures.Player.Behaviour
 
         private void Start()
         {
+            if (escapeCanvas is null)
+                throw new Exception("Escape Canvas object was not assigned to the player behaviour");
+            escapeCanvas.enabled = false;
+
             //cameraDistance = Vector3.Distance(Camera.main.transform.position, transform.position);
             _mainCamera = Camera.main;
             _cameraHolder = transform.parent.GetComponentInChildren<CameraMovement>();
@@ -50,11 +52,11 @@ namespace Creatures.Player.Behaviour
             _animator = GetComponent<Animator>();
             _allStates = new List<BasicPlayerState>()
             {
-                new IdlePlayerState(_playerMovement, this, _playerProperties),
-                new WalkPlayerState(_playerMovement,  this, _playerProperties),
-                new SprintPlayerState(_playerMovement, this, _playerProperties),
-                new BusyPlayerState(_playerMovement, this, _playerProperties),
-                new MagicCastingPlayerState(_playerMovement, this, _playerProperties, _playerMagic)
+                new IdlePlayerState(_playerMovement, this, _playerProperties, escapeCanvas),
+                new WalkPlayerState(_playerMovement,  this, _playerProperties, escapeCanvas),
+                new SprintPlayerState(_playerMovement, this, _playerProperties, escapeCanvas),
+                new BusyPlayerState(_playerMovement, this, _playerProperties, escapeCanvas),
+                new MagicCastingPlayerState(_playerMovement, this, _playerProperties, _playerMagic, escapeCanvas)
             };
             _currentState = _allStates[0];
             _currentState.Start();
@@ -75,8 +77,11 @@ namespace Creatures.Player.Behaviour
             _currentState.PrepareForHit();
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
+            if (Input.GetKey(KeyCode.Escape))
+                _currentState.HandleEscapeButton();
+
             _currentState.MoveCharacter();
             _animator.SetFloat("Speed", _rigidbody.velocity.magnitude);
             _animator.SetBool("Shift Pressed", Input.GetKey(KeyCode.LeftShift));
