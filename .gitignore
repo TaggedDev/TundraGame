@@ -9,8 +9,12 @@ Tundra/[Ll]ogs/*
 Tundra/[Uu]ser[Ss]ettings/*
 Tundra/[Ll]ibrary/*
 Tundra/[Tt]emp/*
-Tundra/Assets/Textures/GUI/Raw Files/*
-Tundra/Assets/Textures/Raw Textures/*
+Tundra\Assets\Textures\GUI\RawFiles\*
+Tundra\Assets\Textures\GUI\RawFiles\white\*
+Tundra\Assets\Textures\GUI\RawFiles\psd\*
+Tundra\Assets\Textures\GUI\RawFiles\colored\*
+Tundra\Assets\Textures\GUI\RawFiles\*
+Tundra\Assets\Textures\RawTextures
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
