@@ -461,9 +461,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 982143716}
-        m_MethodName: LoadLevelByID
-        m_Mode: 3
+      - m_Target: {fileID: 982143717}
+        m_MethodName: CreateWorld
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -644,7 +644,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 1c405577873c9394a88708510667bd9e, type: 3}
+  m_Texture: {fileID: 2800000, guid: c924f24f2bf14a44d8dfb8bf11eca087, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -848,6 +848,7 @@ GameObject:
   - component: {fileID: 982143713}
   - component: {fileID: 982143712}
   - component: {fileID: 982143716}
+  - component: {fileID: 982143717}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -952,6 +953,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4915b18a1978fd74ba6dc13bc33d378b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &982143717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 982143711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 567e3ebeef814064eb268e7b4a7ab3e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  worldNameInput: {fileID: 2088795368}
+  worldSeedInput: {fileID: 1137507404}
 --- !u!1 &1000567801
 GameObject:
   m_ObjectHideFlags: 0
@@ -1381,7 +1396,7 @@ GameObject:
   - component: {fileID: 1630696269}
   - component: {fileID: 1630696268}
   m_Layer: 5
-  m_Name: textholder_worldname
+  m_Name: textholder_worldseed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1426,7 +1441,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 1c405577873c9394a88708510667bd9e, type: 3}
+  m_Texture: {fileID: 2800000, guid: c924f24f2bf14a44d8dfb8bf11eca087, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -1693,7 +1708,7 @@ GameObject:
   - component: {fileID: 1996089630}
   - component: {fileID: 1996089629}
   m_Layer: 5
-  m_Name: input_worldname
+  m_Name: input_worldseed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1762,13 +1777,13 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1996089630}
   m_TextComponent: {fileID: 1137507404}
   m_Placeholder: {fileID: 2030431361}
-  m_ContentType: 0
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 1
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
