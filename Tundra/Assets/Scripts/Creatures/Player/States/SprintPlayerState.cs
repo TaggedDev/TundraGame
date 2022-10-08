@@ -35,7 +35,7 @@ namespace Creatures.Player.States
 
         public override void HandleEscapeButton()
         {
-            _escapeCanvas.enabled = !_escapeCanvas.enabled;
+            _escapeCanvas.gameObject.SetActive(!_escapeCanvas.gameObject.activeSelf);
         }
 
         public override void LoadForThrow()

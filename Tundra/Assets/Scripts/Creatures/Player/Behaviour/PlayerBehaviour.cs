@@ -39,7 +39,6 @@ namespace Creatures.Player.Behaviour
         {
             if (escapeCanvas is null)
                 throw new Exception("Escape Canvas object was not assigned to the player behaviour");
-            escapeCanvas.enabled = false;
 
             //cameraDistance = Vector3.Distance(Camera.main.transform.position, transform.position);
             _mainCamera = Camera.main;
@@ -67,7 +66,10 @@ namespace Creatures.Player.Behaviour
         }
 
         private void Update()
-        {
+        {           
+            if (Input.GetKeyDown(KeyCode.Escape))
+                _currentState.HandleEscapeButton();
+            
             _cameraHolder.transform.position = transform.position;
             _currentState.ContinueStarving();
             _currentState.ContinueFreeze();
@@ -79,9 +81,6 @@ namespace Creatures.Player.Behaviour
 
         private void FixedUpdate()
         {
-            if (Input.GetKey(KeyCode.Escape))
-                _currentState.HandleEscapeButton();
-
             _currentState.MoveCharacter();
             _animator.SetFloat("Speed", _rigidbody.velocity.magnitude);
             _animator.SetBool("Shift Pressed", Input.GetKey(KeyCode.LeftShift));
