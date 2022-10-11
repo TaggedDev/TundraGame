@@ -1,5 +1,7 @@
 ﻿using System;
+using Environment;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace GUI
@@ -20,8 +22,17 @@ namespace GUI
         public void CreateWorld()
         {
             string worldName = worldNameInput.text;
-            int worldSeed = int.Parse(worldSeedInput.text);
-            Debug.Log($"{worldName}, {worldSeed}");
+            
+            // Check if player didn't put value in seed placeholder
+            int worldSeed;
+            if (string.IsNullOrEmpty(worldSeedInput.text))
+                worldSeed = 146;
+            else
+                worldSeed = int.Parse(worldSeedInput.text); 
+            
+            WorldConstants.WorldName = worldName;
+            WorldConstants.WorldSeed = worldSeed;
+            SceneManager.LoadScene(5);
         }
     }
 }

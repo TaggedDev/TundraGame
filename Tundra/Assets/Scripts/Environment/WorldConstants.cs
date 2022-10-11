@@ -13,5 +13,8 @@
             ColliderGenerationDistanceThreshold * ColliderGenerationDistanceThreshold; 
         private const float EntityUpdateThreshold = .5f;
         public const float SqrEntityUpdateThreshold = EntityUpdateThreshold * EntityUpdateThreshold;
+
+        public static int WorldSeed;
+        public static string WorldName;
     }
 }
