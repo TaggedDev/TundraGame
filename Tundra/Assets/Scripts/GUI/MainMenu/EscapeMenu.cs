@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Creatures.Player.Behaviour;
 using Environment;
@@ -47,6 +48,7 @@ namespace GUI.MainMenu
         {
             List<SaveData> saveDatum = new List<SaveData>
             {
+                new SaveData("SaveStamp", $"{DateTime.Today.Day}.{DateTime.Today.Month}.{DateTime.Today.Year}"),
                 new SaveData("WorldSeed", WorldConstants.WorldSeed),
                 new SaveData("Separator", string.Empty),
                 new SaveData("PlayerPosition", player.transform.position)
@@ -102,7 +104,7 @@ namespace GUI.MainMenu
         /// <returns>The text that has to be written in save file</returns>
         public string GenerateSaveText()
         {
-            return $"{_fieldName}\n{_fieldValue}";
+            return $"{_fieldName}: {_fieldValue}";
         }
     }
     
