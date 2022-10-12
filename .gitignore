@@ -73,3 +73,5 @@ crashlytics-build.properties
 
 Tundra/Assets/Textures/GUI/RawFiles/*
 Tundra/Assets/Textures/RawTextures/*
+Tundra/Assets/StreamingAssets
+Tundra/Assets/StreamingAssets.meta
