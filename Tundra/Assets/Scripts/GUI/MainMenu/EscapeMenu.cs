@@ -72,7 +72,7 @@ namespace GUI.MainMenu
     /// <summary>
     /// Class describes the behaviour of fields to be saved in world save file
     /// </summary>
-    class SaveData
+    internal class SaveData
     {
         private readonly string _fieldName;
         private readonly string _fieldValue;
