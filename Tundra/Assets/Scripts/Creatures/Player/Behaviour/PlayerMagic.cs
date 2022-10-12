@@ -52,7 +52,7 @@ public class PlayerMagic : MonoBehaviour
         if (elementIndex < 5)
         {
             MagicElementSlot slot = _config.MagicElements[elementIndex];
-            if (slot.CurrentStonesAmount > 0)
+            if (slot.CurrentStonesAmount > 0 && DraftSpell.Count < _config.FreeSheets)
             {
                 slot.CurrentStonesAmount--;
                 DraftSpell.Add(slot.Element);
