@@ -509,6 +509,7 @@ GameObject:
   - component: {fileID: 507228181}
   - component: {fileID: 507228183}
   - component: {fileID: 507228182}
+  - component: {fileID: 507228184}
   m_Layer: 5
   m_Name: ESC_Background
   m_TagString: Untagged
@@ -575,6 +576,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 507228180}
   m_CullTransparentMesh: 0
+--- !u!114 &507228184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 507228180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 692e34e985003dd478e3ef5b884937be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  saveButton: {fileID: 1281799675}
+  player: {fileID: 1552789790}
 --- !u!1 &528677536
 GameObject:
   m_ObjectHideFlags: 0
@@ -849,7 +864,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 855915279}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 507228184}
+        m_MethodName: ExitToMainMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &855915279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -930,7 +956,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ebf3b5e1f9e54c4cb2d532791a355f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorPreviewLOD: 0
   persistance: 0.5
   noiseScale: 48
   octaves: 8
@@ -1011,7 +1036,6 @@ MonoBehaviour:
     colour: {r: 1, g: 0.9882075, b: 0.9764151, a: 0}
   mapDataCount: 0
   meshDataCount: 0
-  drawMode: 0
   normalizeMode: 1
 --- !u!1 &1035914546
 GameObject:
@@ -1249,7 +1273,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1281799676}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 507228184}
+        m_MethodName: SaveThisWorld
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1281799676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1442,6 +1477,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e54c7bd846984a54918aa8e3c432eda8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1552789790 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8700357811891334371, guid: 559d97cf075654344b456f54e77c8b1c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1683048383}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1552789787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c03cfd42317533f43b1f60e037046418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1552789797 stripped
