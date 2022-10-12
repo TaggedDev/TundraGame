@@ -50,8 +50,7 @@ namespace GUI.MainMenu
             {
                 new SaveData("SaveStamp", $"{DateTime.Today.Day}.{DateTime.Today.Month}.{DateTime.Today.Year}"),
                 new SaveData("WorldSeed", WorldConstants.WorldSeed),
-                new SaveData("Separator", string.Empty),
-                new SaveData("PlayerPosition", player.transform.position)
+                new SaveData("PlayerPosition", player.transform.localPosition)
             };
 
             string saveText = string.Empty;
@@ -86,16 +85,8 @@ namespace GUI.MainMenu
         /// <param name="value">The value to save</param>
         public SaveData(string name, object value)
         {
-            if (name == "Separator")
-            {
-                _fieldName = "\n######";
-                _fieldValue = string.Empty; 
-            }
-            else
-            {
-                _fieldName = name;
-                _fieldValue = value.ToString();
-            }
+            _fieldName = name;
+            _fieldValue = value.ToString();
         }
 
         /// <summary>
@@ -104,7 +95,7 @@ namespace GUI.MainMenu
         /// <returns>The text that has to be written in save file</returns>
         public string GenerateSaveText()
         {
-            return $"{_fieldName}: {_fieldValue}";
+            return $"{_fieldName}:{_fieldValue}";
         }
     }
     

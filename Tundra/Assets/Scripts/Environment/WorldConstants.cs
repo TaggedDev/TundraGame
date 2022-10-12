@@ -16,5 +16,6 @@
 
         public static int WorldSeed = 146;
         public static string WorldName = "New World";
+        public static string WorldData = string.Empty;
     }
 }

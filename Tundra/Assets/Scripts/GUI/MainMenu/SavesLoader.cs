@@ -45,12 +45,14 @@ namespace GUI.MainMenu
                 // The data is saved in text files, each in new line using syntax: "key: value\n" 
                 StreamReader reader = new StreamReader(file);
                 // We read the file, get the first line and access the key to get the timestamp text
-                var date = reader.ReadLine().Split()[1];
+                var date = reader.ReadLine().Split(':')[1];
                 // We read the next line and get the key to get the world seed
-                var seed = int.Parse(reader.ReadLine().Split()[1]);
+                var seed = int.Parse(reader.ReadLine().Split(':')[1]);
+
+                string data = $"SaveStamp:{date}\nWorldSeed:{seed}\n" + reader.ReadToEnd();
                 
                 // Setting card values
-                card.SetPlankValues(filename.Substring(0, filename.Length-4), date, seed);
+                card.SetPlankValues(filename.Substring(0, filename.Length-4), date, seed, data);
             }
         }
     }
