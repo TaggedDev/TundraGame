@@ -58,5 +58,6 @@ namespace Creatures.Player.States
         protected override void StaminaIsOver()
         {
         }
+
     }
 }

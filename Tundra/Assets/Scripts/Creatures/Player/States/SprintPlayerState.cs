@@ -38,5 +38,6 @@ namespace Creatures.Player.States
         {
             PlayerBehaviour.SwitchState<WalkPlayerState>();
         }
+
     }
 }

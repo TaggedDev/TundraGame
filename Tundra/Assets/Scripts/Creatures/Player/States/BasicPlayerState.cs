@@ -45,6 +45,11 @@ namespace Creatures.Player.States
         public abstract void Start();
 
         /// <summary>
+        /// When PlacableObbject is Chosen
+        /// </summary>
+        
+
+        /// <summary>
         /// On State changed | Stop
         /// </summary>
         public abstract void Stop();
@@ -123,6 +128,11 @@ namespace Creatures.Player.States
             }
         }
 
+        public virtual void PickUpBuildingBlock()
+        {
+            PlayerStateSwitcher.SwitchState<BuildingState>();
+        }
+
         public virtual void SpendStamina()
         {
             if (PlayerProperties.CurrentStamina > 0) PlayerProperties.CurrentStamina -= (StaminaConsumption * Time.deltaTime);
@@ -162,7 +172,7 @@ namespace Creatures.Player.States
                 PlayerProperties.CurrentHitProgress = 0;
             }
         }
-
+        
         public virtual void HandleUserInput()
         {
             if (!(this is BusyPlayerState) && Input.GetKeyDown(KeyCode.B))
