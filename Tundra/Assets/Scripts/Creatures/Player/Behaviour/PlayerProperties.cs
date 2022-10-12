@@ -46,10 +46,6 @@ namespace Creatures.Player.Behaviour
         /// </summary>
         [SerializeField] private float maxLoadCapacity;
         /// <summary>
-        /// Preparation time before item throwing.
-        /// </summary>
-        [SerializeField] private float throwPrepareTime;
-        /// <summary>
         /// Total time to prepare for throw.
         /// </summary>
         [SerializeField] private float hitPreparationTime;
@@ -101,10 +97,6 @@ namespace Creatures.Player.Behaviour
         /// Player character temperature amplitude.
         /// </summary>
         public float AbsoluteTemperatureAmplitude => absoluteTemperatureAmplitude;
-        /// <summary>
-        /// Throw preparation time.
-        /// </summary>
-        public float ThrowPrepareTime => throwPrepareTime;
         /// <summary>
         /// Maximal starvation level.
         /// </summary>
@@ -242,7 +234,6 @@ namespace Creatures.Player.Behaviour
                 saturationTime = playerRace.SaturationTime;
                 perfectTemperature = playerRace.PerfectTemperature;
                 absoluteTemperatureAmplitude = playerRace.AbsoluteTemperatureAmplitude;
-                throwPrepareTime = playerRace.ThrowPrepareTime;
                 maxLoadCapacity = playerRace.MaxLoadCapacity;
                 hitPreparationTime = playerRace.HitPrepareTime;
             }
@@ -250,7 +241,6 @@ namespace Creatures.Player.Behaviour
             _currentHealth = maxHealth;
             _currentStamina = maxStamina;
             _currentStarvationTime = saturationTime;
-            _throwLoadingProgress = throwPrepareTime;
         }
     }
 }

@@ -82,17 +82,16 @@ namespace Creatures.Player.Behaviour
             //print($"Speed has set to {_rigidbody.velocity.magnitude}");
         }
 
-        public void ThrowItem()
-        {
-            _animator.SetTrigger("Throw");
-            _playerProperties._throwLoadingProgress = _playerProperties.ThrowPrepareTime;
-            //Вся эта странная история нужна для того, чтобы он кидал в нужую сторону. 
-            //TODO: Не работает, надо фиксить.
-            Vector3 target = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-            target = Quaternion.Euler(0, 90, 0) * new Vector3(target.x, 0, target.z).normalized;
-            //print(target);
-            _inventoryController.Inventory.Slots[_inventoryController.SelectedInventorySlot].ThrowItem(transform.position, (target).normalized);
-        }
+        //public void ThrowItem()
+        //{
+        //    _animator.SetTrigger("Throw");
+        //    //Вся эта странная история нужна для того, чтобы он кидал в нужую сторону. 
+        //    //TODO: Не работает, надо фиксить.
+        //    Vector3 target = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+        //    target = Quaternion.Euler(0, 90, 0) * new Vector3(target.x, 0, target.z).normalized;
+        //    //print(target);
+        //    _inventoryController.Inventory.Slots[_inventoryController.SelectedInventorySlot].ThrowItem(transform.position, (target).normalized);
+        //}
 
         public void SwitchState<T>() where T : BasicPlayerState
         {
@@ -101,7 +100,6 @@ namespace Creatures.Player.Behaviour
             _currentState.Stop();
             state.Start();
             _currentState = state;
-            _playerProperties._throwLoadingProgress = _playerProperties.ThrowPrepareTime;
             StateChanged?.Invoke(this, null);
         }
 
