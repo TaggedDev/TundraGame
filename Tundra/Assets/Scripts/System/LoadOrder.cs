@@ -17,6 +17,8 @@ namespace System
         [SerializeField] private EntityRenderer entityRenderer;
 
         private string[] worldData;
+        private Rigidbody _playerRigidbody;
+        
         /*[SerializeField] private MobFabric[] fabrics;*/
 
         /*
@@ -29,16 +31,37 @@ namespace System
         private void Start()
         {
             worldData = WorldConstants.WorldData.Split('\n');
+            
+            _playerRigidbody = playerHolder.GetComponent<Rigidbody>();
+            _playerRigidbody.useGravity = false;
+
+            playerHolder.transform.position = GetStartPosition();
+            
             mapGenerator.gameObject.SetActive(true);
             chunksGenerator.gameObject.SetActive(true);
             StartCoroutine(InstantiateWorld());
         }
 
-        // Turns on objects following the order of world loading
+        private Vector3 GetStartPosition()
+        {
+            Vector3 startPosition = new Vector3(0, 100, 0);
+            // If there is any saved data - read XYZ coordinates
+            if (!string.IsNullOrEmpty(WorldConstants.WorldData))
+                startPosition = GetSavedPlayerCoords();
+            // Or just return the default 0;150;0
+            return startPosition;
+        }
+
+        /// <summary>
+        /// Turns on objects following the order of world loading 
+        /// </summary>
         private IEnumerator InstantiateWorld()
         {
             yield return new WaitUntil(() => mapGenerator.mapDataCount == 9 && mapGenerator.meshDataCount == 9);
-            SetUpPlayer();
+            
+            playerHolder.SpawnPlayer();
+            _playerRigidbody.useGravity = true;
+            
             entityRenderer.gameObject.SetActive(true);
             /*foreach (var fabric in fabrics)
                 fabric.transform.gameObject.SetActive(true);*/
@@ -47,13 +70,8 @@ namespace System
         /// <summary>
         /// Spawns player on saved coordinates or at 0;0;0
         /// </summary>
-        private void SetUpPlayer()
+        private Vector3 GetSavedPlayerCoords()
         {
-            playerHolder.gameObject.SetActive(true);
-            // If there is no world data, which means it's a new world
-            if (string.IsNullOrEmpty(WorldConstants.WorldData))
-                return;
-            
             // Otherwise, read the saved data and set player spawn
             string savedPosition = worldData[2].Split(':')[1];
             if (savedPosition.StartsWith ("(") && savedPosition.EndsWith (")")) 
@@ -74,8 +92,7 @@ namespace System
                 float.Parse(sArray[1], CultureInfo.InvariantCulture.NumberFormat),
                 float.Parse(sArray[2], CultureInfo.InvariantCulture.NumberFormat));
             
-            playerHolder.transform.position = result;
-            playerHolder.SpawnPlayer();
+            return result;
         }
     }
 }
