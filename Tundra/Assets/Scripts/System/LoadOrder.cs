@@ -44,10 +44,17 @@ namespace System
                 fabric.transform.gameObject.SetActive(true);*/
         }
 
+        /// <summary>
+        /// Spawns player on saved coordinates or at 0;0;0
+        /// </summary>
         private void SetUpPlayer()
         {
             playerHolder.gameObject.SetActive(true);
+            // If there is no world data, which means it's a new world
+            if (string.IsNullOrEmpty(WorldConstants.WorldData))
+                return;
             
+            // Otherwise, read the saved data and set player spawn
             string savedPosition = worldData[2].Split(':')[1];
             if (savedPosition.StartsWith ("(") && savedPosition.EndsWith (")")) 
             {
@@ -69,7 +76,6 @@ namespace System
             
             playerHolder.transform.position = result;
             playerHolder.SpawnPlayer();
-            
         }
     }
 }
