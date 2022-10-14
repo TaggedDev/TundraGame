@@ -10,14 +10,6 @@ namespace Environment.Terrain
 	/// </summary>
 	public class MapGenerator : MonoBehaviour
 	{
-		// Inner structs and enums
-		public enum DrawMode
-		{
-			NoiseMap,
-			ColourMap,
-			Mesh
-		}
-
 		/// <summary>
 		/// Overall information about the current Thread
 		/// </summary>
@@ -52,7 +44,6 @@ namespace Environment.Terrain
 		public const int mapChunkSize = 11;
 		
 		// Fields
-		[SerializeField] [Range(0, 6)] private int editorPreviewLOD;
 		[SerializeField] [Range(0, 1)] private float persistance;
 		[SerializeField] private float noiseScale;
 		[SerializeField] private int octaves;
@@ -71,36 +62,8 @@ namespace Environment.Terrain
 		/*[HideInInspector]*/ public int meshDataCount;
 		
 		// Variables
-		public DrawMode drawMode;
 		public NormalizeMode normalizeMode;
 		
-		// Public methods
-		
-		/// <summary>
-		/// Draws the map in editor
-		/// </summary>
-		public void DrawMapInEditor()
-		{
-			MapData mapData = GenerateMapData(Vector2.zero);
-
-			MapDisplay display = FindObjectOfType<MapDisplay>();
-			if (drawMode == DrawMode.NoiseMap)
-			{
-				display.DrawTexture(TextureGenerator.TextureFromHeightMap(mapData.heightMap));
-			}
-			else if (drawMode == DrawMode.ColourMap)
-			{
-				display.DrawTexture(
-					TextureGenerator.TextureFromColourMap(mapData.colourMap, mapChunkSize, mapChunkSize));
-			}
-			else if (drawMode == DrawMode.Mesh)
-			{
-				display.DrawMesh(
-					MeshGenerator.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve),
-					TextureGenerator.TextureFromColourMap(mapData.colourMap, mapChunkSize, mapChunkSize));
-			}
-		}
-
 		/// <summary>
 		/// Creates the thread to generate mapData
 		/// </summary>
@@ -201,8 +164,8 @@ namespace Environment.Terrain
 		/// <returns>Object with generated mapData</returns>
 		private MapData GenerateMapData(Vector2 centre)
 		{
-			float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize + 2, mapChunkSize + 2, seed, noiseScale, octaves,
-				persistance, lacunarity, centre + offset, normalizeMode);
+			float[,] noiseMap = Noise.GenerateNoiseMap(mapChunkSize + 2, mapChunkSize + 2, 
+				WorldConstants.WorldSeed, noiseScale, octaves, persistance, lacunarity, centre + offset, normalizeMode);
 
 			Color[] colourMap = new Color[mapChunkSize * mapChunkSize];
 			for (int y = 0; y < mapChunkSize; y++)

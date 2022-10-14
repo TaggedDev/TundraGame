@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
 //using Creatures.Mobs;
 using Creatures.Player.Behaviour;
 using Environment;
@@ -13,6 +15,10 @@ namespace System
         [SerializeField] private ChunksGenerator chunksGenerator;
         [SerializeField] private PlayerSpawner playerHolder;
         [SerializeField] private EntityRenderer entityRenderer;
+
+        private string[] worldData;
+        private Rigidbody _playerRigidbody;
+        
         /*[SerializeField] private MobFabric[] fabrics;*/
 
         /*
@@ -21,22 +27,101 @@ namespace System
          * 3. Light sources
          * 4. Player spawn
          */
+
+        /// <summary>
+        /// Returns the Game scene to default settings
+        /// </summary>
+        public void UnloadCurrentScene()
+        {
+            // Destroy all mobs
+            // Destroy all chunks in Nature
+            // Reset mapdatacount variables
+            // Reset Day/Night
+            // Reset player position to 0;150;0
+
+            foreach (Transform child in chunksGenerator.transform)
+                Destroy(child.gameObject);
+
+            mapGenerator.mapDataCount = 0;
+            mapGenerator.meshDataCount = 0;
+            
+            entityRenderer.gameObject.SetActive(false);
+            mapGenerator.gameObject.SetActive(false);
+            chunksGenerator.gameObject.SetActive(false);
+            
+            _playerRigidbody.useGravity = false;
+            //playerHolder.transform.position = new Vector3(0, 150, 0);
+        }
         
         private void Start()
         {
+            worldData = WorldConstants.WorldData.Split('\n');
+            
+            _playerRigidbody = playerHolder.GetComponent<Rigidbody>();
+            _playerRigidbody.useGravity = false;
+
+            playerHolder.transform.position = GetPlayerStartPosition();
+            
             mapGenerator.gameObject.SetActive(true);
             chunksGenerator.gameObject.SetActive(true);
             StartCoroutine(InstantiateWorld());
         }
-
+        
+        /// <summary>
+        /// Turns on objects following the order of world loading 
+        /// </summary>
         private IEnumerator InstantiateWorld()
         {
             yield return new WaitUntil(() => mapGenerator.mapDataCount == 9 && mapGenerator.meshDataCount == 9);
-            playerHolder.gameObject.SetActive(true);
+            
             playerHolder.SpawnPlayer();
+            _playerRigidbody.useGravity = true;
+            
             entityRenderer.gameObject.SetActive(true);
             /*foreach (var fabric in fabrics)
                 fabric.transform.gameObject.SetActive(true);*/
+        }
+
+        /// <summary>
+        /// Gets a start position of a player based on save or new world settings
+        /// </summary>
+        /// <returns>Start position of a player</returns>
+        private Vector3 GetPlayerStartPosition()
+        {
+            Vector3 startPosition = new Vector3(0, 100, 0);
+            // If there is any saved data - read XYZ coordinates
+            if (!string.IsNullOrEmpty(WorldConstants.WorldData))
+                startPosition = GetSavedPlayerCoords();
+            // Or just return the default 0;150;0
+            return startPosition;
+        }
+        
+        /// <summary>
+        /// Spawns player on saved coordinates or at 0;0;0
+        /// </summary>
+        private Vector3 GetSavedPlayerCoords()
+        {
+            // Otherwise, read the saved data and set player spawn
+            string savedPosition = worldData[2].Split(':')[1];
+            if (savedPosition.StartsWith ("(") && savedPosition.EndsWith (")")) 
+            {
+                savedPosition = savedPosition.Substring(1, savedPosition.Length-2);
+            }
+            else
+            {
+                throw new Exception("Vector3 was in incorrect format");
+            }
+      
+            // split the items
+            string[] sArray = savedPosition.Split(',');
+      
+            // store as a Vector3
+            Vector3 result = new Vector3(
+                float.Parse(sArray[0], CultureInfo.InvariantCulture.NumberFormat),
+                float.Parse(sArray[1], CultureInfo.InvariantCulture.NumberFormat),
+                float.Parse(sArray[2], CultureInfo.InvariantCulture.NumberFormat));
+            
+            return result;
         }
     }
 }
