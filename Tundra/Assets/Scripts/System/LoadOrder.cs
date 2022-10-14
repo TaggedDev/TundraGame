@@ -50,7 +50,7 @@ namespace System
             chunksGenerator.gameObject.SetActive(false);
             
             _playerRigidbody.useGravity = false;
-            playerHolder.transform.position = new Vector3(0, 150, 0);
+            //playerHolder.transform.position = new Vector3(0, 150, 0);
         }
         
         private void Start()

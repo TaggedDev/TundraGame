@@ -44,6 +44,10 @@ namespace Environment.Terrain
 		/// </summary>
 		private void Start()
 		{
+			_viewerPosition = Vector2.zero; 
+			viewerPositionOld = _viewerPosition;
+			_terrainChunksVisibleLastUpdate.Clear();
+			
 			_mapGenerator = FindObjectOfType<MapGenerator>();
 
 			_maxViewDst = detailLevels[detailLevels.Length - 1].visibleDstThreshold;
@@ -92,7 +96,7 @@ namespace Environment.Terrain
 				
 			int currentChunkCoordX = Mathf.RoundToInt (_viewerPosition.x / _chunkSize);
 			int currentChunkCoordY = Mathf.RoundToInt (_viewerPosition.y / _chunkSize);
-
+			Debug.Log(chunksVisibleInViewDst);
 			for (int yOffset = -chunksVisibleInViewDst; yOffset <= chunksVisibleInViewDst; yOffset++)
 			{
 				for (int xOffset = -chunksVisibleInViewDst; xOffset <= chunksVisibleInViewDst; xOffset++)
@@ -105,6 +109,7 @@ namespace Environment.Terrain
 					}
 					else
 					{
+						Debug.Log($"{viewedChunkCoord}");
 						var chunk = new TerrainChunk(viewedChunkCoord, _chunkSize, detailLevels, colliderLODIndex,
 							transform, mapMaterial, entityInfo, viewer.transform);
 						_terrainChunkDictionary.Add(viewedChunkCoord, chunk);
