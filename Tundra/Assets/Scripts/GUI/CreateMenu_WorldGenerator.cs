@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Environment;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -22,14 +23,23 @@ namespace GUI
         public void CreateWorld()
         {
             string worldName = worldNameInput.text;
+
+            if (string.IsNullOrEmpty(worldName))
+            {
+                string savesPath = Application.streamingAssetsPath + "/Worlds/";
+                string[] files = Directory.GetFiles(savesPath, "New World*.txt");
+                worldName = $"New World ({files.Length+1})";
+            }
+            
+            
             
             // Check if player didn't put value in seed placeholder
             int worldSeed;
             if (string.IsNullOrEmpty(worldSeedInput.text))
                 worldSeed = 146;
             else
-                worldSeed = int.Parse(worldSeedInput.text); 
-            
+                worldSeed = int.Parse(worldSeedInput.text);
+
             WorldConstants.WorldName = worldName;
             WorldConstants.WorldSeed = worldSeed;
             SceneManager.LoadScene(5);

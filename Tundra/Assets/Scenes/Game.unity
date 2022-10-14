@@ -590,6 +590,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   saveButton: {fileID: 1281799675}
   player: {fileID: 1552789790}
+  loadOrder: {fileID: 528677537}
 --- !u!1 &528677536
 GameObject:
   m_ObjectHideFlags: 0
@@ -761,7 +762,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 620579772}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.048997, y: 95.98504, z: -18.057245}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2084246608}
@@ -1367,12 +1368,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mobsList:
   - {fileID: -4013395312205519178, guid: 403785f619ad9db4fbc33d4b5340a3af, type: 3}
-  - {fileID: -4013395312205519178, guid: 403785f619ad9db4fbc33d4b5340a3af, type: 3}
-  - {fileID: -4013395312205519178, guid: 403785f619ad9db4fbc33d4b5340a3af, type: 3}
-  - {fileID: -4013395312205519178, guid: 403785f619ad9db4fbc33d4b5340a3af, type: 3}
-  - {fileID: 2456120132901063369, guid: 435c098d30e6abf47a5497862903a08d, type: 3}
-  - {fileID: 2456120132901063369, guid: 435c098d30e6abf47a5497862903a08d, type: 3}
-  - {fileID: 2456120132901063369, guid: 435c098d30e6abf47a5497862903a08d, type: 3}
   player: {fileID: 1552789788}
 --- !u!1 &1368491797
 GameObject:
@@ -1883,17 +1878,17 @@ PrefabInstance:
     - target: {fileID: 5228099823817914258, guid: 559d97cf075654344b456f54e77c8b1c,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.125
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 5228099823817914258, guid: 559d97cf075654344b456f54e77c8b1c,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.125
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 5228099823817914258, guid: 559d97cf075654344b456f54e77c8b1c,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.125
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 5228099823817914258, guid: 559d97cf075654344b456f54e77c8b1c,
         type: 3}
@@ -2409,7 +2404,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 7
+  orthographic size: 1
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2

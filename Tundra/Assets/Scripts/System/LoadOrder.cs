@@ -27,6 +27,31 @@ namespace System
          * 3. Light sources
          * 4. Player spawn
          */
+
+        /// <summary>
+        /// Returns the Game scene to default settings
+        /// </summary>
+        public void UnloadCurrentScene()
+        {
+            // Destroy all mobs
+            // Destroy all chunks in Nature
+            // Reset mapdatacount variables
+            // Reset Day/Night
+            // Reset player position to 0;150;0
+
+            foreach (Transform child in chunksGenerator.transform)
+                Destroy(child.gameObject);
+
+            mapGenerator.mapDataCount = 0;
+            mapGenerator.meshDataCount = 0;
+            
+            entityRenderer.gameObject.SetActive(false);
+            mapGenerator.gameObject.SetActive(false);
+            chunksGenerator.gameObject.SetActive(false);
+            
+            _playerRigidbody.useGravity = false;
+            playerHolder.transform.position = new Vector3(0, 150, 0);
+        }
         
         private void Start()
         {
@@ -35,23 +60,13 @@ namespace System
             _playerRigidbody = playerHolder.GetComponent<Rigidbody>();
             _playerRigidbody.useGravity = false;
 
-            playerHolder.transform.position = GetStartPosition();
+            playerHolder.transform.position = GetPlayerStartPosition();
             
             mapGenerator.gameObject.SetActive(true);
             chunksGenerator.gameObject.SetActive(true);
             StartCoroutine(InstantiateWorld());
         }
-
-        private Vector3 GetStartPosition()
-        {
-            Vector3 startPosition = new Vector3(0, 100, 0);
-            // If there is any saved data - read XYZ coordinates
-            if (!string.IsNullOrEmpty(WorldConstants.WorldData))
-                startPosition = GetSavedPlayerCoords();
-            // Or just return the default 0;150;0
-            return startPosition;
-        }
-
+        
         /// <summary>
         /// Turns on objects following the order of world loading 
         /// </summary>
@@ -67,6 +82,20 @@ namespace System
                 fabric.transform.gameObject.SetActive(true);*/
         }
 
+        /// <summary>
+        /// Gets a start position of a player based on save or new world settings
+        /// </summary>
+        /// <returns>Start position of a player</returns>
+        private Vector3 GetPlayerStartPosition()
+        {
+            Vector3 startPosition = new Vector3(0, 100, 0);
+            // If there is any saved data - read XYZ coordinates
+            if (!string.IsNullOrEmpty(WorldConstants.WorldData))
+                startPosition = GetSavedPlayerCoords();
+            // Or just return the default 0;150;0
+            return startPosition;
+        }
+        
         /// <summary>
         /// Spawns player on saved coordinates or at 0;0;0
         /// </summary>

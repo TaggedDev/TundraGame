@@ -17,6 +17,7 @@ namespace GUI.MainMenu
         // Link to a button that is used to save the current world 
         [SerializeField] private Button saveButton;
         [SerializeField] private PlayerBehaviour player;
+        [SerializeField] private LoadOrder loadOrder;
 
         private void Start()
         {
@@ -66,6 +67,7 @@ namespace GUI.MainMenu
         /// </summary>
         public void ExitToMainMenu()
         {
+            loadOrder.UnloadCurrentScene();
             SceneManager.LoadScene(0);
         }
     }
