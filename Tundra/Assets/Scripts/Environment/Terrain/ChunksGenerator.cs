@@ -335,9 +335,9 @@ namespace Environment.Terrain
 				Vector2 offset = new Vector2(_meshObject.transform.position.x, _meshObject.transform.position.z);
 
 				int absHalfChunkSize = _chunkSize * WorldConstants.Scale / 2;
-				for (int x = Mathf.FloorToInt(offset.x - absHalfChunkSize); x <= Mathf.FloorToInt(offset.x + absHalfChunkSize); x += 16)
+				for (int x = Mathf.FloorToInt(offset.x - absHalfChunkSize); x <= Mathf.FloorToInt(offset.x + absHalfChunkSize); x += 2)
 				{
-					for (int y = Mathf.FloorToInt(offset.y - absHalfChunkSize); y <= Mathf.FloorToInt(offset.y + absHalfChunkSize); y += 16)
+					for (int y = Mathf.FloorToInt(offset.y - absHalfChunkSize); y <= Mathf.FloorToInt(offset.y + absHalfChunkSize); y += 2)
 					{
 						Vector2 position = new Vector2(x, y);
 						if (_hasGeneratedEntities)

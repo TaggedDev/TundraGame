@@ -249,16 +249,9 @@ MonoBehaviour:
   entityInfo:
   - entities:
     - {fileID: 2032046020135244795, guid: c7821bc923171f24094e69062402d005, type: 3}
-    - {fileID: 4359974080133157424, guid: dc00aab85b301f242896a77c4b442ec0, type: 3}
     - {fileID: 4127295616235328013, guid: fa6105287f77b1240a0017f7d23434c2, type: 3}
-    blankChance: 0.275
+    blankChance: 0.3
     topSpawnHeightThreshold: 40
-  - entities:
-    - {fileID: 7826993223395954021, guid: 74442f407a24ac84f95f08a83b1bb617, type: 3}
-    - {fileID: 544176334209047762, guid: 4983f395b2610de4e9f688a87bbd9af9, type: 3}
-    - {fileID: 8203775875145826790, guid: da41fd2967a439d409358c2214a5409e, type: 3}
-    blankChance: 0.5
-    topSpawnHeightThreshold: 150
   viewer: {fileID: 1552789797}
   mapMaterial: {fileID: 2100000, guid: a45ba4aa6a876814fa7fc89f700cff2b, type: 2}
   colliderLODIndex: 0
