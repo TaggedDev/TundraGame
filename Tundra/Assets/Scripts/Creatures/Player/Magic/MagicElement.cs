@@ -18,5 +18,9 @@ namespace Creatures.Player.Magic
         Ground = 0x20,
         Mood = 0x40,
         Sound = 0x80,
+        Light = 0x100,
+        Explosion = 0x200,
+        Magma = 0x400,
+        Crystal = 0x800,
     }
 }

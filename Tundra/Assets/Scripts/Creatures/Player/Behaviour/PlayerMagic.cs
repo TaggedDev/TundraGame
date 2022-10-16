@@ -30,7 +30,7 @@ public class PlayerMagic : MonoBehaviour
 
     public bool IsReadyForCasting { get; private set; }
 
-    public List<MagicElement> DraftSpell { get; private set; } = new List<MagicElement>();
+    public List<MagicElement> DraftSpell { get; private set; }
 
     public event EventHandler MagicPanelVisibilityChange;
     public event EventHandler SpellCast;
@@ -38,6 +38,7 @@ public class PlayerMagic : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        DraftSpell = new List<MagicElement>(MaxSpellElementCount);
         StartCoroutine(ReloadStones());
     }
 
