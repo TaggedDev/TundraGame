@@ -60,7 +60,7 @@ namespace Creatures.Player.Behaviour
             _currentState.Start();
             _mainCamera.transform.RotateAround(transform.position, Vector3.up, 45);
             _playerMovement.UpdateDirections();
-            _playerMovement.Speed = 2f;
+            _playerMovement.Speed = 1f;
             //Initialize health, starvation and temperature:
         }
 

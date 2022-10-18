@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -15,6 +16,7 @@ namespace Creatures.Player.Magic
     public abstract class Spell
     {
         private MagicElement allowedElements;
+        private readonly int descFormulaLength;
 
         internal static List<Type> allSpells;
 
@@ -30,7 +32,19 @@ namespace Creatures.Player.Magic
 
         public Spell()
         {
-            allowedElements = GetType().GetAttribute<ElementRestrictionsAttribute>().UsedElements;
+            allowedElements = GetType().GetCustomAttribute<ElementRestrictionsAttribute>().UsedElements;
+            descFormulaLength = GetType().GetCustomAttribute<SpellAttribute>().Elements.Length;
+        }
+
+        protected bool CheckValidity(List<MagicElement> elements)
+        {
+            var desc = GetType().GetCustomAttribute<SpellAttribute>();
+            if (desc == null) return false;
+            if (elements.Take(descFormulaLength).SequenceEqual(desc.Elements))
+            {
+                if (elements.Skip(descFormulaLength).All(x => allowedElements.HasFlag(x))) return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -43,7 +57,7 @@ namespace Creatures.Player.Magic
         {
             spells = spells ?? allSpells;
             var selectedTypes = (from x in spells
-                                 let desc = x.GetAttribute<SpellAttribute>()
+                                 let desc = x.GetCustomAttribute<SpellAttribute>()
                                  where filter.Take(desc.Elements.Length).SequenceEqual(desc.Elements)
                                  orderby desc.Elements.Length descending
                                  select x);
@@ -54,7 +68,25 @@ namespace Creatures.Player.Magic
         /// Build a spell to get it ready for cast. Created spell will get all modifiers given by reagents.
         /// </summary>
         /// <param name="elements">List of elements which are used to make a spell. In the start of list are needed elements, after them are reagents.</param>
-        public abstract void Build(List<MagicElement> elements);
+        public virtual void Build(List<MagicElement> elements)
+        {
+            if (!CheckValidity(elements)) throw new ArgumentException("Some of elements are prohibited for this spell!", nameof(elements));
+            var reagents = elements.Skip(descFormulaLength);
+            foreach (var prop in GetType().GetProperties())
+            {
+                var attributes = prop.GetCustomAttributes<IncreasablePropertyAttribute>();
+                if (attributes.Count() != 0)
+                {
+                    foreach (var attribute in attributes)
+                    {
+                        foreach (var reagent in reagents.Skip(descFormulaLength))
+                        {
+                            attribute.IncreaseValue(this, prop, reagent);
+                        }
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Initiates a spell casting.

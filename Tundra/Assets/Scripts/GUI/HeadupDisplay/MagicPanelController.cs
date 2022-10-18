@@ -65,11 +65,17 @@ public class MagicPanelController : MonoBehaviour
             try
             {
                 //That was hard to get natural number of element when it has number associated with binary field.
-                _elements[i].transform.Find("ElementIcon").gameObject.GetComponent<Image>().sprite = elementIcons[1 + (int)Math.Log((int)_currentMagicBook.MagicElements[i].Element, 2)];
+                var icon = _elements[i].transform.Find("ElementIcon").gameObject.GetComponent<Image>();
+                icon.sprite = elementIcons[1 + (int)Math.Log((int)_currentMagicBook.MagicElements[i].Element, 2)];
+                bool allowed = _playerMagic.AllowedElements.HasFlag(_currentMagicBook.MagicElements[i].Element);
+                _elements[i].GetComponent<Button>().interactable = allowed;
+                icon.color = allowed ? Color.white : new Color(0.5f, 0.5f, 0.5f, 0.5f);
             }
             catch
             {
-                _elements[i].transform.Find("ElementIcon").gameObject.GetComponent<Image>().sprite = elementIcons.First();
+                var icon = _elements[i].transform.Find("ElementIcon").gameObject.GetComponent<Image>();
+                icon.sprite = elementIcons.First();
+                icon.color = new Color(0.5f, 0.5f, 0.5f, 0.5f);
             }
         }
     }
@@ -121,6 +127,7 @@ public class MagicPanelController : MonoBehaviour
         int index = _elements.IndexOf(source);
         _playerMagic.AddElement(index);
         print($"Id: {index}");
+        SetElements();
     }
 
     private void FixedUpdate()
@@ -165,7 +172,11 @@ public class MagicPanelController : MonoBehaviour
                 {
                     icon.color = new Color(0.5f, 0.5f, 0.5f, 0.5f);
                 }
-                else icon.color = Color.white;
+                else
+                {
+                    bool allowed = _playerMagic.AllowedElements.HasFlag(_currentMagicBook.MagicElements[i].Element);
+                    icon.color = allowed ? Color.white : new Color(0.5f, 0.5f, 0.5f, 0.5f);
+                }
             }
         }
     }

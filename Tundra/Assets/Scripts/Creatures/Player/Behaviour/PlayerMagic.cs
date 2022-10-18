@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
@@ -13,7 +14,13 @@ public class PlayerMagic : MonoBehaviour
 
     internal BookEquipmentConfiguration _config;
 
+    private List<Type> _availableSpells;
+
+    private Spell _currentSpell;
+
     public int MaxSpellElementCount { get; set; }
+
+    public MagicElement AllowedElements { get; private set; }
 
     public bool IsSpellingPanelOpened
     {
@@ -31,6 +38,7 @@ public class PlayerMagic : MonoBehaviour
     public bool IsReadyForCasting { get; private set; }
 
     public List<MagicElement> DraftSpell { get; private set; }
+
 
     public event EventHandler MagicPanelVisibilityChange;
     public event EventHandler SpellCast;
@@ -57,6 +65,12 @@ public class PlayerMagic : MonoBehaviour
             {
                 slot.CurrentStonesAmount--;
                 DraftSpell.Add(slot.Element);
+                _availableSpells = Spell.FindSpellTypes(DraftSpell, _availableSpells);
+                AllowedElements = _availableSpells.Aggregate(MagicElement.Empty, (x, y) => x |= y.GetCustomAttribute<ElementRestrictionsAttribute>().UsedElements);
+                if (_availableSpells.Count == 1)
+                {
+
+                }
                 //if (DraftSpell.Count == _config.FreeSheets)
                 //{
                 //    PrepareForCasting();
@@ -80,6 +94,12 @@ public class PlayerMagic : MonoBehaviour
     public void PrepareForCasting()
     {
         //IsSpellingPanelOpened = false;
+        _currentSpell = Activator.CreateInstance((from x in _availableSpells
+                         let elems = x.GetCustomAttribute<SpellAttribute>().Elements.Length
+                         orderby elems ascending
+                         select x).LastOrDefault()) as Spell;
+        _currentSpell?.Build(DraftSpell);
+        if (_currentSpell == null) return;
         print("Spell is ready for casting!");
         IsReadyForCasting = true;
     }
@@ -92,7 +112,7 @@ public class PlayerMagic : MonoBehaviour
         // Apply additional elements
 
         // Delete spell
-
+        _currentSpell?.Cast(gameObject, this);
         IsReadyForCasting = false;
         DraftSpell.Clear();
         print("Spell has been casted!");
