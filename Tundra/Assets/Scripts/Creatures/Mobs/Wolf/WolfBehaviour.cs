@@ -57,7 +57,7 @@ namespace Creatures.Mobs.Wolf
             SpawnPosition = player.position;
         }
 
-        public override void SpawnSelf()
+        public override void SpawnSelf(Vector3 position)
         {
             // Define Fear Health Threshold as 10% of max health
             FearHealthThreshold = MaxMobHealth * .1f;
@@ -69,7 +69,8 @@ namespace Creatures.Mobs.Wolf
             
             mobHeight = GetComponent<Collider>().bounds.extents.y;
             Agent = gameObject.GetComponent<NavMeshAgent>();
-            
+
+            transform.position = position;
             gameObject.SetActive(true);
             _allMobStates = new List<MobBasicState>
             {

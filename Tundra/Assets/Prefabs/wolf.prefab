@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2456120132901063369}
   - component: {fileID: 1698347057152815352}
   m_Layer: 0
-  m_Name: Wolf
+  m_Name: wolf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -129,9 +129,10 @@ MonoBehaviour:
   rotationSpeed: 0
   maxDeltaRotate: 0
   roamingRadius: 5
-  sniffingRadius: 2
+  sniffingRadius: 1
   maxMobHealth: 50
   _player: {fileID: 0}
+  _spawnPosition: {x: 0, y: 0, z: 0}
   _currentMobHealth: 0
   _isGrounded: 0
 --- !u!195 &1698347057152815352

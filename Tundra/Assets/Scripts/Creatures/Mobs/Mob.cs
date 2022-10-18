@@ -89,11 +89,6 @@ namespace Creatures.Mobs
             get => _fearHealthThreshold;
             set => _fearHealthThreshold = value;
         }
-        public Rigidbody Rigidbody
-        {
-            get => _rigidbody;
-            set => _rigidbody = value;
-        }
         public NavMeshAgent Agent
         {
             get => _agent;
@@ -125,7 +120,6 @@ namespace Creatures.Mobs
         private bool _isEntitySensed;
         private bool _isIgnoringSensor;
         [SerializeField] private bool _isGrounded;
-        private Rigidbody _rigidbody;
 
         /// <summary>
         /// Initialises basic parameters. Can't use constructor because objects with this class are initialized by
@@ -136,7 +130,12 @@ namespace Creatures.Mobs
         /// <summary>
         /// Sets the spawn position, turns on the object and sets default values. Basically replaces the Start() method
         /// </summary>
-        public abstract void SpawnSelf();
+        public abstract void SpawnSelf(Vector3 position);
+
+        private void Start()
+        {
+            _mobRigidbody = GetComponent<Rigidbody>();
+        }
 
         private void OnValidate()
         {

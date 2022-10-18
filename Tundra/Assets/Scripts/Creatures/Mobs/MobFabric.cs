@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Creatures.Player.Behaviour;
+using Environment;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Creatures.Mobs
 {
@@ -9,6 +12,7 @@ namespace Creatures.Mobs
         [SerializeField] private Mob[] mobsList;
         [SerializeField] private PlayerMovement player;
         private Queue<Mob> _mobsPool;
+        private const int TERRAIN_LAYER_MASK = 10; 
 
         private void Start()
         {
@@ -39,7 +43,26 @@ namespace Creatures.Mobs
                 return;
             
             var mob = _mobsPool.Dequeue();
-            mob.SpawnSelf();
+            var pos = GetMobSpawnPosition();
+            mob.SpawnSelf(pos);
+        }
+
+        /// <summary>
+        /// Generates the spawn position for mob
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        private Vector3 GetMobSpawnPosition()
+        {
+            float angle = Random.Range(1, 360);
+            const float threshold = 6; //square root of sqr entity update threshold
+            Vector2 position = new Vector2(Mathf.Cos(angle) * threshold, Mathf.Sin(angle) * threshold);
+
+            if (!Physics.Raycast(new Vector3(position.x, 500, position.y), Vector3.down, out RaycastHit info,
+                    Mathf.Infinity, 1 << TERRAIN_LAYER_MASK)) 
+                throw new Exception($"Unexpected mob spawn in {position.x}; {position.y}");
+            
+            return new Vector3(position.x, info.point.y, position.y);
         }
 
         public void ReturnToPool(Mob mob)
