@@ -113,13 +113,13 @@ namespace Creatures.Mobs
         private NavMeshAgent _agent;
         private RaycastHit _slopeHit;
         private Rigidbody _mobRigidbody;
-        [SerializeField] private Vector3 _spawnPosition;
-        [SerializeField] private float _currentMobHealth;
+        private Vector3 _spawnPosition;
+        private float _currentMobHealth;
         private float _fearHealthThreshold;
         private float _deltaRotate;
         private bool _isEntitySensed;
         private bool _isIgnoringSensor;
-        [SerializeField] private bool _isGrounded;
+        private bool _isGrounded;
 
         /// <summary>
         /// Initialises basic parameters. Can't use constructor because objects with this class are initialized by

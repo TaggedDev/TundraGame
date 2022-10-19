@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Creatures.Mobs.Wolf.States;
-using Creatures.Player.Behaviour;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -19,6 +18,10 @@ namespace Creatures.Mobs.Wolf
         
         private void FixedUpdate()
         {
+            // If wolf has low HP, he runs away
+            if (CurrentMobHealth <= FearHealthThreshold)
+                SwitchState<WolfEscapingState>();
+            
             // Temporary solution to kill mob
             if (Input.GetKeyDown(KeyCode.X))
             {
@@ -29,7 +32,6 @@ namespace Creatures.Mobs.Wolf
                     return;
                 }
             }
-                
 
             Debug.DrawRay(transform.position, Vector3.down * (mobHeight + 0.2f), Color.blue);
             IsGrounded = Physics.Raycast(transform.position, Vector3.down, mobHeight + 0.2f, 1 << TERRAIN_LAYER_INDEX);
@@ -76,7 +78,8 @@ namespace Creatures.Mobs.Wolf
             {
                 new WolfPatrollingState(this, this, Agent),
                 new WolfHuntingState(this, this, Agent),
-                new WolfEscapingState(this, this, Agent)
+                new WolfEscapingState(this, this, Agent),
+                new WolfPreparingState(this, this, Agent)
             };
             _currentMobState = _allMobStates[0];
         }

@@ -5,6 +5,7 @@ namespace Creatures.Mobs.Wolf.States
 {
     public class WolfHuntingState : MobBasicState
     {
+        private const float ATTACK_DISTANCE_THRESHOLD = 1f;
         public WolfHuntingState(Mob mob, IMobStateSwitcher switcher, NavMeshAgent agent) : base(mob, switcher, agent)
         {
             _mob.DeltaRotate = _mob.MaxDeltaRotate;
@@ -13,9 +14,12 @@ namespace Creatures.Mobs.Wolf.States
 
         public override void MoveMob()
         {
-            if (_mob.CurrentMobHealth <= _mob.FearHealthThreshold)
-                _switcher.SwitchState<WolfEscapingState>();
-
+            float dist = Vector3.Distance(_mob.transform.position, _mob.Player.position);
+            
+            // If wolf has reached the player, he gets into preparing mode
+            if (dist <= ATTACK_DISTANCE_THRESHOLD)
+                _switcher.SwitchState<WolfPreparingState>();
+            
             _agent.SetDestination(_mob.Player.position);
         }
 

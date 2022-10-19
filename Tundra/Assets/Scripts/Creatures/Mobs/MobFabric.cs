@@ -51,11 +51,11 @@ namespace Creatures.Mobs
         /// Generates the spawn position for mob
         /// </summary>
         /// <returns></returns>
-        /// <exception cref="Exception"></exception>
+        /// <exception cref="Exception">Called when mob spawn position is too far from rendered world</exception>
         private Vector3 GetMobSpawnPosition()
         {
             float angle = Random.Range(1, 360);
-            const float threshold = 6; //square root of sqr entity update threshold
+            const float threshold = 3; //square root of sqr entity update threshold divided by 2
             Vector2 position = new Vector2(Mathf.Cos(angle) * threshold, Mathf.Sin(angle) * threshold);
 
             if (!Physics.Raycast(new Vector3(position.x, 500, position.y), Vector3.down, out RaycastHit info,
