@@ -1,5 +1,4 @@
-﻿using TMPro.EditorUtilities;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 namespace Creatures.Mobs.Wolf.States
@@ -25,14 +24,13 @@ namespace Creatures.Mobs.Wolf.States
         {
             Debug.Log("Preparing state");
             DisableWolfMovement();
+            _mob.Agent.isStopped = true;
             attackTimer = 0f;
         }
 
         public override void Stop()
         {
             _mob.Agent.isStopped = false;
-            _mob.MobRigidbody.angularVelocity = mobAngularVelocity;
-            _mob.MobRigidbody.velocity = mobVelocity;
         }
 
         public override void MoveMob()

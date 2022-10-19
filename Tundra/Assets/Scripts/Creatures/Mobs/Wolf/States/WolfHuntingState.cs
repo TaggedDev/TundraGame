@@ -9,7 +9,6 @@ namespace Creatures.Mobs.Wolf.States
         public WolfHuntingState(Mob mob, IMobStateSwitcher switcher, NavMeshAgent agent) : base(mob, switcher, agent)
         {
             _mob.DeltaRotate = _mob.MaxDeltaRotate;
-            _mob.MobRigidbody = _mob.GetComponent<Rigidbody>();
         }
 
         public override void MoveMob()
@@ -20,9 +19,11 @@ namespace Creatures.Mobs.Wolf.States
             if (dist <= ATTACK_DISTANCE_THRESHOLD)
                 _switcher.SwitchState<WolfPreparingState>();
             
+            if (dist > _mob.SniffingRadius)
+                _switcher.SwitchState<WolfPatrollingState>();
+            
             _agent.SetDestination(_mob.Player.position);
             LookAtPosition(_mob.Player.position);
-            _agent.updateRotation = true;
         }
         
         /// <summary>
@@ -61,8 +62,12 @@ namespace Creatures.Mobs.Wolf.States
 
         private Vector3 NormalizeSlopeMovement() =>
             Vector3.ProjectOnPlane(_mob.transform.forward, _mob.SlopeHit.normal).normalized;
-        
-        public override void Start() { Debug.Log("Hunting state");}
+
+        public override void Start()
+        {
+            Debug.Log("Hunting state");
+            
+        }
 
         public override void Stop() { }
     }

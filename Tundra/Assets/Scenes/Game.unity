@@ -250,7 +250,7 @@ MonoBehaviour:
   - entities:
     - {fileID: 2032046020135244795, guid: c7821bc923171f24094e69062402d005, type: 3}
     - {fileID: 4127295616235328013, guid: fa6105287f77b1240a0017f7d23434c2, type: 3}
-    blankChance: 0.3
+    blankChance: 0.8
     topSpawnHeightThreshold: 40
   viewer: {fileID: 1552789797}
   mapMaterial: {fileID: 2100000, guid: a45ba4aa6a876814fa7fc89f700cff2b, type: 2}
