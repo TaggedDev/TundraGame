@@ -22,24 +22,24 @@ MonoBehaviour:
   _additionalSlots: 0
   _warmEconomyCoefficient: 0
   _magicElements:
-  - element: 0
-    maxStoneAmount: 0
-    currentStonesAmount: 0
-    stoneReloadTime: 0
-  - element: 0
-    maxStoneAmount: 0
-    currentStonesAmount: 0
-    stoneReloadTime: 0
-  - element: 0
-    maxStoneAmount: 0
-    currentStonesAmount: 0
-    stoneReloadTime: 0
-  - element: 0
-    maxStoneAmount: 0
-    currentStonesAmount: 0
-    stoneReloadTime: 0
-  - element: 0
-    maxStoneAmount: 0
-    currentStonesAmount: 0
-    stoneReloadTime: 0
+  - element: 128
+    maxStoneAmount: 2
+    currentStonesAmount: 2
+    stoneReloadTime: 3
+  - element: 1
+    maxStoneAmount: 3
+    currentStonesAmount: 3
+    stoneReloadTime: 2
+  - element: 256
+    maxStoneAmount: 2
+    currentStonesAmount: 2
+    stoneReloadTime: 3
+  - element: 32
+    maxStoneAmount: 2
+    currentStonesAmount: 2
+    stoneReloadTime: 3
+  - element: 64
+    maxStoneAmount: 2
+    currentStonesAmount: 2
+    stoneReloadTime: 3
   _freeSheets: 4

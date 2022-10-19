@@ -82,10 +82,6 @@ namespace Creatures.Player.Behaviour
         /// </summary>
         private float _currentHitPreparingTime;
         /// <summary>
-        /// Internal field for the progress of the item throwing.
-        /// </summary>
-        internal float _throwLoadingProgress;
-        /// <summary>
         /// Time while which player hasn't eaten anything.
         /// </summary>
         internal float _currentStarvationTime;

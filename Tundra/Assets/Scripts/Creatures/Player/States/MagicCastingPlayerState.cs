@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Creatures.Player.Behaviour;
 using UnityEngine;
 using Creatures.Player.Inventory;
+using Creatures.Player.Magic;
 
 namespace Creatures.Player.States
 {
@@ -33,7 +34,7 @@ namespace Creatures.Player.States
             _playerMagic.SpellCast += ExitState;
         }
 
-        private void ExitState(object sender, EventArgs e)
+        private void ExitState(object sender, Spell e)
         {
             PlayerStateSwitcher.SwitchState<IdlePlayerState>();
         }
@@ -76,6 +77,7 @@ namespace Creatures.Player.States
             _playerMagic.MaxSpellElementCount += (int)(Input.GetAxis("Mouse ScrollWheel") * 10);
             if (_playerMagic.MaxSpellElementCount > _playerMagic._config.FreeSheets) _playerMagic.MaxSpellElementCount = _playerMagic._config.FreeSheets;
             else if (_playerMagic.MaxSpellElementCount < 1) _playerMagic.MaxSpellElementCount = 1;
+            _playerMagic.CheckCurrentElements();
             if (Input.GetKeyDown(KeyCode.Alpha1)) _playerMagic.AddElement(0);
             if (Input.GetKeyDown(KeyCode.Alpha2)) _playerMagic.AddElement(1);
             if (Input.GetKeyDown(KeyCode.Alpha3)) _playerMagic.AddElement(2);

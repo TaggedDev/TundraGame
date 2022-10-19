@@ -11,6 +11,7 @@ using UnityEngine;
 public class PlayerMagic : MonoBehaviour
 {
     private bool _isSpellingPanelOpened;
+    private bool _currentSpellSelected;
 
     internal BookEquipmentConfiguration _config;
 
@@ -20,7 +21,7 @@ public class PlayerMagic : MonoBehaviour
 
     public int MaxSpellElementCount { get; set; }
 
-    public MagicElement AllowedElements { get; private set; }
+    public MagicElement AllowedElements { get; private set; } = MagicElement.All;
 
     public bool IsSpellingPanelOpened
     {
@@ -41,8 +42,7 @@ public class PlayerMagic : MonoBehaviour
 
 
     public event EventHandler MagicPanelVisibilityChange;
-    public event EventHandler SpellCast;
-
+    public event EventHandler<Spell> SpellCast;
     // Start is called before the first frame update
     void Start()
     {
@@ -65,16 +65,30 @@ public class PlayerMagic : MonoBehaviour
             {
                 slot.CurrentStonesAmount--;
                 DraftSpell.Add(slot.Element);
-                _availableSpells = Spell.FindSpellTypes(DraftSpell, _availableSpells);
-                AllowedElements = _availableSpells.Aggregate(MagicElement.Empty, (x, y) => x |= y.GetCustomAttribute<ElementRestrictionsAttribute>().UsedElements);
-                if (_availableSpells.Count == 1)
-                {
-
-                }
+                CheckCurrentElements();
                 //if (DraftSpell.Count == _config.FreeSheets)
                 //{
                 //    PrepareForCasting();
                 //}
+            }
+        }
+    }
+
+    internal void CheckCurrentElements()
+    {
+        if (!_currentSpellSelected)
+        {
+            _availableSpells = Spell.FindSpellTypes(DraftSpell, _availableSpells);
+            print($"Spells: {_availableSpells.Count}");
+            AllowedElements = _availableSpells.Aggregate(MagicElement.Empty, (x, y) => x |= y.GetCustomAttribute<ElementRestrictionsAttribute>().UsedElements);
+            print($"Elements: {AllowedElements}");
+            if (_availableSpells.Count == 1)
+            {
+                _currentSpellSelected = true;
+            }
+            if (_availableSpells.Count == 0)
+            {
+                //TODO: an action to case when no more spells are available.
             }
         }
     }
@@ -106,14 +120,11 @@ public class PlayerMagic : MonoBehaviour
 
     public void CastSpell()
     {
-        // TODO: make spellcasting logic
-        // Check spell for the recipes
-
-        // Apply additional elements
-
-        // Delete spell
         _currentSpell?.Cast(gameObject, this);
+        SpellCast?.Invoke(this, _currentSpell);
         IsReadyForCasting = false;
+        _currentSpellSelected = false;
+        _currentSpell = null;
         DraftSpell.Clear();
         print("Spell has been casted!");
     }

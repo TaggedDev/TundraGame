@@ -26,7 +26,7 @@ namespace Creatures.Player.Magic
         {
             var spellType = typeof(Spell);
             allSpells = (from type in Assembly.GetExecutingAssembly().GetTypes()
-                         where spellType.IsAssignableFrom(type)
+                         where spellType.IsAssignableFrom(type) && type != typeof(Spell)
                          select type).ToList();
         }
 
@@ -55,10 +55,12 @@ namespace Creatures.Player.Magic
         /// <returns>List of spells which formula can be compatible with given filter.</returns>
         public static List<Type> FindSpellTypes(List<MagicElement> filter, List<Type> spells = null)
         {
+            if (filter == null) return allSpells;
             spells = spells ?? allSpells;
             var selectedTypes = (from x in spells
                                  let desc = x.GetCustomAttribute<SpellAttribute>()
-                                 where filter.Take(desc.Elements.Length).SequenceEqual(desc.Elements)
+                                 let constraints = x.GetCustomAttribute<ElementRestrictionsAttribute>()
+                                 where desc.Elements.Take(filter.Count).SequenceEqual(filter) || constraints != null && filter.All(x => constraints.UsedElements.HasFlag(x))
                                  orderby desc.Elements.Length descending
                                  select x);
             return selectedTypes.ToList();

@@ -91,8 +91,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bookSheetSlot: {fileID: 6771780962302313585, guid: 85a1a305849a59741b97f7e108ae5e57,
     type: 3}
-  elementIcons: []
-  elementColors: []
+  elementIcons:
+  - {fileID: 21300000, guid: cd41d984630a5f340bd9d61847678143, type: 3}
+  - {fileID: 21300000, guid: 620775b3ca3567545868f36e43fefd10, type: 3}
+  - {fileID: 21300000, guid: 98cd0b3e4fa68034385b7963629ef2c6, type: 3}
+  - {fileID: 21300000, guid: 0d30708d48eed6343abeba6b3e3bd618, type: 3}
+  - {fileID: 21300000, guid: deea8997c80f6524686da6ef348a830c, type: 3}
+  - {fileID: 21300000, guid: 821f9e64158c73c4caa529ce17817a44, type: 3}
+  - {fileID: 21300000, guid: 1d71bfe57872228418fa8c9c2d5ba080, type: 3}
+  - {fileID: 21300000, guid: fb59ce24d0e485d43b26a44d72dde12f, type: 3}
+  - {fileID: 21300000, guid: 98cd0b3e4fa68034385b7963629ef2c6, type: 3}
+  - {fileID: 21300000, guid: 8ac6508b10626da40a74699513121e6e, type: 3}
+  elementColors:
+  - {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
+  - {r: 0, g: 0.6784314, b: 1, a: 1}
+  - {r: 1, g: 0.2901961, b: 0, a: 1}
+  - {r: 0, g: 0.24728487, b: 0.8301887, a: 1}
+  - {r: 0, g: 0.80414355, b: 0.8301887, a: 1}
+  - {r: 1, g: 0.7467409, b: 0, a: 1}
+  - {r: 0.99663335, g: 1, b: 0.5707547, a: 1}
+  - {r: 1, g: 0.56404424, b: 0, a: 1}
+  - {r: 1, g: 0.20994276, b: 0, a: 1}
+  - {r: 1, g: 0, b: 0.89338493, a: 1}
   defaultSlotIcon: {fileID: 21300000, guid: cbd017adfcb65ff4296b69ec9a1aeeee, type: 3}
   filledStoneProgressIcon: {fileID: 21300000, guid: c48cb05fadc1fab4da6db4b376999d8f,
     type: 3}
