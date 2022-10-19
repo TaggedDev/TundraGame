@@ -131,7 +131,7 @@ namespace Creatures.Mobs
         /// Sets the spawn position, turns on the object and sets default values. Basically replaces the Start() method
         /// </summary>
         public abstract void SpawnSelf(Vector3 position);
-
+        
         private void Start()
         {
             _mobRigidbody = GetComponent<Rigidbody>();

@@ -22,6 +22,7 @@ namespace Creatures.Mobs.Wolf.States
             if (patrolTime <= 0f || Vector3.Distance(_mob.targetPoint, _mob.transform.position) <= .5f)
             {
                 GenerateNewPatrolPoint();
+                LookAtPosition(_mob.targetPoint);
                 patrolTime = MAX_PATROL_TIME;
             }
         }
@@ -29,9 +30,7 @@ namespace Creatures.Mobs.Wolf.States
         public override void SniffForTarget()
         {
             if (Vector3.Distance(_mob.Player.position, _mob.transform.position) <= _mob.SniffingRadius)
-            {
                 _switcher.SwitchState<WolfHuntingState>();
-            }
         }
 
         /// <summary>
@@ -53,6 +52,19 @@ namespace Creatures.Mobs.Wolf.States
                     hasSetPoint = true;
                 }
             }
+        }
+        
+        /// <summary>
+        /// Rotates mob to face the spot he is moving towards to
+        /// </summary>
+        /// <param name="spot"></param>
+        private void LookAtPosition(Vector3 spot)
+        {
+            Vector3 direction = spot - _mob.transform.position;
+            direction.y = 0;
+            Quaternion rotation = Quaternion.LookRotation(direction);
+            _mob.transform.rotation = Quaternion.Lerp(_mob.transform.rotation, rotation,
+                Time.deltaTime * _mob.RotationSpeed);
         }
         
         public override void Start()

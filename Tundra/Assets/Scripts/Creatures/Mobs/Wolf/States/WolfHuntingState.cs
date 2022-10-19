@@ -21,6 +21,21 @@ namespace Creatures.Mobs.Wolf.States
                 _switcher.SwitchState<WolfPreparingState>();
             
             _agent.SetDestination(_mob.Player.position);
+            LookAtPosition(_mob.Player.position);
+            _agent.updateRotation = true;
+        }
+        
+        /// <summary>
+        /// Rotates wolf to face the player
+        /// </summary>
+        /// <param name="spot"></param>
+        private void LookAtPosition(Vector3 spot)
+        {
+            Vector3 direction = spot - _mob.transform.position;
+            direction.y = 0;
+            Quaternion rotation = Quaternion.LookRotation(direction);
+            _mob.transform.rotation = Quaternion.Lerp(_mob.transform.rotation, rotation,
+                Time.deltaTime * _mob.RotationSpeed);
         }
 
         public override void SniffForTarget()

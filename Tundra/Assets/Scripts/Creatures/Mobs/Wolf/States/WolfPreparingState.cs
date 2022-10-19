@@ -24,6 +24,7 @@ namespace Creatures.Mobs.Wolf.States
         public override void Start()
         {
             Debug.Log("Preparing state");
+            DisableWolfMovement();
             attackTimer = 0f;
         }
 
@@ -36,7 +37,7 @@ namespace Creatures.Mobs.Wolf.States
 
         public override void MoveMob()
         {
-            DisableWolfMovement();
+            LookAtPosition(_mob.Player.position);
             
             if (Vector3.Distance(_mob.Player.position, _mob.transform.position) > ATTACK_DISTANCE_THRESHOLD)
                 _switcher.SwitchState<WolfHuntingState>();
@@ -48,8 +49,18 @@ namespace Creatures.Mobs.Wolf.States
             }
 
             attackTimer -= Time.deltaTime;
+            
         }
 
+        private void LookAtPosition(Vector3 spot)
+        {
+            Vector3 direction = spot - _mob.transform.position;
+            direction.y = 0;
+            Quaternion rotation = Quaternion.LookRotation(direction);
+            _mob.transform.rotation = Quaternion.Lerp(_mob.transform.rotation, rotation,
+                Time.deltaTime * _mob.RotationSpeed);
+        }
+        
         /// <summary>
         /// Disables any movement (angular and regular velocity) of Rigidbody and sets isStopped = true on Agent
         /// and saves these values
