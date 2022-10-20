@@ -8,9 +8,6 @@ namespace Creatures.Mobs.Wolf.States
         private const float ATTACK_DISTANCE_THRESHOLD = 1f;
         private const float MAX_ATTACK_DELAY = 5f; // seconds
         private const float MIN_ATTACK_DELAY = 3f; // seconds
-
-        private Vector3 mobVelocity;
-        private Vector3 mobAngularVelocity;
         
         private float attackTimer;
 
@@ -36,17 +33,25 @@ namespace Creatures.Mobs.Wolf.States
         public override void MoveMob()
         {
             LookAtPosition(_mob.Player.position);
+            float distance = Vector3.Distance(_mob.Player.position, _mob.transform.position);
             
-            if (Vector3.Distance(_mob.Player.position, _mob.transform.position) > ATTACK_DISTANCE_THRESHOLD)
+            // If player has ran too far from the wolf, it chases the player
+            if (distance > ATTACK_DISTANCE_THRESHOLD)
                 _switcher.SwitchState<WolfHuntingState>();
-
-            if (attackTimer <= 0)
+            
+            // If player approaches the wolf, he attacks immediately
+            if (distance < ATTACK_DISTANCE_THRESHOLD / 2 && attackTimer <= 0)
             {
-                AttackPlayer();
+                _mob.MobRigidbody.AddForce( (_mob.transform.forward + Vector3.up * 1.5f) * (50 * _mob.MobRigidbody.mass));
                 attackTimer = Random.Range(MIN_ATTACK_DELAY, MAX_ATTACK_DELAY);
             }
 
-            attackTimer -= Time.deltaTime;
+            if (attackTimer > 0)
+            {
+                attackTimer -= Time.deltaTime;
+            }
+
+            
             
         }
 
@@ -65,19 +70,9 @@ namespace Creatures.Mobs.Wolf.States
         /// </summary>
         private void DisableWolfMovement()
         {
-            SaveMovementValues();
             _mob.Agent.isStopped = true;
             _mob.MobRigidbody.angularVelocity = Vector3.zero;
             _mob.MobRigidbody.velocity = Vector3.zero;
-        }
-
-        /// <summary>
-        /// Saves velocity values in private variables
-        /// </summary>
-        private void SaveMovementValues()
-        {
-            mobVelocity = _mob.MobRigidbody.angularVelocity;
-            mobAngularVelocity = _mob.MobRigidbody.velocity;
         }
         
         public void AttackPlayer()

@@ -69,6 +69,7 @@ namespace Creatures.Mobs.Wolf.States
         
         public override void Start()
         {
+            Debug.Log("Patrolling State");
             GenerateNewPatrolPoint();
             _mob.MaxMobHealth = _mob.CurrentMobHealth;
             _mob.FearHealthThreshold = _mob.MaxMobHealth * .1f;
