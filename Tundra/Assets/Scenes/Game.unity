@@ -1360,7 +1360,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mobsList:
-  - {fileID: 2456120132901063369, guid: 435c098d30e6abf47a5497862903a08d, type: 3}
+  - {fileID: 1432031131618546664, guid: 46f8c076e7f03b249916b2871a5bae14, type: 3}
   player: {fileID: 1552789788}
 --- !u!1 &1368491797
 GameObject:
