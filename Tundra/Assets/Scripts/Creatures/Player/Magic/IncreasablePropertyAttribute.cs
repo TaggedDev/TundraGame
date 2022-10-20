@@ -14,7 +14,7 @@ namespace Creatures.Player.Magic
     /// For example, if you have a damage modifier which should depend on reagents with special element type,
     /// you can give them this attribute to increase them automatically.
     /// </example>
-    [AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
     public class IncreasablePropertyAttribute : Attribute
     {
         private readonly double _defaultAdditionStep;
