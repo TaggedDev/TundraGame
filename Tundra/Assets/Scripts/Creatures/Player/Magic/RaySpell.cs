@@ -19,6 +19,8 @@ namespace Creatures.Player.Magic
 
         public override void Cast(GameObject player, PlayerMagic magic)
         {
+            var variableForPrefab = (GameObject)Resources.Load("Prefabs/Magic/RaySpell", typeof(GameObject));
+            UnityEngine.Object.Instantiate(variableForPrefab, player.transform);
             throw new NotImplementedException();
         }
     }
