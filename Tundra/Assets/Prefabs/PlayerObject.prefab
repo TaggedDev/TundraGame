@@ -3128,6 +3128,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spellPrefabs:
   - {fileID: 2048890033395645259, guid: 915a03409a375be4a92b5d767c3374b3, type: 3}
+  - {fileID: 223692737306478864, guid: 80bc5fd8e5f7eea40ad729bcbc43782f, type: 3}
+  - {fileID: 2048890033395645259, guid: 915a03409a375be4a92b5d767c3374b3, type: 3}
+  - {fileID: 2048890033395645259, guid: 915a03409a375be4a92b5d767c3374b3, type: 3}
 --- !u!114 &6591950171598838087
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -14,6 +14,8 @@ namespace Creatures.Player.Magic
     [ElementRestrictions(MagicElement.Water | MagicElement.Crystal)]
     public class CrystalChannelSpell : Spell
     {
+        private const int prefabID = 1;
+
         [IncreasableProperty(0.25, MagicElement.Crystal)]
         public double MovementFineCoefficient { get; set; } = 0.5;
         [IncreasableProperty(10, 1.1, MagicElement.Water)]
@@ -23,7 +25,10 @@ namespace Creatures.Player.Magic
 
         public override void Cast(GameObject player, PlayerMagic magic)
         {
-            throw new NotImplementedException();
+            Caster = player;
+            var variableForPrefab = magic.GetSpellPrefabByID(prefabID);
+            var spellObject = UnityEngine.Object.Instantiate(variableForPrefab);
+            spellObject.GetComponent<CrystalChannelScript>().Configuration = this;
         }
     }
 }

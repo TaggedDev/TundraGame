@@ -13,6 +13,8 @@ namespace Creatures.Player.Behaviour
     /// </summary>
     public class PlayerProperties : MonoBehaviour
     {
+        private PlayerMovement _movement;
+
         /// <summary>
         /// Maximal starvation capacity.
         /// </summary>
@@ -168,11 +170,11 @@ namespace Creatures.Player.Behaviour
         {
             get
             {
-                return _currentSpeed;
+                return _movement.Speed;
             }
             internal set
             {
-                _currentSpeed = value;
+                _movement.Speed = value;
             }
         }
 
@@ -221,6 +223,7 @@ namespace Creatures.Player.Behaviour
 
         void Start()
         {
+            _movement = gameObject.GetComponent<PlayerMovement>();
             if (playerRace != null)
             {
                 maxStarve = playerRace.MaxStarve;
