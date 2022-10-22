@@ -12,6 +12,8 @@ namespace Creatures.Player.Magic
     [ElementRestrictions(MagicElement.Light | MagicElement.Magma | MagicElement.Crystal)]
     public class WaveSpell : Spell
     {
+        private const int prefabID = 3;
+
         [IncreasableProperty(2, 1.1, MagicElement.Light)]
         public double WaveDamage { get; set; } = 12;
         [IncreasableProperty(1, MagicElement.Magma)]
@@ -21,7 +23,16 @@ namespace Creatures.Player.Magic
 
         public override void Cast(GameObject player, PlayerMagic magic)
         {
-            throw new NotImplementedException();
+            Caster = player;
+            var variableForPrefab = magic.GetSpellPrefabByID(prefabID);
+            var spellObject = UnityEngine.Object.Instantiate(variableForPrefab);
+            spellObject.GetComponent<WaveScript>().Configuration = this;
+            spellObject.transform.position = player.transform.position;
+            Ray mouseCastPoint = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Plane worldPlane = new Plane(Vector3.up, player.transform.position);
+            worldPlane.Raycast(mouseCastPoint, out float enter);
+            Vector3 castPos = mouseCastPoint.GetPoint(enter);
+            spellObject.transform.forward = castPos;
         }
     }
 }

@@ -83,7 +83,7 @@ public class PlayerMagic : MonoBehaviour
         {
             _availableSpells = Spell.FindSpellTypes(DraftSpell, _availableSpells);
             print($"Spells: {_availableSpells.Count}");
-            AllowedElements = _availableSpells.Aggregate(MagicElement.Empty, (x, y) => x |= y.GetCustomAttribute<ElementRestrictionsAttribute>().UsedElements);
+            //AllowedElements = _availableSpells.Aggregate(MagicElement.Empty, (x, y) => x |= y.GetCustomAttribute<ElementRestrictionsAttribute>().UsedElements);
             print($"Elements: {AllowedElements}");
             if (_availableSpells.Count == 1)
             {
@@ -108,6 +108,7 @@ public class PlayerMagic : MonoBehaviour
         DraftSpell.Clear();
         IsSpellingPanelOpened = false;
         IsReadyForCasting = false;
+        AllowedElements = MagicElement.All;
     }
 
     public void StartSpelling()
@@ -118,15 +119,19 @@ public class PlayerMagic : MonoBehaviour
     public void PrepareForCasting()
     {
         //IsSpellingPanelOpened = false;
-        _currentSpell = Activator.CreateInstance((from x in _availableSpells
-                                                  let elems = x.GetCustomAttribute<SpellAttribute>().Elements.Length
-                                                  where elems == MaxSpellElementCount
-                                                  orderby elems ascending
-                                                  select x).LastOrDefault()) as Spell;
-        _currentSpell?.Build(DraftSpell);
-        if (_currentSpell == null) return;
-        print("Spell is ready for casting!");
-        IsReadyForCasting = true;
+        var spell = (from x in Spell.FindSpellTypes(DraftSpell, null)
+                     let elems = x.GetCustomAttribute<SpellAttribute>().Elements.Length
+                     where elems == MaxSpellElementCount
+                     orderby elems ascending
+                     select x).LastOrDefault();
+        if (spell != null)
+        {
+            _currentSpell = Activator.CreateInstance(spell) as Spell;
+            _currentSpell?.Build(DraftSpell);
+            if (_currentSpell == null) return;
+            print("Spell is ready for casting!");
+            IsReadyForCasting = true;
+        }
     }
 
     public void CastSpell()
