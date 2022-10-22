@@ -31,7 +31,7 @@ namespace Creatures.Player.States
             : base(playerMovement, switcher, playerProperties)
         {
             _playerMagic=playerMagic;
-            _playerMagic.SpellCast += ExitState;
+            //_playerMagic.SpellCast += ExitState;
         }
 
         private void ExitState(object sender, Spell e)
@@ -60,11 +60,12 @@ namespace Creatures.Player.States
         {
             _playerMagic._config = (BookEquipmentConfiguration)PlayerEquipment.Book;
             _playerMagic.StartSpelling();
+            PlayerBehaviour.gameObject.GetComponent<PlayerInventory>().UnselectItem();
         }
 
         public override void Stop()
         {
-            
+            PlayerBehaviour.gameObject.GetComponent<PlayerInventory>().ReselectItem();
         }
 
         protected override void StaminaIsOver()

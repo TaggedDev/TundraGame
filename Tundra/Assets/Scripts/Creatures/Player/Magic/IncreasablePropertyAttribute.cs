@@ -76,7 +76,7 @@ namespace Creatures.Player.Magic
         /// <param name="step">Step to increase with an every reagent.</param>
         /// <param name="element">Element(s) to filter triggers to increasion.</param>
         /// <param name="mode">Mode of increasing.</param>
-        public IncreasablePropertyAttribute(double step, MagicElement element, IncreaseMode mode = IncreaseMode.Addition) : this(step, 0, element, mode)
+        public IncreasablePropertyAttribute(double step, MagicElement element, IncreaseMode mode = IncreaseMode.Addition) : this(step, 1, element, mode)
         {
         }
         /// <summary>
@@ -88,7 +88,7 @@ namespace Creatures.Player.Magic
         /// <returns><see langword="true"/> if the increasion was successful, otherwise <see langword="false"/>.</returns>
         public bool IncreaseValue(object spell, PropertyInfo prop, MagicElement reagent)
         {
-            if (Element.HasFlag(reagent)) return false;
+            if (!Element.HasFlag(reagent)) return false;
             if (prop.PropertyType == typeof(double))
             {
                 var value = (double)prop.GetValue(spell);
@@ -119,6 +119,11 @@ namespace Creatures.Player.Magic
         public void ResetAttribute()
         {
             AdditionStep = _defaultAdditionStep;
+        }
+
+        public override string ToString()
+        {
+            return $"Element: {Element}, Step: {AdditionStep}, Acc: {AccelerationCoefficient}, Mode: {Mode}";
         }
     }
 }

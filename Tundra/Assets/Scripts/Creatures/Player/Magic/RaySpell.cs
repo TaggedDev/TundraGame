@@ -12,6 +12,8 @@ namespace Creatures.Player.Magic
     [ElementRestrictions(MagicElement.Light | MagicElement.Explosion)]
     public class RaySpell : Spell
     {
+        private const int prefabID = 0;
+
         [IncreasableProperty(4, MagicElement.Light)]
         public double Damage { get; set; } = 8;
         [IncreasableProperty(1.25, MagicElement.Explosion, IncreasablePropertyAttribute.IncreaseMode.Multiplication)]
@@ -19,9 +21,10 @@ namespace Creatures.Player.Magic
 
         public override void Cast(GameObject player, PlayerMagic magic)
         {
-            var variableForPrefab = (GameObject)Resources.Load("Prefabs/Magic/RaySpell", typeof(GameObject));
-            UnityEngine.Object.Instantiate(variableForPrefab, player.transform);
-            throw new NotImplementedException();
+            Caster = player;
+            var variableForPrefab = magic.GetSpellPrefabByID(prefabID);
+            var spellObject = UnityEngine.Object.Instantiate(variableForPrefab);
+            spellObject.GetComponent<RayScript>().Configuration = this;
         }
     }
 }

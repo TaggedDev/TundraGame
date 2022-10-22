@@ -19,6 +19,9 @@ public class PlayerMagic : MonoBehaviour
 
     private Spell _currentSpell;
 
+    [SerializeField]
+    private List<GameObject> spellPrefabs;
+
     public int MaxSpellElementCount { get; set; }
 
     public MagicElement AllowedElements { get; private set; } = MagicElement.All;
@@ -109,9 +112,10 @@ public class PlayerMagic : MonoBehaviour
     {
         //IsSpellingPanelOpened = false;
         _currentSpell = Activator.CreateInstance((from x in _availableSpells
-                         let elems = x.GetCustomAttribute<SpellAttribute>().Elements.Length
-                         orderby elems ascending
-                         select x).LastOrDefault()) as Spell;
+                                                  let elems = x.GetCustomAttribute<SpellAttribute>().Elements.Length
+                                                  where elems == MaxSpellElementCount
+                                                  orderby elems ascending
+                                                  select x).LastOrDefault()) as Spell;
         _currentSpell?.Build(DraftSpell);
         if (_currentSpell == null) return;
         print("Spell is ready for casting!");
@@ -125,8 +129,15 @@ public class PlayerMagic : MonoBehaviour
         IsReadyForCasting = false;
         _currentSpellSelected = false;
         _currentSpell = null;
+        _availableSpells = null;
+        AllowedElements = MagicElement.All;
         DraftSpell.Clear();
         print("Spell has been casted!");
+    }
+
+    public GameObject GetSpellPrefabByID(int id)
+    {
+        return spellPrefabs[id];
     }
 
     IEnumerator ReloadStones()

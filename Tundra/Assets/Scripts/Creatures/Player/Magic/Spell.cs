@@ -22,6 +22,8 @@ namespace Creatures.Player.Magic
 
         public MagicElement AllowedMagicElements => allowedElements;
 
+        public GameObject Caster { get; protected set; }
+
         static Spell()
         {
             var spellType = typeof(Spell);
@@ -81,7 +83,7 @@ namespace Creatures.Player.Magic
                 {
                     foreach (var attribute in attributes)
                     {
-                        foreach (var reagent in reagents.Skip(descFormulaLength))
+                        foreach (var reagent in reagents)
                         {
                             attribute.IncreaseValue(this, prop, reagent);
                         }

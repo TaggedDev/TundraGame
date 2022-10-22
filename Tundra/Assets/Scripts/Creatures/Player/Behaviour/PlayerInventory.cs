@@ -1,8 +1,5 @@
-﻿using Creatures.Player.Behaviour;
-using Creatures.Player.Inventory;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using Creatures.Player.Inventory;
+using System.Data;
 using UnityEngine;
 
 namespace Creatures.Player.Behaviour
@@ -14,15 +11,25 @@ namespace Creatures.Player.Behaviour
         public static float ItemPickingUpTime => 3f;
 
         private PlayerBehaviour _playerBehaviour;
+        private int _lastSlotIndex = 0;
 
-        public InventoryContainer Inventory 
-        { 
+        public InventoryContainer Inventory
+        {
             get
             {
                 if (inventory == null) Init();
                 return inventory;
             }
             private set => inventory = value;
+        }
+
+        public BasicItemConfiguration SelectedItem
+        {
+            get
+            {
+                if (SelectedInventorySlot != -1) return Inventory[SelectedInventorySlot]?.Item;
+                else return null;
+            }
         }
 
         public GameObject NearestInteractableItem { get; private set; }
@@ -84,6 +91,17 @@ namespace Creatures.Player.Behaviour
             }
             NearestInteractableItem = null;
             ItemPickingProgress = 0f;
+        }
+
+        public void UnselectItem()
+        {
+            _lastSlotIndex = SelectedInventorySlot;
+            SelectedInventorySlot = -1;
+        }
+
+        public void ReselectItem()
+        {
+            SelectedInventorySlot = _lastSlotIndex;
         }
 
         public void ResetNearestItem(GameObject item)

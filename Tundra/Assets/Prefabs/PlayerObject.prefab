@@ -3126,6 +3126,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e371dee5d77a76841a6e35bc01a7c087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spellPrefabs:
+  - {fileID: 2048890033395645259, guid: 915a03409a375be4a92b5d767c3374b3, type: 3}
 --- !u!114 &6591950171598838087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3146,7 +3148,6 @@ MonoBehaviour:
   maxHealth: 0
   maxStamina: 0
   maxLoadCapacity: 0
-  throwPrepareTime: 0
   hitPreparationTime: 0
   playerRace: {fileID: 11400000, guid: 0ba9c8e9c67db184daf1c9a0e52a6909, type: 2}
 --- !u!114 &6591950171598838086
