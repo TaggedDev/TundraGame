@@ -4,10 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RayScript : MonoBehaviour
+public class RayScript : SpellScript<RaySpell>
 {
-    public RaySpell Configuration { get; set; }
-
     private const double time = 3;
     
     // Start is called before the first frame update

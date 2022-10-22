@@ -76,6 +76,7 @@ namespace Creatures.Player.Magic
         {
             if (!CheckValidity(elements)) throw new ArgumentException("Some of elements are prohibited for this spell!", nameof(elements));
             var reagents = elements.Skip(descFormulaLength);
+            if (reagents.Count() == 0) return;
             foreach (var prop in GetType().GetProperties())
             {
                 var attributes = prop.GetCustomAttributes<IncreasablePropertyAttribute>();

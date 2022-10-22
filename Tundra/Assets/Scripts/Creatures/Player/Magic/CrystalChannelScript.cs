@@ -4,10 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CrystalChannelScript : MonoBehaviour
+public class CrystalChannelScript : SpellScript<CrystalChannelSpell>
 {
-    public CrystalChannelSpell Configuration { get; set; }
-
     private const double time = 10;
     private double _lifeTime;
     private PlayerProperties props;

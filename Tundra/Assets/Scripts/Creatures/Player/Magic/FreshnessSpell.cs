@@ -8,10 +8,12 @@ using UnityEngine;
 namespace Creatures.Player.Magic
 {
     [Spell("Freshness", "Warms up the player, provides regeneration boost and increases player's speed.", 
-        new MagicElement[] {MagicElement.Explosion, MagicElement.Magma, MagicElement.Water})]
+        new MagicElement[] {MagicElement.Explosion, MagicElement.Water, MagicElement.Magma})]
     [ElementRestrictions(MagicElement.Explosion | MagicElement.Magma | MagicElement.Water)]
     public class FreshnessSpell : Spell
     {
+        private const int prefabID = 2;
+
         [IncreasableProperty(0.2, MagicElement.Explosion)]
         [IncreasableProperty(-0.1, MagicElement.Magma | MagicElement.Water)]
         public double PlayerSpeedCoefficient { get; set; } = 2;
@@ -26,7 +28,10 @@ namespace Creatures.Player.Magic
 
         public override void Cast(GameObject player, PlayerMagic magic)
         {
-            throw new NotImplementedException();
+            Caster = player;
+            var variableForPrefab = magic.GetSpellPrefabByID(prefabID);
+            var spellObject = UnityEngine.Object.Instantiate(variableForPrefab);
+            spellObject.GetComponent<FreshnessScript>().Configuration = this;
         }
     }
 }

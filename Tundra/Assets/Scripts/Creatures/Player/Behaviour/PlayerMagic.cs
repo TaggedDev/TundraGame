@@ -98,6 +98,13 @@ public class PlayerMagic : MonoBehaviour
 
     public void Dispell()
     {
+        foreach (var element in DraftSpell)
+        {
+            MagicElementSlot slot = _config.MagicElements.FirstOrDefault(x => x.Element == element);
+            if (slot == null) continue;
+            slot.CurrentStonesAmount++;
+            if (slot.CurrentStonesAmount > slot.MaxStonesAmount) slot.CurrentStonesAmount = slot.MaxStonesAmount;
+        }
         DraftSpell.Clear();
         IsSpellingPanelOpened = false;
         IsReadyForCasting = false;
