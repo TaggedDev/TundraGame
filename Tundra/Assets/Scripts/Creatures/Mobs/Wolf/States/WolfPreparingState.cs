@@ -5,14 +5,17 @@ namespace Creatures.Mobs.Wolf.States
 {
     public class WolfPreparingState : MobBasicState
     {
-        private const float ATTACK_DISTANCE_THRESHOLD = 1f;
+        private const float ATTACK_DISTANCE_THRESHOLD = 1.6f;
         private const float MAX_ATTACK_DELAY = 5f; // seconds
         private const float MIN_ATTACK_DELAY = 3f; // seconds
+        private readonly Vector3 DEFAULT_JUMP_POSITION = new Vector3(-999, -999, -999); 
         
+        private Vector3 jumpPosition;
         private float attackTimer;
 
         public WolfPreparingState(Mob mob, IMobStateSwitcher switcher, NavMeshAgent agent) : base(mob, switcher, agent)
         {
+            jumpPosition = DEFAULT_JUMP_POSITION;
             _mob.DeltaRotate = _mob.MaxDeltaRotate;
             _mob.MobRigidbody = _mob.GetComponent<Rigidbody>();
         }
@@ -40,9 +43,11 @@ namespace Creatures.Mobs.Wolf.States
                 _switcher.SwitchState<WolfHuntingState>();
             
             // If player approaches the wolf, he attacks immediately
-            if (distance < ATTACK_DISTANCE_THRESHOLD / 2 && attackTimer <= 0)
+            else if (distance < ATTACK_DISTANCE_THRESHOLD / 2 && attackTimer <= 0)
             {
-                _mob.MobRigidbody.AddForce( (_mob.transform.forward + Vector3.up * 1.5f) * (50 * _mob.MobRigidbody.mass));
+                Debug.Log("Jumping!");
+                jumpPosition = _mob.transform.position;
+                _mob.MobRigidbody.AddForce( (_mob.transform.forward + Vector3.up * 10f) * (50 * _mob.MobRigidbody.mass));
                 attackTimer = Random.Range(MIN_ATTACK_DELAY, MAX_ATTACK_DELAY);
             }
 
@@ -71,6 +76,7 @@ namespace Creatures.Mobs.Wolf.States
         private void DisableWolfMovement()
         {
             _mob.Agent.isStopped = true;
+            _mob.Agent.SetDestination(_mob.transform.position);
             _mob.MobRigidbody.angularVelocity = Vector3.zero;
             _mob.MobRigidbody.velocity = Vector3.zero;
         }

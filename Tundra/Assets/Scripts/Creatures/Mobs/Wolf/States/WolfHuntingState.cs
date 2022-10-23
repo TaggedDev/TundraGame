@@ -17,10 +17,16 @@ namespace Creatures.Mobs.Wolf.States
             
             // If wolf has reached the player, he gets into preparing mode
             if (dist <= ATTACK_DISTANCE_THRESHOLD)
+            {
                 _switcher.SwitchState<WolfPreparingState>();
+                return;
+            }
             
             if (dist > _mob.SniffingRadius)
+            {
                 _switcher.SwitchState<WolfPatrollingState>();
+                return;
+            }
             
             _agent.SetDestination(_mob.Player.position);
             LookAtPosition(_mob.Player.position);

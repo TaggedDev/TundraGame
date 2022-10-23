@@ -961,58 +961,22 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0.005222399
-      value: 0.05125442
+      time: 0
+      value: 0.052642822
       inSlope: 0
       outSlope: 0
-      tangentMode: 0
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.46158782
-      value: 0.12653996
-      inSlope: 0.029205197
-      outSlope: 0.029205197
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.20002392
-    - serializedVersion: 3
-      time: 0.7436257
-      value: 0.21838635
-      inSlope: 0.20783459
-      outSlope: 0.20783459
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.501502
-    - serializedVersion: 3
-      time: 0.78002834
-      value: 0.52439195
-      inSlope: 6.390471
-      outSlope: 6.390471
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.14220494
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.80808485
-      value: 0.814028
-      inSlope: 4.7198453
-      outSlope: 4.7198453
-      tangentMode: 0
+      time: 1
+      value: 0.052642822
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
       weightedMode: 0
-      inWeight: 0.1409979
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.9710295
-      value: 1.6021444
-      inSlope: 0.1890926
-      outSlope: 0.1890926
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.16611752
+      inWeight: 0.33333334
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -2051,7 +2015,7 @@ PrefabInstance:
     - target: {fileID: 6591950171598838083, guid: 559d97cf075654344b456f54e77c8b1c,
         type: 3}
       propertyPath: m_Mass
-      value: 50
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6677471697813370866, guid: 559d97cf075654344b456f54e77c8b1c,
         type: 3}
