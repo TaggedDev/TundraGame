@@ -9,15 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5730bbf34bf049c4786acb1c1d8c4b3b, type: 3}
+  m_Script: {fileID: 11500000, guid: 315a1247f6e749a4c91a3ae2da52d406, type: 3}
   m_Name: CampfireSO
   m_EditorClassIdentifier: 
-  Object: {fileID: 6389859916702202457, guid: 668139a22955e52478b4c7c74ab19e6f, type: 3}
+  Object: {fileID: 6389859916702202457, guid: 0e6c5c9eec4d0e74e8baa45ff82e8ea3, type: 3}
   GhostObject: {fileID: 0}
-  _previewPlacable: {fileID: 2100000, guid: bf85934d16e0e0d44bc65c99133845e5, type: 2}
-  _previewUnPlacable: {fileID: 2100000, guid: 3ec6eb5db36628e4a96d0faf28300c76, type: 2}
-  TEMP:
-  - {fileID: 1795242020357236077, guid: e9e101ab7b2c20749bd171cb74b83498, type: 3}
-  - {fileID: 61046562064216086, guid: 01d8f60546b2b474dadda2485dc1a06f, type: 3}
-  - {fileID: 6635936991376642489, guid: d64d4375ef8e41940b3410b2c29fad62, type: 3}
-  - {fileID: 5706128074935001888, guid: f5f073fa8258d5f4e973e1afaa2c0d87, type: 3}
+  _previewPlacable: {fileID: 2100000, guid: fc9b533fc0bbfcc479eb441bb5651538, type: 2}
+  _previewUnPlacable: {fileID: 2100000, guid: d392d3a473d63764e8152e1e8977397c, type: 2}
