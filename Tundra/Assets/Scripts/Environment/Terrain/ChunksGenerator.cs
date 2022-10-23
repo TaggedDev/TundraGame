@@ -211,6 +211,8 @@ namespace Environment.Terrain
 				}
 				
 				_navMeshSurface = _meshObject.AddComponent<NavMeshSurface>();
+				_navMeshSurface.useGeometry = NavMeshCollectGeometry.PhysicsColliders;
+				_navMeshSurface.agentTypeID = 0;
 				BakeNavMesh();
 			}
 
