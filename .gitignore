@@ -70,3 +70,8 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+Tundra/Assets/Textures/GUI/RawFiles/*
+Tundra/Assets/Textures/RawTextures/*
+Tundra/Assets/StreamingAssets
+Tundra/Assets/StreamingAssets.meta

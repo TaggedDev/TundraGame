@@ -7,11 +7,14 @@ using UnityEngine;
 
 namespace Creatures.Player.Inventory
 {
-    [CreateAssetMenu(fileName = "New Equipment Configuration", menuName = "Items/Equipment Configuration")]
+    [CreateAssetMenu(fileName = "New Equipment Configuration", menuName = "Items/Equipment/Equipment Configuration")]
     public class EquipmentConfiguration : BasicItemConfiguration
     {
+        [SerializeField]
         private EquipmentSlotPosition _equipmentSlot;
+        [SerializeField]
         private int _additionalSlots;
+        [SerializeField]
         private float _warmEconomyCoefficient;
 
         /// <summary>
@@ -67,6 +70,10 @@ namespace Creatures.Player.Inventory
         /// <summary>
         /// Слот для рюкзака. Он же тоже по сути должен считаться снаряжением.
         /// </summary>
-        Backpack
+        Backpack,
+        /// <summary>
+        /// Слот для книги/гримуара. Используется для книг заклинаний.
+        /// </summary>
+        Book
     }
 }

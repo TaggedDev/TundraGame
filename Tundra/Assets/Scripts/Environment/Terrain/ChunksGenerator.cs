@@ -44,6 +44,10 @@ namespace Environment.Terrain
 		/// </summary>
 		private void Start()
 		{
+			_viewerPosition = Vector2.zero; 
+			viewerPositionOld = _viewerPosition;
+			_terrainChunksVisibleLastUpdate.Clear();
+			
 			_mapGenerator = FindObjectOfType<MapGenerator>();
 
 			_maxViewDst = detailLevels[detailLevels.Length - 1].visibleDstThreshold;
@@ -92,7 +96,7 @@ namespace Environment.Terrain
 				
 			int currentChunkCoordX = Mathf.RoundToInt (_viewerPosition.x / _chunkSize);
 			int currentChunkCoordY = Mathf.RoundToInt (_viewerPosition.y / _chunkSize);
-
+			Debug.Log(chunksVisibleInViewDst);
 			for (int yOffset = -chunksVisibleInViewDst; yOffset <= chunksVisibleInViewDst; yOffset++)
 			{
 				for (int xOffset = -chunksVisibleInViewDst; xOffset <= chunksVisibleInViewDst; xOffset++)
@@ -105,6 +109,7 @@ namespace Environment.Terrain
 					}
 					else
 					{
+						Debug.Log($"{viewedChunkCoord}");
 						var chunk = new TerrainChunk(viewedChunkCoord, _chunkSize, detailLevels, colliderLODIndex,
 							transform, mapMaterial, entityInfo, viewer.transform);
 						_terrainChunkDictionary.Add(viewedChunkCoord, chunk);
@@ -330,9 +335,9 @@ namespace Environment.Terrain
 				Vector2 offset = new Vector2(_meshObject.transform.position.x, _meshObject.transform.position.z);
 
 				int absHalfChunkSize = _chunkSize * WorldConstants.Scale / 2;
-				for (int x = Mathf.FloorToInt(offset.x - absHalfChunkSize); x <= Mathf.FloorToInt(offset.x + absHalfChunkSize); x += 16)
+				for (int x = Mathf.FloorToInt(offset.x - absHalfChunkSize); x <= Mathf.FloorToInt(offset.x + absHalfChunkSize); x += 2)
 				{
-					for (int y = Mathf.FloorToInt(offset.y - absHalfChunkSize); y <= Mathf.FloorToInt(offset.y + absHalfChunkSize); y += 16)
+					for (int y = Mathf.FloorToInt(offset.y - absHalfChunkSize); y <= Mathf.FloorToInt(offset.y + absHalfChunkSize); y += 2)
 					{
 						Vector2 position = new Vector2(x, y);
 						if (_hasGeneratedEntities)

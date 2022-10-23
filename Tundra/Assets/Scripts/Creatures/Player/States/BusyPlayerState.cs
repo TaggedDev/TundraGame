@@ -1,15 +1,13 @@
 ﻿using Creatures.Player.Behaviour;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Creatures.Player.States
 {
     public class BusyPlayerState : BasicPlayerState
     {
+        private Canvas _escapeCanvas;
+
         protected override float StarvingConsumptionCoefficient => throw new NotImplementedException();
 
         protected override float StaminaConsumption => throw new NotImplementedException();
@@ -18,9 +16,17 @@ namespace Creatures.Player.States
 
         protected override float WarmConsumptionCoefficient => throw new NotImplementedException();
 
-        public BusyPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher, PlayerProperties playerProperties)
+        public BusyPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
+            PlayerProperties playerProperties, Canvas escapeCanvas)
             : base(playerMovement, switcher, playerProperties)
-        { }
+        {
+            _escapeCanvas = escapeCanvas;
+        }
+
+        public override void HandleEscapeButton()
+        {
+            throw new NotImplementedException();
+        }
 
         public override void MoveCharacter()
         {
