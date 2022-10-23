@@ -8,16 +8,18 @@ namespace Creatures.Mobs.Wolf.States
         private const float ATTACK_DISTANCE_THRESHOLD = 1.6f;
         private const float MAX_ATTACK_DELAY = 5f; // seconds
         private const float MIN_ATTACK_DELAY = 3f; // seconds
-        private readonly Vector3 DEFAULT_JUMP_POSITION = new Vector3(-999, -999, -999); 
+
+        private readonly GameObject _maw;
+        private bool _isAttacking;
         
-        private Vector3 jumpPosition;
         private float attackTimer;
 
-        public WolfPreparingState(Mob mob, IMobStateSwitcher switcher, NavMeshAgent agent) : base(mob, switcher, agent)
+        public WolfPreparingState(Mob mob, IMobStateSwitcher switcher, NavMeshAgent agent, GameObject maw) : base(mob, switcher, agent)
         {
-            jumpPosition = DEFAULT_JUMP_POSITION;
             _mob.DeltaRotate = _mob.MaxDeltaRotate;
             _mob.MobRigidbody = _mob.GetComponent<Rigidbody>();
+            _maw = maw;
+            _isAttacking = false;
         }
 
         public override void Start()
@@ -40,15 +42,27 @@ namespace Creatures.Mobs.Wolf.States
             
             // If player has ran too far from the wolf, it chases the player
             if (distance > ATTACK_DISTANCE_THRESHOLD)
+            {
                 _switcher.SwitchState<WolfHuntingState>();
+                return;
+            }
+
+            if (_mob.IsGrounded && _isAttacking)
+            {
+                _isAttacking = false;
+                _maw.SetActive(false);
+            }
             
             // If player approaches the wolf, he attacks immediately
-            else if (distance < ATTACK_DISTANCE_THRESHOLD / 2 && attackTimer <= 0)
+            if (distance < ATTACK_DISTANCE_THRESHOLD / 2 && attackTimer <= 0)
             {
                 Debug.Log("Jumping!");
-                jumpPosition = _mob.transform.position;
-                _mob.MobRigidbody.AddForce( (_mob.transform.forward + Vector3.up * 10f) * (50 * _mob.MobRigidbody.mass));
+                //_mob.MobRigidbody.AddForce((_mob.transform.forward + Vector3.up * 1000f) * (50 * _mob.MobRigidbody.mass));
+                _mob.MobRigidbody.AddForce(_mob.transform.forward.x * 50, 1000f, _mob.transform.forward.z * 50, ForceMode.Impulse);
                 attackTimer = Random.Range(MIN_ATTACK_DELAY, MAX_ATTACK_DELAY);
+                
+                _maw.SetActive(true);
+                _isAttacking = true;
             }
 
             if (attackTimer > 0)

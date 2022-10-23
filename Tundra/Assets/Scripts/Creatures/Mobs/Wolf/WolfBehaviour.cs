@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Creatures.Mobs.Wolf.States;
 using UnityEngine;
@@ -8,6 +9,7 @@ namespace Creatures.Mobs.Wolf
 {
     public class WolfBehaviour : Mob, IMobStateSwitcher
     {
+        [SerializeField] private GameObject wolfMaw;
         private const float MAX_SNIFFING_TIME = 1.2f;
         
         private MobBasicState _currentMobState;
@@ -34,12 +36,12 @@ namespace Creatures.Mobs.Wolf
             }
 
             Debug.DrawRay(transform.position, Vector3.down * (mobHeight + 0.2f), Color.blue);
-            IsGrounded = Physics.Raycast(transform.position, Vector3.down, mobHeight + 0.2f, 1 << TERRAIN_LAYER_INDEX);
+            /*IsGrounded = Physics.Raycast(transform.position, Vector3.down, mobHeight + 0.2f, 1 << TERRAIN_LAYER_INDEX);
             
             if (IsGrounded)
                 MobRigidbody.useGravity = false;
             else
-                MobRigidbody.useGravity = true;
+                MobRigidbody.useGravity = true;*/
                 
             _currentMobState.MoveMob();
             
@@ -53,6 +55,9 @@ namespace Creatures.Mobs.Wolf
 
         public override void Initialise(MobFabric fabric, Transform player)
         {
+            if (wolfMaw is null)
+                throw new Exception("Wolf maw object wasn't assigned");
+            
             Player = player;
             Fabric = fabric;
             transform.gameObject.layer = MOB_LAYER_INDEX;
@@ -79,7 +84,7 @@ namespace Creatures.Mobs.Wolf
                 new WolfPatrollingState(this, this, Agent),
                 new WolfHuntingState(this, this, Agent),
                 new WolfEscapingState(this, this, Agent),
-                new WolfPreparingState(this, this, Agent)
+                new WolfPreparingState(this, this, Agent, wolfMaw)
             };
             _currentMobState = _allMobStates[0];
         }
