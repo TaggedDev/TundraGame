@@ -375,7 +375,7 @@ MonoBehaviour:
   sniffingRadius: 5
   maxMobHealth: 50
   _player: {fileID: 0}
-  wolfMaw: {fileID: 3086108115254276882}
+  wolfMaw: {fileID: 2090333208596929043}
 --- !u!195 &1432031131618546671
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -501,6 +501,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4733220860419684750}
   - component: {fileID: 8530322592768757774}
+  - component: {fileID: 2090333208596929043}
   m_Layer: 0
   m_Name: Maw
   m_TagString: Untagged
@@ -533,8 +534,20 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.1724772, y: 5.827279, z: 1.8107357}
-  m_Center: {x: 0, y: 1.2874398, z: 3.427753}
+  m_Size: {x: 3, y: 5, z: 3}
+  m_Center: {x: 0, y: 1.5, z: 4}
+--- !u!114 &2090333208596929043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3086108115254276882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 877a1c69e8ba423e8d5ef22cd776eb04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4462671599606049265
 GameObject:
   m_ObjectHideFlags: 0

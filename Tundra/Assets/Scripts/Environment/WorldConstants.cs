@@ -5,6 +5,7 @@
     /// </summary>
     public static class WorldConstants
     {
+        // World generation & updates values
         public const int Scale = 1;
         private const float ChunkUpdateThreshold = 1f;
         public const float SqrChunkUpdateThreshold = ChunkUpdateThreshold * ChunkUpdateThreshold;
@@ -13,7 +14,11 @@
             ColliderGenerationDistanceThreshold * ColliderGenerationDistanceThreshold; 
         private const float EntityUpdateThreshold = 6f;
         public const float SqrEntityUpdateThreshold = EntityUpdateThreshold * EntityUpdateThreshold;
+        
+        // Layer indexes
+        public const int PLAYER_LAYER_INDEX = 9;
 
+        // Default world settings
         public static int WorldSeed = 146;
         public static string WorldName = "New World";
         public static string WorldData = string.Empty;

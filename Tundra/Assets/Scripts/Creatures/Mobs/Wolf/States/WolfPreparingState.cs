@@ -9,17 +9,15 @@ namespace Creatures.Mobs.Wolf.States
         private const float MAX_ATTACK_DELAY = 5f; // seconds
         private const float MIN_ATTACK_DELAY = 3f; // seconds
 
-        private readonly GameObject _maw;
-        private bool _isAttacking;
+        private readonly WolfMaw _maw;
         
         private float attackTimer;
 
-        public WolfPreparingState(Mob mob, IMobStateSwitcher switcher, NavMeshAgent agent, GameObject maw) : base(mob, switcher, agent)
+        public WolfPreparingState(Mob mob, IMobStateSwitcher switcher, NavMeshAgent agent, WolfMaw maw) : base(mob, switcher, agent)
         {
             _mob.DeltaRotate = _mob.MaxDeltaRotate;
             _mob.MobRigidbody = _mob.GetComponent<Rigidbody>();
             _maw = maw;
-            _isAttacking = false;
         }
 
         public override void Start()
@@ -47,31 +45,21 @@ namespace Creatures.Mobs.Wolf.States
                 return;
             }
 
-            if (_mob.IsGrounded && _isAttacking)
-            {
-                _isAttacking = false;
-                _maw.SetActive(false);
-            }
-            
             // If player approaches the wolf, he attacks immediately
             if (distance < ATTACK_DISTANCE_THRESHOLD / 2 && attackTimer <= 0)
             {
                 Debug.Log("Jumping!");
                 //_mob.MobRigidbody.AddForce((_mob.transform.forward + Vector3.up * 1000f) * (50 * _mob.MobRigidbody.mass));
                 _mob.MobRigidbody.AddForce(_mob.transform.forward.x * 50, 1000f, _mob.transform.forward.z * 50, ForceMode.Impulse);
+                _maw.gameObject.SetActive(true);
                 attackTimer = Random.Range(MIN_ATTACK_DELAY, MAX_ATTACK_DELAY);
-                
-                _maw.SetActive(true);
-                _isAttacking = true;
             }
 
             if (attackTimer > 0)
             {
                 attackTimer -= Time.deltaTime;
+                
             }
-
-            
-            
         }
 
         private void LookAtPosition(Vector3 spot)

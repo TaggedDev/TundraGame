@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using CameraConfiguration;
 using Creatures.Player.States;
-using Creatures.Player.Behaviour;
 using UnityEngine;
 using System;
 
@@ -20,7 +19,7 @@ namespace Creatures.Player.Behaviour
 
         [SerializeField] private Canvas escapeCanvas;
         private Animator _animator;
-        [SerializeField] private BasicPlayerState _currentState;
+        private BasicPlayerState _currentState;
         private PlayerMovement _playerMovement;
         private List<BasicPlayerState> _allStates;
         private CameraMovement _cameraHolder;
