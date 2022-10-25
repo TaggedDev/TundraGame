@@ -137,7 +137,7 @@ namespace Creatures.Player.States
 
         public virtual void PickUpBuildingBlock()
         {
-            PlayerStateSwitcher.SwitchState<BuildingState>();
+            PlayerStateSwitcher.SwitchState<BuildingPlayerState>();
         }
 
         public virtual void SpendStamina()

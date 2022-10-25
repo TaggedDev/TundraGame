@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Creatures.Player.Inventory;
 public class Buidling : MonoBehaviour
 {
     [SerializeField] public PlaceableObject PlacableObj;

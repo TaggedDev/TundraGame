@@ -5,11 +5,10 @@ using UnityEngine;
 
 namespace Creatures.Player.States
 {
-
-    public class BuildingState : BasicPlayerState
+    public class BuildingPlayerState : BasicPlayerState
     {
         private const float speed = .7f; //ain't it supposed to be set somwhere in 1 place for everyone?
-        public BuildingState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher, PlayerProperties playerProperties) : base(playerMovement, switcher, playerProperties)
+        public BuildingPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher, PlayerProperties playerProperties) : base(playerMovement, switcher, playerProperties)
         {
             //so?
         }
@@ -22,6 +21,10 @@ namespace Creatures.Player.States
 
         protected override float WarmConsumptionCoefficient => 1f;
 
+        public override void HandleEscapeButton()
+        {
+            throw new System.NotImplementedException("CHANGE TO VIRTUAL!!!");
+        }
 
         public override void Start()
         {

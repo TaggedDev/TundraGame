@@ -55,7 +55,8 @@ namespace Creatures.Player.Behaviour
                 new WalkPlayerState(_playerMovement,  this, _playerProperties, escapeCanvas),
                 new SprintPlayerState(_playerMovement, this, _playerProperties, escapeCanvas),
                 new BusyPlayerState(_playerMovement, this, _playerProperties, escapeCanvas),
-                new MagicCastingPlayerState(_playerMovement, this, _playerProperties, _playerMagic, escapeCanvas)
+                new MagicCastingPlayerState(_playerMovement, this, _playerProperties, _playerMagic, escapeCanvas),
+                new BuildingPlayerState(_playerMovement, this, _playerProperties)
             };
             _currentState = _allStates[0];
             _currentState.Start();
