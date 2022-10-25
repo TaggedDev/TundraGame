@@ -48,8 +48,6 @@ namespace Creatures.Mobs.Wolf.States
             // If player approaches the wolf, he attacks immediately
             if (distance < ATTACK_DISTANCE_THRESHOLD / 2 && attackTimer <= 0)
             {
-                Debug.Log("Jumping!");
-                //_mob.MobRigidbody.AddForce((_mob.transform.forward + Vector3.up * 1000f) * (50 * _mob.MobRigidbody.mass));
                 _mob.MobRigidbody.AddForce(_mob.transform.forward.x * 50, 1000f, _mob.transform.forward.z * 50, ForceMode.Impulse);
                 _maw.gameObject.SetActive(true);
                 attackTimer = Random.Range(MIN_ATTACK_DELAY, MAX_ATTACK_DELAY);
