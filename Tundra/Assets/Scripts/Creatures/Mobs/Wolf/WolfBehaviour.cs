@@ -25,7 +25,8 @@ namespace Creatures.Mobs.Wolf
             if (wolfMaw is null)
                 throw new Exception("Wolf maw object wasn't assigned");
             
-            wolfMaw.Initialise(player.GetComponent<PlayerProperties>());
+            wolfMaw.Initialise(player.GetComponent<PlayerProperties>(),
+                player.GetComponent<Rigidbody>());
 
             lastAttackTimePassed = MAX_ATTACK_TIME;
             Player = player;

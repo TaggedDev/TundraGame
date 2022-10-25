@@ -1,5 +1,6 @@
 ﻿using Creatures.Player.Behaviour;
 using Environment;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Creatures.Mobs.Wolf
@@ -7,11 +8,14 @@ namespace Creatures.Mobs.Wolf
     public class WolfMaw : MonoBehaviour
     {
         private readonly Collider[] _colliders = new Collider[1];
-        private PlayerProperties _player;
+        private PlayerProperties _playerProperties;
+        private Rigidbody _playerRigidbody;
 
-        public void Initialise(PlayerProperties player)
+        public void Initialise(PlayerProperties playerProperties, Rigidbody playerRigidbody)
         {
-            _player = player;
+            _playerProperties = playerProperties;
+            _playerRigidbody = playerRigidbody;
+
         }
         
         private void FixedUpdate()
@@ -20,7 +24,8 @@ namespace Creatures.Mobs.Wolf
             if (_colliders[0] is null)
                 return;
 
-            _player.CurrentHealth -= 30f;
+            _playerRigidbody.AddForce((Vector3.up + Vector3.left) * 100f * _playerRigidbody.mass);
+            _playerProperties.CurrentHealth -= 30f;
             gameObject.SetActive(false);
         }
     }
