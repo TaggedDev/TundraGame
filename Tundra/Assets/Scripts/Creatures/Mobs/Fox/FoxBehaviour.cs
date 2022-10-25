@@ -53,7 +53,7 @@ namespace Creatures.Mobs.Fox
             transform.gameObject.layer = MOB_LAYER_INDEX;
         }
 
-        public override void SpawnSelf()
+        public override void SpawnSelf(Vector3 position)
         {
             FearHealthThreshold = MaxMobHealth * .1f;
             CurrentMobHealth = MaxMobHealth;

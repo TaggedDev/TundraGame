@@ -2,13 +2,14 @@
 using Creatures.Player.Behaviour;
 using UnityEngine;
 using Creatures.Player.Inventory;
+using GUI.GameplayGUI;
 
 namespace Creatures.Player.States
 {
     public class MagicCastingPlayerState : BasicPlayerState
     {
         private PlayerMagic _playerMagic;
-        private Canvas _escapeCanvas;
+        private EscapeMenu _escapeCanvas;
 
         private const float speed = 1f;
 
@@ -23,7 +24,7 @@ namespace Creatures.Player.States
         private Vector3 velocity;
 
         public MagicCastingPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
-            PlayerProperties playerProperties, PlayerMagic playerMagic, Canvas escapeCanvas)
+            PlayerProperties playerProperties, PlayerMagic playerMagic, EscapeMenu escapeCanvas)
             : base(playerMovement, switcher, playerProperties)
         {
             _playerMagic = playerMagic;

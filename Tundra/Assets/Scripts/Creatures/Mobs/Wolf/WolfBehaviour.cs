@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Creatures.Mobs.Wolf.States;
 using Creatures.Player.Behaviour;
@@ -9,16 +10,37 @@ namespace Creatures.Mobs.Wolf
 {
     public class WolfBehaviour : Mob, IMobStateSwitcher
     {
+        [SerializeField] private WolfMaw wolfMaw;
         private const float MAX_SNIFFING_TIME = 1.2f;
+        private const float MAX_ATTACK_TIME = .175f;
         
         private MobBasicState _currentMobState;
         private List<MobBasicState> _allMobStates;
 
         private float currentSniffingTime;
-        private float mobHeight;
+        private float lastAttackTimePassed;
+
+        public override void Initialise(MobFabric fabric, Transform player)
+        {
+            if (wolfMaw is null)
+                throw new Exception("Wolf maw object wasn't assigned");
+            
+            wolfMaw.Initialise(player.GetComponent<PlayerProperties>(),
+                player.GetComponent<Rigidbody>());
+
+            lastAttackTimePassed = MAX_ATTACK_TIME;
+            Player = player;
+            Fabric = fabric;
+            transform.gameObject.layer = MOB_LAYER_INDEX;
+            SpawnPosition = player.position;
+        }
         
         private void FixedUpdate()
         {
+            // If wolf has low HP, he runs away
+            if (CurrentMobHealth <= FearHealthThreshold)
+                SwitchState<WolfEscapingState>();
+            
             // Temporary solution to kill mob
             if (Input.GetKeyDown(KeyCode.X))
             {
@@ -29,17 +51,24 @@ namespace Creatures.Mobs.Wolf
                     return;
                 }
             }
-                
-
-            Debug.DrawRay(transform.position, Vector3.down * (mobHeight + 0.2f), Color.blue);
-            IsGrounded = Physics.Raycast(transform.position, Vector3.down, mobHeight + 0.2f, 1 << TERRAIN_LAYER_INDEX);
-            
-            if (IsGrounded)
-                MobRigidbody.useGravity = false;
-            else
-                MobRigidbody.useGravity = true;
-                
             _currentMobState.MoveMob();
+
+            // We cant perform the calculations on wolf maw in preparing state because there is a chance for the wolf
+            // to switch states between preparing and hunting states during the attack.
+            
+            // If the wolf's maw is active -> it was activated to attack the player and we check the time
+            // since the attack started
+            if (wolfMaw.gameObject.activeSelf)
+            {
+                lastAttackTimePassed += Time.deltaTime;
+            }
+
+            // If enough attack time has passed we disable the maw hitbox and reset the timer
+            if (lastAttackTimePassed >= MAX_ATTACK_TIME)
+            {
+                wolfMaw.gameObject.SetActive(false);
+                lastAttackTimePassed = 0;
+            }
             
             currentSniffingTime -= Time.fixedDeltaTime;
             if (currentSniffingTime <= 0)
@@ -49,15 +78,7 @@ namespace Creatures.Mobs.Wolf
             }
         }
 
-        public override void Initialise(MobFabric fabric, Transform player)
-        {
-            Player = player;
-            Fabric = fabric;
-            transform.gameObject.layer = MOB_LAYER_INDEX;
-            SpawnPosition = player.position;
-        }
-
-        public override void SpawnSelf()
+        public override void SpawnSelf(Vector3 position)
         {
             // Define Fear Health Threshold as 10% of max health
             FearHealthThreshold = MaxMobHealth * .1f;
@@ -66,16 +87,17 @@ namespace Creatures.Mobs.Wolf
             
             SpawnPosition = Player.position;
             transform.position = SpawnPosition;
-            
-            mobHeight = GetComponent<Collider>().bounds.extents.y;
+
             Agent = gameObject.GetComponent<NavMeshAgent>();
-            
+
+            transform.position = position;
             gameObject.SetActive(true);
             _allMobStates = new List<MobBasicState>
             {
                 new WolfPatrollingState(this, this, Agent),
                 new WolfHuntingState(this, this, Agent),
-                new WolfEscapingState(this, this, Agent)
+                new WolfEscapingState(this, this, Agent),
+                new WolfPreparingState(this, this, Agent, wolfMaw)
             };
             _currentMobState = _allMobStates[0];
         }

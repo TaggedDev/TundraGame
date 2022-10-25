@@ -89,11 +89,6 @@ namespace Creatures.Mobs
             get => _fearHealthThreshold;
             set => _fearHealthThreshold = value;
         }
-        public Rigidbody Rigidbody
-        {
-            get => _rigidbody;
-            set => _rigidbody = value;
-        }
         public NavMeshAgent Agent
         {
             get => _agent;
@@ -118,14 +113,13 @@ namespace Creatures.Mobs
         private NavMeshAgent _agent;
         private RaycastHit _slopeHit;
         private Rigidbody _mobRigidbody;
-        [SerializeField] private Vector3 _spawnPosition;
-        [SerializeField] private float _currentMobHealth;
+        private Vector3 _spawnPosition;
+        private float _currentMobHealth;
         private float _fearHealthThreshold;
         private float _deltaRotate;
         private bool _isEntitySensed;
         private bool _isIgnoringSensor;
-        [SerializeField] private bool _isGrounded;
-        private Rigidbody _rigidbody;
+        private bool _isGrounded;
 
         /// <summary>
         /// Initialises basic parameters. Can't use constructor because objects with this class are initialized by
@@ -136,12 +130,24 @@ namespace Creatures.Mobs
         /// <summary>
         /// Sets the spawn position, turns on the object and sets default values. Basically replaces the Start() method
         /// </summary>
-        public abstract void SpawnSelf();
-
-        private void OnValidate()
+        public abstract void SpawnSelf(Vector3 position);
+        
+        /// <summary>
+        /// Rotates wolf to face the player
+        /// </summary>
+        /// <param name="spot">Spot to face</param>
+        public void LookAtPosition(Vector3 spot)
         {
-            if (roamingRadius < 5)
-                roamingRadius = 5;
+            Vector3 direction = spot - transform.position;
+            direction.y = 0;
+            Quaternion rotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Lerp(transform.rotation, rotation,
+                Time.deltaTime * RotationSpeed);
+        }
+        
+        private void Start()
+        {
+            _mobRigidbody = GetComponent<Rigidbody>();
         }
     }
 }

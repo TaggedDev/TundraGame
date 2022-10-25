@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace GUI.MainMenu
+namespace GUI.GameplayGUI
 {
     /// <summary>
     /// Describes the behaviour of buttons in Escape Menu
@@ -18,11 +18,12 @@ namespace GUI.MainMenu
         [SerializeField] private Button saveButton;
         [SerializeField] private PlayerBehaviour player;
         [SerializeField] private LoadOrder loadOrder;
-
+        
         private void Start()
         {
             // Creates directory of StreamingAssets with inner folder Worlds in it
             Directory.CreateDirectory(Application.streamingAssetsPath + "/Worlds/");
+            gameObject.SetActive(false);
         }
 
         /// <summary>

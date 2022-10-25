@@ -60,7 +60,7 @@ namespace Creatures.Player.Behaviour
         /// <summary>
         /// Internal field for the current player's HP.
         /// </summary>
-        private float _currentHealth;
+        [SerializeField] private float _currentHealth;
         /// <summary>
         /// Internal field for the current player speed coefficient.
         /// </summary>
@@ -94,7 +94,7 @@ namespace Creatures.Player.Behaviour
         /// </summary>
         internal float _currentStarvationTime;
         /// <summary>
-        /// Ideal player tempaerture. 
+        /// Ideal player temperature. 
         /// </summary>
         public float PerfectTemperature => perfectTemperature;
         /// <summary>

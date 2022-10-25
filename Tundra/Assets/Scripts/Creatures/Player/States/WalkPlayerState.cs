@@ -1,11 +1,12 @@
 ﻿using Creatures.Player.Behaviour;
+using GUI.GameplayGUI;
 using UnityEngine;
 
 namespace Creatures.Player.States
 {
     public class WalkPlayerState : BasicPlayerState
     {
-        private Canvas _escapeCanvas;
+        private EscapeMenu _escapeCanvas;
         private const float speed = 1f;
 
         protected override float StarvingConsumptionCoefficient => 2f;
@@ -17,7 +18,7 @@ namespace Creatures.Player.States
         protected override float WarmConsumptionCoefficient => 2f;
 
         public WalkPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
-            PlayerProperties playerProperties, Canvas escapeCanvas)
+            PlayerProperties playerProperties, EscapeMenu escapeCanvas)
             : base(playerMovement, switcher, playerProperties)
         {
             _escapeCanvas = escapeCanvas;

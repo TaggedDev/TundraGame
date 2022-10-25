@@ -2,25 +2,26 @@ using System.Collections.Generic;
 using System.Linq;
 using CameraConfiguration;
 using Creatures.Player.States;
-using Creatures.Player.Behaviour;
 using UnityEngine;
 using System;
+using GUI.GameplayGUI;
 
 namespace Creatures.Player.Behaviour
 {
     public class PlayerBehaviour : MonoBehaviour, IPlayerStateSwitcher
     {
         
-        //Properites
+        // Properties
         public bool IsOverweight => _inventoryController.Inventory.TotalWeight > _playerProperties.MaxLoadCapacity;
         public float OverweightCoefficient => _inventoryController.Inventory.TotalWeight / _playerProperties.MaxLoadCapacity;
 
         // Variables
         //TODO: Здесь нужно думаю, по-хорошему, как-нибудь закрыть эти поля для доступа, но разрешить их изменение в классах States
 
-        [SerializeField] private Canvas escapeCanvas;
+        [SerializeField] private EscapeMenu escapeCanvas;
+        [SerializeField] private DeathMenu deathCanvas;
         private Animator _animator;
-        [SerializeField] private BasicPlayerState _currentState;
+        private BasicPlayerState _currentState;
         private PlayerMovement _playerMovement;
         private List<BasicPlayerState> _allStates;
         private CameraMovement _cameraHolder;
@@ -29,6 +30,8 @@ namespace Creatures.Player.Behaviour
         private PlayerProperties _playerProperties;
         private Rigidbody _rigidbody;
         private PlayerMagic _playerMagic;
+
+        private bool _isDead;
         //private float cameraDistance;
 
         public BasicPlayerState CurrentState => _currentState;
@@ -66,7 +69,10 @@ namespace Creatures.Player.Behaviour
         }
 
         private void Update()
-        {           
+        {
+            if (_isDead)
+                return;
+            
             if (Input.GetKeyDown(KeyCode.Escape))
                 _currentState.HandleEscapeButton();
             
@@ -81,10 +87,15 @@ namespace Creatures.Player.Behaviour
 
         private void FixedUpdate()
         {
+            if (_isDead)
+                return;
+            
+            if (_playerProperties.CurrentHealth <= 0)
+                KillPlayer();
+
             _currentState.MoveCharacter();
             _animator.SetFloat("Speed", _rigidbody.velocity.magnitude);
             _animator.SetBool("Shift Pressed", Input.GetKey(KeyCode.LeftShift));
-            //print($"Speed has set to {_rigidbody.velocity.magnitude}");
         }
 
         public void ThrowItem()
@@ -115,6 +126,16 @@ namespace Creatures.Player.Behaviour
             //Now it does almost nothing.
             //TODO: make hit logic.
             _animator.SetTrigger("Fist Attack");
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void KillPlayer()
+        {
+            // TODO: Play the death animation, do the screen blackout and show menu
+            _isDead = true;
+            deathCanvas.EnableSelf();
         }
     }
 }
