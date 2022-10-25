@@ -1,5 +1,6 @@
 ﻿using Creatures.Player.Behaviour;
 using UnityEngine;
+using Creatures.Player.Inventory;
 
 namespace Creatures.Player.States
 {
@@ -208,6 +209,14 @@ namespace Creatures.Player.States
             {
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
                 (this as MagicCastingPlayerState).Dispell();
+            }
+        }
+
+        public virtual void OnPlayerSelectedItemChanged(PlayerInventory inventory)
+        {
+            if (inventory.SelectedItem is PlaceableItemConfiguration)
+            {
+                PlayerStateSwitcher.SwitchState<BuildingPlayerState>();
             }
         }
     }
