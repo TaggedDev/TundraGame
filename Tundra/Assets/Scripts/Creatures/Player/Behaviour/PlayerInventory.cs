@@ -50,6 +50,7 @@ namespace Creatures.Player.Behaviour
             set
             {
                 _currentSlotIndex = value;
+                SelectedSlotChanged?.Invoke(this, null);
             } 
         }
 
