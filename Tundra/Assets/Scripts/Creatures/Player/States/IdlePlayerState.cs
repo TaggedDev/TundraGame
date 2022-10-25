@@ -1,14 +1,15 @@
 ﻿using Creatures.Player.Behaviour;
+using GUI.GameplayGUI;
 using UnityEngine;
 
 namespace Creatures.Player.States
 {
     public class IdlePlayerState : BasicPlayerState
     {
-        private Canvas _escapeCanvas;
+        private EscapeMenu _escapeCanvas;
 
         public IdlePlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
-            PlayerProperties playerProperties, Canvas escapeCanvas)
+            PlayerProperties playerProperties, EscapeMenu escapeCanvas)
             : base(playerMovement, switcher, playerProperties)
         {
             _escapeCanvas = escapeCanvas;

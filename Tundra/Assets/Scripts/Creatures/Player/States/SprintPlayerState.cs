@@ -1,4 +1,5 @@
 ﻿using Creatures.Player.Behaviour;
+using GUI.GameplayGUI;
 using UnityEngine;
 
 namespace Creatures.Player.States
@@ -6,7 +7,7 @@ namespace Creatures.Player.States
     public class SprintPlayerState : BasicPlayerState
     {
         private const float speed = 2f;
-        private Canvas _escapeCanvas;
+        private EscapeMenu _escapeCanvas;
 
         protected override float StarvingConsumptionCoefficient => 2f;
 
@@ -17,7 +18,7 @@ namespace Creatures.Player.States
         protected override float WarmConsumptionCoefficient => 1f;
 
         public SprintPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
-            PlayerProperties playerProperties, Canvas escapeCanvas)
+            PlayerProperties playerProperties, EscapeMenu escapeCanvas)
             : base(playerMovement, switcher, playerProperties)
         {
             _escapeCanvas = escapeCanvas;

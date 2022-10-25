@@ -1,12 +1,13 @@
 ﻿using Creatures.Player.Behaviour;
 using System;
+using GUI.GameplayGUI;
 using UnityEngine;
 
 namespace Creatures.Player.States
 {
     public class BusyPlayerState : BasicPlayerState
     {
-        private Canvas _escapeCanvas;
+        private EscapeMenu _escapeCanvas;
 
         protected override float StarvingConsumptionCoefficient => throw new NotImplementedException();
 
@@ -17,7 +18,7 @@ namespace Creatures.Player.States
         protected override float WarmConsumptionCoefficient => throw new NotImplementedException();
 
         public BusyPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
-            PlayerProperties playerProperties, Canvas escapeCanvas)
+            PlayerProperties playerProperties, EscapeMenu escapeCanvas)
             : base(playerMovement, switcher, playerProperties)
         {
             _escapeCanvas = escapeCanvas;
