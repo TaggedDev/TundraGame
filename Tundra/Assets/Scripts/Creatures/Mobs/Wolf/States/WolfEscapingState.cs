@@ -15,7 +15,9 @@ namespace Creatures.Mobs.Wolf.States
         public override void MoveMob()
         {
             Vector3 awayDirection = _mob.transform.position - _mob.Player.transform.position;
-            _agent.SetDestination(_mob.transform.position + awayDirection);
+            Vector3 target = _mob.transform.position + awayDirection;
+            _agent.SetDestination(target);
+            _mob.LookAtPosition(target);
         }
 
         

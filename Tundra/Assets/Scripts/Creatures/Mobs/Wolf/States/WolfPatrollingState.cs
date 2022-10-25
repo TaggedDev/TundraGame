@@ -18,7 +18,7 @@ namespace Creatures.Mobs.Wolf.States
         public override void MoveMob()
         {
             // Thresholding time mob is able to get to target if it's too far away
-            LookAtPosition(_mob.targetPoint);
+            _mob.LookAtPosition(_mob.targetPoint);
             patrolTime -= Time.fixedDeltaTime;
             if (patrolTime <= 0f || Vector3.Distance(_mob.targetPoint, _mob.transform.position) <= .5f)
             {
@@ -52,19 +52,6 @@ namespace Creatures.Mobs.Wolf.States
                     hasSetPoint = true;
                 }
             }
-        }
-        
-        /// <summary>
-        /// Rotates mob to face the spot he is moving towards to
-        /// </summary>
-        /// <param name="spot"></param>
-        private void LookAtPosition(Vector3 spot)
-        {
-            Vector3 direction = spot - _mob.transform.position;
-            direction.y = 0;
-            Quaternion rotation = Quaternion.LookRotation(direction);
-            _mob.transform.rotation = Quaternion.Lerp(_mob.transform.rotation, rotation,
-                Time.deltaTime * _mob.RotationSpeed);
         }
         
         public override void Start()

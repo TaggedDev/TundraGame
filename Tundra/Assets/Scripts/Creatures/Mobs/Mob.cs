@@ -132,15 +132,22 @@ namespace Creatures.Mobs
         /// </summary>
         public abstract void SpawnSelf(Vector3 position);
         
+        /// <summary>
+        /// Rotates wolf to face the player
+        /// </summary>
+        /// <param name="spot">Spot to face</param>
+        public void LookAtPosition(Vector3 spot)
+        {
+            Vector3 direction = spot - transform.position;
+            direction.y = 0;
+            Quaternion rotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Lerp(transform.rotation, rotation,
+                Time.deltaTime * RotationSpeed);
+        }
+        
         private void Start()
         {
             _mobRigidbody = GetComponent<Rigidbody>();
-        }
-
-        private void OnValidate()
-        {
-            if (roamingRadius < 5)
-                roamingRadius = 5;
         }
     }
 }

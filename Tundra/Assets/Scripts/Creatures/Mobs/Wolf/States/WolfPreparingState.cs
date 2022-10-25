@@ -35,7 +35,7 @@ namespace Creatures.Mobs.Wolf.States
 
         public override void MoveMob()
         {
-            LookAtPosition(_mob.Player.position);
+            _mob.LookAtPosition(_mob.Player.position);
             float distance = Vector3.Distance(_mob.Player.position, _mob.transform.position);
             
             // If player has ran too far from the wolf, it chases the player
@@ -62,15 +62,6 @@ namespace Creatures.Mobs.Wolf.States
             }
         }
 
-        private void LookAtPosition(Vector3 spot)
-        {
-            Vector3 direction = spot - _mob.transform.position;
-            direction.y = 0;
-            Quaternion rotation = Quaternion.LookRotation(direction);
-            _mob.transform.rotation = Quaternion.Lerp(_mob.transform.rotation, rotation,
-                Time.deltaTime * _mob.RotationSpeed);
-        }
-        
         /// <summary>
         /// Disables any movement (angular and regular velocity) of Rigidbody and sets isStopped = true on Agent
         /// and saves these values
