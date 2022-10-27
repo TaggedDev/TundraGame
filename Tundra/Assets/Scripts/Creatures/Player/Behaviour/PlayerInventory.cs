@@ -50,11 +50,11 @@ namespace Creatures.Player.Behaviour
             set
             {
                 _currentSlotIndex = value;
-                SelectedSlotChanged?.Invoke(this, null);
+                SelectedItemChanged?.Invoke(this, null);    
             } 
         }
 
-        public event EventHandler SelectedSlotChanged;
+        public event EventHandler SelectedItemChanged;
 
         // Start is called before the first frame update
         void Start()
@@ -77,12 +77,14 @@ namespace Creatures.Player.Behaviour
                 if (ItemPickingProgress > ItemPickingUpTime)
                 {
                     PickItemUp();
+                    SelectedItemChanged?.Invoke(this, null);
                 }
             }
             else ItemPickingProgress = 0f;
             if (Input.GetKeyDown(KeyCode.Q) && !Input.GetKey(KeyCode.LeftControl))
             {
                 ThrowItemAway();
+                SelectedItemChanged?.Invoke(this, null);
             }
         }
 

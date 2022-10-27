@@ -8,7 +8,6 @@ namespace Creatures.Player.States
     public class MagicCastingPlayerState : BasicPlayerState
     {
         private PlayerMagic _playerMagic;
-        private Canvas _escapeCanvas;
 
         private const float speed = 1f;
 
@@ -23,12 +22,11 @@ namespace Creatures.Player.States
         private Vector3 velocity;
 
         public MagicCastingPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
-            PlayerProperties playerProperties, PlayerMagic playerMagic, Canvas escapeCanvas)
-            : base(playerMovement, switcher, playerProperties)
+            PlayerProperties playerProperties, PlayerMagic playerMagic, PlayerInventory inventory, Canvas escapeCanvas)
+            : base(playerMovement, switcher, playerProperties, inventory, escapeCanvas)
         {
             _playerMagic = playerMagic;
             _playerMagic.SpellCast += ExitState;
-            _escapeCanvas = escapeCanvas;
         }
 
         private void ExitState(object sender, EventArgs e)
@@ -38,7 +36,9 @@ namespace Creatures.Player.States
 
         public override void HandleEscapeButton()
         {
-            _escapeCanvas.gameObject.SetActive(!_escapeCanvas.gameObject.activeSelf);
+            //I think I've accidentally deleted something from here
+            //woopsie
+            throw new NotImplementedException();
         }
 
         public override void MoveCharacter()

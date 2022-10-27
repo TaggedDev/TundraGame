@@ -27,8 +27,10 @@ namespace Creatures.Player.Behaviour
         private Camera _mainCamera;
         private PlayerInventory _inventoryController;
         private PlayerProperties _playerProperties;
+        private PlayerInventory _playerInventory;
         private Rigidbody _rigidbody;
         private PlayerMagic _playerMagic;
+        private PlayerBuild _playerBuild;
         //private float cameraDistance;
 
         public BasicPlayerState CurrentState => _currentState;
@@ -46,24 +48,26 @@ namespace Creatures.Player.Behaviour
             _playerMovement = GetComponent<PlayerMovement>();
             _inventoryController = GetComponent<PlayerInventory>();
             _playerProperties = GetComponent<PlayerProperties>();
+            _playerInventory = GetComponent<PlayerInventory>();
             _playerMagic = GetComponent<PlayerMagic>();
+            _playerBuild = GetComponent<PlayerBuild>();
             _rigidbody = GetComponent<Rigidbody>();
             _animator = GetComponent<Animator>();
             _allStates = new List<BasicPlayerState>()
             {
-                new IdlePlayerState(_playerMovement, this, _playerProperties, escapeCanvas),
-                new WalkPlayerState(_playerMovement,  this, _playerProperties, escapeCanvas),
-                new SprintPlayerState(_playerMovement, this, _playerProperties, escapeCanvas),
-                new BusyPlayerState(_playerMovement, this, _playerProperties, escapeCanvas),
-                new MagicCastingPlayerState(_playerMovement, this, _playerProperties, _playerMagic, escapeCanvas),
-                new BuildingPlayerState(_playerMovement, this, _playerProperties)
+                new IdlePlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas),
+                new WalkPlayerState(_playerMovement,  this, _playerProperties, _playerInventory, escapeCanvas),
+                new SprintPlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas),
+                new BusyPlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas),
+                new MagicCastingPlayerState(_playerMovement, this, _playerProperties, _playerMagic, _playerInventory, escapeCanvas),
+                new BuildingPlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas, _playerBuild)
             };
             _currentState = _allStates[0];
             _currentState.Start();
             _mainCamera.transform.RotateAround(transform.position, Vector3.up, 45);
             _playerMovement.UpdateDirections();
             _playerMovement.Speed = 2f;
-            _inventoryController.SelectedSlotChanged += (sender, e) => 
+            _inventoryController.SelectedItemChanged += (sender, e) => 
             {
                 CurrentState.OnPlayerSelectedItemChanged(_inventoryController);
             };
@@ -74,7 +78,8 @@ namespace Creatures.Player.Behaviour
         {           
             if (Input.GetKeyDown(KeyCode.Escape))
                 _currentState.HandleEscapeButton();
-            
+
+
             _cameraHolder.transform.position = transform.position;
             _currentState.ContinueStarving();
             _currentState.ContinueFreeze();
@@ -113,6 +118,7 @@ namespace Creatures.Player.Behaviour
             _currentState = state;
             _playerProperties._throwLoadingProgress = _playerProperties.ThrowPrepareTime;
             StateChanged?.Invoke(this, null);
+            Debug.Log(typeof(T).ToString());
         }
 
         internal void Hit()

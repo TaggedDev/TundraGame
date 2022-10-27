@@ -2,44 +2,63 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Creatures.Player.Inventory;
-public class Buidling : MonoBehaviour
+public class PlayerBuild : MonoBehaviour
 {
-    [SerializeField] public PlaceableObject PlacableObj;
+    public PlaceableObject PlacableObj;
 
-    [SerializeField] private Material _previewPlacable;
-    [SerializeField] private Material _previewIsntPlacable;
+    public delegate void EventHandler(object source, System.EventArgs e);
 
-    
+    public event EventHandler ObjectPlaced;
+
     private void Start()
     {
-        PlacableObj.GhostObject = Instantiate(PlacableObj.Object);
-
-        PlacableObj.GhostObject.GetComponent<Collider>().enabled = false;
+        if (PlacableObj.GhostObject == null)
+        {
+            PlacableObj.GhostObject = Instantiate(PlacableObj.Object);
+            PlacableObj.GhostObject.GetComponent<Collider>().enabled = false;
+        }
     }
-
 
     void Update()
     {
-
-        //FOR DEBUG
-        if (Input.GetKey(KeyCode.D))
-            Time.timeScale = 0;
-        //FOR DEBUG
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (!Physics.Raycast(ray, out hit, 100))
             return;
-
-        PlacableObj.DiplayGhostObject(hit.point);
+        Vector3 point = new Vector3(hit.point.x, hit.point.y + PlacableObj.GhostObject.GetComponent<Renderer>().bounds.extents.y, hit.point.z);
+        PlacableObj.DiplayGhostObject(point);
         PlacableObj.AssignMaterial();
         
         if (Input.GetMouseButton(0))
         {
-           if(PlacableObj.TryPlacing(hit.point, new Quaternion(0, Quaternion.LookRotation(Camera.main.transform.position - hit.point).y, 0, 
-               Quaternion.LookRotation(Camera.main.transform.position - hit.point).w)))
+           if(PlacableObj.TryPlacing(point, new Quaternion(0, Quaternion.LookRotation(Camera.main.transform.position - point).y, 0, 
+               Quaternion.LookRotation(Camera.main.transform.position - point).w)))
+            {
+                OnObjectPlaced();
                 this.enabled = false;
+            }
         }
     }
+
+    private void OnDisable()
+    {
+            Destroy(PlacableObj.GhostObject);
+    }
+
+    protected void OnObjectPlaced()
+    {
+        ObjectPlaced(this, null);
+    }
+    private void OnEnable()
+    {
+        
+        
+            PlacableObj.GhostObject = Instantiate(PlacableObj.Object);
+            PlacableObj.GhostObject.GetComponent<Collider>().enabled = false;
+        
+        
+    }
+
 
 }

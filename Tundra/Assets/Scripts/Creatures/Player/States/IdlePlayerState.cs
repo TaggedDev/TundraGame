@@ -5,13 +5,11 @@ namespace Creatures.Player.States
 {
     public class IdlePlayerState : BasicPlayerState
     {
-        private Canvas _escapeCanvas;
 
         public IdlePlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
-            PlayerProperties playerProperties, Canvas escapeCanvas)
-            : base(playerMovement, switcher, playerProperties)
+            PlayerProperties playerProperties, PlayerInventory inventory, Canvas escapeCanvas)
+            : base(playerMovement, switcher, playerProperties, inventory, escapeCanvas)
         {
-            _escapeCanvas = escapeCanvas;
             
         }
 
@@ -25,10 +23,6 @@ namespace Creatures.Player.States
 
         protected override float WarmConsumptionCoefficient => 2f;
 
-        public override void HandleEscapeButton()
-        {
-            _escapeCanvas.gameObject.SetActive(!_escapeCanvas.gameObject.activeSelf);
-        }
 
         public override void MoveCharacter()
         {
@@ -41,12 +35,12 @@ namespace Creatures.Player.States
 
         public override void Start()
         {
-            //Debug.Log("Got Idle State");
+            
         }
 
         public override void Stop()
         {
-            //Debug.Log("Lost Idle State");
+
         }
 
         public override void SpendStamina()

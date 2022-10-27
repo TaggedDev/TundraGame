@@ -18,10 +18,13 @@ namespace Creatures.Player.Inventory
 
         public void DiplayGhostObject(Vector3 position)
         {
+
             GhostObject.transform.position = position;
             GhostObject.transform.rotation =  new Quaternion(0, Quaternion.LookRotation(Camera.main.transform.position - position).y, 0, Quaternion.LookRotation(Camera.main.transform.position - position).w);
 
         }
+
+
     
         public bool IsPlacable
         {
@@ -46,10 +49,10 @@ namespace Creatures.Player.Inventory
                         GhostObject.transform.position.z + (1 - i) * GhostObject.GetComponent<Renderer>().bounds.size.z / 2;
                     //this way i can check all corners of square object
 
-                    isOnTheGround &= Physics.OverlapBox(new Vector3(coordsX, GhostObject.transform.position.y, coordsZ), new Vector3(0, 0.05f, 0) / 2).Length == 1;
+                    isOnTheGround &= Physics.OverlapBox(new Vector3(coordsX, GhostObject.transform.position.y, coordsZ), new Vector3(0, GhostObject.GetComponent<Renderer>().bounds.size.y + 0.05f, 0) / 2).Length == 1;
                 }
 
-                _isPlacable = colliders.Length == 1 && isOnTheGround;
+                _isPlacable = colliders.Length <= 1 && isOnTheGround;
                 
                 return _isPlacable;
             }   

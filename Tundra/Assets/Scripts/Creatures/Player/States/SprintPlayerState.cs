@@ -17,26 +17,22 @@ namespace Creatures.Player.States
         protected override float WarmConsumptionCoefficient => 1f;
 
         public SprintPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
-            PlayerProperties playerProperties, Canvas escapeCanvas)
-            : base(playerMovement, switcher, playerProperties)
+            PlayerProperties playerProperties, PlayerInventory inventory, Canvas escapeCanvas)
+            : base(playerMovement, switcher, playerProperties,  inventory, escapeCanvas)
         {
-            _escapeCanvas = escapeCanvas;
+        
         }
 
         public override void Start()
         {
-            //Debug.Log("Got sprint State");
+
         }
 
         public override void Stop()
         {
-            //Debug.Log("Lost sprint State");
+
         }
 
-        public override void HandleEscapeButton()
-        {
-            _escapeCanvas.gameObject.SetActive(!_escapeCanvas.gameObject.activeSelf);
-        }
 
         public override void LoadForThrow()
         {

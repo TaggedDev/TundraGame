@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d57266daa978c1545a16fd3a553cd465, type: 3}
-  m_Name: Campfire
+  m_Name: Workbench
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 98cd0b3e4fa68034385b7963629ef2c6, type: 3}
-  title: Campfire
-  description: Campfire description
-  itemInWorldPrefab: {fileID: 9218944179259735198, guid: e214a7beac41b8048a48f6f3798c24dd,
+  icon: {fileID: 21300000, guid: 442e628f3be28f34cb66517f93f17cee, type: 3}
+  title: Workbench
+  description: Workbench description
+  itemInWorldPrefab: {fileID: 9218944179259735198, guid: 3a9ac104f0ba8bb4e9dff3ebc2461e70,
     type: 3}
   maxStackVolume: 1
   weight: 10
-  _representedObject: {fileID: 11400000, guid: 59d6577625b1e1f44b39ffe6523ad142, type: 2}
+  _representedObject: {fileID: 11400000, guid: 79a44028ca3df164a899fa9fa5ab3cf8, type: 2}

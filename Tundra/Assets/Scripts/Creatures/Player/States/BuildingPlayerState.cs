@@ -1,4 +1,5 @@
 ﻿using Creatures.Player.Behaviour;
+using Creatures.Player.Inventory;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,10 +9,15 @@ namespace Creatures.Player.States
     public class BuildingPlayerState : BasicPlayerState
     {
         private const float speed = .7f; //ain't it supposed to be set somwhere in 1 place for everyone?
-        public BuildingPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher, PlayerProperties playerProperties) : base(playerMovement, switcher, playerProperties)
+        private PlayerBuild _playerBuild;
+        
+        public BuildingPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher, PlayerProperties playerProperties, PlayerInventory inventory, Canvas escapeCanvas, PlayerBuild playerBuild) 
+            : base(playerMovement, switcher, playerProperties, inventory, escapeCanvas)
         {
-            //so?
+            _playerBuild = playerBuild;
         }
+
+
 
         protected override float StarvingConsumptionCoefficient => 1f;
 
@@ -21,19 +27,21 @@ namespace Creatures.Player.States
 
         protected override float WarmConsumptionCoefficient => 1f;
 
-        public override void HandleEscapeButton()
-        {
-            throw new System.NotImplementedException("CHANGE TO VIRTUAL!!!");
-        }
-
         public override void Start()
         {
-            Debug.Log("Got Building State");
+            _playerBuild.ObjectPlaced += ObjectPlaced;
+            _playerBuild.PlacableObj = (PlayerInventory.SelectedItem as PlaceableItemConfiguration).RepresentedObject;
+            _playerBuild.enabled = true;
+        }
+
+        private void ObjectPlaced(object source, System.EventArgs e)
+        {
+            PlayerInventory.Inventory[PlayerInventory.SelectedInventorySlot].Clear();
         }
 
         public override void Stop()
         {
-            Debug.Log("Lost Building State");
+            _playerBuild.enabled = false;
         }
 
         protected override void StaminaIsOver()

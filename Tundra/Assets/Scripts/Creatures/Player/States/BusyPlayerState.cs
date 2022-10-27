@@ -6,7 +6,6 @@ namespace Creatures.Player.States
 {
     public class BusyPlayerState : BasicPlayerState
     {
-        private Canvas _escapeCanvas;
 
         protected override float StarvingConsumptionCoefficient => throw new NotImplementedException();
 
@@ -17,10 +16,9 @@ namespace Creatures.Player.States
         protected override float WarmConsumptionCoefficient => throw new NotImplementedException();
 
         public BusyPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
-            PlayerProperties playerProperties, Canvas escapeCanvas)
-            : base(playerMovement, switcher, playerProperties)
+            PlayerProperties playerProperties, PlayerInventory inventory, Canvas escapeCanvas)
+            : base(playerMovement, switcher, playerProperties, inventory, escapeCanvas)
         {
-            _escapeCanvas = escapeCanvas;
         }
 
         public override void HandleEscapeButton()
