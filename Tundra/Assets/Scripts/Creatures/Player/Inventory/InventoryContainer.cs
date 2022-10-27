@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -33,6 +34,8 @@ namespace Creatures.Player.Inventory
         ///Общий суммарный вес всех предметов в инвентаре.
         /// </summary>
         public float TotalWeight => Slots.Sum(x => x.Item == null ? 0 : x.Item.Weight * x.ItemsAmount);
+
+        public Slot this[int index] => Slots[index];
         /// <summary>
         /// Событие, происходящее перед изменением количества слотов в инвентаре.
         /// </summary>

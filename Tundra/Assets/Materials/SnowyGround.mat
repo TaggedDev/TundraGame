@@ -74,7 +74,7 @@ Material:
     - _Parallax: 0.02
     - _PathBlending: 1.56
     - _SmoothnessTextureChannel: 0
-    - _SnowHeight: 0.71
+    - _SnowHeight: 0
     - _SnowPathStrength: 3.05
     - _SparkCutoff: 1.12
     - _SparkleScale: 10

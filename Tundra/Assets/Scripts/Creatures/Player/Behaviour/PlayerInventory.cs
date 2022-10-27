@@ -1,22 +1,23 @@
-﻿using Creatures.Player.Behaviour;
-using Creatures.Player.Inventory;
+﻿using Creatures.Player.Inventory;
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 
 namespace Creatures.Player.Behaviour
 {
     public class PlayerInventory : MonoBehaviour
     {
+
         private InventoryContainer inventory;
 
         public static float ItemPickingUpTime => 3f;
 
         private PlayerBehaviour _playerBehaviour;
+        private int _lastSlotIndex = 0;
+        private int _currentSlotIndex;
 
-        public InventoryContainer Inventory 
-        { 
+        public InventoryContainer Inventory
+        {
             get
             {
                 if (inventory == null) Init();
@@ -25,13 +26,35 @@ namespace Creatures.Player.Behaviour
             private set => inventory = value;
         }
 
+        public BasicItemConfiguration SelectedItem
+        {
+            get
+            {
+                if (SelectedInventorySlot != -1) return Inventory[SelectedInventorySlot]?.Item;
+                else return null;
+            }
+        }
+
         public GameObject NearestInteractableItem { get; private set; }
 
         public float NearestInteractableItemDistance => NearestInteractableItem == null ? -1 : Vector3.Distance(transform.position, NearestInteractableItem.transform.position);
 
         public float ItemPickingProgress { get; private set; } = 0f;
 
-        public int SelectedInventorySlot { get; set; }
+        public int SelectedInventorySlot 
+        { 
+            get
+            {
+                return _currentSlotIndex;
+            } 
+            set
+            {
+                _currentSlotIndex = value;
+                SelectedItemChanged?.Invoke(this, null);    
+            } 
+        }
+
+        public event EventHandler SelectedItemChanged;
 
         // Start is called before the first frame update
         void Start()
@@ -54,12 +77,14 @@ namespace Creatures.Player.Behaviour
                 if (ItemPickingProgress > ItemPickingUpTime)
                 {
                     PickItemUp();
+                    SelectedItemChanged?.Invoke(this, null);
                 }
             }
             else ItemPickingProgress = 0f;
             if (Input.GetKeyDown(KeyCode.Q) && !Input.GetKey(KeyCode.LeftControl))
             {
                 ThrowItemAway();
+                SelectedItemChanged?.Invoke(this, null);
             }
         }
 
@@ -84,6 +109,17 @@ namespace Creatures.Player.Behaviour
             }
             NearestInteractableItem = null;
             ItemPickingProgress = 0f;
+        }
+
+        public void UnselectItem()
+        {
+            _lastSlotIndex = SelectedInventorySlot;
+            SelectedInventorySlot = -1;
+        }
+
+        public void ReselectItem()
+        {
+            SelectedInventorySlot = _lastSlotIndex;
         }
 
         public void ResetNearestItem(GameObject item)

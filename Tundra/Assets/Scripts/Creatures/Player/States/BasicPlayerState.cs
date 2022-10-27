@@ -1,5 +1,7 @@
 ﻿using Creatures.Player.Behaviour;
 using UnityEngine;
+using Creatures.Player.Inventory;
+using System;
 
 namespace Creatures.Player.States
 {
@@ -11,6 +13,7 @@ namespace Creatures.Player.States
         protected readonly PlayerProperties PlayerProperties;
         protected readonly Rigidbody PlayerRigidBody;
         protected readonly PlayerEquipment PlayerEquipment;
+        protected readonly PlayerInventory PlayerInventory;
         /// <summary>
         /// The hunger consumption value of this state.
         /// </summary>
@@ -29,8 +32,9 @@ namespace Creatures.Player.States
         protected abstract float WarmConsumptionCoefficient { get; }
 
         private Vector3 velocity;
+        private Canvas _escapeCanvas;
 
-        protected BasicPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher, PlayerProperties playerProperties)
+        protected BasicPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher, PlayerProperties playerProperties, PlayerInventory playerInventory, Canvas escapeCanvas)
         {
             PlayerBehaviour = (PlayerBehaviour)switcher;
             PlayerMovement = playerMovement;
@@ -39,12 +43,20 @@ namespace Creatures.Player.States
             PlayerProperties = playerProperties;
             PlayerRigidBody = PlayerBehaviour.gameObject.GetComponent<Rigidbody>();
             PlayerEquipment = PlayerBehaviour.gameObject.GetComponent<PlayerEquipment>();
+            PlayerInventory = playerInventory;
+            PlayerInventory.SelectedItemChanged += InventorySelectedSlotChanged;
+            _escapeCanvas = escapeCanvas;
         }
 
         /// <summary>
         /// On State changed | Start
         /// </summary>
         public abstract void Start();
+
+        /// <summary>
+        /// When PlacableObbject is Chosen
+        /// </summary>
+        
 
         /// <summary>
         /// On State changed | Stop
@@ -54,14 +66,17 @@ namespace Creatures.Player.States
         /// <summary>
         /// Handles the logic of pressing escape in different states
         /// </summary>
-        public abstract void HandleEscapeButton();
+        public virtual void HandleEscapeButton()
+        {
+            _escapeCanvas.gameObject.SetActive(!_escapeCanvas.gameObject.activeSelf);
+        }
 
         /// <summary>
         /// Basic movement with sprint
         /// </summary>
         public virtual void MoveCharacter()
         {
-            if (Input.GetKey(KeyCode.LeftShift) && !Input.GetMouseButton(2) && !(this is SprintPlayerState))
+            if (Input.GetKey(KeyCode.LeftShift) && !Input.GetMouseButton(2) && !(this is SprintPlayerState) && !(this is BuildingPlayerState))
             {
                 if (PlayerProperties.CurrentStamina > 0) PlayerStateSwitcher.SwitchState<SprintPlayerState>();
             }
@@ -73,7 +88,7 @@ namespace Creatures.Player.States
             float _h = Input.GetAxis("Horizontal");
             float _v = Input.GetAxis("Vertical");
 
-            if (_h == 0 && _v == 0 && !(this is IdlePlayerState))
+            if (_h == 0 && _v == 0 && !(this is IdlePlayerState) && !(this is BuildingPlayerState))
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
 
             Vector3 _rightMovement = PlayerMovement.Right * (PlayerMovement.Speed * SpeedCoefficient * Time.deltaTime * _h);
@@ -114,6 +129,11 @@ namespace Creatures.Player.States
                 if (PlayerProperties.CurrentHealth < 0) PlayerProperties.CurrentHealth = 0;
             }
         }
+        protected virtual void InventorySelectedSlotChanged(object sender, EventArgs e)
+        {
+            if (PlayerInventory.SelectedItem is PlaceableItemConfiguration)
+                PlayerStateSwitcher.SwitchState<BuildingPlayerState>();
+        }
 
         /// <summary>
         /// Updates player warm with current state coefficient.
@@ -129,6 +149,7 @@ namespace Creatures.Player.States
                 if (PlayerProperties.CurrentHealth < 0) PlayerProperties.CurrentHealth = 0;
             }
         }
+
 
         public virtual void SpendStamina()
         {
@@ -175,6 +196,7 @@ namespace Creatures.Player.States
             }
             else PlayerProperties.CurrentHitProgress = 0;
         }
+
         /// <summary>
         /// Recievs player input for changing states with opening related menus.
         /// </summary>
@@ -198,6 +220,16 @@ namespace Creatures.Player.States
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
                 (this as MagicCastingPlayerState).Dispell();
             }
+        }
+
+        public virtual void OnPlayerSelectedItemChanged(PlayerInventory inventory)
+        {
+            if (inventory.SelectedItem is PlaceableItemConfiguration)
+            {
+                PlayerStateSwitcher.SwitchState<BuildingPlayerState>();
+            }
+            else if (this is BuildingPlayerState)
+                PlayerStateSwitcher.SwitchState<IdlePlayerState>();
         }
     }
 }

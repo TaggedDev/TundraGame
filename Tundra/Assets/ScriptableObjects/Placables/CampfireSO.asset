@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 315a1247f6e749a4c91a3ae2da52d406, type: 3}
+  m_Name: CampfireSO
+  m_EditorClassIdentifier: 
+  Object: {fileID: 6389859916702202457, guid: 0e6c5c9eec4d0e74e8baa45ff82e8ea3, type: 3}
+  GhostObject: {fileID: 0}
+  _previewPlacable: {fileID: 2100000, guid: fc9b533fc0bbfcc479eb441bb5651538, type: 2}
+  _previewUnPlacable: {fileID: 2100000, guid: d392d3a473d63764e8152e1e8977397c, type: 2}
