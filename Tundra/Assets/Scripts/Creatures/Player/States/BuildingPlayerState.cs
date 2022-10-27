@@ -1,5 +1,6 @@
 ﻿using Creatures.Player.Behaviour;
 using Creatures.Player.Inventory;
+using GUI.GameplayGUI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace Creatures.Player.States
         private const float speed = .7f; //ain't it supposed to be set somwhere in 1 place for everyone?
         private PlayerBuild _playerBuild;
         
-        public BuildingPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher, PlayerProperties playerProperties, PlayerInventory inventory, Canvas escapeCanvas, PlayerBuild playerBuild) 
+        public BuildingPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher, PlayerProperties playerProperties, PlayerInventory inventory, EscapeMenu escapeCanvas, PlayerBuild playerBuild) 
             : base(playerMovement, switcher, playerProperties, inventory, escapeCanvas)
         {
             _playerBuild = playerBuild;

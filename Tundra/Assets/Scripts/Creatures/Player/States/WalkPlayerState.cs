@@ -19,7 +19,7 @@ namespace Creatures.Player.States
 
         public WalkPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
 
-            PlayerProperties playerProperties, PlayerInventory inventory, Canvas escapeCanvas)
+            PlayerProperties playerProperties, PlayerInventory inventory, EscapeMenu escapeCanvas)
             : base(playerMovement, switcher, playerProperties, inventory, escapeCanvas)
         {
         }

@@ -2,6 +2,7 @@
 using UnityEngine;
 using Creatures.Player.Inventory;
 using System;
+using GUI.GameplayGUI;
 
 namespace Creatures.Player.States
 {
@@ -32,9 +33,9 @@ namespace Creatures.Player.States
         protected abstract float WarmConsumptionCoefficient { get; }
 
         private Vector3 velocity;
-        private Canvas _escapeCanvas;
+        private EscapeMenu _escapeCanvas;
 
-        protected BasicPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher, PlayerProperties playerProperties, PlayerInventory playerInventory, Canvas escapeCanvas)
+        protected BasicPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher, PlayerProperties playerProperties, PlayerInventory playerInventory, EscapeMenu escapeCanvas)
         {
             PlayerBehaviour = (PlayerBehaviour)switcher;
             PlayerMovement = playerMovement;

@@ -24,7 +24,7 @@ namespace Creatures.Player.States
         private Vector3 velocity;
 
         public MagicCastingPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
-            PlayerProperties playerProperties, PlayerMagic playerMagic, PlayerInventory inventory, Canvas escapeCanvas)
+            PlayerProperties playerProperties, PlayerMagic playerMagic, PlayerInventory inventory, EscapeMenu escapeCanvas)
             : base(playerMovement, switcher, playerProperties, inventory, escapeCanvas)
         {
             _playerMagic = playerMagic;

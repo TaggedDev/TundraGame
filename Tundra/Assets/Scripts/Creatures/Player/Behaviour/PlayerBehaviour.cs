@@ -41,8 +41,8 @@ namespace Creatures.Player.Behaviour
 
         private void Start()
         {
-            if (escapeCanvas is null)
-                throw new Exception("Escape Canvas object was not assigned to the player behaviour");
+            /*if (escapeCanvas is null)
+                throw new Exception("Escape Canvas object was not assigned to the player behaviour");*/
 
             //cameraDistance = Vector3.Distance(Camera.main.transform.position, transform.position);
             _mainCamera = Camera.main;
