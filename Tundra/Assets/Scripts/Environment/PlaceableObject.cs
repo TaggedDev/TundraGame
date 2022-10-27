@@ -16,11 +16,11 @@ namespace Creatures.Player.Inventory
         [SerializeField] public Material _previewPlacable;
         [SerializeField] public Material _previewUnPlacable;
 
-        public void DiplayGhostObject(Vector3 position)
+        public void DiplayGhostObject(Vector3 position, Quaternion rotation)
         {
 
             GhostObject.transform.position = position;
-            GhostObject.transform.rotation =  new Quaternion(0, Quaternion.LookRotation(Camera.main.transform.position - position).y, 0, Quaternion.LookRotation(Camera.main.transform.position - position).w);
+            GhostObject.transform.rotation = rotation;
 
         }
 

@@ -27,13 +27,13 @@ public class PlayerBuild : MonoBehaviour
         if (!Physics.Raycast(ray, out hit, 100))
             return;
         Vector3 point = new Vector3(hit.point.x, hit.point.y + PlacableObj.GhostObject.GetComponent<Renderer>().bounds.extents.y, hit.point.z);
-        PlacableObj.DiplayGhostObject(point);
+        PlacableObj.DiplayGhostObject(point, new Quaternion(0, Quaternion.LookRotation(transform.position - PlacableObj.GhostObject.transform.position).y, 0, Quaternion.LookRotation(transform.position - PlacableObj.GhostObject.transform.position).w));
         PlacableObj.AssignMaterial();
         
         if (Input.GetMouseButton(0))
         {
-           if(PlacableObj.TryPlacing(point, new Quaternion(0, Quaternion.LookRotation(Camera.main.transform.position - point).y, 0, 
-               Quaternion.LookRotation(Camera.main.transform.position - point).w)))
+           if(PlacableObj.TryPlacing(point, new Quaternion(0, Quaternion.LookRotation(transform.position - point).y, 0, 
+               Quaternion.LookRotation(transform.position - point).w)))
             {
                 OnObjectPlaced();
                 this.enabled = false;
@@ -43,7 +43,7 @@ public class PlayerBuild : MonoBehaviour
 
     private void OnDisable()
     {
-            Destroy(PlacableObj.GhostObject);
+        Destroy(PlacableObj.GhostObject);
     }
 
     protected void OnObjectPlaced()
@@ -51,13 +51,9 @@ public class PlayerBuild : MonoBehaviour
         ObjectPlaced(this, null);
     }
     private void OnEnable()
-    {
-        
-        
-            PlacableObj.GhostObject = Instantiate(PlacableObj.Object);
-            PlacableObj.GhostObject.GetComponent<Collider>().enabled = false;
-        
-        
+    {   
+        PlacableObj.GhostObject = Instantiate(PlacableObj.Object);
+        PlacableObj.GhostObject.GetComponent<Collider>().enabled = false;
     }
 
 
