@@ -712,7 +712,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+      objectReference: {fileID: 2100000, guid: 76d650729fdfbd2419bff91f3eccc945, type: 2}
     - target: {fileID: 2069303240769238366, guid: c7b0aad1fe3c40e4984e7f0d401f5ae4,
         type: 3}
       propertyPath: m_RootOrder
@@ -1112,7 +1112,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1657138818}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.048997, y: 95.98504, z: -18.057245}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1104261268}
@@ -1158,7 +1158,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1704736029}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.048997, y: -95.98504, z: 18.057245}
+  m_LocalPosition: {x: 0, y: 0.068, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1438546958832801479}
@@ -1280,7 +1280,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2105628265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1844,17 +1844,17 @@ PrefabInstance:
     - target: {fileID: 5228099823817914258, guid: 559d97cf075654344b456f54e77c8b1c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.038
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5228099823817914258, guid: 559d97cf075654344b456f54e77c8b1c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 96.065
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5228099823817914258, guid: 559d97cf075654344b456f54e77c8b1c,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -18.05
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5228099823817914258, guid: 559d97cf075654344b456f54e77c8b1c,
         type: 3}

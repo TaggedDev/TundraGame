@@ -35,7 +35,7 @@ namespace CameraConfiguration
         private void Update()
         {
             var pos = _player.transform.position;
-            transform.position = new Vector3(pos.x, pos.y, pos.z - 3);
+            transform.position = new Vector3(pos.x, pos.y, pos.z);
             if (Input.GetKey(KeyCode.LeftControl))
             {
                 if (Input.GetKey(KeyCode.Q)) RotateCamera(true);
