@@ -1,4 +1,5 @@
-﻿using Environment;
+﻿using System;
+using Environment;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -36,7 +37,7 @@ namespace GUI.MainMenu
             WorldConstants.WorldName = levelName.text;
             WorldConstants.WorldSeed = _levelSeed;
             WorldConstants.WorldData = _levelData; 
-            SceneManager.LoadScene(5);
+            SceneManager.LoadScene(Convert.ToInt32(TundraScenes.GAME_SCENE_ID));
         }
     }
 }
