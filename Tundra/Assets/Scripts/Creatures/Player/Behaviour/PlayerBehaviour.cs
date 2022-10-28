@@ -10,6 +10,7 @@ namespace Creatures.Player.Behaviour
 {
     public class PlayerBehaviour : MonoBehaviour, IPlayerStateSwitcher
     {
+        public GameObject tmp;
         
         // Properties
         public bool IsOverweight => _inventoryController.Inventory.TotalWeight > _playerProperties.MaxLoadCapacity;
@@ -62,7 +63,8 @@ namespace Creatures.Player.Behaviour
                 new SprintPlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas),
                 new BusyPlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas),
                 new MagicCastingPlayerState(_playerMovement, this, _playerProperties, _playerMagic, _playerInventory, escapeCanvas),
-                new BuildingPlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas, _playerBuild)
+                new BuildingPlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas, _playerBuild),
+                new AttackPlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas, _animator)
             };
             _currentState = _allStates[0];
             _currentState.Start();
@@ -91,7 +93,7 @@ namespace Creatures.Player.Behaviour
             _currentState.LoadForThrow();
             _currentState.SpendStamina();
             _currentState.HandleUserInput();
-            _currentState.PrepareForHit();
+            _currentState.HandleLMB();
         }
 
         private void FixedUpdate()
@@ -132,10 +134,8 @@ namespace Creatures.Player.Behaviour
         }
 
         internal void Hit()
-        {
-            //Now it does almost nothing.
-            //TODO: make hit logic.
-            _animator.SetTrigger("Fist Attack");
+        { 
+            _animator.SetTrigger("Release Right");
         }
 
         /// <summary>
@@ -146,6 +146,11 @@ namespace Creatures.Player.Behaviour
             // TODO: Play the death animation, do the screen blackout and show menu
             _isDead = true;
             deathCanvas.EnableSelf();
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.DrawWireCube(tmp.transform.position, new Vector3(0.2f, 0.2f, 1));
         }
     }
 }

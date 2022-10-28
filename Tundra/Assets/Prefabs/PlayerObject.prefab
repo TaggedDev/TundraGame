@@ -3041,6 +3041,7 @@ GameObject:
   - component: {fileID: 6591950171598838081}
   - component: {fileID: 6591950171598838080}
   - component: {fileID: 8700357811891334371}
+  - component: {fileID: 1619264866821535178}
   m_Layer: 0
   m_Name: PlayerObject
   m_TagString: Untagged
@@ -3075,7 +3076,7 @@ Animator:
   m_GameObject: {fileID: 4883627935292108072}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: de13a7420582ded45a8d7d3f96889aca, type: 3}
-  m_Controller: {fileID: 9100000, guid: 4c7fe8e1a3919c549a79a706afefd1ce, type: 2}
+  m_Controller: {fileID: 9100000, guid: 3ccf6180aeb6ed2479dd8e0763d86587, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -3149,6 +3150,7 @@ MonoBehaviour:
   throwPrepareTime: 0
   hitPreparationTime: 0
   playerRace: {fileID: 11400000, guid: 0ba9c8e9c67db184daf1c9a0e52a6909, type: 2}
+  _currentHealth: 0
 --- !u!114 &6591950171598838086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3205,6 +3207,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c03cfd42317533f43b1f60e037046418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  escapeCanvas: {fileID: 0}
+  deathCanvas: {fileID: 0}
+--- !u!114 &1619264866821535178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4883627935292108072}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7071fbb3b0344c4eab74ae8a407eb4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlacableObj: {fileID: 0}
 --- !u!1 &5007356413477399336
 GameObject:
   m_ObjectHideFlags: 0

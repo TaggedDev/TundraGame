@@ -179,23 +179,14 @@ namespace Creatures.Player.States
         /// <summary>
         /// Loads to hit.
         /// </summary>
-        public virtual void PrepareForHit()
+        public virtual void HandleLMB()
         {
-            if (!(this is BusyPlayerState) && !(this is MagicCastingPlayerState))
+            if (Input.GetMouseButton(0) && Input.GetMouseButton(0) && !(this is BusyPlayerState) && !(this is MagicCastingPlayerState) && !(this is BuildingPlayerState))
             {
-                if (Input.GetMouseButton(0))
-                {
-                    PlayerProperties.CurrentHitProgress += Time.smoothDeltaTime;
-                }
-                else PlayerProperties.CurrentHitProgress -= Time.deltaTime;
-                if (PlayerProperties.CurrentHitProgress < 0) PlayerProperties.CurrentHitProgress = 0;
-                if (PlayerProperties.CurrentHitProgress > PlayerProperties.HitPreparationTime)
-                {
-                    PlayerBehaviour.Hit();
-                    PlayerProperties.CurrentHitProgress = 0;
-                }
+                PlayerStateSwitcher.SwitchState<AttackPlayerState>();
             }
-            else PlayerProperties.CurrentHitProgress = 0;
+            if (PlayerProperties.CurrentHitProgress > 0)
+                PlayerProperties.CurrentHitProgress -= Time.deltaTime;
         }
 
         /// <summary>
