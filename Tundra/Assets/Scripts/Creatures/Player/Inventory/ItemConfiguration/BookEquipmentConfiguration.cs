@@ -1,13 +1,7 @@
 ﻿using Creatures.Player.Magic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Creatures.Player.Inventory
+namespace Creatures.Player.Inventory.ItemConfiguration
 {
     [CreateAssetMenu(fileName = "New Equipment Configuration", menuName = "Items/Equipment/Book Configuration")]
     public class BookEquipmentConfiguration : EquipmentConfiguration

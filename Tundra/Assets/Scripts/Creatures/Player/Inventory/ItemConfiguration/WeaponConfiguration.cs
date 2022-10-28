@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Creatures.Player.Inventory
+namespace Creatures.Player.Inventory.ItemConfiguration
 {
     /// <summary>
     /// Базовый класс для конфигураций оружий ближнего и дальнего боя.
