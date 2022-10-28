@@ -1,6 +1,6 @@
 ﻿using Creatures.Player.Inventory;
 using System;
-using System.Data;
+using Creatures.Player.Inventory.ItemConfiguration;
 using UnityEngine;
 
 namespace Creatures.Player.Behaviour
@@ -13,7 +13,7 @@ namespace Creatures.Player.Behaviour
         public static float ItemPickingUpTime => 3f;
 
         private PlayerBehaviour _playerBehaviour;
-        private int _lastSlotIndex = 0;
+        private int _lastSlotIndex;
         private int _currentSlotIndex;
 
         public InventoryContainer Inventory
@@ -39,7 +39,7 @@ namespace Creatures.Player.Behaviour
 
         public float NearestInteractableItemDistance => NearestInteractableItem == null ? -1 : Vector3.Distance(transform.position, NearestInteractableItem.transform.position);
 
-        public float ItemPickingProgress { get; private set; } = 0f;
+        public float ItemPickingProgress { get; private set; }
 
         public int SelectedInventorySlot 
         { 
@@ -69,7 +69,7 @@ namespace Creatures.Player.Behaviour
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if (Input.GetKey(KeyCode.E) && !Input.GetKey(KeyCode.LeftControl) && NearestInteractableItem != null)
             {

@@ -3,6 +3,7 @@ using Creatures.Player.Inventory;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Creatures.Player.Inventory.ItemConfiguration;
 using UnityEngine;
 
 public class PlayerEquipment : MonoBehaviour

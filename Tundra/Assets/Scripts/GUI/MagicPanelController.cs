@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Creatures.Player.Inventory.ItemConfiguration;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;

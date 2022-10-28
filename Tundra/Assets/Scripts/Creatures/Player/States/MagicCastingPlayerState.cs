@@ -2,6 +2,7 @@
 using Creatures.Player.Behaviour;
 using UnityEngine;
 using Creatures.Player.Inventory;
+using Creatures.Player.Inventory.ItemConfiguration;
 using GUI.GameplayGUI;
 
 namespace Creatures.Player.States

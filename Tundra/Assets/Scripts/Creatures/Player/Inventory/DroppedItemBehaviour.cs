@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Creatures.Player;
+using Creatures.Player.Inventory.ItemConfiguration;
 
 namespace Creatures.Player.Inventory
 {

@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Creatures.Player.Inventory.ItemConfiguration;
 using UnityEngine;
 
 public class PlayerMagic : MonoBehaviour

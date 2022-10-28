@@ -3,6 +3,7 @@ using Creatures.Player.Inventory;
 using GUI.GameplayGUI;
 using System.Collections;
 using System.Collections.Generic;
+using Creatures.Player.Inventory.ItemConfiguration;
 using UnityEngine;
 
 namespace Creatures.Player.States
