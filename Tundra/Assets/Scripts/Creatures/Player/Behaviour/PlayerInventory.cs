@@ -1,9 +1,13 @@
 ﻿using Creatures.Player.Inventory;
 using System.Data;
+using System.Numerics;
 using UnityEngine;
+using Vector3 = UnityEngine.Vector3;
 
 namespace Creatures.Player.Behaviour
 {
+    [RequireComponent(typeof(SphereCollider))]
+    [RequireComponent(typeof(PlayerBehaviour))]
     public class PlayerInventory : MonoBehaviour
     {
         private InventoryContainer inventory;
@@ -67,6 +71,44 @@ namespace Creatures.Player.Behaviour
             if (Input.GetKeyDown(KeyCode.Q) && !Input.GetKey(KeyCode.LeftControl))
             {
                 ThrowItemAway();
+            }
+        }
+
+        private void CheckNearestInteractableItem(GameObject test)
+        {
+            var itemBehaviour = test.GetComponent<DroppedItemBehaviour>();
+            if (itemBehaviour == null || itemBehaviour.IsThrown) return;
+            float oldDistance = NearestInteractableItemDistance;
+            float currentDistance = Vector3.Distance(transform.position, transform.position);
+            if (currentDistance < oldDistance || oldDistance == -1)
+            {
+                ResetNearestItem(test);
+                Debug.Log($"Updated object to {test}");
+            }
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.CompareTag("Item"))
+            {
+                CheckNearestInteractableItem(other.gameObject);
+            }
+        }
+
+        private void OnTriggerStay(Collider other)
+        {
+            if (other.gameObject.CompareTag("Item"))
+            {
+                CheckNearestInteractableItem(other.gameObject);
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.gameObject.CompareTag("Item") && NearestInteractableItem == other)
+            {
+                ResetNearestItem(null);
+                Debug.Log("Removed item object from this");
             }
         }
 
