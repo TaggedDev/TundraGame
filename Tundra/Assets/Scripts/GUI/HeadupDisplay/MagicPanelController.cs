@@ -178,6 +178,12 @@ public class MagicPanelController : MonoBehaviour
                     icon.color = allowed ? Color.white : new Color(0.5f, 0.5f, 0.5f, 0.5f);
                 }
             }
+            // Handling input
+            if (Input.GetKeyDown(KeyCode.Alpha1)) OnElementClicked(_elements[0]);
+            if (Input.GetKeyDown(KeyCode.Alpha2)) OnElementClicked(_elements[1]);
+            if (Input.GetKeyDown(KeyCode.Alpha3)) OnElementClicked(_elements[2]);
+            if (Input.GetKeyDown(KeyCode.Alpha4)) OnElementClicked(_elements[3]);
+            if (Input.GetKeyDown(KeyCode.Alpha5)) OnElementClicked(_elements[4]);
         }
     }
 }
