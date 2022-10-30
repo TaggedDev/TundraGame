@@ -98,8 +98,7 @@ namespace Creatures.Player.Behaviour
             if (_playerBehaviour.OverweightCoefficient < 2)
             {
                 var drop = NearestInteractableItem.GetComponent<DroppedItemBehaviour>();
-                if (Inventory.AddItem(drop.AssociatedItem,
-                    drop.DroppedItemsAmount, out int rem))
+                if (Inventory.AddItem(drop.AssociatedItem, drop.DroppedItemsAmount, out int rem))
                 {
                     if (rem == 0)
                     {

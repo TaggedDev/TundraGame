@@ -25,13 +25,13 @@ namespace Creatures.Player.Inventory
         public bool IsThrown { get => isThrown; set => isThrown = value; }
 
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
             _rigidbody = GetComponent<Rigidbody>();
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if (_rigidbody.velocity.sqrMagnitude <= .1f)
             {

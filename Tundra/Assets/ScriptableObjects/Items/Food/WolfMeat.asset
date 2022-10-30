@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: WolfMeat
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
-  title: 
+  title: "\u041C\u044F\u0441\u043E \u0432\u043E\u043B\u043A\u0430"
   description: 
-  itemInWorldPrefab: {fileID: 0}
-  maxStackVolume: 0
+  itemInWorldPrefab: {fileID: 100405930969945502, guid: 7c9b566e155902f4397d3698db90f82d,
+    type: 3}
+  maxStackVolume: 3
   weight: 0
