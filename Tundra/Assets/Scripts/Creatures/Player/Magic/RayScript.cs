@@ -27,7 +27,7 @@ public class RayScript : SpellScript<RaySpell>
         worldPlane.Raycast(mouseCastPoint, out float enter);
         Vector3 castPos = mouseCastPoint.GetPoint(enter);
         transform.forward = castPos;
-        transform.position = new Vector3(Configuration.Caster.transform.position.x, Configuration.Caster.transform.position.y + 0.4f, Configuration.Caster.transform.position.z);
+        transform.position = new Vector3(Configuration.Caster.transform.position.x, Configuration.Caster.transform.position.y + 0.15f, Configuration.Caster.transform.position.z);
         //Vector3 castPos = Configuration.Caster.transform.position;
         //Vector3 delta = Input.mousePosition - Camera.main.WorldToScreenPoint(castPos);
         //transform.forward = castPos + delta;
