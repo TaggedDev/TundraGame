@@ -26,6 +26,9 @@ namespace Creatures.Player.Inventory
         private int maxStackVolume;
         [SerializeField]
         private float weight;
+        [SerializeField]
+        RecipeCofiguration recipe;
+
         /// <summary>
         /// Иконка прмдета в инвентаре.
         /// </summary>
@@ -50,6 +53,10 @@ namespace Creatures.Player.Inventory
         /// Вес одного предмета в килограммах.
         /// </summary>
         public float Weight { get => weight; protected set => weight=value; }
+        /// <summary>
+        /// Рецпет для создания данного предмета.
+        /// </summary>
+        public RecipeCofiguration Recipe { get => recipe; protected set => recipe=value; }
 
         public virtual GameObject Drop(Vector3 originPosition, Vector3 throwForce)
         {
