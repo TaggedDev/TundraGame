@@ -12,7 +12,7 @@ namespace Creatures.Player
         {
             if (Input.GetKeyDown(KeyCode.O))
             {
-                meat.SpawnItem(player.transform.position + Vector3.up * 3);
+                meat.SpawnItem(player.transform.position + Vector3.up * 1.5f);
             }
         }
     }
