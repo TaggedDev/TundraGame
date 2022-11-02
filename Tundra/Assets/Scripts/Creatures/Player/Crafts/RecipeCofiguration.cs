@@ -22,6 +22,12 @@ public class RecipeCofiguration : ScriptableObject
     /// </summary>
     [SerializeField]
     private PlaceableItemConfiguration workbench;
+
+    public GameObject Result => result;
+
+    public List<RecipeComponent> RequiredItems => requiredItems;
+
+    public PlaceableItemConfiguration Workbench => workbench;
 }
 
 [Serializable]
