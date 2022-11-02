@@ -12,19 +12,27 @@ public class PlayerMagic : MonoBehaviour
 {
     private bool _isSpellingPanelOpened;
     private bool _currentSpellSelected;
-
+    /// <summary>
+    /// A magic book player holds in his hand.
+    /// </summary>
     internal BookEquipmentConfiguration _config;
-
+    /// <summary>
+    /// Spells which are available for player.
+    /// </summary>
     private List<Type> _availableSpells;
-
+    /// <summary>
+    /// A built spell which is ready for casting.
+    /// </summary>
     private Spell _currentSpell;
-
+    /// <summary>
+    /// Prefabs of spells. Idk where to place them.
+    /// </summary>
     [SerializeField]
     private List<GameObject> spellPrefabs;
 
-    public int MaxSpellElementCount { get; set; }
+    //public int MaxSpellElementCount { get; set; }
 
-    public MagicElement AllowedElements { get; private set; } = MagicElement.All;
+    //public MagicElement AllowedElements { get; private set; } = MagicElement.All;
 
     public bool IsSpellingPanelOpened
     {
@@ -49,14 +57,8 @@ public class PlayerMagic : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        DraftSpell = new List<MagicElement>(MaxSpellElementCount);
+        DraftSpell = new List<MagicElement>(5);
         StartCoroutine(ReloadStones());
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public void AddElement(int elementIndex)
@@ -84,7 +86,7 @@ public class PlayerMagic : MonoBehaviour
             _availableSpells = Spell.FindSpellTypes(DraftSpell, _availableSpells);
             print($"Spells: {_availableSpells.Count}");
             //AllowedElements = _availableSpells.Aggregate(MagicElement.Empty, (x, y) => x |= y.GetCustomAttribute<ElementRestrictionsAttribute>().UsedElements);
-            print($"Elements: {AllowedElements}");
+            //print($"Elements: {AllowedElements}");
             if (_availableSpells.Count == 1)
             {
                 _currentSpellSelected = true;
@@ -108,7 +110,7 @@ public class PlayerMagic : MonoBehaviour
         DraftSpell.Clear();
         IsSpellingPanelOpened = false;
         IsReadyForCasting = false;
-        AllowedElements = MagicElement.All;
+        //AllowedElements = MagicElement.All;
     }
 
     public void StartSpelling()
@@ -121,7 +123,7 @@ public class PlayerMagic : MonoBehaviour
         //IsSpellingPanelOpened = false;
         var spell = (from x in Spell.FindSpellTypes(DraftSpell, null)
                      let elems = x.GetCustomAttribute<SpellAttribute>().Elements.Length
-                     where elems == MaxSpellElementCount
+                     //where elems == MaxSpellElementCount //It's filter of pages.
                      orderby elems ascending
                      select x).LastOrDefault();
         if (spell != null)
@@ -142,7 +144,7 @@ public class PlayerMagic : MonoBehaviour
         _currentSpellSelected = false;
         _currentSpell = null;
         _availableSpells = null;
-        AllowedElements = MagicElement.All;
+        //AllowedElements = MagicElement.All;
         DraftSpell.Clear();
         print("Spell has been casted!");
     }

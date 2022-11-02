@@ -31,6 +31,7 @@ public class MagicPanelController : MonoBehaviour
     private GameObject _bookSlot;
     private readonly List<GameObject> _elements = new List<GameObject>();
     private readonly List<GameObject> _bookSheets = new List<GameObject>();
+    private readonly List<Image> _sheetIcons = new List<Image>();
 
     // Start is called before the first frame update
     void Start()
@@ -67,7 +68,8 @@ public class MagicPanelController : MonoBehaviour
                 //That was hard to get natural number of element when it has number associated with binary field.
                 var icon = _elements[i].transform.Find("ElementIcon").gameObject.GetComponent<Image>();
                 icon.sprite = elementIcons[1 + (int)Math.Log((int)_currentMagicBook.MagicElements[i].Element, 2)];
-                bool allowed = _playerMagic.AllowedElements.HasFlag(_currentMagicBook.MagicElements[i].Element);
+                //bool allowed = _playerMagic.AllowedElements.HasFlag(_currentMagicBook.MagicElements[i].Element);
+                bool allowed = true;
                 _elements[i].GetComponent<Button>().interactable = allowed;
                 icon.color = allowed ? Color.white : new Color(0.5f, 0.5f, 0.5f, 0.5f);
             }
@@ -87,6 +89,7 @@ public class MagicPanelController : MonoBehaviour
             Destroy(sheet);
         }
         _bookSheets.Clear();
+        _sheetIcons.Clear();
         Image bookImage = _bookSlot.transform.Find("ItemIcon").gameObject.GetComponent<Image>();
         if (_currentMagicBook != null)
         {
@@ -101,6 +104,7 @@ public class MagicPanelController : MonoBehaviour
                 _bookSheets.Add(sheet);
                 sheet.transform.localPosition = start;
                 start += new Vector3(150, 0);
+                _sheetIcons.Add(sheet.transform.Find("InternalIcon").gameObject.GetComponent<Image>());
             }
         }
         else
@@ -115,11 +119,7 @@ public class MagicPanelController : MonoBehaviour
         _elementsPanel.SetActive(_playerMagic.IsSpellingPanelOpened);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 
     public void OnElementClicked(GameObject source)
     {
@@ -142,7 +142,7 @@ public class MagicPanelController : MonoBehaviour
                 {
                     sheetIcon.color = Color.green;
                 }
-                else if (i < _playerMagic.MaxSpellElementCount)
+                else if (_playerMagic.IsReadyForCasting)
                 {
                     sheetIcon.color = new Color(0.56f, 0f, 1f);
                 }
@@ -174,7 +174,8 @@ public class MagicPanelController : MonoBehaviour
                 }
                 else
                 {
-                    bool allowed = _playerMagic.AllowedElements.HasFlag(_currentMagicBook.MagicElements[i].Element);
+                    //bool allowed = _playerMagic.AllowedElements.HasFlag(_currentMagicBook.MagicElements[i].Element);
+                    bool allowed = true;
                     icon.color = allowed ? Color.white : new Color(0.5f, 0.5f, 0.5f, 0.5f);
                 }
             }
