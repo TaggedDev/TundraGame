@@ -6,6 +6,12 @@ namespace Creatures.Player.Inventory
 {
     public class DroppedItemBehaviour : MonoBehaviour
     {
+        // The MeshFilter and MeshRenderer of this model
+        [SerializeField] private MeshFilter model;
+        [SerializeField] private MeshRenderer materials;
+
+        [SerializeField] private Vector3 handedScale = Vector3.one;
+        
         [SerializeField]
         private BasicItemConfiguration _associatedItem;
         [SerializeField]
@@ -70,9 +76,20 @@ namespace Creatures.Player.Inventory
             }
         }
 
-        public void OnPickupHandler()
+        /// <summary>
+        /// Places the object in player's hand
+        /// </summary>
+        /// <param name="holderAnchor">The object where to place the object </param>
+        public void OnPickupHandler(ItemHolder holderAnchor)
         {
-            //Destroy(gameObject);
+            // Get the mesh of current item
+            
+            // Set the mesh of itemHolder to current mesh
+            holderAnchor.MeshFilter.mesh = model.sharedMesh;
+            holderAnchor.MeshRenderer.materials = materials.sharedMaterials;
+            holderAnchor.transform.localScale = handedScale;
+            
+            Destroy(this);
         }
     }
 }

@@ -7,11 +7,11 @@ namespace Creatures.Player.Behaviour
 {
     public class PlayerInventory : MonoBehaviour
     {
-
-        private InventoryContainer inventory;
-
         public static float ItemPickingUpTime => 3f;
 
+        [SerializeField] private ItemHolder itemHolder;
+        
+        private InventoryContainer _inventory;
         private PlayerBehaviour _playerBehaviour;
         private int _lastSlotIndex;
         private int _currentSlotIndex;
@@ -20,10 +20,10 @@ namespace Creatures.Player.Behaviour
         {
             get
             {
-                if (inventory == null) Init();
-                return inventory;
+                if (_inventory == null) Init();
+                return _inventory;
             }
-            private set => inventory = value;
+            private set => _inventory = value;
         }
 
         public BasicItemConfiguration SelectedItem
@@ -56,10 +56,9 @@ namespace Creatures.Player.Behaviour
 
         public event EventHandler SelectedItemChanged;
 
-        // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
-            if (inventory == null) Init();
+            if (_inventory == null) Init();
         }
 
         private void Init()
@@ -67,8 +66,7 @@ namespace Creatures.Player.Behaviour
             Inventory = new InventoryContainer();
             _playerBehaviour = GetComponent<PlayerBehaviour>();
         }
-
-        // Update is called once per frame
+        
         private void Update()
         {
             if (Input.GetKey(KeyCode.E) && !Input.GetKey(KeyCode.LeftControl) && NearestInteractableItem != null)
@@ -80,7 +78,11 @@ namespace Creatures.Player.Behaviour
                     SelectedItemChanged?.Invoke(this, null);
                 }
             }
-            else ItemPickingProgress = 0f;
+            else
+            {
+                ItemPickingProgress = 0f;
+            }
+            
             if (Input.GetKeyDown(KeyCode.Q) && !Input.GetKey(KeyCode.LeftControl))
             {
                 ThrowItemAway();
@@ -95,6 +97,7 @@ namespace Creatures.Player.Behaviour
 
         private void PickItemUp()
         {
+            // If there is no overweight, we pick up the item
             if (_playerBehaviour.OverweightCoefficient < 2)
             {
                 var drop = NearestInteractableItem.GetComponent<DroppedItemBehaviour>();
@@ -102,7 +105,7 @@ namespace Creatures.Player.Behaviour
                 {
                     if (rem == 0)
                     {
-                        drop.OnPickupHandler();
+                        drop.OnPickupHandler(itemHolder);
                     }
                 }
             }
