@@ -1,8 +1,5 @@
 ﻿using Creatures.Player.Behaviour;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Creatures.Player;
 using Creatures.Player.Inventory.ItemConfiguration;
 
 namespace Creatures.Player.Inventory
@@ -24,24 +21,17 @@ namespace Creatures.Player.Inventory
 
         public bool IsThrown { get => isThrown; set => isThrown = value; }
 
-        // Start is called before the first frame update
         private void Start()
         {
             _rigidbody = GetComponent<Rigidbody>();
         }
-
-        // Update is called once per frame
+        
         private void Update()
         {
             if (_rigidbody.velocity.sqrMagnitude <= .1f)
             {
                 isThrown = false;
             }
-        }
-
-        private void OnCollisionEnter(Collision collision)
-        {
-            
         }
 
         private void OnTriggerEnter(Collider other)
@@ -82,7 +72,7 @@ namespace Creatures.Player.Inventory
 
         public void OnPickupHandler()
         {
-            Destroy(gameObject);
+            //Destroy(gameObject);
         }
     }
 }
