@@ -93,6 +93,7 @@ namespace Creatures.Player.Behaviour
         private void ThrowItemAway()
         {
             Inventory.Slots[SelectedInventorySlot].DropItem(transform.position, transform.forward * 3 + Vector3.up);
+            itemHolder.ResetMesh();
         }
 
         private void PickItemUp()

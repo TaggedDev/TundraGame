@@ -9,8 +9,8 @@ namespace Creatures.Player.Inventory
         // The MeshFilter and MeshRenderer of this model
         [SerializeField] private MeshFilter model;
         [SerializeField] private MeshRenderer materials;
-
-        [SerializeField] private Vector3 handedScale = Vector3.one;
+        [SerializeField] private Vector3 handedRotation;
+        [SerializeField] private Vector3 handedScale;
         
         [SerializeField]
         private BasicItemConfiguration _associatedItem;
@@ -29,6 +29,8 @@ namespace Creatures.Player.Inventory
 
         private void Start()
         {
+            if (handedScale == Vector3.zero)
+                handedScale = Vector3.one;
             _rigidbody = GetComponent<Rigidbody>();
         }
         
@@ -65,7 +67,7 @@ namespace Creatures.Player.Inventory
             }
         }
 
-        void CheckPlayerNearestItem(GameObject player)
+        private void CheckPlayerNearestItem(GameObject player)
         {
             float oldDistance = player.GetComponent<PlayerInventory>().NearestInteractableItemDistance;
             float currentDistance = Vector3.Distance(player.transform.position, transform.position);
@@ -82,14 +84,8 @@ namespace Creatures.Player.Inventory
         /// <param name="holderAnchor">The object where to place the object </param>
         public void OnPickupHandler(ItemHolder holderAnchor)
         {
-            // Get the mesh of current item
-            
-            // Set the mesh of itemHolder to current mesh
-            holderAnchor.MeshFilter.mesh = model.sharedMesh;
-            holderAnchor.MeshRenderer.materials = materials.sharedMaterials;
-            holderAnchor.transform.localScale = handedScale;
-            
-            Destroy(this);
+            holderAnchor.SetNewMesh(handedScale,Quaternion.Euler(handedRotation), model, materials);
+            Destroy(gameObject);
         }
     }
 }
