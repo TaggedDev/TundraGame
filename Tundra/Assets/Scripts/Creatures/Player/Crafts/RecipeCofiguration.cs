@@ -11,9 +11,9 @@ public class RecipeCofiguration : ScriptableObject
     /// A result of the recipe. 
     /// </summary>
     [SerializeField]
-    private GameObject result;
+    private BasicItemConfiguration result;
     /// <summary>
-    /// Items requiredd for this recipe.
+    /// Items required for this recipe.
     /// </summary>
     [SerializeField]
     private List<RecipeComponent> requiredItems;
@@ -23,7 +23,7 @@ public class RecipeCofiguration : ScriptableObject
     [SerializeField]
     private PlaceableItemConfiguration workbench;
 
-    public GameObject Result => result;
+    public BasicItemConfiguration Result => result;
 
     public List<RecipeComponent> RequiredItems => requiredItems;
 

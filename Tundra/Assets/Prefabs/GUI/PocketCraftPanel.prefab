@@ -154,7 +154,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5ed37902954afeb43a13cda3b37100aa, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9ec83fc9750b2f84b9f639d0e6d2f979, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -229,7 +229,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3d15e697554036b4b936607b2b817bba, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5ed37902954afeb43a13cda3b37100aa, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -865,7 +865,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Altar
+  m_Text: Torch
 --- !u!1 &5924845601862534293
 GameObject:
   m_ObjectHideFlags: 0
@@ -1230,7 +1230,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9ec83fc9750b2f84b9f639d0e6d2f979, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3d15e697554036b4b936607b2b817bba, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1317,7 +1317,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Campfire
+  m_Text: Altar
 --- !u!1 &6869254208097046347
 GameObject:
   m_ObjectHideFlags: 0
@@ -1700,7 +1700,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Torch
+  m_Text: Campfire
 --- !u!1 &9215285278968677576
 GameObject:
   m_ObjectHideFlags: 0
