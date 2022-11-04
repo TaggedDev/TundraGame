@@ -1,7 +1,9 @@
-﻿using Creatures.Player.Inventory;
+﻿using Creatures.Player.Behaviour;
+using Creatures.Player.Inventory;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Recipe Configuration", menuName = "Recipes/Recipe Configuration")]
@@ -22,12 +24,59 @@ public class RecipeCofiguration : ScriptableObject
     /// </summary>
     [SerializeField]
     private PlaceableItemConfiguration workbench;
-
+    /// <summary>
+    /// A result of the recipe. 
+    /// </summary>
     public BasicItemConfiguration Result => result;
-
+    /// <summary>
+    /// Items required for this recipe.
+    /// </summary>
     public List<RecipeComponent> RequiredItems => requiredItems;
-
+    /// <summary>
+    /// A work space to craft this recipe.
+    /// </summary>
     public PlaceableItemConfiguration Workbench => workbench;
+    /// <summary>
+    /// Checks if this recipe available for current selection filter.
+    /// </summary>
+    /// <param name="workbench">A workbanech to craft this recipe.</param>
+    /// <param name="inv">An inventory script which controls player's inventory.</param>
+    /// <returns><see langword="true"/> if this recipe is available to craft, <see langword="false"/> otherwise.</returns>
+    public bool CheckIfAvailable(PlaceableItemConfiguration workbench, PlayerInventory inv = null)
+    {
+        return workbench == this.workbench && (inv == null || requiredItems.All(x => inv.Inventory.CountItemOfTypeInTheInventory(x.Item) >= x.Amount));
+    }
+    /// <summary>
+    /// Does a craft for this recipe.
+    /// </summary>
+    /// <param name="inventoryScript">Player inventory script which controls inventory.</param>
+    /// <returns><see langword="true"/> if craft was done successfully, <see langword="false"/> otherwise.</returns>
+    public bool Craft(PlayerInventory inventoryScript)
+    {
+        if (!CheckIfAvailable(workbench, inventoryScript)) return false;
+        foreach (var component in requiredItems)
+        {
+            int remainder = component.Amount;
+            while (remainder > 0)
+            {
+                var slot = inventoryScript.Inventory.Slots.Last(x => x.Item == component.Item);
+                int items = slot.ItemsAmount;
+                if (remainder > items)
+                {
+                    slot.Clear();
+                    remainder -= items;
+                }
+                else
+                {
+                    remainder = 0;
+                    slot.RemoveItems(remainder);
+                }
+            }
+        }
+        inventoryScript.Inventory.AddItem(result, 1, out int rem);
+        if (rem == 1) result.Drop(inventoryScript.transform.position, Vector3.up);
+        return true;
+    }
 }
 
 [Serializable]

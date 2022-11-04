@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84552cb724c7e3140bf3ed2c15a4dc60, type: 3}
   m_Name: Workbench Recipe
   m_EditorClassIdentifier: 
-  result: {fileID: 0}
-  requiredItems: []
+  result: {fileID: 11400000, guid: 39b8ca4e6b88fb841bce2e93b4ffb169, type: 2}
+  requiredItems:
+  - item: {fileID: 11400000, guid: ccbcd84c1460f9e4a8123ec8e1df54c0, type: 2}
+    amount: 5
+  - item: {fileID: 11400000, guid: 15c829c82e724774fb64f49c695bfecc, type: 2}
+    amount: 5
   workbench: {fileID: 0}

@@ -13,5 +13,11 @@ MonoBehaviour:
   m_Name: Altar Recipe
   m_EditorClassIdentifier: 
   result: {fileID: 0}
-  requiredItems: []
+  requiredItems:
+  - item: {fileID: 11400000, guid: 8cc6303e9d37b0741807e1ff261e529f, type: 2}
+    amount: 2
+  - item: {fileID: 11400000, guid: bdc5822edddea9548aeadbfc5d4b34dc, type: 2}
+    amount: 1
+  - item: {fileID: 11400000, guid: 6e5b3bee7c450b544a4b422189207a73, type: 2}
+    amount: 2
   workbench: {fileID: 0}
