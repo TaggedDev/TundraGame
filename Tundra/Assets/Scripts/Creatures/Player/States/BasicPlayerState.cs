@@ -203,13 +203,16 @@ namespace Creatures.Player.States
         /// </summary>
         public virtual void HandleUserInput()
         {
-            if (!(this is BusyPlayerState) && !(this is MagicCastingPlayerState) && Input.GetKeyDown(KeyCode.B))
+            if (!(this is BusyPlayerState) && !(this is MagicCastingPlayerState))
             {
-                PlayerStateSwitcher.SwitchState<BusyPlayerState>();
-            }
-            else if (this is BusyPlayerState && Input.GetKeyDown(KeyCode.Escape))
-            {
-                PlayerStateSwitcher.SwitchState<IdlePlayerState>();
+                bool busy = false;
+                if (Input.GetKeyDown(KeyCode.B)) busy = true;
+                else if (Input.GetKeyDown(KeyCode.Tab))
+                {
+                    busy = true;
+                    UIController._pocketCraftUI.gameObject.SetActive(true);
+                }
+                if (busy) PlayerStateSwitcher.SwitchState<BusyPlayerState>();
             }
             if (!(this is BusyPlayerState) && !(this is MagicCastingPlayerState)
                 && PlayerEquipment.Book != null && Input.GetKeyDown(KeyCode.X))

@@ -7,11 +7,13 @@ namespace Creatures.Player.Inventory
     /// <summary>
     /// Класс, представляющий собой слот инвентаря для хранения предметов игрока.
     /// </summary>
+    [Serializable]
     public class Slot
     {
-
-        private int _itemsAmount;
-        private BasicItemConfiguration _item;
+        [SerializeField]
+        private int itemsAmount;
+        [SerializeField]
+        private BasicItemConfiguration item;
         /// <summary>
         /// Создаёт новый слот с предметом внутри.
         /// </summary>
@@ -19,8 +21,8 @@ namespace Creatures.Player.Inventory
         /// <param name="item">Сам по себе предмет.</param>
         public Slot(int itemsAmount, BasicItemConfiguration item)
         {
-            _itemsAmount=itemsAmount;
-            _item=item;
+            this.itemsAmount=itemsAmount;
+            this.item=item;
         }
 
         public Slot()
@@ -35,27 +37,27 @@ namespace Creatures.Player.Inventory
         /// <summary>
         /// Указывает, является ли слот заполненным.
         /// </summary>
-        public bool IsFull => ItemsAmount == (_item == null ? -1 : _item.MaxStackVolume);
+        public bool IsFull => ItemsAmount == (item == null ? -1 : item.MaxStackVolume);
         /// <summary>
         /// Предмет, лежащий внутри слота.
         /// </summary>
         public BasicItemConfiguration Item 
         { 
-            get => _item; 
-            private set => _item=value; 
+            get => item; 
+            private set => item=value; 
         }
         /// <summary>
         /// Количество предметов в слоте.
         /// </summary>
         public int ItemsAmount 
         { 
-            get => _itemsAmount;
+            get => itemsAmount;
             private set
             {
-                _itemsAmount=value;
+                itemsAmount=value;
                 if (value == 0)
                 {
-                    _item = null;
+                    item = null;
                 }
             }
         }

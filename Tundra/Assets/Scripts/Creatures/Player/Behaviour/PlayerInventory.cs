@@ -7,7 +7,7 @@ namespace Creatures.Player.Behaviour
 {
     public class PlayerInventory : MonoBehaviour
     {
-
+        [SerializeField]
         private InventoryContainer inventory;
 
         public static float ItemPickingUpTime => 3f;

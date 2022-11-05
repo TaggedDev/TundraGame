@@ -3361,6 +3361,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PocketCraftPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 5292356971220899990, guid: d9170ec22a1e632409b23bf8f2183f81,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d9170ec22a1e632409b23bf8f2183f81, type: 3}
 --- !u!224 &7945704846800613211 stripped

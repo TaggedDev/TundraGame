@@ -4,6 +4,7 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro.EditorUtilities;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,13 +12,14 @@ public class PocketCraftUI : MonoBehaviour
 {
     private PlayerInventory _playerInventory;
     private CraftHelper _craftHelper;
-    private Sprite[] _recipesImages;
     private RecipeCofiguration[] _basicRecipes;
     private int _selectedRecipe;
     private GameObject _segmentHolder;
     private RecipeCofiguration _currentRecipe;
     private GameObject[] _recipeParts;
     private Transform _centerCircle;
+    private Image[] _recipeImages;
+    private Text[] _recipeTexts;
 
     [SerializeField]
     private GameObject recipeIndicatorPrefab;
@@ -29,7 +31,8 @@ public class PocketCraftUI : MonoBehaviour
         get => _selectedRecipe;
         set
         {
-            if (_selectedRecipe != value)
+            if (_selectedRecipe != value && _basicRecipes.Length == 4 &&
+                0 <= value && value <= 4 && _basicRecipes[value].CheckIfAvailable(null, _playerInventory))
             {
                 _selectedRecipe = value;
                 SelectedRecipeIndexChanged();
@@ -73,11 +76,20 @@ public class PocketCraftUI : MonoBehaviour
         _basicRecipes = _craftHelper.BasicRecipes.OrderBy(x => x.name).ToArray();
         _segmentHolder = transform.Find("ElementSelectionCircle").Find("SegmentHolder").gameObject;
         _centerCircle = transform.Find("ElementSelectionCircle").Find("CenterCircle");
+        _recipeImages = new Image[4];
+        _recipeTexts = new Text[4];
+        for (int i = 0; i < 4; i++)
+        {
+            var obj = transform.Find("ElementSelectionCircle").Find($"ElementIcon{i+1}").gameObject;
+            _recipeImages[i] = obj.GetComponent<Image>();
+            _recipeTexts[i] = obj.GetComponentInChildren<Text>();
+        }
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+        if (Input.GetKeyDown(KeyCode.Escape)) gameObject.SetActive(false);
         Vector3 mousePosition = Input.mousePosition - new Vector3(Screen.width / 2, Screen.height / 2);
         if (Mathf.Abs(mousePosition.x) < Mathf.Abs(mousePosition.y))
         {
@@ -104,6 +116,14 @@ public class PocketCraftUI : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             _currentRecipe.Craft(_playerInventory);
+        }
+        for (int i = 0; i < _basicRecipes.Length; i++)
+        {
+            Color c;
+            if (i == SelectedRecipe) c = Color.white;
+            else if (_basicRecipes[i].CheckIfAvailable(null, _playerInventory)) c = Color.gray;
+            else c = new Color(0.25f, 0.25f, 0.25f);
+            _recipeImages[i].color = _recipeTexts[i].color = c;
         }
     }
 }

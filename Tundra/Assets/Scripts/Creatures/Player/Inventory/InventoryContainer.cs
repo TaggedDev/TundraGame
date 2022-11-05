@@ -8,9 +8,13 @@ using UnityEngine;
 
 namespace Creatures.Player.Inventory
 {
+    [Serializable]
     public class InventoryContainer
     {
+        [SerializeField]
         private int maxInventoryCapacity = 4;
+        [SerializeField]
+        private Slot[] slots;
 
         public int MaxInventoryCapacity
         {
@@ -29,7 +33,7 @@ namespace Creatures.Player.Inventory
         /// <summary>
         /// Массив слотов инвентаря. 
         /// </summary>
-        public Slot[] Slots { get; private set; }
+        public Slot[] Slots { get => slots; private set => slots=value; }
         /// <summary>
         ///Общий суммарный вес всех предметов в инвентаре.
         /// </summary>
