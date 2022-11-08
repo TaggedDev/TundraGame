@@ -79,7 +79,7 @@ namespace Creatures.Player.States
         {
             if (PlayerMovement.CanSprint && Input.GetKey(KeyCode.LeftShift) && !Input.GetMouseButton(2) && !(this is SprintPlayerState) && !(this is BuildingPlayerState))
             {
-                if (PlayerProperties.CurrentStamina > 0) PlayerStateSwitcher.SwitchState<SprintPlayerState>();
+                if (PlayerProperties.CurrentStaminaPoints > 0) PlayerStateSwitcher.SwitchState<SprintPlayerState>();
             }
             else if (this is SprintPlayerState && !Input.GetKey(KeyCode.LeftShift))
             {
@@ -110,25 +110,25 @@ namespace Creatures.Player.States
         public virtual void ContinueStarving()
         {
             // Use saturation instead of starve points if there are any;
-            if (PlayerProperties.CurrentSaturation >= 0)
+            if (PlayerProperties.CurrentSaturationPoints >= 0)
             {
-                PlayerProperties.CurrentSaturation -= StarvingConsumptionCoefficient * Time.deltaTime;
+                PlayerProperties.CurrentSaturationPoints -= StarvingConsumptionCoefficient * Time.deltaTime;
                 return;
             }
 
             // If there is any starvation points - consume them before the health points 
-            if (PlayerProperties.CurrentStarvationCapacity >= 0)
+            if (PlayerProperties.CurrentStarvePoints >= 0)
             {
-                PlayerProperties.CurrentStarvationCapacity -= StarvingConsumptionCoefficient;
+                PlayerProperties.CurrentStarvePoints -= StarvingConsumptionCoefficient;
             }
             // Otherwise, start killing the player of hunger
             else
             {
-                PlayerProperties.CurrentStarvationCapacity = 0;
-                PlayerProperties.CurrentHealth -= 1f * Time.deltaTime;
+                PlayerProperties.CurrentStarvePoints = 0;
+                PlayerProperties.CurrentHealthPoints -= 1f * Time.deltaTime;
                 
-                if (PlayerProperties.CurrentHealth < 0) 
-                    PlayerProperties.CurrentHealth = 0;
+                if (PlayerProperties.CurrentHealthPoints < 0) 
+                    PlayerProperties.CurrentHealthPoints = 0;
             }
         }
         protected virtual void InventorySelectedSlotChanged(object sender, EventArgs e)
@@ -143,20 +143,20 @@ namespace Creatures.Player.States
         public virtual void ContinueFreeze()
         {
             //TODO: Do something with it.
-            PlayerProperties.CurrentWarmLevel -= WarmConsumptionCoefficient * Time.deltaTime;
-            if (PlayerProperties.CurrentWarmLevel < 0)
+            PlayerProperties.CurrentWarmthPoints -= WarmConsumptionCoefficient * Time.deltaTime;
+            if (PlayerProperties.CurrentWarmthPoints < 0)
             {
-                PlayerProperties.CurrentWarmLevel = 0;
-                PlayerProperties.CurrentHealth -= 1f * Time.deltaTime;
-                if (PlayerProperties.CurrentHealth < 0) PlayerProperties.CurrentHealth = 0;
+                PlayerProperties.CurrentWarmthPoints = 0;
+                PlayerProperties.CurrentHealthPoints -= 1f * Time.deltaTime;
+                if (PlayerProperties.CurrentHealthPoints < 0) PlayerProperties.CurrentHealthPoints = 0;
             }
         }
 
 
         public virtual void SpendStamina()
         {
-            if (PlayerProperties.CurrentStamina > 0) PlayerProperties.CurrentStamina -= (StaminaConsumption * Time.deltaTime);
-            if (PlayerProperties.CurrentStamina <= 0) StaminaIsOver();
+            if (PlayerProperties.CurrentStaminaPoints > 0) PlayerProperties.CurrentStaminaPoints -= (StaminaConsumption * Time.deltaTime);
+            if (PlayerProperties.CurrentStaminaPoints <= 0) StaminaIsOver();
         }
 
         protected abstract void StaminaIsOver();

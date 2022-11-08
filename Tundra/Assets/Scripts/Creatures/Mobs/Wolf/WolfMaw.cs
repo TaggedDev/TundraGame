@@ -25,7 +25,7 @@ namespace Creatures.Mobs.Wolf
                 return;
 
             _playerRigidbody.AddForce((Vector3.up + Vector3.left) * 100f * _playerRigidbody.mass);
-            _playerProperties.CurrentHealth -= 30f;
+            _playerProperties.CurrentHealthPoints -= 30f;
             gameObject.SetActive(false);
         }
     }

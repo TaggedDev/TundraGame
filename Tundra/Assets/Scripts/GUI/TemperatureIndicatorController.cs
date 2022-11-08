@@ -58,7 +58,7 @@ namespace GUI
         // Update is called once per frame
         void Update()
         {
-            _targetScale = PlayerProperties.CurrentWarmLevel / PlayerProperties.MaxWarmLevel;
+            _targetScale = PlayerProperties.CurrentWarmthPoints / PlayerProperties.MaxWarmthPoints;
             float deltaScaleValue = (float)Math.Round((_targetScale - _currentScale), 3) * animationSpeedModifier * Time.deltaTime;
             if (Math.Abs(deltaScaleValue) < 0.00002)
             {

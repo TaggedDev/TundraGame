@@ -100,7 +100,7 @@ namespace Creatures.Player.Behaviour
             if (_isDead)
                 return;
             
-            if (_playerProperties.CurrentHealth <= 0)
+            if (_playerProperties.CurrentHealthPoints <= 0)
                 KillPlayer();
 
             _currentState.MoveCharacter();

@@ -43,8 +43,8 @@ namespace Creatures.Player.States
 
         public override void SpendStamina()
         {
-            PlayerProperties.CurrentStamina -= (StaminaConsumption * Time.deltaTime);
-            if (PlayerProperties.CurrentStamina > PlayerProperties.MaxStamina) PlayerProperties.CurrentStamina = PlayerProperties.MaxStamina;
+            PlayerProperties.CurrentStaminaPoints -= (StaminaConsumption * Time.deltaTime);
+            if (PlayerProperties.CurrentStaminaPoints > PlayerProperties.MaxStaminaPoints) PlayerProperties.CurrentStaminaPoints = PlayerProperties.MaxStaminaPoints;
         }
 
         protected override void StaminaIsOver()

@@ -23,7 +23,7 @@ public class StaminaBarController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float displayValue = playerProperties.CurrentStamina / playerProperties.MaxStamina;
+        float displayValue = playerProperties.CurrentStaminaPoints / playerProperties.MaxStaminaPoints;
         imageComponent.fillAmount = displayValue;
     }
 

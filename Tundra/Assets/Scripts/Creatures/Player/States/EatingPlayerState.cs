@@ -81,23 +81,23 @@ namespace Creatures.Player.States
             var calories = food.Calories;
 
             // If current food is on limit and current saturation is twice bigger than maxstarve, cause player to vomit
-            if (PlayerProperties.CurrentStarvationCapacity == PlayerProperties.MaxStarve &&
-                PlayerProperties.CurrentSaturation + calories / 2f >= PlayerProperties.MaxStarve * 2f)
+            if (PlayerProperties.CurrentStarvePoints == PlayerProperties.MaxStarvePoints &&
+                PlayerProperties.CurrentSaturationPoints + calories / 2f >= PlayerProperties.MaxStarvePoints * 2f)
             {
                 // Apply vomit de buffs
-                PlayerProperties.CurrentSaturation = 0f;
-                PlayerProperties.CurrentStarvationCapacity = PlayerProperties.MaxStarve / 2f;
-                PlayerProperties.CurrentHealth -= 10f;
-                PlayerProperties.CurrentWarmLevel -= 50f;
+                PlayerProperties.CurrentSaturationPoints = 0f;
+                PlayerProperties.CurrentStarvePoints = PlayerProperties.MaxStarvePoints / 2f;
+                PlayerProperties.CurrentHealthPoints -= 10f;
+                PlayerProperties.CurrentWarmthPoints -= 50f;
             }
             // If player is just overeating, he gains a half of calories as a saturation effect
-            else if (PlayerProperties.CurrentStarvationCapacity + calories >= PlayerProperties.MaxStarve)
+            else if (PlayerProperties.CurrentStarvePoints + calories >= PlayerProperties.MaxStarvePoints)
             {
-                PlayerProperties.CurrentSaturation += calories / 2;
+                PlayerProperties.CurrentSaturationPoints += calories / 2;
             }
             
             // Gaining more than max is handled in properties
-            PlayerProperties.CurrentStarvationCapacity += food.Calories;
+            PlayerProperties.CurrentStarvePoints += food.Calories;
         }
         
         public override void Start()

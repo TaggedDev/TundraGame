@@ -56,7 +56,7 @@ namespace GUI
         // Update is called once per frame
         void Update()
         {
-            _targetScale = PlayerProperties.CurrentStarvationCapacity / PlayerProperties.MaxStarve;
+            _targetScale = PlayerProperties.CurrentStarvePoints / PlayerProperties.MaxStarvePoints;
             float deltaScaleValue = (float)Math.Round((_targetScale - _currentScale), 3) * animationSpeedModifier * Time.deltaTime;
             if (Math.Abs(deltaScaleValue) < 0.00002)
             {

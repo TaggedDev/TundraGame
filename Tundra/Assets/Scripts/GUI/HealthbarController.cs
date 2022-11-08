@@ -77,7 +77,7 @@ namespace GUI
         void Update()
         {
             //Определяем, куда нам нужно стремиться.
-            _targetScale = PlayerProperties.CurrentHealth / PlayerProperties.MaxHealth;
+            _targetScale = PlayerProperties.CurrentHealthPoints / PlayerProperties.MaxHealthPoints;
             //Вычисляем, какой путь проделаем в этом кадре.
             float deltaScaleValue = (float)Math.Round((_targetScale - _currentScale), 3) * animationSpeedModifier * Time.deltaTime;
             //Debug.Log($"target: {targetScale}, current: {currentScale}, delta: {deltaScaleValue}, actualWidth: {actualWidth}");
