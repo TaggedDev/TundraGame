@@ -6,14 +6,21 @@ namespace Creatures.Player.States
 {
     public class EatingPlayerState : BasicPlayerState
     {
-        public EatingPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher, PlayerProperties playerProperties,
+        public EatingPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
+            PlayerProperties playerProperties,
             PlayerInventory playerInventory, EscapeMenu escapeCanvas) : base(playerMovement, switcher, playerProperties,
-            playerInventory, escapeCanvas) { }
+            playerInventory, escapeCanvas)
+        {
+        }
 
-        protected override float StarvingConsumptionCoefficient { get; }
-        protected override float StaminaConsumption { get; }
-        protected override float SpeedCoefficient { get; }
-        protected override float WarmConsumptionCoefficient { get; }
+        protected override float StarvingConsumptionCoefficient => 2f;
+
+        protected override float StaminaConsumption => 0f;
+
+        protected override float SpeedCoefficient => 1 * (PlayerBehaviour.IsOverweight ? 0.5f : 1f);
+
+        protected override float WarmConsumptionCoefficient => 2f;
+
 
         public override void Start()
         {
@@ -29,6 +36,7 @@ namespace Creatures.Player.States
         }
 
         protected override void StaminaIsOver()
-        { }
+        {
+        }
     }
 }
