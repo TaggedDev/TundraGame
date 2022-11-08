@@ -1,4 +1,5 @@
-﻿using Creatures.Player.Inventory;
+﻿using Creatures.Player.Crafts;
+using Creatures.Player.Inventory;
 using System;
 using System.Data;
 using UnityEngine;
@@ -9,6 +10,8 @@ namespace Creatures.Player.Behaviour
     {
         [SerializeField]
         private InventoryContainer inventory;
+        [SerializeField]
+        private RecipesListConfig recipesList;
 
         public static float ItemPickingUpTime => 3f;
 
@@ -54,12 +57,14 @@ namespace Creatures.Player.Behaviour
             } 
         }
 
+        internal RecipesListConfig RecipesList => recipesList;
+
         public event EventHandler SelectedItemChanged;
 
         // Start is called before the first frame update
         void Start()
         {
-            if (inventory == null) Init();
+            Init();
         }
 
         private void Init()
@@ -95,6 +100,7 @@ namespace Creatures.Player.Behaviour
 
         private void PickItemUp()
         {
+            Debug.Log(_playerBehaviour);
             if (_playerBehaviour.OverweightCoefficient < 2)
             {
                 var drop = NearestInteractableItem.GetComponent<DroppedItemBehaviour>();

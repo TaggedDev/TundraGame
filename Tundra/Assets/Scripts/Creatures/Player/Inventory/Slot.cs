@@ -160,5 +160,10 @@ namespace Creatures.Player.Inventory
             if (Item == null) Item = item;
             return true;
         }
+
+        public override string ToString()
+        {
+            return $"[{item.name}: {itemsAmount} / {item.MaxStackVolume}]";
+        }
     }
 }

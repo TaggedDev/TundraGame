@@ -13,11 +13,19 @@ namespace Creatures.Player.Crafts
     {
         private static CraftHelper _instance;
 
-        private RecipeCofiguration[] _allRecipes;
+        private List<RecipeCofiguration> _allRecipes;
+
+        public bool AreAllRecipesLoaded { get; private set; }
+
         /// <summary>
         /// Full list of recipes existing in game.
         /// </summary>
-        public IEnumerable<RecipeCofiguration> AllRecipes => _allRecipes;
+        public IEnumerable<RecipeCofiguration> AllRecipes 
+        { 
+            get => _allRecipes;
+            internal set => _allRecipes = value.ToList(); 
+        }
+
         /// <summary>
         /// List of bassic recipes can be crafted from pocket craft mode.
         /// </summary>
@@ -36,8 +44,15 @@ namespace Creatures.Player.Crafts
 
         private CraftHelper()
         {
-            _allRecipes = Resources.FindObjectsOfTypeAll<RecipeCofiguration>();
+
         }
+
+        public void ResetRecipes(RecipesListConfig config)
+        {
+            _allRecipes = new List<RecipeCofiguration>(config.Recipes);
+            AreAllRecipesLoaded = true;
+        }
+
         /// <summary>
         /// Gets list of recipes available for this workbench type and which required items are contained in inventory.
         /// </summary>

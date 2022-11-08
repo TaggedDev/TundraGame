@@ -1,4 +1,5 @@
 ﻿using Creatures.Player.Behaviour;
+using Creatures.Player.Crafts;
 using Creatures.Player.Inventory;
 using System;
 using System.Collections;
@@ -36,6 +37,12 @@ public class RecipeCofiguration : ScriptableObject
     /// A work space to craft this recipe.
     /// </summary>
     public PlaceableItemConfiguration Workbench => workbench;
+
+    public RecipeCofiguration()
+    {
+
+    }
+
     /// <summary>
     /// Checks if this recipe available for current selection filter.
     /// </summary>
@@ -54,6 +61,7 @@ public class RecipeCofiguration : ScriptableObject
     public bool Craft(PlayerInventory inventoryScript)
     {
         if (!CheckIfAvailable(workbench, inventoryScript)) return false;
+        // Removes from inventory as much items as required in the craft.
         foreach (var component in requiredItems)
         {
             int remainder = component.Amount;
@@ -61,18 +69,19 @@ public class RecipeCofiguration : ScriptableObject
             {
                 var slot = inventoryScript.Inventory.Slots.Last(x => x.Item == component.Item);
                 int items = slot.ItemsAmount;
-                if (remainder > items)
+                if (remainder >= items)
                 {
                     slot.Clear();
                     remainder -= items;
                 }
                 else
                 {
-                    remainder = 0;
                     slot.RemoveItems(remainder);
+                    remainder = 0;
                 }
             }
         }
+        // Adds an item to player's inventory or drops it if player's inventory is full.
         inventoryScript.Inventory.AddItem(result, 1, out int rem);
         if (rem == 1) result.Drop(inventoryScript.transform.position, Vector3.up);
         return true;

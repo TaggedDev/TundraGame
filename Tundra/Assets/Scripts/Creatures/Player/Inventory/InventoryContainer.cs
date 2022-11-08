@@ -115,5 +115,16 @@ namespace Creatures.Player.Inventory
         {
             MaxInventoryCapacity = 4 + additionalSlotsAmount;
         }
+
+        public override string ToString()
+        {
+            string res = $"Container: [max capacity {maxInventoryCapacity}; slots: {Slots.Length}]";
+            int i = 0;
+            foreach (var slot in Slots)
+            {
+                res += $"Slot {i++}: " + slot + "\n";
+            }
+            return res;
+        }
     }
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84552cb724c7e3140bf3ed2c15a4dc60, type: 3}
   m_Name: Altar Recipe
   m_EditorClassIdentifier: 
-  result: {fileID: 0}
+  result: {fileID: 11400000, guid: 08b2498354e99ed49b41b3528e0fdcce, type: 2}
   requiredItems:
   - item: {fileID: 11400000, guid: 8cc6303e9d37b0741807e1ff261e529f, type: 2}
     amount: 2

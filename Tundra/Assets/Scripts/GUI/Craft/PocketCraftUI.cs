@@ -1,6 +1,7 @@
 ﻿using Creatures.Player.Behaviour;
 using Creatures.Player.Crafts;
 using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,8 +32,7 @@ public class PocketCraftUI : MonoBehaviour
         get => _selectedRecipe;
         set
         {
-            if (_selectedRecipe != value && _basicRecipes.Length == 4 &&
-                0 <= value && value <= 4 && _basicRecipes[value].CheckIfAvailable(null, _playerInventory))
+            if (_selectedRecipe != value /*&& _basicRecipes[value].CheckIfAvailable(null, _playerInventory)*/)
             {
                 _selectedRecipe = value;
                 SelectedRecipeIndexChanged();
@@ -42,19 +42,24 @@ public class PocketCraftUI : MonoBehaviour
 
     private void SelectedRecipeIndexChanged()
     {
-        float rot = SelectedRecipe * 90;
+        // Set rotation to selection segment.
+        float rot = SelectedRecipe * -90;
         _segmentHolder.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, rot));
+        // Find current recipe.
         _currentRecipe = _basicRecipes[_selectedRecipe];
+        // Calculate helper variables to generate recipe tiles on the screen.
         int items = _currentRecipe.RequiredItems.Count;
         Rect indicatorRect = (recipeIndicatorPrefab.transform as RectTransform).rect;
         float indicHeights = items * indicatorRect.height;
         float spacings = recipeSpacing * (items - 1);
         float totalSpacing = (indicHeights + spacings) * 0.5f;
+        // Remove old recipe tiles.
         if (_recipeParts != null)
             foreach (var part in _recipeParts)
             {
                 Destroy(part);
             }
+        // Create new recipe tiles.
         _recipeParts = new GameObject[items];
         for (int i = 0; i < items; i++)
         {
@@ -70,9 +75,11 @@ public class PocketCraftUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Get all data which is necessary to this script.
         GameObject player = UIController._rootCanvas.GetComponent<UIController>()._player;
         _craftHelper = CraftHelper.Instance;
         _playerInventory = player.GetComponent<PlayerInventory>();
+        if (!_craftHelper.AreAllRecipesLoaded) _craftHelper.ResetRecipes(_playerInventory.RecipesList);
         _basicRecipes = _craftHelper.BasicRecipes.OrderBy(x => x.name).ToArray();
         _segmentHolder = transform.Find("ElementSelectionCircle").Find("SegmentHolder").gameObject;
         _centerCircle = transform.Find("ElementSelectionCircle").Find("CenterCircle");
@@ -90,6 +97,7 @@ public class PocketCraftUI : MonoBehaviour
     void FixedUpdate()
     {
         if (Input.GetKeyDown(KeyCode.Escape)) gameObject.SetActive(false);
+        // Get mouse position to set selected recipe.
         Vector3 mousePosition = Input.mousePosition - new Vector3(Screen.width / 2, Screen.height / 2);
         if (Mathf.Abs(mousePosition.x) < Mathf.Abs(mousePosition.y))
         {
@@ -106,17 +114,20 @@ public class PocketCraftUI : MonoBehaviour
         {
             if (mousePosition.x > 0)
             {
-                SelectedRecipe = 3;
+                SelectedRecipe = 1;
             }
             else
             {
-                SelectedRecipe = 1;
+                SelectedRecipe = 3;
             }
         }
+        // Trries to craft a recipe if player has clicked mouse button.
         if (Input.GetMouseButtonDown(0))
         {
+            Debug.Log(_currentRecipe);
             _currentRecipe.Craft(_playerInventory);
         }
+        // Colorize recipe tiles in order to recipe state: selected, unselected or unavailable. 
         for (int i = 0; i < _basicRecipes.Length; i++)
         {
             Color c;
