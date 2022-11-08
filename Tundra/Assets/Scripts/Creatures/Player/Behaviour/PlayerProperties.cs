@@ -193,7 +193,7 @@ namespace Creatures.Player.Behaviour
             get => _currentStarvePoints;
             internal set
             {
-                if (_currentStarvePoints > maxStarvePoints)
+                if (value > maxStarvePoints)
                     _currentStarvePoints = maxStarvePoints;
                 else
                     _currentStarvePoints = value;
