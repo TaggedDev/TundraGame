@@ -9,10 +9,7 @@ namespace Creatures.Player.States
 
         public IdlePlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
             PlayerProperties playerProperties, PlayerInventory inventory, EscapeMenu escapeCanvas)
-            : base(playerMovement, switcher, playerProperties, inventory, escapeCanvas)
-        {
-            
-        }
+            : base(playerMovement, switcher, playerProperties, inventory, escapeCanvas) { }
 
         private float _h = 0, _v = 0;
 

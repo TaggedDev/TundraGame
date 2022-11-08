@@ -1,6 +1,5 @@
 ﻿using Creatures.Player.Behaviour;
 using UnityEngine;
-using Creatures.Player.Inventory;
 using System;
 using Creatures.Player.Inventory.ItemConfiguration;
 using GUI.GameplayGUI;
@@ -90,7 +89,8 @@ namespace Creatures.Player.States
             float _h = Input.GetAxis("Horizontal");
             float _v = Input.GetAxis("Vertical");
 
-            if (_h == 0 && _v == 0 && !(this is IdlePlayerState) && !(this is BuildingPlayerState))
+            if (_h == 0 && _v == 0 && !(this is IdlePlayerState) && !(this is BuildingPlayerState) 
+                && !(this is EatingPlayerState))
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
 
             Vector3 _rightMovement = PlayerMovement.Right * (PlayerMovement.Speed * SpeedCoefficient * Time.deltaTime * _h);
@@ -230,8 +230,14 @@ namespace Creatures.Player.States
             {
                 PlayerStateSwitcher.SwitchState<BuildingPlayerState>();
             }
+            else if (inventory.SelectedItem is FoodItemConfiguration)
+            {
+                PlayerStateSwitcher.SwitchState<EatingPlayerState>();
+            }
             else if (this is BuildingPlayerState)
+            {
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
+            }
         }
     }
 }
