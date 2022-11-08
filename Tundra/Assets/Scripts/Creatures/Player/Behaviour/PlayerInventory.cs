@@ -115,17 +115,6 @@ namespace Creatures.Player.Behaviour
             ItemPickingProgress = 0f;
         }
 
-        public void UnselectItem()
-        {
-            _lastSlotIndex = SelectedInventorySlot;
-            SelectedInventorySlot = -1;
-        }
-
-        public void ReselectItem()
-        {
-            SelectedInventorySlot = _lastSlotIndex;
-        }
-
         public void ResetNearestItem(GameObject item)
         {
             NearestInteractableItem = item;

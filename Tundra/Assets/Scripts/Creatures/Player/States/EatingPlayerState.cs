@@ -73,11 +73,6 @@ namespace Creatures.Player.States
             // We are assured that the equipped item is a food. Otherwise, Eating state shouldn't be set
             FoodItemConfiguration food = PlayerInventory.SelectedItem as FoodItemConfiguration;
             
-            /*if (_currentStarvation + value >= MaxStarve)
-            {
-                _currentStarvation = maxStarve;
-                _currentSaturation += value / 2;
-            }*/
             var calories = food.Calories;
 
             // If current food is on limit and current saturation is twice bigger than maxstarve, cause player to vomit
@@ -93,8 +88,8 @@ namespace Creatures.Player.States
             // If player is just overeating, he gains a half of calories as a saturation effect
             else if (PlayerProperties.CurrentStarvePoints + calories >= PlayerProperties.MaxStarvePoints)
             {
-                PlayerProperties.CurrentSaturationPoints += calories * .3f; // is a coef. of how many calories will go 
-                // to saturation points
+                // is a coef. of how many calories will go to saturation points
+                PlayerProperties.CurrentSaturationPoints += calories * .3f; 
             }
             
             // Gaining more than max is handled in properties
