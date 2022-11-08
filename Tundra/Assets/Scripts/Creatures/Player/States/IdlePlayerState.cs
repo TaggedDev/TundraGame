@@ -11,9 +11,9 @@ namespace Creatures.Player.States
             PlayerProperties playerProperties, PlayerInventory inventory, EscapeMenu escapeCanvas)
             : base(playerMovement, switcher, playerProperties, inventory, escapeCanvas) { }
 
-        private float _h = 0, _v = 0;
+        private float _h, _v;
 
-        protected override float StarvingConsumptionCoefficient => 1f;
+        protected override float StarvingConsumptionCoefficient => 10f;
 
         protected override float StaminaConsumption => -1f;
 

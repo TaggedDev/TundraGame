@@ -140,7 +140,7 @@ namespace Creatures.Player.Behaviour
         }
 
         /// <summary>
-        /// 
+        /// Kills player, plays animation, blacks out the screen and shows the end menu
         /// </summary>
         private void KillPlayer()
         {

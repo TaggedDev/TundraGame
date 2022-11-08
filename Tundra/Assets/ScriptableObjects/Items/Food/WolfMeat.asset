@@ -19,3 +19,4 @@ MonoBehaviour:
     type: 3}
   maxStackVolume: 3
   weight: 0
+  calories: 100

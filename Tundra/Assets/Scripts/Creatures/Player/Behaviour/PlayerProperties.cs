@@ -213,7 +213,10 @@ namespace Creatures.Player.Behaviour
             }
             internal set
             {
-                _currentStarvation = value;
+                if (_currentStarvation > maxStarve)
+                    _currentStarvation = maxStarve;
+                else
+                    _currentStarvation = value;
             }
         }
         /// <summary>

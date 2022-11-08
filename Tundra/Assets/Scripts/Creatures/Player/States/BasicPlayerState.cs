@@ -109,18 +109,26 @@ namespace Creatures.Player.States
         /// </summary>
         public virtual void ContinueStarving()
         {
-            //TODO: Maybe this algorithm is not as good as I think
-            if (PlayerProperties._currentStarvationTime > 0)
+            // Use saturation instead of starve points if there are any;
+            if (PlayerProperties.CurrentSaturation >= 0)
             {
-                PlayerProperties._currentStarvationTime -= Time.deltaTime;
+                PlayerProperties.CurrentSaturation -= StarvingConsumptionCoefficient * Time.deltaTime;
                 return;
             }
-            PlayerProperties.CurrentStarvationCapacity -= StarvingConsumptionCoefficient;
-            if (PlayerProperties.CurrentStarvationCapacity < 0)
+
+            // If there is any starvation points - consume them before the health points 
+            if (PlayerProperties.CurrentStarvationCapacity >= 0)
+            {
+                PlayerProperties.CurrentStarvationCapacity -= StarvingConsumptionCoefficient;
+            }
+            // Otherwise, start killing the player of hunger
+            else
             {
                 PlayerProperties.CurrentStarvationCapacity = 0;
                 PlayerProperties.CurrentHealth -= 1f * Time.deltaTime;
-                if (PlayerProperties.CurrentHealth < 0) PlayerProperties.CurrentHealth = 0;
+                
+                if (PlayerProperties.CurrentHealth < 0) 
+                    PlayerProperties.CurrentHealth = 0;
             }
         }
         protected virtual void InventorySelectedSlotChanged(object sender, EventArgs e)
@@ -192,7 +200,7 @@ namespace Creatures.Player.States
         }
 
         /// <summary>
-        /// Recievs player input for changing states with opening related menus.
+        /// Receives player input for changing states with opening related menus.
         /// </summary>
         public virtual void HandleUserInput()
         {
