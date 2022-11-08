@@ -238,6 +238,10 @@ namespace Creatures.Player.States
             {
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
             }
+            else if (inventory.SelectedItem is null)
+            {
+                PlayerStateSwitcher.SwitchState<IdlePlayerState>();
+            }
         }
     }
 }
