@@ -88,8 +88,7 @@ namespace Creatures.Player.Behaviour
 
             _cameraHolder.transform.position = transform.position;
             _currentState.ContinueStarving();
-            _currentState.ContinueFreeze();
-            _currentState.LoadForThrow();
+            _currentState.ContinueFreezing();
             _currentState.SpendStamina();
             _currentState.HandleUserInput();
             _currentState.PrepareForHit();

@@ -109,18 +109,17 @@ namespace Creatures.Player.States
         /// </summary>
         public virtual void ContinueStarving()
         {
-            Debug.Log($"{PlayerProperties.CurrentStarvePoints} {PlayerProperties.CurrentSaturationPoints}");
             // Use saturation instead of starve points if there are any;
             if (PlayerProperties.CurrentSaturationPoints >= 0)
             {
-                PlayerProperties.CurrentSaturationPoints -= StarvingConsumptionCoefficient;
+                PlayerProperties.CurrentSaturationPoints -= StarvingConsumptionCoefficient * Time.deltaTime;
                 return;
             }
 
             // If there is any starvation points - consume them before the health points 
             if (PlayerProperties.CurrentStarvePoints >= 0)
             {
-                PlayerProperties.CurrentStarvePoints -= StarvingConsumptionCoefficient;
+                PlayerProperties.CurrentStarvePoints -= StarvingConsumptionCoefficient * Time.deltaTime;
             }
             // Otherwise, start killing the player of hunger
             else
@@ -132,6 +131,7 @@ namespace Creatures.Player.States
                     PlayerProperties.CurrentHealthPoints = 0;
             }
         }
+        
         protected virtual void InventorySelectedSlotChanged(object sender, EventArgs e)
         {
             if (PlayerInventory.SelectedItem is PlaceableItemConfiguration)
@@ -141,9 +141,8 @@ namespace Creatures.Player.States
         /// <summary>
         /// Updates player warm with current state coefficient.
         /// </summary>
-        public virtual void ContinueFreeze()
+        public virtual void ContinueFreezing()
         {
-            //TODO: Do something with it.
             PlayerProperties.CurrentWarmthPoints -= WarmConsumptionCoefficient * Time.deltaTime;
             if (PlayerProperties.CurrentWarmthPoints < 0)
             {
@@ -161,23 +160,7 @@ namespace Creatures.Player.States
         }
 
         protected abstract void StaminaIsOver();
-
-        /// <summary>
-        /// Loads weapon for throwing.
-        /// </summary>
-        public virtual void LoadForThrow()
-        {
-            if (Input.GetMouseButton(2))
-            {
-                PlayerProperties._throwLoadingProgress -= Time.deltaTime;
-                if (PlayerProperties._throwLoadingProgress <= 0) PlayerProperties._throwLoadingProgress = 0;
-            }
-            else
-            {
-                if (PlayerProperties._throwLoadingProgress <= 0) PlayerBehaviour.ThrowItem();
-                PlayerProperties._throwLoadingProgress = PlayerProperties.ThrowPrepareTime;
-            }
-        }
+        
         /// <summary>
         /// Loads to hit.
         /// </summary>
