@@ -93,7 +93,8 @@ namespace Creatures.Player.States
             // If player is just overeating, he gains a half of calories as a saturation effect
             else if (PlayerProperties.CurrentStarvePoints + calories >= PlayerProperties.MaxStarvePoints)
             {
-                PlayerProperties.CurrentSaturationPoints += calories / 2;
+                PlayerProperties.CurrentSaturationPoints += calories * .3f; // is a coef. of how many calories will go 
+                // to saturation points
             }
             
             // Gaining more than max is handled in properties

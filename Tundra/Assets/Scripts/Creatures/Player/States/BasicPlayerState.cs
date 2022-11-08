@@ -109,10 +109,11 @@ namespace Creatures.Player.States
         /// </summary>
         public virtual void ContinueStarving()
         {
+            Debug.Log($"{PlayerProperties.CurrentStarvePoints} {PlayerProperties.CurrentSaturationPoints}");
             // Use saturation instead of starve points if there are any;
             if (PlayerProperties.CurrentSaturationPoints >= 0)
             {
-                PlayerProperties.CurrentSaturationPoints -= StarvingConsumptionCoefficient * Time.deltaTime;
+                PlayerProperties.CurrentSaturationPoints -= StarvingConsumptionCoefficient;
                 return;
             }
 
