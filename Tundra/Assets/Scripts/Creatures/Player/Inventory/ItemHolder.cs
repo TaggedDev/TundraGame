@@ -4,6 +4,8 @@ namespace Creatures.Player.Inventory
 {
     public class ItemHolder : MonoBehaviour
     {
+        [SerializeField] private Mesh NONE_MESH;
+        [SerializeField] private Material[] NONE_MATERIAL;
         private MeshFilter _meshFilter;
         private MeshRenderer _meshRenderer;
         
@@ -17,6 +19,7 @@ namespace Creatures.Player.Inventory
         /// Set the mesh of itemHolder to current mesh
         /// </summary>
         /// <param name="handedScale">Scale of item when handed</param>
+        /// <param name="handedRotation">Rotation of item when handed</param>
         /// <param name="model">MeshFilter of this item</param>
         /// <param name="materials">MeshRenderer of this item</param>
         public void SetNewMesh(Vector3 handedScale, Quaternion handedRotation, MeshFilter model, MeshRenderer materials)
@@ -32,8 +35,8 @@ namespace Creatures.Player.Inventory
         /// </summary>
         public void ResetMesh()
         {
-            _meshFilter.mesh = null;
-            _meshRenderer.materials = null;
+            _meshFilter.mesh = NONE_MESH;
+            _meshRenderer.materials = NONE_MATERIAL;
             transform.localScale = Vector3.one;
             transform.localRotation = Quaternion.identity;
         }
