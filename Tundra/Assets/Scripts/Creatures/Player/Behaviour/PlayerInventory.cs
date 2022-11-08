@@ -85,15 +85,16 @@ namespace Creatures.Player.Behaviour
             
             if (Input.GetKeyDown(KeyCode.Q) && !Input.GetKey(KeyCode.LeftControl))
             {
-                ThrowItemAway();
+                DropEquippedItem();
                 SelectedItemChanged?.Invoke(this, null);
             }
         }
 
-        private void ThrowItemAway()
+        private void DropEquippedItem()
         {
             Inventory.Slots[SelectedInventorySlot].DropItem(transform.position, transform.forward * 3 + Vector3.up);
-            itemHolder.ResetMesh();
+            if (Inventory.Slots[SelectedInventorySlot].ItemsAmount == 0)
+                itemHolder.ResetMesh();
         }
 
         private void PickItemUp()
