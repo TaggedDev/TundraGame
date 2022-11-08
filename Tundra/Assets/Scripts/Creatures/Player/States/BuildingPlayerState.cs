@@ -18,9 +18,7 @@ namespace Creatures.Player.States
         {
             _playerBuild = playerBuild;
         }
-
-
-
+        
         protected override float StarvingConsumptionCoefficient => 1f;
 
         protected override float StaminaConsumption => -.5f; //а за overweight мы стамину не едим? (в Valheim такое было)

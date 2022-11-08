@@ -86,15 +86,15 @@ namespace Creatures.Player.States
                 PlayerStateSwitcher.SwitchState<WalkPlayerState>();
             }
 
-            float _h = Input.GetAxis("Horizontal");
-            float _v = Input.GetAxis("Vertical");
+            float h = Input.GetAxis("Horizontal");
+            float v = Input.GetAxis("Vertical");
 
-            if (_h == 0 && _v == 0 && !(this is IdlePlayerState) && !(this is BuildingPlayerState) 
+            if (h == 0 && v == 0 && !(this is IdlePlayerState) && !(this is BuildingPlayerState) 
                 && !(this is EatingPlayerState))
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
 
-            Vector3 _rightMovement = PlayerMovement.Right * (PlayerMovement.Speed * SpeedCoefficient * Time.deltaTime * _h);
-            Vector3 _forwardMovement = PlayerMovement.Forward * (PlayerMovement.Speed * SpeedCoefficient * Time.deltaTime * _v);
+            Vector3 _rightMovement = PlayerMovement.Right * (PlayerMovement.Speed * SpeedCoefficient * Time.deltaTime * h);
+            Vector3 _forwardMovement = PlayerMovement.Forward * (PlayerMovement.Speed * SpeedCoefficient * Time.deltaTime * v);
 
             PlayerMovement.Heading = Vector3.Normalize(_rightMovement + _forwardMovement);
 

@@ -80,7 +80,7 @@ MonoBehaviour:
   materials: {fileID: -7511558181221131132, guid: b6ea739448b243043954c9fafd166816,
     type: 3}
   handedRotation: {x: -100, y: 0, z: 100}
-  handedScale: {x: 3, y: 3, z: 3}
+  handedScale: {x: 10, y: 10, z: 10}
   _associatedItem: {fileID: 11400000, guid: f1e1e4fa5a7dc3c42bf22f14db1b37b3, type: 2}
   droppedItemsAmount: 1
   isThrown: 0
