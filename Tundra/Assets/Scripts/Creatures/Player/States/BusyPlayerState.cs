@@ -57,10 +57,12 @@ namespace Creatures.Player.States
 
         public override void Start()
         {
+            PlayerMovement.CanSprint = false;
         }
 
         public override void Stop()
         {
+            PlayerMovement.CanSprint = true;
         }
 
         protected override void StaminaIsOver()

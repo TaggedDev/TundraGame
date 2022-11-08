@@ -77,7 +77,7 @@ namespace Creatures.Player.States
         /// </summary>
         public virtual void MoveCharacter()
         {
-            if (Input.GetKey(KeyCode.LeftShift) && !Input.GetMouseButton(2) && !(this is SprintPlayerState) && !(this is BuildingPlayerState))
+            if (PlayerMovement.CanSprint && Input.GetKey(KeyCode.LeftShift) && !Input.GetMouseButton(2) && !(this is SprintPlayerState) && !(this is BuildingPlayerState))
             {
                 if (PlayerProperties.CurrentStamina > 0) PlayerStateSwitcher.SwitchState<SprintPlayerState>();
             }
@@ -101,15 +101,7 @@ namespace Creatures.Player.States
             var transform = PlayerMovement.transform;
             transform.forward += PlayerMovement.Heading;
             velocity = Vector3.Lerp(velocity, (_rightMovement + _forwardMovement) * 75f, 0.5f);//TODO: Multiplier is needed to increase force with which player can reach environment
-            //Debug.Log(velocity);
-            //PlayerRigidBody.AddForce(force);
-
             PlayerRigidBody.velocity = new Vector3(velocity.x, PlayerRigidBody.velocity.y, velocity.z);
-
-            //var position = transform.position;
-            //position += _rightMovement;
-            //position += _forwardMovement;
-            //transform.position = position;
         }
 
         /// <summary>

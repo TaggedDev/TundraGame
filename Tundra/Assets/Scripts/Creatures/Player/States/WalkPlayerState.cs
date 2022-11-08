@@ -18,23 +18,14 @@ namespace Creatures.Player.States
         protected override float WarmConsumptionCoefficient => 2f;
 
         public WalkPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
-
             PlayerProperties playerProperties, PlayerInventory inventory, EscapeMenu escapeCanvas)
-            : base(playerMovement, switcher, playerProperties, inventory, escapeCanvas)
-        {
-        }
+            : base(playerMovement, switcher, playerProperties, inventory, escapeCanvas) { }
 
         public override void Start()
-        {
-
-            //_playerMovement.Animator.SetFloat("Speed", .5f);
-            //PlayerMovement.Speed = PlayerBehaviour.IsOverweight ? 2f : 3f;
-        }
+        { }
 
         public override void Stop()
-        {
-
-        }
+        { }
 
 
         protected override void StaminaIsOver()

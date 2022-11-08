@@ -63,13 +63,14 @@ namespace Creatures.Player.States
 
         public override void Start()
         {
+            PlayerMovement.CanSprint = false;
             _playerMagic._config = (BookEquipmentConfiguration)PlayerEquipment.Book;
             _playerMagic.StartSpelling();
         }
 
         public override void Stop()
         {
-            
+            PlayerMovement.CanSprint = true;
         }
 
         protected override void StaminaIsOver()

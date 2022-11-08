@@ -14,12 +14,19 @@ namespace Creatures.Player.States
         protected override float StaminaConsumption { get; }
         protected override float SpeedCoefficient { get; }
         protected override float WarmConsumptionCoefficient { get; }
-        
+
         public override void Start()
-        { Debug.Log("Entered the eating state"); }
+        {
+            PlayerMovement.CanSprint = false;
+            Debug.Log("Entered the eating state");
+        }
+
 
         public override void Stop()
-        { Debug.Log("Left the eating state"); }
+        {
+            PlayerMovement.CanSprint = true;
+            Debug.Log("Left the eating state");
+        }
 
         protected override void StaminaIsOver()
         { }

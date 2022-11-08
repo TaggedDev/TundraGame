@@ -33,7 +33,7 @@ namespace Creatures.Player.States
 
         public override void Start()
         {
-            
+            PlayerMovement.CanSprint = true;
         }
 
         public override void Stop()

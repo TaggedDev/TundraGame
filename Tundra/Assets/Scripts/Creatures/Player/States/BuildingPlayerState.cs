@@ -31,6 +31,7 @@ namespace Creatures.Player.States
 
         public override void Start()
         {
+            PlayerMovement.CanSprint = false;
             _playerBuild.ObjectPlaced += ObjectPlaced;
             _playerBuild.PlacableObj = (PlayerInventory.SelectedItem as PlaceableItemConfiguration).RepresentedObject;
             _playerBuild.enabled = true;
@@ -43,6 +44,7 @@ namespace Creatures.Player.States
 
         public override void Stop()
         {
+            PlayerMovement.CanSprint = true;
             _playerBuild.enabled = false;
         }
 
