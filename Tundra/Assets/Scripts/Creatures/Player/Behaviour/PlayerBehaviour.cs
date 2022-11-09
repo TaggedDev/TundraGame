@@ -68,7 +68,6 @@ namespace Creatures.Player.Behaviour
                 new BusyPlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas),
                 new MagicCastingPlayerState(_playerMovement, this, _playerProperties, _playerMagic, _playerInventory, escapeCanvas),
                 new BuildingPlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas, _playerBuild),
-                new EatingPlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas)
             };
             _currentState = _allStates[0];
             _currentState.Start();

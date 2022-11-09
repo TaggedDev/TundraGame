@@ -55,12 +55,7 @@ namespace Creatures.Player.States
         /// On State changed | Start
         /// </summary>
         public abstract void Start();
-
-        /// <summary>
-        /// When PlacableObbject is Chosen
-        /// </summary>
         
-
         /// <summary>
         /// On State changed | Stop
         /// </summary>
@@ -91,8 +86,7 @@ namespace Creatures.Player.States
             float h = Input.GetAxis("Horizontal");
             float v = Input.GetAxis("Vertical");
 
-            if (h == 0 && v == 0 && !(this is IdlePlayerState) && !(this is BuildingPlayerState) 
-                && !(this is EatingPlayerState))
+            if (h == 0 && v == 0 && !(this is IdlePlayerState) && !(this is BuildingPlayerState))
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
 
             Vector3 _rightMovement = PlayerMovement.Right * (PlayerMovement.Speed * SpeedCoefficient * Time.deltaTime * h);
@@ -216,10 +210,6 @@ namespace Creatures.Player.States
             {
                 PlayerStateSwitcher.SwitchState<BuildingPlayerState>();
             }
-            else if (inventory.SelectedItem is FoodItemConfiguration)
-            {
-                PlayerStateSwitcher.SwitchState<EatingPlayerState>();
-            }
             else if (this is BuildingPlayerState)
             {
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
@@ -228,6 +218,38 @@ namespace Creatures.Player.States
             {
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
             }
+        }
+        
+        /// <summary>
+        /// Consumes the equipped food and applies effects
+        /// </summary>
+        protected void ConsumeCurrentFood()
+        {
+            PlayerProperties.FoodConsumingTimeLeft = PlayerProperties.FOOD_CONSUMING_MAX_TIME;
+            // Food won't be null because there is validation before getting in the function
+            
+            var food = PlayerInventory.SelectedItem as FoodItemConfiguration;
+            var calories = food.Calories;
+
+            // If current food is on limit and current saturation is twice bigger than maxstarve, cause player to vomit
+            if (PlayerProperties.CurrentStarvePoints == PlayerProperties.MaxStarvePoints &&
+                PlayerProperties.CurrentSaturationPoints + calories / 2f >= PlayerProperties.MaxStarvePoints * 2f)
+            {
+                // Apply vomit de buffs
+                PlayerProperties.CurrentSaturationPoints = 0f;
+                PlayerProperties.CurrentStarvePoints = PlayerProperties.MaxStarvePoints / 2f;
+                PlayerProperties.CurrentHealthPoints -= 10f;
+                PlayerProperties.CurrentWarmthPoints -= 50f;
+            }
+            // If player is just overeating, he gains a half of calories as a saturation effect
+            else if (PlayerProperties.CurrentStarvePoints + calories >= PlayerProperties.MaxStarvePoints)
+            {
+                // is a coef. of how many calories will go to saturation points
+                PlayerProperties.CurrentSaturationPoints += calories * .3f; 
+            }
+            
+            // Gaining more than max is handled in properties
+            PlayerProperties.CurrentStarvePoints += food.Calories;
         }
     }
 }

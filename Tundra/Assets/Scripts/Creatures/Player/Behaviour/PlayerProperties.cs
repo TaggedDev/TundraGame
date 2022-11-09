@@ -61,6 +61,31 @@ namespace Creatures.Player.Behaviour
         /// Internal field for the current player's HP.
         /// </summary>
         [SerializeField] private float currentHealthPoints;
+
+        /// <summary>
+        /// Private field determines whether player is eating or not
+        /// </summary>
+        private bool _isHoldingFood;
+
+        /// <summary>
+        /// The time (sec) left to eat the equipped food item 
+        /// </summary>
+        private float _foodConsumingTimeLeft;
+
+        /// <summary>
+        /// The time (sec) left to eat the equipped food item 
+        /// </summary>
+        public float FoodConsumingTimeLeft
+        {
+            get => _foodConsumingTimeLeft;
+            set => _foodConsumingTimeLeft = value;
+        }
+
+        /// <summary>
+        /// The time takes to eat the equipped food item
+        /// </summary>
+        public const float FOOD_CONSUMING_MAX_TIME = 1f;
+
         /// <summary>
         /// Internal field for the current player speed coefficient.
         /// </summary>
@@ -207,11 +232,20 @@ namespace Creatures.Player.Behaviour
             get => _currentSaturationPoints;
             internal set => _currentSaturationPoints = value;
         }
+        /// <summary>
+        /// Player eating status 
+        /// </summary>
+        public bool IsHoldingFood
+        {
+            get => _isHoldingFood;
+            set => _isHoldingFood = value;
+        }
 
         private void Start()
         {
             if (playerRace != null)
             {
+                _foodConsumingTimeLeft = FOOD_CONSUMING_MAX_TIME;
                 maxStarvePoints = playerRace.MaxStarve;
                 maxHealthPoints = playerRace.MaxHealth;
                 maxStaminaPoints = playerRace.MaxStamina;
