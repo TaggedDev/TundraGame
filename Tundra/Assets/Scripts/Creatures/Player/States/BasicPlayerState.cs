@@ -250,6 +250,8 @@ namespace Creatures.Player.States
             
             // Gaining more than max is handled in properties
             PlayerProperties.CurrentStarvePoints += food.Calories;
+            PlayerInventory.Inventory.Slots[PlayerInventory.SelectedInventorySlot].RemoveItems(1);
+            PlayerProperties.IsHoldingFood = false;
         }
     }
 }

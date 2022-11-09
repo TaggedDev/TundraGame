@@ -24,7 +24,6 @@ namespace Creatures.Player.States
 
         public override void HandleUserInput()
         {
-            Debug.Log($"{PlayerProperties.FoodConsumingTimeLeft}, {PlayerProperties.IsHoldingFood}");
             if (Input.GetMouseButton(0))
             {
                 // Check if we are trying to eat something that is not food
@@ -36,14 +35,19 @@ namespace Creatures.Player.States
                     PlayerAnimation.SwitchAnimation("Eat");
                     PlayerProperties.FoodConsumingTimeLeft -= Time.deltaTime;
                     if (PlayerProperties.FoodConsumingTimeLeft <= 0)
-                        ConsumeCurrentFood();    
+                    {
+                        ConsumeCurrentFood();
+                        PlayerProperties.FoodConsumingTimeLeft = PlayerProperties.FOOD_CONSUMING_MAX_TIME;
+                        PlayerAnimation.SwitchAnimation("Walk");
+                        PlayerAnimation.SwitchAnimation("Not eating");
+                    }
                 }
             }
 
             if (Input.GetMouseButtonUp(0))
             {
                 PlayerProperties.FoodConsumingTimeLeft = PlayerProperties.FOOD_CONSUMING_MAX_TIME;
-                PlayerAnimation.SwitchAnimation("Walk");
+                PlayerAnimation.SwitchAnimation("Not eating");
             }
             
             if (PlayerEquipment.Book != null && Input.GetKeyDown(KeyCode.X))
