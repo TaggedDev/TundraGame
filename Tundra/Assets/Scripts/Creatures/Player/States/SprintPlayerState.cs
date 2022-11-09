@@ -25,7 +25,7 @@ namespace Creatures.Player.States
 
         public override void Start()
         {
-
+            PlayerAnimation.SwitchAnimation("Run");
         }
 
         public override void Stop()

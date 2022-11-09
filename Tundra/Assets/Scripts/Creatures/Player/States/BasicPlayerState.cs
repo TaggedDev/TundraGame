@@ -8,6 +8,7 @@ namespace Creatures.Player.States
 {
     public abstract class BasicPlayerState
     {
+        protected readonly PlayerAnimation PlayerAnimation;
         protected readonly PlayerMovement PlayerMovement;
         protected readonly IPlayerStateSwitcher PlayerStateSwitcher;
         protected readonly PlayerBehaviour PlayerBehaviour;
@@ -44,6 +45,7 @@ namespace Creatures.Player.States
             PlayerProperties = playerProperties;
             PlayerRigidBody = PlayerBehaviour.gameObject.GetComponent<Rigidbody>();
             PlayerEquipment = PlayerBehaviour.gameObject.GetComponent<PlayerEquipment>();
+            PlayerAnimation = PlayerBehaviour.GetComponent<PlayerAnimation>();
             PlayerInventory = playerInventory;
             PlayerInventory.SelectedItemChanged += InventorySelectedSlotChanged;
             _escapeCanvas = escapeCanvas;

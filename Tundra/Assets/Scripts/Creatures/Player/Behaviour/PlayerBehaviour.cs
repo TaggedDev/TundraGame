@@ -27,6 +27,7 @@ namespace Creatures.Player.Behaviour
         private CameraMovement _cameraHolder;
         private Camera _mainCamera;
         private PlayerInventory _inventoryController;
+        private PlayerAnimation _playerAnimation;
         private PlayerProperties _playerProperties;
         private PlayerInventory _playerInventory;
         private Rigidbody _rigidbody;
@@ -47,15 +48,19 @@ namespace Creatures.Player.Behaviour
             //cameraDistance = Vector3.Distance(Camera.main.transform.position, transform.position);
             _mainCamera = Camera.main;
             _cameraHolder = transform.parent.GetComponentInChildren<CameraMovement>();
+            
             _playerMovement = GetComponent<PlayerMovement>();
             _inventoryController = GetComponent<PlayerInventory>();
             _playerProperties = GetComponent<PlayerProperties>();
             _playerInventory = GetComponent<PlayerInventory>();
             _playerMagic = GetComponent<PlayerMagic>();
             _playerBuild = GetComponent<PlayerBuild>();
+            _playerAnimation = GetComponent<PlayerAnimation>();
+            
             _rigidbody = GetComponent<Rigidbody>();
             _animator = GetComponent<Animator>();
-            _allStates = new List<BasicPlayerState>()
+            
+            _allStates = new List<BasicPlayerState>
             {
                 new IdlePlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas),
                 new WalkPlayerState(_playerMovement,  this, _playerProperties, _playerInventory, escapeCanvas),
@@ -84,8 +89,7 @@ namespace Creatures.Player.Behaviour
             
             if (Input.GetKeyDown(KeyCode.Escape))
                 _currentState.HandleEscapeButton();
-
-
+            
             _cameraHolder.transform.position = transform.position;
             _currentState.ContinueStarving();
             _currentState.ContinueFreezing();
@@ -103,20 +107,6 @@ namespace Creatures.Player.Behaviour
                 KillPlayer();
 
             _currentState.MoveCharacter();
-            _animator.SetFloat("Speed", _rigidbody.velocity.magnitude);
-            _animator.SetBool("Shift Pressed", Input.GetKey(KeyCode.LeftShift));
-        }
-
-        public void ThrowItem()
-        {
-            _animator.SetTrigger("Throw");
-            _playerProperties._throwLoadingProgress = _playerProperties.ThrowPrepareTime;
-            //Вся эта странная история нужна для того, чтобы он кидал в нужую сторону. 
-            //TODO: Не работает, надо фиксить.
-            Vector3 target = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-            target = Quaternion.Euler(0, 90, 0) * new Vector3(target.x, 0, target.z).normalized;
-            //print(target);
-            _inventoryController.Inventory.Slots[_inventoryController.SelectedInventorySlot].ThrowItem(transform.position, (target).normalized);
         }
 
         public void SwitchState<T>() where T : BasicPlayerState
@@ -135,7 +125,6 @@ namespace Creatures.Player.Behaviour
         {
             //Now it does almost nothing.
             //TODO: make hit logic.
-            _animator.SetTrigger("Fist Attack");
         }
 
         /// <summary>

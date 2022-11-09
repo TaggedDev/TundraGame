@@ -99,6 +99,7 @@ namespace Creatures.Player.States
         public override void Start()
         {
             PlayerMovement.CanSprint = false;
+            PlayerAnimation.SwitchAnimation("Eating");
         }
 
 

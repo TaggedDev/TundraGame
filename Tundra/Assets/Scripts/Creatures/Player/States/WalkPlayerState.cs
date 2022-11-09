@@ -22,7 +22,9 @@ namespace Creatures.Player.States
             : base(playerMovement, switcher, playerProperties, inventory, escapeCanvas) { }
 
         public override void Start()
-        { }
+        {
+            PlayerAnimation.SwitchAnimation("Walk");
+        }
 
         public override void Stop()
         { }

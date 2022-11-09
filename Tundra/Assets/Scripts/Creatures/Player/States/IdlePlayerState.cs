@@ -34,6 +34,7 @@ namespace Creatures.Player.States
         public override void Start()
         {
             PlayerMovement.CanSprint = true;
+            PlayerAnimation.SwitchAnimation("Idle");
         }
 
         public override void Stop()
