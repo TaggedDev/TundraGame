@@ -1,4 +1,5 @@
-﻿using Creatures.Player.Behaviour;
+﻿using System;
+using Creatures.Player.Behaviour;
 using Creatures.Player.Inventory.ItemConfiguration;
 using GUI.GameplayGUI;
 using UnityEngine;
@@ -7,9 +8,12 @@ namespace Creatures.Player.States
 {
     public class EatingPlayerState : BasicPlayerState
     {
+        private const float EATING_SLOW_COEFFICIENT = .2f;
+        private const float CONSUMING_MAX_TIME = 1f;
+
+        private float _consumingTimeLeft = CONSUMING_MAX_TIME;
         private Vector3 _velocity;
         private float _slowedCoefficient = 1;
-        private const float EATING_SLOW_COEFFICIENT = .2f;
         
         public EatingPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
             PlayerProperties playerProperties, PlayerInventory playerInventory, EscapeMenu escapeCanvas) 
@@ -34,10 +38,20 @@ namespace Creatures.Player.States
                 PlayerStateSwitcher.SwitchState<MagicCastingPlayerState>();
             }
 
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButton(0))
             {
-                ConsumeCurrentFood();
+                PlayerAnimation.SwitchAnimation("Eat");
+                _consumingTimeLeft -= Time.deltaTime;
+                if (_consumingTimeLeft <= 0)
+                    ConsumeCurrentFood();
             }
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                _consumingTimeLeft = CONSUMING_MAX_TIME;
+                PlayerAnimation.SwitchAnimation("Idle");
+            }
+            
         }
 
         public override void MoveCharacter()
@@ -70,6 +84,7 @@ namespace Creatures.Player.States
         /// </summary>
         private void ConsumeCurrentFood()
         {
+            _consumingTimeLeft = CONSUMING_MAX_TIME;
             // We are assured that the equipped item is a food. Otherwise, Eating state shouldn't be set
             FoodItemConfiguration food = PlayerInventory.SelectedItem as FoodItemConfiguration;
             
@@ -99,10 +114,8 @@ namespace Creatures.Player.States
         public override void Start()
         {
             PlayerMovement.CanSprint = false;
-            PlayerAnimation.SwitchAnimation("Eating");
         }
-
-
+        
         public override void Stop()
         {
             PlayerMovement.CanSprint = true;

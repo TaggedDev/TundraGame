@@ -111,13 +111,13 @@ namespace Creatures.Player.Behaviour
 
         public void SwitchState<T>() where T : BasicPlayerState
         {
-            _animator.SetBool("Busy Mode", typeof(T) == typeof(BusyPlayerState));
             var state = _allStates.FirstOrDefault(st => st is T);
             _currentState.Stop();
             state.Start();
             _currentState = state;
             _playerProperties._throwLoadingProgress = _playerProperties.ThrowPrepareTime;
             StateChanged?.Invoke(this, null);
+            
             Debug.Log(typeof(T).ToString());
         }
 
