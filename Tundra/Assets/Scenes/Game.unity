@@ -792,7 +792,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapGenerator: {fileID: 974813766}
   chunksGenerator: {fileID: 185302903}
-  playerHolder: {fileID: 1552789789}
+  playerObject: {fileID: 1552789789}
   entityRenderer: {fileID: 1035914547}
 --- !u!4 &528677538
 Transform:
@@ -1718,11 +1718,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d45e24a4609ffd84a89f8284f2731f34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1552789789
+--- !u!114 &1552789789 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 4705073890885703983, guid: 559d97cf075654344b456f54e77c8b1c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1683048383}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1552789787}
   m_Enabled: 1
@@ -1740,18 +1740,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c03cfd42317533f43b1f60e037046418, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1552789791
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1552789787}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a53a174bb0a64ecb861afb1166366981, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1552789797 stripped
@@ -2332,11 +2320,6 @@ PrefabInstance:
         type: 3}
       propertyPath: speed
       value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6591950171598838083, guid: 559d97cf075654344b456f54e77c8b1c,
-        type: 3}
-      propertyPath: m_Mass
-      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6677471697813370866, guid: 559d97cf075654344b456f54e77c8b1c,
         type: 3}
