@@ -10,7 +10,13 @@ namespace Creatures.Player.Behaviour
         public static float ItemPickingUpTime => 3f;
 
         [SerializeField] private ItemHolder itemHolder;
-        
+
+        public ItemHolder ItemHolder
+        {
+            get => itemHolder;
+            set => itemHolder = value;
+        }
+
         private InventoryContainer _inventory;
         private PlayerBehaviour _playerBehaviour;
         private int _lastSlotIndex;

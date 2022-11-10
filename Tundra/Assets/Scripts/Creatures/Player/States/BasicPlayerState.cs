@@ -206,17 +206,28 @@ namespace Creatures.Player.States
 
         public virtual void OnPlayerSelectedItemChanged(PlayerInventory inventory)
         {
+            
+            // If the selected item is a building item -> switch to building state 
             if (inventory.SelectedItem is PlaceableItemConfiguration)
             {
                 PlayerStateSwitcher.SwitchState<BuildingPlayerState>();
             }
+            // Otherwise, if this not a building item and we are in a building state -> switch to idle
             else if (this is BuildingPlayerState)
             {
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
             }
-            else if (inventory.SelectedItem is null)
+            
+            // If selected item is null -> switch to idle state and show empty hands
+            if (inventory.SelectedItem is null)
             {
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
+                PlayerInventory.ItemHolder.ResetMesh();
+            }
+            // Otherwise display selected item mesh and materials
+            else
+            {
+                PlayerInventory.ItemHolder.SetNewMesh(inventory.SelectedItem);
             }
         }
         
