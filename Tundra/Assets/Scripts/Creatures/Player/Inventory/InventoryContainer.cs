@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -9,7 +10,7 @@ using UnityEngine;
 namespace Creatures.Player.Inventory
 {
     [Serializable]
-    public class InventoryContainer
+    public class InventoryContainer : IEnumerable<Slot>
     {
         [SerializeField]
         private int maxInventoryCapacity = 4;
@@ -27,7 +28,13 @@ namespace Creatures.Player.Inventory
                 Slots.CopyTo(newInventory, 0);
                 Slots = newInventory;
                 for (int i = 0; i < Slots.Length; i++)
-                    if (Slots[i] == null) Slots[i] = new Slot();
+                {
+                    if (Slots[i] == null)
+                    {
+                        Slots[i] = new Slot();
+                        Slots[i].ItemChanged += (s, e) => ContentChanged?.Invoke(s, new ItemChangeArgs(i, e));
+                    }
+                }
             }
         }
         /// <summary>
@@ -44,6 +51,8 @@ namespace Creatures.Player.Inventory
         /// Событие, происходящее перед изменением количества слотов в инвентаре.
         /// </summary>
         public event EventHandler<int> MaxInventoryCapacityChanging;
+
+        public event EventHandler<ItemChangeArgs> ContentChanged;
 
         //TODO: организовать сохранение предметов и т.д
         /// <summary>
@@ -108,6 +117,7 @@ namespace Creatures.Player.Inventory
             for (int i = 0; i<Slots.Length; i++)
             {
                 Slots[i] = new Slot();
+                Slots[i].ItemChanged += (s, e) => ContentChanged?.Invoke(s, new ItemChangeArgs(i, e));
             }
         }
 
@@ -125,6 +135,16 @@ namespace Creatures.Player.Inventory
                 res += $"Slot {i++}: " + slot + "\n";
             }
             return res;
+        }
+
+        public IEnumerator<Slot> GetEnumerator()
+        {
+            return ((IEnumerable<Slot>)Slots).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return Slots.GetEnumerator();
         }
     }
 }

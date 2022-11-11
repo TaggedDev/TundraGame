@@ -58,9 +58,13 @@ public class RecipeCofiguration : ScriptableObject
     /// </summary>
     /// <param name="inventoryScript">Player inventory script which controls inventory.</param>
     /// <returns><see langword="true"/> if craft was done successfully, <see langword="false"/> otherwise.</returns>
-    public bool Craft(PlayerInventory inventoryScript)
+    public bool Craft(PlayerInventory inventoryScript, out int resultSlot)
     {
-        if (!CheckIfAvailable(workbench, inventoryScript)) return false;
+        if (!CheckIfAvailable(workbench, inventoryScript))
+        {
+            resultSlot = -1;
+            return false;
+        }
         // Removes from inventory as much items as required in the craft.
         foreach (var component in requiredItems)
         {
@@ -83,7 +87,12 @@ public class RecipeCofiguration : ScriptableObject
         }
         // Adds an item to player's inventory or drops it if player's inventory is full.
         inventoryScript.Inventory.AddItem(result, 1, out int rem);
-        if (rem == 1) result.Drop(inventoryScript.transform.position, Vector3.up);
+        if (rem == 1)
+        {
+            resultSlot = -1;
+            result.Drop(inventoryScript.transform.position, Vector3.up);
+        }
+        else resultSlot = Array.FindLastIndex(inventoryScript.Inventory.Slots, x => x.Item == result);
         return true;
     }
 }

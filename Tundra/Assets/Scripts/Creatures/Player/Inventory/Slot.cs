@@ -41,10 +41,15 @@ namespace Creatures.Player.Inventory
         /// <summary>
         /// Предмет, лежащий внутри слота.
         /// </summary>
-        public BasicItemConfiguration Item 
-        { 
-            get => item; 
-            private set => item=value; 
+        public BasicItemConfiguration Item
+        {
+            get => item;
+            private set
+            {
+                var cache = item;
+                item=value;
+                ItemChanged?.Invoke(this, cache);
+            }
         }
         /// <summary>
         /// Количество предметов в слоте.
@@ -61,6 +66,8 @@ namespace Creatures.Player.Inventory
                 }
             }
         }
+
+        public event EventHandler<BasicItemConfiguration> ItemChanged;
 
         /// <summary>
         /// Очищает слот от предметов.

@@ -96,7 +96,8 @@ public class PocketCraftUI : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Debug.Log(_currentRecipe);
-            _currentRecipe.Craft(_playerInventory);
+            _currentRecipe.Craft(_playerInventory, out int slot);
+            if (slot != -1) _playerInventory.SelectedInventorySlot = slot;
             gameObject.SetActive(false);
             _playerBehaviour.SwitchState<IdlePlayerState>();
         }

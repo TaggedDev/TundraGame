@@ -53,13 +53,13 @@ namespace Creatures.Player.Behaviour
             set
             {
                 _currentSlotIndex = value;
-                SelectedItemChanged?.Invoke(this, null);    
+                SelectedItemChanged?.Invoke(this, value);    
             } 
         }
 
         internal RecipesListConfig RecipesList => recipesList;
 
-        public event EventHandler SelectedItemChanged;
+        public event EventHandler<int> SelectedItemChanged;
 
         // Start is called before the first frame update
         void Start()
@@ -70,7 +70,13 @@ namespace Creatures.Player.Behaviour
         private void Init()
         {
             Inventory = new InventoryContainer();
+            Inventory.ContentChanged += CheckItemChange;
             _playerBehaviour = GetComponent<PlayerBehaviour>();
+        }
+
+        private void CheckItemChange(object sender, ItemChangeArgs e)
+        {
+            if (e.PreviousItem != (sender as Slot).Item) SelectedItemChanged?.Invoke(this, e.SlotID);
         }
 
         // Update is called once per frame
@@ -82,14 +88,14 @@ namespace Creatures.Player.Behaviour
                 if (ItemPickingProgress > ItemPickingUpTime)
                 {
                     PickItemUp();
-                    SelectedItemChanged?.Invoke(this, null);
+                    SelectedItemChanged?.Invoke(this, _currentSlotIndex);
                 }
             }
             else ItemPickingProgress = 0f;
             if (Input.GetKeyDown(KeyCode.Q) && !Input.GetKey(KeyCode.LeftControl))
             {
                 ThrowItemAway();
-                SelectedItemChanged?.Invoke(this, null);
+                SelectedItemChanged?.Invoke(this, _currentSlotIndex);
             }
         }
 

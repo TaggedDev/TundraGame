@@ -130,7 +130,7 @@ namespace Creatures.Player.States
                 if (PlayerProperties.CurrentHealth < 0) PlayerProperties.CurrentHealth = 0;
             }
         }
-        protected virtual void InventorySelectedSlotChanged(object sender, EventArgs e)
+        protected virtual void InventorySelectedSlotChanged(object sender, int e)
         {
             if (PlayerInventory.SelectedItem is PlaceableItemConfiguration)
                 PlayerStateSwitcher.SwitchState<BuildingPlayerState>();
