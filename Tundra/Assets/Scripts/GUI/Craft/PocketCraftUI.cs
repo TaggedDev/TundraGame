@@ -1,5 +1,6 @@
 ﻿using Creatures.Player.Behaviour;
 using Creatures.Player.Crafts;
+using Creatures.Player.States;
 using JetBrains.Annotations;
 using System;
 using System.Collections;
@@ -12,6 +13,7 @@ using UnityEngine.UI;
 public class PocketCraftUI : MonoBehaviour
 {
     private PlayerInventory _playerInventory;
+    private PlayerBehaviour _playerBehaviour;
     private CraftHelper _craftHelper;
     private RecipeCofiguration[] _basicRecipes;
     private int _selectedRecipe;
@@ -40,38 +42,6 @@ public class PocketCraftUI : MonoBehaviour
         }
     }
 
-    private void SelectedRecipeIndexChanged()
-    {
-        // Set rotation to selection segment.
-        float rot = SelectedRecipe * -90;
-        _segmentHolder.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, rot));
-        // Find current recipe.
-        _currentRecipe = _basicRecipes[_selectedRecipe];
-        // Calculate helper variables to generate recipe tiles on the screen.
-        int items = _currentRecipe.RequiredItems.Count;
-        Rect indicatorRect = (recipeIndicatorPrefab.transform as RectTransform).rect;
-        float indicHeights = items * indicatorRect.height;
-        float spacings = recipeSpacing * (items - 1);
-        float totalSpacing = (indicHeights + spacings) * 0.5f;
-        // Remove old recipe tiles.
-        if (_recipeParts != null)
-            foreach (var part in _recipeParts)
-            {
-                Destroy(part);
-            }
-        // Create new recipe tiles.
-        _recipeParts = new GameObject[items];
-        for (int i = 0; i < items; i++)
-        {
-            var rec = Instantiate(recipeIndicatorPrefab, _centerCircle);
-            _recipeParts[i] = rec;
-            rec.transform.localPosition = new Vector3(-indicatorRect.width / 2, (indicatorRect.height + recipeSpacing) * i - totalSpacing + indicatorRect.height / 2);
-            var image = rec.GetComponent<Image>();
-            image.sprite = _currentRecipe.RequiredItems[i].Item.Icon;
-            rec.GetComponentInChildren<Text>().text = "x" + _currentRecipe.RequiredItems[i].Amount;
-        }
-    }
-
     // Start is called before the first frame update
     void Start()
     {
@@ -79,6 +49,7 @@ public class PocketCraftUI : MonoBehaviour
         GameObject player = UIController._rootCanvas.GetComponent<UIController>()._player;
         _craftHelper = CraftHelper.Instance;
         _playerInventory = player.GetComponent<PlayerInventory>();
+        _playerBehaviour = player.GetComponent<PlayerBehaviour>();
         if (!_craftHelper.AreAllRecipesLoaded) _craftHelper.ResetRecipes(_playerInventory.RecipesList);
         _basicRecipes = _craftHelper.BasicRecipes.OrderBy(x => x.name).ToArray();
         _segmentHolder = transform.Find("ElementSelectionCircle").Find("SegmentHolder").gameObject;
@@ -126,6 +97,8 @@ public class PocketCraftUI : MonoBehaviour
         {
             Debug.Log(_currentRecipe);
             _currentRecipe.Craft(_playerInventory);
+            gameObject.SetActive(false);
+            _playerBehaviour.SwitchState<IdlePlayerState>();
         }
         // Colorize recipe tiles in order to recipe state: selected, unselected or unavailable. 
         for (int i = 0; i < _basicRecipes.Length; i++)
@@ -135,6 +108,38 @@ public class PocketCraftUI : MonoBehaviour
             else if (_basicRecipes[i].CheckIfAvailable(null, _playerInventory)) c = Color.gray;
             else c = new Color(0.25f, 0.25f, 0.25f);
             _recipeImages[i].color = _recipeTexts[i].color = c;
+        }
+    }
+
+    private void SelectedRecipeIndexChanged()
+    {
+        // Set rotation to selection segment.
+        float rot = SelectedRecipe * -90;
+        _segmentHolder.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, rot));
+        // Find current recipe.
+        _currentRecipe = _basicRecipes[_selectedRecipe];
+        // Calculate helper variables to generate recipe tiles on the screen.
+        int items = _currentRecipe.RequiredItems.Count;
+        Rect indicatorRect = (recipeIndicatorPrefab.transform as RectTransform).rect;
+        float indicHeights = items * indicatorRect.height;
+        float spacings = recipeSpacing * (items - 1);
+        float totalSpacing = (indicHeights + spacings) * 0.5f;
+        // Remove old recipe tiles.
+        if (_recipeParts != null)
+            foreach (var part in _recipeParts)
+            {
+                Destroy(part);
+            }
+        // Create new recipe tiles.
+        _recipeParts = new GameObject[items];
+        for (int i = 0; i < items; i++)
+        {
+            var rec = Instantiate(recipeIndicatorPrefab, _centerCircle);
+            _recipeParts[i] = rec;
+            rec.transform.localPosition = new Vector3(-indicatorRect.width / 2, (indicatorRect.height + recipeSpacing) * i - totalSpacing + indicatorRect.height / 2);
+            var image = rec.GetComponent<Image>();
+            image.sprite = _currentRecipe.RequiredItems[i].Item.Icon;
+            rec.GetComponentInChildren<Text>().text = "x" + _currentRecipe.RequiredItems[i].Amount;
         }
     }
 }
