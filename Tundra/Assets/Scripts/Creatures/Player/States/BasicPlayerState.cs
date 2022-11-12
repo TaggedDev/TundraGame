@@ -268,6 +268,7 @@ namespace Creatures.Player.States
             PlayerProperties.CurrentStarvePoints += food.Calories;
             PlayerInventory.Inventory.Slots[PlayerInventory.SelectedInventorySlot].RemoveItems(1);
             PlayerProperties.IsHoldingFood = false;
+            PlayerInventory.ItemHolder.ResetMesh();
         }
     }
 }
