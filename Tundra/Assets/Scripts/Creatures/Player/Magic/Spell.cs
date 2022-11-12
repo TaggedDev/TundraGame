@@ -1,50 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using UnityEngine;
-using UnityEngine.Rendering.PostProcessing;
 
 namespace Creatures.Player.Magic
 {
+    /// <summary>
+    /// A base class of all spells. It provides functionality to spell initializaton logic.
+    /// </summary>
     public abstract class Spell
     {
-        private MagicElement allowedElements;
-        private readonly int descFormulaLength;
+        private readonly int _descFormulaLength;
 
-        internal static List<Type> allSpells;
+        private static List<Type> s_allSpells;
 
-        public MagicElement AllowedMagicElements => allowedElements;
+        public MagicElement AllowedMagicElements { get; }
 
         public GameObject Caster { get; protected set; }
 
         static Spell()
         {
             var spellType = typeof(Spell);
-            allSpells = (from type in Assembly.GetExecutingAssembly().GetTypes()
+            s_allSpells = (from type in Assembly.GetExecutingAssembly().GetTypes()
                          where spellType.IsAssignableFrom(type) && type != typeof(Spell)
                          select type).ToList();
         }
 
         public Spell()
         {
-            allowedElements = GetType().GetCustomAttribute<ElementRestrictionsAttribute>().UsedElements;
-            descFormulaLength = GetType().GetCustomAttribute<SpellAttribute>().Elements.Length;
+            AllowedMagicElements = GetType().GetCustomAttribute<ElementRestrictionsAttribute>().UsedElements;
+            _descFormulaLength = GetType().GetCustomAttribute<SpellAttribute>().Elements.Length;
         }
 
+        /// <summary>
+        /// Checks if spell valid with given formula.
+        /// </summary>
+        /// <param name="elements">List of elements to check.</param>
+        /// <returns></returns>
         protected bool CheckValidity(List<MagicElement> elements)
         {
             var desc = GetType().GetCustomAttribute<SpellAttribute>();
             if (desc == null) return false;
-            if (elements.Take(descFormulaLength).SequenceEqual(desc.Elements))
+            if (elements.Take(_descFormulaLength).SequenceEqual(desc.Elements))
             {
-                if (elements.Skip(descFormulaLength).All(x => allowedElements.HasFlag(x))) return true;
+                if (elements.Skip(_descFormulaLength).All(x => AllowedMagicElements.HasFlag(x))) return true;
             }
             return false;
         }
@@ -57,8 +57,8 @@ namespace Creatures.Player.Magic
         /// <returns>List of spells which formula can be compatible with given filter.</returns>
         public static List<Type> FindSpellTypes(List<MagicElement> filter, List<Type> spells = null)
         {
-            if (filter == null) return allSpells;
-            spells = spells ?? allSpells;
+            if (filter == null) return s_allSpells;
+            spells = spells ?? s_allSpells;
             var selectedTypes = (from x in spells
                                  let desc = x.GetCustomAttribute<SpellAttribute>()
                                  let constraints = x.GetCustomAttribute<ElementRestrictionsAttribute>()
@@ -75,7 +75,7 @@ namespace Creatures.Player.Magic
         public virtual void Build(List<MagicElement> elements)
         {
             if (!CheckValidity(elements)) throw new ArgumentException("Some of elements are prohibited for this spell!", nameof(elements));
-            var reagents = elements.Skip(descFormulaLength);
+            var reagents = elements.Skip(_descFormulaLength);
             if (reagents.Count() == 0) return;
             foreach (var prop in GetType().GetProperties())
             {

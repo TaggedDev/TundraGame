@@ -4,22 +4,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A script to control Wave spell.
+/// </summary>
 public class WaveScript : SpellScript<WaveSpell>
 {
-    private const float speedModifier = 5;
+    private const float SpeedModifier = 5;
     private float _startSize;
     private float _lifeTime;
     private Rigidbody _rb;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         _startSize = transform.localScale.x;
         _rb = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         float coefficient = Time.deltaTime;
         _lifeTime += coefficient;
@@ -27,7 +28,7 @@ public class WaveScript : SpellScript<WaveSpell>
         {
             Destroy(gameObject);
         }
-        _rb.AddForce(coefficient*speedModifier*transform.forward.normalized);
+        _rb.AddForce(coefficient*SpeedModifier*transform.forward.normalized);
         transform.localScale = new Vector3(
             (float)(_startSize * _lifeTime * Configuration.WaveStartSize), 
             transform.localScale.y, 

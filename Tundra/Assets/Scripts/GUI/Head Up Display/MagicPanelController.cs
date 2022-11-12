@@ -33,8 +33,7 @@ public class MagicPanelController : MonoBehaviour
     private readonly List<GameObject> _bookSheets = new List<GameObject>();
     private readonly List<Image> _sheetIcons = new List<Image>();
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         GameObject player = UIController._rootCanvas.GetComponent<UIController>()._player;
         _playerMagic = player.GetComponent<PlayerMagic>();
@@ -59,6 +58,9 @@ public class MagicPanelController : MonoBehaviour
         SwitchVisibility(null, null);
     }
 
+    /// <summary>
+    /// Sets elements icon of this controller.
+    /// </summary>
     private void SetElements()
     {
         for (int i = 0; i < _elements.Count; i++)
@@ -68,7 +70,6 @@ public class MagicPanelController : MonoBehaviour
                 //That was hard to get natural number of element when it has number associated with binary field.
                 var icon = _elements[i].transform.Find("ElementIcon").gameObject.GetComponent<Image>();
                 icon.sprite = elementIcons[1 + (int)Math.Log((int)_currentMagicBook.MagicElements[i].Element, 2)];
-                //bool allowed = _playerMagic.AllowedElements.HasFlag(_currentMagicBook.MagicElements[i].Element);
                 bool allowed = true;
                 _elements[i].GetComponent<Button>().interactable = allowed;
                 icon.color = allowed ? Color.white : new Color(0.5f, 0.5f, 0.5f, 0.5f);
@@ -82,6 +83,9 @@ public class MagicPanelController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sets sheets icons to this controller.
+    /// </summary>
     private void SetSheets()
     {
         foreach (var sheet in _bookSheets)
@@ -114,19 +118,22 @@ public class MagicPanelController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Switches visibility of a panel.
+    /// </summary>
     private void SwitchVisibility(object sender, EventArgs e)
     {
         _elementsPanel.SetActive(_playerMagic.IsSpellingPanelOpened);
     }
 
-    
-
+    /// <summary>
+    /// Handles user click on element.
+    /// </summary>
+    /// <param name="source"></param>
     public void OnElementClicked(GameObject source)
     {
-        print("Click!");
         int index = _elements.IndexOf(source);
         _playerMagic.AddElement(index);
-        print($"Id: {index}");
         SetElements();
     }
 
@@ -174,7 +181,6 @@ public class MagicPanelController : MonoBehaviour
                 }
                 else
                 {
-                    //bool allowed = _playerMagic.AllowedElements.HasFlag(_currentMagicBook.MagicElements[i].Element);
                     bool allowed = true;
                     icon.color = allowed ? Color.white : new Color(0.5f, 0.5f, 0.5f, 0.5f);
                 }

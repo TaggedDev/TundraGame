@@ -1,35 +1,37 @@
 ﻿using Creatures.Player.Behaviour;
 using Creatures.Player.Magic;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Script to control crystal channel spell.
+/// </summary>
 public class CrystalChannelScript : SpellScript<CrystalChannelSpell>
 {
-    private const double time = 10;
+    private const double Time = 10;
     private double _lifeTime;
-    private PlayerProperties props;
-    // Start is called before the first frame update
-    void Start()
+    private PlayerProperties _props;
+
+
+    private void Start()
     {
-        props = Configuration.Caster.GetComponent<PlayerProperties>();
-        props.CurrentSpeed *= (float)Configuration.MovementFineCoefficient;
+        _props = Configuration.Caster.GetComponent<PlayerProperties>();
+        _props.CurrentSpeed *= (float)Configuration.MovementFineCoefficient;
     }
 
-    // Update is called once per frame
-    void Update()
+    
+    private void Update()
     {
         gameObject.transform.position = Configuration.Caster.transform.position;
-        double coefficient = Time.deltaTime;
+        double coefficient = UnityEngine.Time.deltaTime;
         _lifeTime += coefficient;
-        if (_lifeTime >= time)
+        if (_lifeTime >= Time)
         {
             Destroy(gameObject);
-            props.CurrentSpeed /= (float)Configuration.MovementFineCoefficient;
+            _props.CurrentSpeed /= (float)Configuration.MovementFineCoefficient;
         }
         // Heals player
-        props.CurrentHealth += (float)(Configuration.Regeneration * coefficient);
-        if (props.CurrentHealth > props.MaxHealth) props.CurrentHealth = props.MaxHealth;
+        _props.CurrentHealth += (float)(Configuration.Regeneration * coefficient);
+        if (_props.CurrentHealth > _props.MaxHealth) _props.CurrentHealth = _props.MaxHealth;
         //TODO: deal damage to enemy which attacks player.
     }
 }

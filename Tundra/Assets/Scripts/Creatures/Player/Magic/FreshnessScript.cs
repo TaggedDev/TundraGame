@@ -4,34 +4,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A script to control freshness spell.
+/// </summary>
 public class FreshnessScript : SpellScript<FreshnessSpell>
 {
-    const double time = 10;
+    const double Time = 10;
     double _lifeTime;
-    private PlayerProperties props;
+    private PlayerProperties _props;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        props = Configuration.Caster.GetComponent<PlayerProperties>();
-        props.CurrentSpeed *= (float)Configuration.PlayerSpeedCoefficient;
+        _props = Configuration.Caster.GetComponent<PlayerProperties>();
+        _props.CurrentSpeed *= (float)Configuration.PlayerSpeedCoefficient;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         gameObject.transform.position = Configuration.Caster.transform.position;
-        double coefficient = Time.deltaTime;
+        double coefficient = UnityEngine.Time.deltaTime;
         _lifeTime += coefficient;
-        if (_lifeTime >= time)
+        if (_lifeTime >= Time)
         {
             Destroy(gameObject);
-            props.CurrentSpeed /= (float)Configuration.PlayerSpeedCoefficient;
+            _props.CurrentSpeed /= (float)Configuration.PlayerSpeedCoefficient;
         }
         // Heals player
-        props.CurrentHealth += (float)(Configuration.RegenerationCoefficient * coefficient);
-        if (props.CurrentHealth > props.MaxHealth) props.CurrentHealth = props.MaxHealth;
-        props.CurrentWarmLevel += (float)(Configuration.PlayerWarmCoefficient * coefficient);
-        if (props.CurrentWarmLevel > props.MaxWarmLevel) props.CurrentWarmLevel = props.MaxWarmLevel;
+        _props.CurrentHealth += (float)(Configuration.RegenerationCoefficient * coefficient);
+        if (_props.CurrentHealth > _props.MaxHealth) _props.CurrentHealth = _props.MaxHealth;
+        _props.CurrentWarmLevel += (float)(Configuration.PlayerWarmCoefficient * coefficient);
+        if (_props.CurrentWarmLevel > _props.MaxWarmLevel) _props.CurrentWarmLevel = _props.MaxWarmLevel;
     }
 }
