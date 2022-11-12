@@ -74,6 +74,7 @@ namespace Creatures.Player.States
 
         public override void Start()
         {
+            PlayerProperties.CurrentCircleBarFillingTime = 0f;
             PlayerMovement.CanSprint = true;
             PlayerAnimation.SwitchAnimation("Idle");
         }
