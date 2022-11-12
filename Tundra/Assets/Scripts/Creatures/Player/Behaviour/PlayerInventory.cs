@@ -6,6 +6,9 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace Creatures.Player.Behaviour
 {
+    /// <summary>
+    /// Class that handles player's inventory logic.
+    /// </summary
     [RequireComponent(typeof(SphereCollider))]
     [RequireComponent(typeof(PlayerBehaviour))]
     public class PlayerInventory : MonoBehaviour
@@ -17,6 +20,9 @@ namespace Creatures.Player.Behaviour
         private PlayerBehaviour _playerBehaviour;
         private int _lastSlotIndex = 0;
 
+        /// <summary>
+        /// Player inventory contatiner instance.
+        /// </summary>
         public InventoryContainer Inventory
         {
             get
@@ -27,6 +33,9 @@ namespace Creatures.Player.Behaviour
             private set => inventory = value;
         }
 
+        /// <summary>
+        /// Item in selected slot.
+        /// </summary>
         public BasicItemConfiguration SelectedItem
         {
             get
@@ -44,8 +53,7 @@ namespace Creatures.Player.Behaviour
 
         public int SelectedInventorySlot { get; set; }
 
-        // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
             if (inventory == null) Init();
         }
@@ -56,8 +64,7 @@ namespace Creatures.Player.Behaviour
             _playerBehaviour = GetComponent<PlayerBehaviour>();
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if (Input.GetKey(KeyCode.E) && !Input.GetKey(KeyCode.LeftControl) && NearestInteractableItem != null)
             {
@@ -74,38 +81,30 @@ namespace Creatures.Player.Behaviour
             }
         }
 
-        private void CheckNearestInteractableItem(GameObject test)
+        /// <summary>
+        /// Checks item if it's interactable now.
+        /// </summary>
+        /// <param name="itemBehaviour">Item to test.</param>
+        private void CheckNearestInteractableItem(DroppedItemBehaviour itemBehaviour)
         {
-            var itemBehaviour = test.GetComponent<DroppedItemBehaviour>();
             if (itemBehaviour == null || itemBehaviour.IsThrown) return;
             float oldDistance = NearestInteractableItemDistance;
             float currentDistance = Vector3.Distance(transform.position, transform.position);
             if (currentDistance < oldDistance || oldDistance == -1)
             {
-                ResetNearestItem(test);
-                Debug.Log($"Updated object to {test}");
+                ResetNearestItem(itemBehaviour.gameObject);
+                Debug.Log($"Updated object to {itemBehaviour}");
             }
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.CompareTag("Item"))
-            {
-                CheckNearestInteractableItem(other.gameObject);
-            }
-        }
-
-        private void OnTriggerStay(Collider other)
-        {
-            if (other.gameObject.CompareTag("Item"))
-            {
-                CheckNearestInteractableItem(other.gameObject);
-            }
+            CheckNearestInteractableItem(other.gameObject.GetComponent<DroppedItemBehaviour>());
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.gameObject.CompareTag("Item") && NearestInteractableItem == other)
+            if (NearestInteractableItem == other)
             {
                 ResetNearestItem(null);
                 Debug.Log("Removed item object from this");
