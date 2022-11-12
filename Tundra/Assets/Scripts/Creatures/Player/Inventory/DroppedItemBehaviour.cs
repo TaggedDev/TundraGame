@@ -11,20 +11,17 @@ namespace Creatures.Player.Inventory
         [SerializeField] private MeshRenderer materials;
         [SerializeField] private Vector3 handedRotation;
         [SerializeField] private Vector3 handedScale;
-        
-        [SerializeField]
-        private BasicItemConfiguration _associatedItem;
-        [SerializeField]
-        private int droppedItemsAmount;
-        [SerializeField]
-        private bool isThrown;
-
+        [SerializeField] private BasicItemConfiguration _associatedItem;
+        [SerializeField] private int droppedItemsAmount;
+        [SerializeField] private bool isThrown;
         private Rigidbody _rigidbody;
-
+        
+        public MeshFilter Model { get => model; set => model = value; }
+        public MeshRenderer Materials { get => materials; set => materials = value; }
+        public Vector3 HandedRotation { get => handedRotation; set => handedRotation = value; }
+        public Vector3 HandedScale { get => handedScale; set => handedScale = value; }
         public BasicItemConfiguration AssociatedItem { get => _associatedItem; private set => _associatedItem=value; }
-
         public int DroppedItemsAmount { get => droppedItemsAmount; private set => droppedItemsAmount=value; }
-
         public bool IsThrown { get => isThrown; set => isThrown = value; }
 
         private void Start()

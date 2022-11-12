@@ -1,6 +1,7 @@
 ﻿using Creatures.Player.Behaviour;
 using UnityEngine;
 using System;
+using Creatures.Player.Inventory;
 using Creatures.Player.Inventory.ItemConfiguration;
 using GUI.GameplayGUI;
 
@@ -206,7 +207,6 @@ namespace Creatures.Player.States
 
         public virtual void OnPlayerSelectedItemChanged(PlayerInventory inventory)
         {
-            
             // If the selected item is a building item -> switch to building state 
             if (inventory.SelectedItem is PlaceableItemConfiguration)
             {
@@ -224,13 +224,18 @@ namespace Creatures.Player.States
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
                 PlayerInventory.ItemHolder.ResetMesh();
             }
-            // Otherwise display selected item mesh and materials
+            // Selected item is not null -> show it in hands 
             else
             {
-                PlayerInventory.ItemHolder.SetNewMesh(inventory.SelectedItem);
+                var item = inventory.SelectedItem.ItemInWorldPrefab.GetComponent<DroppedItemBehaviour>();
+                PlayerInventory.ItemHolder.SetNewMesh(item.HandedScale,
+                    Quaternion.Euler(item.HandedRotation),
+                    item.Model, 
+                    item.Materials);
+                //PlayerInventory.ItemHolder.SetNewMesh(inventory.SelectedItem);
             }
         }
-        
+
         /// <summary>
         /// Consumes the equipped food and applies effects
         /// </summary>
