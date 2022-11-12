@@ -26,12 +26,14 @@ namespace Creatures.Player.States
         {
             if (Input.GetMouseButton(0))
             {
+                Debug.Log(PlayerProperties.MaxCircleBarFillingTime);
                 // Check if we are trying to eat something that is not food
                 if (!PlayerProperties.IsHoldingFood)
                     PlayerProperties.IsHoldingFood = CheckWhetherSelectedItemIsFood();
 
                 if (PlayerProperties.IsHoldingFood)
                 {
+                    PlayerProperties.MaxCircleBarFillingTime = PlayerProperties.MaxCircleFillingTime_EATING;
                     PlayerAnimation.SwitchAnimation("Eat");
                     PlayerProperties.FoodConsumingTimeLeft -= Time.deltaTime;
                     if (PlayerProperties.FoodConsumingTimeLeft <= 0)
@@ -41,6 +43,10 @@ namespace Creatures.Player.States
                         PlayerAnimation.SwitchAnimation("Walk");
                         PlayerAnimation.SwitchAnimation("Not eating");
                     }
+                }
+                else
+                {
+                    PlayerProperties.MaxCircleBarFillingTime = PlayerProperties.MaxCircleFillingTime_ATTACK;
                 }
             }
 

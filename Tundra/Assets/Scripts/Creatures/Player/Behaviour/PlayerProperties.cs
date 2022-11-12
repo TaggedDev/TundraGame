@@ -8,6 +8,9 @@ namespace Creatures.Player.Behaviour
     /// </summary>
     public class PlayerProperties : MonoBehaviour
     {
+        public const float MaxCircleFillingTime_EATING = 1f;
+        public const float MaxCircleFillingTime_ATTACK = .5f;
+        
         /// <summary>
         /// Maximal starvation capacity.
         /// </summary>
@@ -143,7 +146,7 @@ namespace Creatures.Player.Behaviour
         /// <summary>
         /// Maximum value for the circle bar above the player
         /// </summary>
-        public float MaxCircleBarFillingTime => maxCircleBarFillingTime;
+        public float MaxCircleBarFillingTime { get; set; }
         /// <summary>
         /// Current value for the circle bar above the player
         /// </summary>
