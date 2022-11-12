@@ -5,7 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using UnityEngine;
 
 /// <summary>
@@ -37,9 +36,9 @@ public class PlayerMagic : MonoBehaviour
     /// </summary>
     public bool IsSpellingPanelOpened
     {
-        get 
-        { 
-            return _isSpellingPanelOpened; 
+        get
+        {
+            return _isSpellingPanelOpened;
         }
         private set
         {
@@ -67,7 +66,7 @@ public class PlayerMagic : MonoBehaviour
     /// En event which invokes when spell is cast.
     /// </summary>
     public event EventHandler<Spell> SpellCast;
-    
+
 
     private void Start()
     {

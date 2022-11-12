@@ -1,6 +1,4 @@
 ﻿using Creatures.Player.Inventory;
-using System.Data;
-using System.Numerics;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
