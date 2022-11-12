@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GUI
+namespace GUI.HeadUpDisplay
 {
     /// <summary>
     /// This class manages circle bar above the player

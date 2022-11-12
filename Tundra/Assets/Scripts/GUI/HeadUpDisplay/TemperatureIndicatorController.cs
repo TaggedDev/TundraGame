@@ -1,16 +1,15 @@
-﻿using Creatures.Player.Behaviour;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using Creatures.Player.Behaviour;
 using UnityEngine;
 
-namespace GUI
+namespace GUI.HeadUpDisplay
 {
-    public class StarvationbarController : MonoBehaviour
+    public class TemperatureIndicatorController : MonoBehaviour
     {
+
         // Properties
         /// <summary>
-        /// Ссылка на компонент, отвечающий за голод игрока.
+        /// Ссылка на компонент, отвечающий за температуру игрока.
         /// </summary>
         private PlayerProperties PlayerProperties => _player.GetComponent<PlayerProperties>();
 
@@ -30,12 +29,12 @@ namespace GUI
 
         // Private fields
         /// <summary>
-        /// Трансформация основной полоски для отображения голода.
+        /// Трансформация основной полоски для отображения температуры.
         /// </summary>
         private RectTransform _indicator;
 
         /// <summary>
-        /// Величина, к которой будет стремиться полоска голода.
+        /// Величина, к которой будет стремиться полоска температуры.
         /// </summary>
         private float _targetScale;
         /// <summary>
@@ -45,18 +44,18 @@ namespace GUI
 
 
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
             UIController controller = UIController._rootCanvas.GetComponent<UIController>();
             _player = controller._player;
-            _indicator = transform.Find("StarvationBarInner") as RectTransform;
+            _indicator = transform.Find("HeatBarInner") as RectTransform;
             _currentScale = _indicator.localScale.x;
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
-            _targetScale = PlayerProperties.CurrentStarvePoints / PlayerProperties.MaxStarvePoints;
+            _targetScale = PlayerProperties.CurrentWarmthPoints / PlayerProperties.MaxWarmthPoints;
             float deltaScaleValue = (float)Math.Round((_targetScale - _currentScale), 3) * animationSpeedModifier * Time.deltaTime;
             if (Math.Abs(deltaScaleValue) < 0.00002)
             {
@@ -68,3 +67,4 @@ namespace GUI
         }
     }
 }
+

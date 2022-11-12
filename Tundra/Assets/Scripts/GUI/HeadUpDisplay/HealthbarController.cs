@@ -1,13 +1,8 @@
-﻿using Creatures.Player.Behaviour;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using Creatures.Player.Behaviour;
 using UnityEngine;
 
-using UnityEngine.UIElements;
-
-
-namespace GUI
+namespace GUI.HeadUpDisplay
 {
     public class HealthbarController : MonoBehaviour
     {

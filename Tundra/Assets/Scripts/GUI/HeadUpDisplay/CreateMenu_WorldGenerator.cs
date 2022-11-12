@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace GUI
+namespace GUI.HeadUpDisplay
 {
     public class CreateMenu_WorldGenerator : MonoBehaviour
     {
@@ -31,9 +31,7 @@ namespace GUI
                 string[] files = Directory.GetFiles(savesPath, "New World*.txt");
                 worldName = $"New World ({files.Length+1})";
             }
-            
-            
-            
+
             // Check if player didn't put value in seed placeholder
             int worldSeed;
             if (string.IsNullOrEmpty(worldSeedInput.text))
