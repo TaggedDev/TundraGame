@@ -1,9 +1,4 @@
 ﻿using Creatures.Player.Races;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Creatures.Player.Behaviour
@@ -52,7 +47,7 @@ namespace Creatures.Player.Behaviour
         /// <summary>
         /// Total time to prepare for throw.
         /// </summary>
-        [SerializeField] private float hitPreparationTime;
+        [SerializeField] private float maxCircleBarFillingTime;
         /// <summary>
         /// Player character race.
         /// </summary>
@@ -106,10 +101,7 @@ namespace Creatures.Player.Behaviour
         /// Internal field for the current player stamina.
         /// </summary>
         private float _currentStaminaPoints;
-        /// <summary>
-        /// Time of preparing for the hit.
-        /// </summary>
-        private float _currentHitPreparingTime;
+
         /// <summary>
         /// Internal field for the progress of the item throwing.
         /// </summary>
@@ -149,20 +141,13 @@ namespace Creatures.Player.Behaviour
         /// </summary>
         public float MaxLoadCapacity => maxLoadCapacity;
         /// <summary>
-        /// Total hit preparation time.
+        /// Maximum value for the circle bar above the player
         /// </summary>
-        public float HitPreparationTime => hitPreparationTime;
+        public float MaxCircleBarFillingTime => maxCircleBarFillingTime;
         /// <summary>
-        /// Current hit preparation progress.
+        /// Current value for the circle bar above the player
         /// </summary>
-        public float CurrentHitProgress
-        {
-            get => _currentHitPreparingTime;
-            internal set
-            {
-                _currentHitPreparingTime = value;
-            }
-        }
+        public float CurrentCircleBarFillingTime { get; set; }
         /// <summary>
         /// Current player health.
         /// </summary>
@@ -255,7 +240,7 @@ namespace Creatures.Player.Behaviour
                 absoluteTemperatureAmplitude = playerRace.AbsoluteTemperatureAmplitude;
                 throwPrepareTime = playerRace.ThrowPrepareTime;
                 maxLoadCapacity = playerRace.MaxLoadCapacity;
-                hitPreparationTime = playerRace.HitPrepareTime;
+                maxCircleBarFillingTime = playerRace.HitPrepareTime;
             }
             _currentStarvePoints = maxStarvePoints;
             currentHealthPoints = maxHealthPoints;

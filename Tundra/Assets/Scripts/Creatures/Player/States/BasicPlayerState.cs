@@ -167,17 +167,17 @@ namespace Creatures.Player.States
             {
                 if (Input.GetMouseButton(0))
                 {
-                    PlayerProperties.CurrentHitProgress += Time.smoothDeltaTime;
+                    PlayerProperties.CurrentCircleBarFillingTime += Time.smoothDeltaTime;
                 }
-                else PlayerProperties.CurrentHitProgress -= Time.deltaTime;
-                if (PlayerProperties.CurrentHitProgress < 0) PlayerProperties.CurrentHitProgress = 0;
-                if (PlayerProperties.CurrentHitProgress > PlayerProperties.HitPreparationTime)
+                else PlayerProperties.CurrentCircleBarFillingTime -= Time.deltaTime;
+                if (PlayerProperties.CurrentCircleBarFillingTime < 0) PlayerProperties.CurrentCircleBarFillingTime = 0;
+                if (PlayerProperties.CurrentCircleBarFillingTime > PlayerProperties.MaxCircleBarFillingTime)
                 {
                     PlayerBehaviour.Hit();
-                    PlayerProperties.CurrentHitProgress = 0;
+                    PlayerProperties.CurrentCircleBarFillingTime = 0;
                 }
             }
-            else PlayerProperties.CurrentHitProgress = 0;
+            else PlayerProperties.CurrentCircleBarFillingTime = 0;
         }
 
         /// <summary>
