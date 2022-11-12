@@ -68,6 +68,7 @@ namespace Creatures.Player.Inventory
             ItemsAmount = 0;
             Item = null;
         }
+        
         /// <summary>
         /// Помещает в слот указанное число предметов.
         /// </summary>
