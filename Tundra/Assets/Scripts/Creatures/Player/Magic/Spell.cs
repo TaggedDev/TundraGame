@@ -13,7 +13,7 @@ namespace Creatures.Player.Magic
     {
         private readonly int _descFormulaLength;
 
-        private static List<Type> s_allSpells;
+        private static List<Type> _allSpells;
 
         public MagicElement AllowedMagicElements { get; }
 
