@@ -16,11 +16,7 @@ public class PlayerMagic : MonoBehaviour
     /// <summary>
     /// A magic book player holds in his hand.
     /// </summary>
-    internal BookEquipmentConfiguration _book;
-    /// <summary>
-    /// Spells which are available for player.
-    /// </summary>
-    private List<Type> _availableSpells;
+    private BookEquipmentConfiguration _book;
     /// <summary>
     /// A built spell which is ready for casting.
     /// </summary>
@@ -152,7 +148,6 @@ public class PlayerMagic : MonoBehaviour
         SpellCast?.Invoke(this, _currentSpell);
         IsReadyForCasting = false;
         _currentSpell = null;
-        _availableSpells = null;
         //AllowedElements = MagicElement.All;
         DraftSpell.Clear();
         print("Spell has been casted!");
@@ -162,7 +157,7 @@ public class PlayerMagic : MonoBehaviour
     /// Gets spell prefab by its ID.
     /// </summary>
     /// <param name="id"></param>
-    /// <returns></returns>
+    /// <returns>Returns prefab of the spell object with its ID configured in editor.</returns>
     public GameObject GetSpellPrefabByID(int id)
     {
         return spellPrefabs[id];
