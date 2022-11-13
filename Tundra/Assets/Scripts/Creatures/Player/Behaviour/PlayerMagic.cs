@@ -13,10 +13,7 @@ using UnityEngine;
 public class PlayerMagic : MonoBehaviour
 {
     private bool _isSpellingPanelOpened;
-    /// <summary>
-    /// A magic book player holds in his hand.
-    /// </summary>
-    private BookEquipmentConfiguration _book;
+
     /// <summary>
     /// A built spell which is ready for casting.
     /// </summary>
@@ -54,6 +51,11 @@ public class PlayerMagic : MonoBehaviour
     public List<MagicElement> DraftSpell { get; private set; }
 
     /// <summary>
+    /// A magic book player holds in his hand.
+    /// </summary>
+    public BookEquipmentConfiguration Book { get; set; }
+
+    /// <summary>
     /// An event which invokes when panel visibilty should change.
     /// </summary>
     public event EventHandler MagicPanelVisibilityChange;
@@ -80,9 +82,9 @@ public class PlayerMagic : MonoBehaviour
         if (elementIndex < 5)
         {
             // Select current magic element slot in book.
-            MagicElementSlot slot = _book.MagicElements[elementIndex];
+            MagicElementSlot slot = Book.MagicElements[elementIndex];
             // If player can use this element, we spend his stone and add it to the current spell.
-            if (slot.CurrentStonesAmount > 0 && DraftSpell.Count < _book.FreeSheets)
+            if (slot.CurrentStonesAmount > 0 && DraftSpell.Count < Book.FreeSheets)
             {
                 slot.CurrentStonesAmount--;
                 DraftSpell.Add(slot.Element);
@@ -98,7 +100,7 @@ public class PlayerMagic : MonoBehaviour
         // We should return all spent stones to player
         foreach (var element in DraftSpell)
         {
-            MagicElementSlot slot = _book.MagicElements.FirstOrDefault(x => x.Element == element);
+            MagicElementSlot slot = Book.MagicElements.FirstOrDefault(x => x.Element == element);
             if (slot == null) continue;
             slot.CurrentStonesAmount++;
             if (slot.CurrentStonesAmount > slot.MaxStonesAmount) slot.CurrentStonesAmount = slot.MaxStonesAmount;
@@ -171,8 +173,8 @@ public class PlayerMagic : MonoBehaviour
     {
         while (true)
         {
-            if (_book != null)
-                _book.ReloadStones();
+            if (Book != null)
+                Book.ReloadStones();
             yield return new WaitForEndOfFrame();
         }
     }

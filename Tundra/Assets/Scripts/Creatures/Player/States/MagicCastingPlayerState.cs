@@ -57,7 +57,7 @@ namespace Creatures.Player.States
 
         public override void Start()
         {
-            _playerMagic._book = (BookEquipmentConfiguration)PlayerEquipment.Book;
+            _playerMagic.Book = (BookEquipmentConfiguration)PlayerEquipment.Book;
             _playerMagic.StartSpelling();
             PlayerBehaviour.gameObject.GetComponent<PlayerInventory>().UnselectItem();
         }
