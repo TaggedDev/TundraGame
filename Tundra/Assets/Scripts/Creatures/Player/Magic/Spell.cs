@@ -22,7 +22,7 @@ namespace Creatures.Player.Magic
         static Spell()
         {
             var spellType = typeof(Spell);
-            s_allSpells = (from type in Assembly.GetExecutingAssembly().GetTypes()
+            _allSpells = (from type in Assembly.GetExecutingAssembly().GetTypes()
                          where spellType.IsAssignableFrom(type) && type != typeof(Spell)
                          select type).ToList();
         }
@@ -37,7 +37,7 @@ namespace Creatures.Player.Magic
         /// Checks if spell valid with given formula.
         /// </summary>
         /// <param name="elements">List of elements to check.</param>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if the spell can be cast from this element sequence, <see langword="false"/> otherwise.</returns>
         protected bool CheckValidity(List<MagicElement> elements)
         {
             var desc = GetType().GetCustomAttribute<SpellAttribute>();
@@ -57,8 +57,8 @@ namespace Creatures.Player.Magic
         /// <returns>List of spells which formula can be compatible with given filter.</returns>
         public static List<Type> FindSpellTypes(List<MagicElement> filter, List<Type> spells = null)
         {
-            if (filter == null) return s_allSpells;
-            spells = spells ?? s_allSpells;
+            if (filter == null) return _allSpells;
+            spells = spells ?? _allSpells;
             var selectedTypes = (from x in spells
                                  let desc = x.GetCustomAttribute<SpellAttribute>()
                                  let constraints = x.GetCustomAttribute<ElementRestrictionsAttribute>()
