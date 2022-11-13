@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Creatures.Player.Magic
 {
     /// <summary>
-    /// A base class of all spells. It provides functionality to spell initializaton logic.
+    /// A base class of all spells. It provides functionality to spell initialization logic.
     /// </summary>
     public abstract class Spell
     {
@@ -50,7 +50,7 @@ namespace Creatures.Player.Magic
         }
 
         /// <summary>
-        /// Finds spells that passes <see cref="MagicElement"/> restcrictions.
+        /// Finds spells that passes <see cref="MagicElement"/> restrictions.
         /// </summary>
         /// <param name="filter">Filter to find elements with given requirements.</param>
         /// <param name="spells">List of spells to find between them. If not defined, in will find in all spells in this assembly.</param>
@@ -59,12 +59,12 @@ namespace Creatures.Player.Magic
         {
             if (filter == null) return _allSpells;
             spells = spells ?? _allSpells;
-            var selectedTypes = (from x in spells
-                                 let desc = x.GetCustomAttribute<SpellAttribute>()
-                                 let constraints = x.GetCustomAttribute<ElementRestrictionsAttribute>()
-                                 where desc.Elements.Take(filter.Count).SequenceEqual(filter) || constraints != null && filter.All(x => constraints.UsedElements.HasFlag(x))
-                                 orderby desc.Elements.Length descending
-                                 select x);
+            var selectedTypes = from x in spells
+                let desc = x.GetCustomAttribute<SpellAttribute>()
+                let constraints = x.GetCustomAttribute<ElementRestrictionsAttribute>()
+                where desc.Elements.Take(filter.Count).SequenceEqual(filter) || constraints != null && filter.All(y => constraints.UsedElements.HasFlag(y))
+                orderby desc.Elements.Length descending
+                select x;
             return selectedTypes.ToList();
         }
 
