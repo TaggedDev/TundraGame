@@ -38,7 +38,7 @@ namespace Creatures.Player.Magic
         [IncreasableProperty(-0.05, MagicElement.Magma | MagicElement.Explosion)]
         public double RegenerationCoefficient { get; set; } = 1.1;
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="Spell.Cast(GameObject, PlayerMagic)"/>
         public override void Cast(GameObject player, PlayerMagic magic)
         {
             Caster = player;

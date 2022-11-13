@@ -27,7 +27,7 @@ namespace Creatures.Player.Magic
         /// </summary>
         public double DamageCoefficient { get; set; } = 0.1;
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="Spell.Cast(GameObject, PlayerMagic)"/>
         public override void Cast(GameObject player, PlayerMagic magic)
         {
             Caster = player;
