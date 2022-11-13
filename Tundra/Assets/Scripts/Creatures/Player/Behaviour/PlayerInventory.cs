@@ -16,7 +16,7 @@ namespace Creatures.Player.Behaviour
         public static float ItemPickingUpTime => 3f;
 
         private PlayerBehaviour _playerBehaviour;
-        private int _lastSlotIndex = 0;
+        private int _lastSlotIndex;
 
         /// <summary>
         /// Player inventory contatiner instance.
@@ -80,7 +80,7 @@ namespace Creatures.Player.Behaviour
         }
 
         /// <summary>
-        /// Checks item if it's interactable now.
+        /// Checks item if it's interactable.
         /// </summary>
         /// <param name="itemBehaviour">Item to test.</param>
         private void CheckNearestInteractableItem(DroppedItemBehaviour itemBehaviour)
