@@ -129,7 +129,7 @@ public class MagicPanelController : MonoBehaviour
     /// <summary>
     /// Handles user click on element.
     /// </summary>
-    /// <param name="source"></param>
+    /// <param name="source">Element user has clicked.</param>
     public void OnElementClicked(GameObject source)
     {
         int index = _elements.IndexOf(source);
