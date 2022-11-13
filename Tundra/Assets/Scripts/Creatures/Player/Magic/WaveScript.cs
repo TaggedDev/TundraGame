@@ -28,7 +28,7 @@ public class WaveScript : SpellScript<WaveSpell>
         {
             Destroy(gameObject);
         }
-        _rb.AddForce(coefficient*SpeedModifier*transform.forward.normalized);
+        _rb.AddForce(coefficient * SpeedModifier * transform.forward.normalized);
         transform.localScale = new Vector3(
             (float)(_startSize * _lifeTime * Configuration.WaveStartSize), 
             transform.localScale.y, 
