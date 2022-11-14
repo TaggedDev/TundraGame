@@ -1,0 +1,20 @@
+{
+	"mobs":
+	[
+		{
+			"mobAvatarPath": "...",
+			"mobDescription": "Lorem ipsum",
+			"mobName": "Wolf"
+		},	
+		{
+			"mobAvatarPath": "...",
+			"mobDescription": "Lorem ipsum lorem ipsum",
+			"mobName": "Fox"
+		},
+		{
+			"mobAvatarPath": "...",
+			"mobDescription": "Lorem ipsum lorem",
+			"mobName": "Bunny"
+		}
+	]
+}
