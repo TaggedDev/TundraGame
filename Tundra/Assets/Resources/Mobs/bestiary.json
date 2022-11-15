@@ -3,9 +3,9 @@
 	[
 		{
 			"mobAvatarPath": "...",
-			"mobDescription": "Lorem ipsum",
-			"mobName": "Wolf"
-		},	
+			"mobDescription": "Lorem ipsum lorem",
+			"mobName": "Bunny"
+		},
 		{
 			"mobAvatarPath": "...",
 			"mobDescription": "Lorem ipsum lorem ipsum",
@@ -13,8 +13,8 @@
 		},
 		{
 			"mobAvatarPath": "...",
-			"mobDescription": "Lorem ipsum lorem",
-			"mobName": "Bunny"
-		}
+			"mobDescription": "Lorem ipsum",
+			"mobName": "Wolf"
+		}	
 	]
 }

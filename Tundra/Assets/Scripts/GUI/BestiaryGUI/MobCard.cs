@@ -15,10 +15,11 @@ namespace GUI.BestiaryGUI
         /// <summary>
         /// Sets the card values: avatar, title and description
         /// </summary>
-        public void SetCardValues(string mobName, string mobInformation)
+        public void SetCardValues(string mobName, string mobInformation, Sprite avatarSprite)
         {
             mobTitle.text = mobName;
             mobDescription.text = mobInformation;
+            mobAvatar.sprite = avatarSprite;
         }
     }
 }

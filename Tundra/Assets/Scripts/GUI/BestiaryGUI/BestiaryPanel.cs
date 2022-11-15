@@ -15,10 +15,14 @@ namespace GUI.BestiaryGUI
             BestiaryParser parser = new BestiaryParser(jsonFile);
             var mobs = parser.GetMobList();
 
-            foreach (var mob in mobs)
+            Sprite[] sprites = Resources.LoadAll<Sprite>("Mobs/Avatars");
+            
+            for (int i = 0; i < mobs.Length; i++)
             {
-                var card = Instantiate(mobCard, panelContent.transform);
-                card.SetCardValues(mob.mobName, mob.mobDescription);
+                BestiaryMob mob = mobs[i];
+                MobCard card = Instantiate(mobCard, panelContent.transform);
+                Sprite mobAvatar = sprites[i];
+                card.SetCardValues(mob.mobName, mob.mobDescription, mobAvatar);
             }
         }
     }
