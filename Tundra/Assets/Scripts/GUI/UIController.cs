@@ -2,29 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIController : MonoBehaviour
+namespace GUI.GameplayGUI
 {
-    static internal PocketCraftUI _pocketCraftUI;
-    static internal GameObject _rootCanvas;
-
-
-    [SerializeField] internal GameObject _player;
-
-    private void Awake()
+    public class UIController : MonoBehaviour
     {
-        _rootCanvas = gameObject;
-        _pocketCraftUI = GetComponentInChildren<PocketCraftUI>();
-        _pocketCraftUI.gameObject.SetActive(false);
-    }
+        [SerializeField] 
+        private GameObject player;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+        public static PocketCraftUI PocketCraftUI { get; set; }
+        public static CraftPanelUI CraftPanel { get; set; }
+        public static GameObject RootCanvas => RootUIInstance.gameObject;
 
-    // Update is called once per frame
-    void Update()
-    {
+        public static UIController RootUIInstance { get; private set; }
+        public GameObject Player { get => player; set => player=value; }
+
+        private void Awake()
+        {
+            RootUIInstance = this;
+            PocketCraftUI = GetComponentInChildren<PocketCraftUI>();
+            PocketCraftUI.gameObject.SetActive(false);
+        }
     }
 }

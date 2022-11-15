@@ -210,7 +210,7 @@ namespace Creatures.Player.States
                 else if (Input.GetKeyDown(KeyCode.Tab))
                 {
                     busy = true;
-                    UIController._pocketCraftUI.gameObject.SetActive(true);
+                    UIController.PocketCraftUI.gameObject.SetActive(true);
                 }
                 if (busy) PlayerStateSwitcher.SwitchState<BusyPlayerState>();
             }

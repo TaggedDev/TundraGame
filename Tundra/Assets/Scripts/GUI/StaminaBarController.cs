@@ -15,7 +15,7 @@ public class StaminaBarController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _player = UIController._rootCanvas.GetComponent<UIController>()._player;
+        _player = UIController.RootCanvas.GetComponent<UIController>()._player;
         imageComponent = GetComponent<Image>();
         playerProperties = _player.GetComponent<PlayerProperties>();
     }

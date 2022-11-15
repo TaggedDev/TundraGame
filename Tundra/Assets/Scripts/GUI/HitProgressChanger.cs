@@ -15,7 +15,7 @@ public class HitProgressChanger : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _player = UIController._rootCanvas.GetComponent<UIController>()._player;
+        _player = UIController.RootCanvas.GetComponent<UIController>()._player;
         _playerProperties = _player.GetComponent<PlayerProperties>();
     }
 

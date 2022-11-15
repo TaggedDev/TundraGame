@@ -47,7 +47,7 @@ namespace GUI
         // Start is called before the first frame update
         void Start()
         {
-            UIController controller = UIController._rootCanvas.GetComponent<UIController>();
+            UIController controller = UIController.RootCanvas.GetComponent<UIController>();
             _player = controller._player;
             _indicator = transform.Find("StarvationBarInner") as RectTransform;
             _currentScale = _indicator.localScale.x;

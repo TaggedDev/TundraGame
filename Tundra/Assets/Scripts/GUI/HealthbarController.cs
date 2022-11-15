@@ -65,7 +65,7 @@ namespace GUI
         void Start()
         {
             //Инициализируем некоторые значения.
-            UIController controller = UIController._rootCanvas.GetComponent<UIController>();
+            UIController controller = UIController.RootCanvas.GetComponent<UIController>();
             _rootCanvas = controller.GetComponent<Canvas>();
             _player = controller._player;
             _indicator = transform.Find("HealthBarInner") as RectTransform;
