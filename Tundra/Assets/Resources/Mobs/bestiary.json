@@ -2,19 +2,19 @@
 	"mobs":
 	[
 		{
-			"mobAvatarPath": "...",
 			"mobDescription": "Lorem ipsum lorem",
-			"mobName": "Bunny"
+			"mobName": "Bunny",
+			"isKilled": false
 		},
 		{
-			"mobAvatarPath": "...",
 			"mobDescription": "Lorem ipsum lorem ipsum",
-			"mobName": "Fox"
+			"mobName": "Fox",
+			"isKilled": true
 		},
 		{
-			"mobAvatarPath": "...",
 			"mobDescription": "Lorem ipsum",
-			"mobName": "Wolf"
+			"mobName": "Wolf",
+			"isKilled": false
 		}	
 	]
 }

@@ -28,8 +28,6 @@ namespace Bestiary
             if (_mobs == null)
                 throw new Exception("No mobs found. Make sure the JSON file is uploaded or correct");
             
-            /*foreach (var mob in jsonMobs.mobs)
-             {Debug.Log($"Found mob {mob.mobName}, {mob.mobDescription}, {mob.mobAvatarPath}");}*/
             return _mobs;
         }
     }
