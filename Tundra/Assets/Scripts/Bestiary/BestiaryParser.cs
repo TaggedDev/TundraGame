@@ -1,20 +1,36 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Bestiary
 {
-    public class BestiaryParser : MonoBehaviour
+    /// <summary>
+    /// Object to parse the JSON with mob values
+    /// </summary>
+    public class BestiaryParser
     {
-        public TextAsset JSONFile;
-        public BestiaryMob[] Mobs;
+        private TextAsset _JSONfile;
+        private BestiaryMob[] _mobs;
 
-        private void Start()
+        public BestiaryParser(TextAsset jsonFile)
         {
-            BestiaryMobs jsonMobs = JsonUtility.FromJson<BestiaryMobs>(JSONFile.text);
-            Mobs = jsonMobs.mobs;
-            foreach (var mob in jsonMobs.mobs)
-            {
-                Debug.Log($"Found mob {mob.mobName}, {mob.mobDescription}, {mob.mobAvatarPath}");   
-            }
+            _JSONfile = jsonFile;
+        }
+        
+        /// <summary>
+        /// Parses the JSON file passed in constructor as BestiaryMob object
+        /// </summary>
+        /// <returns>The array of mobs represented as BestiaryMob[]</returns>
+        public BestiaryMob[] GetMobList()
+        {
+            BestiaryMobs jsonMobs = JsonUtility.FromJson<BestiaryMobs>(_JSONfile.text);
+            _mobs = jsonMobs.mobs;
+
+            if (_mobs == null)
+                throw new Exception("No mobs found. Make sure the JSON file is uploaded or correct");
+            
+            /*foreach (var mob in jsonMobs.mobs)
+             {Debug.Log($"Found mob {mob.mobName}, {mob.mobDescription}, {mob.mobAvatarPath}");}*/
+            return _mobs;
         }
     }
 }
