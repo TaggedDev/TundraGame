@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace World
+namespace Bestiary
 {
     public class BestiaryParser : MonoBehaviour
     {

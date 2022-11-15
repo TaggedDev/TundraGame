@@ -1,4 +1,4 @@
-﻿namespace World
+﻿namespace Bestiary
 {
     [System.Serializable]
     public class BestiaryMobs
