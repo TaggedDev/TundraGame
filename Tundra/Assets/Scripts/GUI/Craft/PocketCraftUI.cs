@@ -52,7 +52,9 @@ namespace GUI.HeadUpDisplay
             _craftHelper = CraftHelper.Instance;
             _playerInventory = player.GetComponent<PlayerInventory>();
             _playerBehaviour = player.GetComponent<PlayerBehaviour>();
+            // TODO: remove it after adding a normal recipes loading system (in real game scene).
             if (!_craftHelper.AreAllRecipesLoaded) _craftHelper.ResetRecipes(_playerInventory.RecipesList);
+
             _basicRecipes = _craftHelper.BasicRecipes.OrderBy(x => x.name).ToArray();
             _segmentHolder = transform.Find("ElementSelectionCircle").Find("SegmentHolder").gameObject;
             _centerCircle = transform.Find("ElementSelectionCircle").Find("CenterCircle");

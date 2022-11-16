@@ -20,5 +20,11 @@ namespace Creatures.Player.Crafts
         /// List of recipes in this player configuration.
         /// </summary>
         public ReadOnlyCollection<RecipeCofiguration> Recipes => Array.AsReadOnly(recipes);
+
+        public RecipesListConfig()
+        {
+            var helper = CraftHelper.Instance;
+            if (!helper.AreAllRecipesLoaded) helper.SetConfig(this);
+        }
     }
 }

@@ -13,6 +13,8 @@ namespace Creatures.Player.Crafts
     {
         private static CraftHelper _instance;
 
+        private RecipesListConfig _config;
+
         private List<RecipeCofiguration> _allRecipes;
 
         public bool AreAllRecipesLoaded { get; private set; }
@@ -20,36 +22,59 @@ namespace Creatures.Player.Crafts
         /// <summary>
         /// Full list of recipes existing in game.
         /// </summary>
-        public IEnumerable<RecipeCofiguration> AllRecipes 
-        { 
-            get => _allRecipes;
-            internal set => _allRecipes = value.ToList(); 
+        public IEnumerable<RecipeCofiguration> AllRecipes
+        {
+            get
+            {
+                if (_allRecipes == null) ReloadRecipes();
+                return _allRecipes;
+            }
+
+            private set => _allRecipes = value.ToList();
         }
 
         /// <summary>
         /// List of bassic recipes can be crafted from pocket craft mode.
         /// </summary>
-        public IEnumerable<RecipeCofiguration> BasicRecipes => _allRecipes.Where(recipe => recipe.Workbench == null);
+        public IEnumerable<RecipeCofiguration> BasicRecipes => AllRecipes.Where(recipe => recipe.Workbench == null);
         /// <summary>
         /// Single instance of the <see cref="CraftHelper"/>.
         /// </summary>
-        public static CraftHelper Instance 
+        public static CraftHelper Instance
         {
-            get 
-            { 
-                if (_instance == null) _instance = new CraftHelper();
-                return _instance;
-            } 
+            get
+            {
+                return _instance ?? (_instance = new CraftHelper());
+            }
         }
 
         private CraftHelper()
         {
 
         }
-
+        /// <summary>
+        /// Resets recipes list.
+        /// </summary>
+        /// <param name="config"></param>
         public void ResetRecipes(RecipesListConfig config)
         {
-            _allRecipes = new List<RecipeCofiguration>(config.Recipes);
+            SetConfig(config);
+            ReloadRecipes();
+        }
+        /// <summary>
+        /// Sets a configuration of available recipes.
+        /// </summary>
+        /// <param name="config">The configuration with current recipes list.</param>
+        public void SetConfig(RecipesListConfig config)
+        {
+            _config = config;
+        }
+        /// <summary>
+        /// Reloads all recipes from the configuration if it's not done yet.
+        /// </summary>
+        public void ReloadRecipes()
+        {
+            _allRecipes = new List<RecipeCofiguration>(_config.Recipes);
             AreAllRecipesLoaded = true;
         }
 

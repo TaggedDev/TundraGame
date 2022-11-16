@@ -69,7 +69,7 @@ namespace Creatures.Player.Behaviour
             _mainCamera.transform.RotateAround(transform.position, Vector3.up, 45);
             _playerMovement.UpdateDirections();
             _playerMovement.Speed = 2f;
-            _inventoryController.SelectedItemChanged += (sender, e) => 
+            _inventoryController.SelectedItemChanged += (_, __) => 
             {
                 CurrentState.OnPlayerSelectedItemChanged(_inventoryController);
             };
@@ -122,13 +122,13 @@ namespace Creatures.Player.Behaviour
         public void SwitchState<T>() where T : BasicPlayerState
         {
             _animator.SetBool("Busy Mode", typeof(T) == typeof(BusyPlayerState));
-            var state = _allStates.FirstOrDefault(st => st is T);
+            var state = _allStates.Find(st => st is T);
             _currentState.Stop();
             state.Start();
             _currentState = state;
             _playerProperties._throwLoadingProgress = _playerProperties.ThrowPrepareTime;
             StateChanged?.Invoke(this, null);
-            Debug.Log(typeof(T).ToString());
+            //Debug.Log(typeof(T).ToString());
         }
 
         internal void Hit()
@@ -139,7 +139,7 @@ namespace Creatures.Player.Behaviour
         }
 
         /// <summary>
-        /// 
+        /// Kills player.
         /// </summary>
         private void KillPlayer()
         {

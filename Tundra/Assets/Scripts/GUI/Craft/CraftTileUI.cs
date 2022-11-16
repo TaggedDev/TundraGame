@@ -10,7 +10,7 @@ namespace GUI.HeadUpDisplay
     {
         [SerializeField]
         private GameObject recipePartIconPrefab;
-        [SerializeField] 
+        [SerializeField]
         private GameObject recipeTileIcon;
         [SerializeField]
         private GameObject recipeName;

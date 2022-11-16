@@ -1,24 +1,34 @@
 ﻿using Creatures.Player.Crafts;
 using Creatures.Player.Inventory;
+using Creatures.Player.States;
+using GUI.HeadUpDisplay;
 using System;
-using System.Data;
 using UnityEngine;
+using Vector3 = UnityEngine.Vector3;
 
 namespace Creatures.Player.Behaviour
 {
+    /// <summary>
+    /// Class that handles player's inventory logic.
+    /// </summary
+    [RequireComponent(typeof(SphereCollider))]
+    [RequireComponent(typeof(PlayerBehaviour))]
     public class PlayerInventory : MonoBehaviour
     {
         [SerializeField]
         private InventoryContainer inventory;
         [SerializeField]
         private RecipesListConfig recipesList;
-
+ 
         public static float ItemPickingUpTime => 3f;
 
         private PlayerBehaviour _playerBehaviour;
-        private int _lastSlotIndex = 0;
+        private int _lastSlotIndex;
         private int _currentSlotIndex;
 
+        /// <summary>
+        /// Player inventory contatiner instance.
+        /// </summary>
         public InventoryContainer Inventory
         {
             get
@@ -29,6 +39,9 @@ namespace Creatures.Player.Behaviour
             private set => inventory = value;
         }
 
+        /// <summary>
+        /// Item in selected slot.
+        /// </summary>
         public BasicItemConfiguration SelectedItem
         {
             get
@@ -42,60 +55,99 @@ namespace Creatures.Player.Behaviour
 
         public float NearestInteractableItemDistance => NearestInteractableItem == null ? -1 : Vector3.Distance(transform.position, NearestInteractableItem.transform.position);
 
-        public float ItemPickingProgress { get; private set; } = 0f;
+        public float ItemPickingProgress { get; private set; }
 
-        public int SelectedInventorySlot 
-        { 
+        public int SelectedInventorySlot
+        {
             get
             {
                 return _currentSlotIndex;
-            } 
+            }
             set
             {
                 _currentSlotIndex = value;
-                SelectedItemChanged?.Invoke(this, value);    
-            } 
+                SelectedItemChanged?.Invoke(this, value);
+            }
         }
 
-        internal RecipesListConfig RecipesList => recipesList;
+        public RecipesListConfig RecipesList => recipesList;
 
         public event EventHandler<int> SelectedItemChanged;
 
-        // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
             Init();
         }
 
         private void Init()
         {
-            Inventory = new InventoryContainer();
-            Inventory.ContentChanged += CheckItemChange;
+            if (inventory == null) inventory = new InventoryContainer();
             _playerBehaviour = GetComponent<PlayerBehaviour>();
         }
 
-        private void CheckItemChange(object sender, ItemChangeArgs e)
-        {
-            if (e.PreviousItem != (sender as Slot).Item) SelectedItemChanged?.Invoke(this, e.SlotID);
-        }
-
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if (Input.GetKey(KeyCode.E) && !Input.GetKey(KeyCode.LeftControl) && NearestInteractableItem != null)
             {
                 ItemPickingProgress += Time.deltaTime;
                 if (ItemPickingProgress > ItemPickingUpTime)
                 {
-                    PickItemUp();
-                    SelectedItemChanged?.Invoke(this, _currentSlotIndex);
+                    var craft = NearestInteractableItem.GetComponent<PlaceableObjectBehaviour>();
+                    if (craft != null && craft.CanBeOpened)
+                    {
+                        _playerBehaviour.SwitchState<BusyPlayerState>();
+                        UIController.CraftPanel.ShowPanel(craft.Configuration);
+                        NearestInteractableItem = null;
+                        ItemPickingProgress = 0f;
+                    }
+                    else
+                    {
+                        PickItemUp();
+                    }
                 }
             }
             else ItemPickingProgress = 0f;
             if (Input.GetKeyDown(KeyCode.Q) && !Input.GetKey(KeyCode.LeftControl))
             {
                 ThrowItemAway();
-                SelectedItemChanged?.Invoke(this, _currentSlotIndex);
+            }
+        }
+
+        /// <summary>
+        /// Checks item if it's interactable.
+        /// </summary>
+        /// <param name="item">Item to test.</param>
+        private void CheckNearestInteractableItem(GameObject item)
+        {
+            float oldDistance = NearestInteractableItemDistance;
+            float currentDistance = Vector3.Distance(transform.position, transform.position);
+            if (currentDistance < oldDistance || oldDistance == -1)
+            {
+                ResetNearestItem(item);
+            }
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            var drop = other.gameObject.GetComponent<DroppedItemBehaviour>();
+            if (drop != null)
+            {
+                if (drop.IsThrown) return;
+                CheckNearestInteractableItem(drop.gameObject);
+            }
+            else
+            {
+                var placeable = other.GetComponent<PlaceableObjectBehaviour>();
+                if (placeable != null) CheckNearestInteractableItem(placeable.gameObject);
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (NearestInteractableItem == other.gameObject)
+            {
+                ResetNearestItem(null);
+                Debug.Log("Removed item object from this");
             }
         }
 
@@ -106,7 +158,6 @@ namespace Creatures.Player.Behaviour
 
         private void PickItemUp()
         {
-            Debug.Log(_playerBehaviour);
             if (_playerBehaviour.OverweightCoefficient < 2)
             {
                 var drop = NearestInteractableItem.GetComponent<DroppedItemBehaviour>();
@@ -141,4 +192,3 @@ namespace Creatures.Player.Behaviour
         }
     }
 }
-

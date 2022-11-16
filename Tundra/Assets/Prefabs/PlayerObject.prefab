@@ -3042,6 +3042,7 @@ GameObject:
   - component: {fileID: 6591950171598838081}
   - component: {fileID: 6591950171598838080}
   - component: {fileID: 7263565232288675598}
+  - component: {fileID: 8825590541899704304}
   m_Layer: 0
   m_Name: PlayerObject
   m_TagString: Untagged
@@ -3234,6 +3235,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlacableObj: {fileID: 0}
+--- !u!135 &8825590541899704304
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4883627935292108072}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &5007356413477399336
 GameObject:
   m_ObjectHideFlags: 0

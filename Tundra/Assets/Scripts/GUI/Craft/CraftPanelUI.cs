@@ -27,7 +27,8 @@ namespace GUI.HeadUpDisplay
 
         private void Start()
         {
-
+            UIController.CraftPanel = this;
+            ClosePanel();
         }
 
         private void Update()
@@ -52,6 +53,7 @@ namespace GUI.HeadUpDisplay
         public void ShowPanel(PlaceableItemConfiguration workspace)
         {
             _currentWorkspace = workspace;
+            gameObject.SetActive(true);
             ReloadRecipesList();
         }
         /// <summary>
@@ -78,16 +80,18 @@ namespace GUI.HeadUpDisplay
             // Stage 3. Fill list with new tiles.
             _recipeTiles = new GameObject[recipes.Count()];
             int i = 0;
-            Vector3 position = new Vector3(Screen.width / 2, Screen.height);
             var rect = (recipePrefab.transform as RectTransform).rect;
+            Vector3 position = new Vector3(rect.width / 2, 0);
             foreach (var recipe in recipes)
             {
                 var tile = Instantiate(recipePrefab, contentObjectPrefab.transform);
                 _recipeTiles[i++] = tile;
                 tile.transform.position = position;
-                position.y += rect.height + 10;
+                position.y -= rect.height + 10;
                 tile.GetComponent<CraftTileUI>().SetRecipe(recipe);
             }
+            //var size = (contentObjectPrefab.transform as RectTransform).sizeDelta;
+            //(contentObjectPrefab.transform as RectTransform).sizeDelta = new Vector2(size.x, Mathf.Abs(position.y));
         }
     }
 }

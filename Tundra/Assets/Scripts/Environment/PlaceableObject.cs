@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Creatures.Player.Inventory 
 {
-    [CreateAssetMenu(menuName = "PlacableObject")]
+    [CreateAssetMenu(menuName = "PlaceableObject")]
     public class PlaceableObject : ScriptableObject
     {
         public GameObject Object;

@@ -1,4 +1,5 @@
 ﻿using Creatures.Player.Behaviour;
+using Creatures.Player.Inventory;
 using Creatures.Player.States;
 using System;
 using System.Collections;
@@ -14,6 +15,10 @@ namespace GUI.HeadUpDisplay
         private GameObject _player;
         [SerializeField]
         private Sprite _transparent;
+        [SerializeField]
+        private string pickupText;
+        [SerializeField]
+        private string openText;
         private PlayerInventory _inventoryController;
         private GameObject _pickupPanel;
         public float mouseScrollCoefficient = 10f;
@@ -21,6 +26,7 @@ namespace GUI.HeadUpDisplay
         private Image _progressBar;
         private Image[] _icons;
         private Text[] _texts;
+        private Text _pickupLabel;
 
         public int MaxSlotsNumber { get; private set; }
 
@@ -51,6 +57,7 @@ namespace GUI.HeadUpDisplay
             _pickupPanel = GameObject.Find("ItemPickupPanel");
             _inventoryController.Inventory.MaxInventoryCapacityChanging += ResetSlots;
             _progressBar = _pickupPanel.transform.Find("Progress").gameObject.GetComponent<Image>();
+            _pickupLabel = _pickupPanel.transform.Find("Text").gameObject.GetComponent<Text>();
             ResetSlots(this, _inventoryController.Inventory.MaxInventoryCapacity);
         }
 
@@ -112,6 +119,8 @@ namespace GUI.HeadUpDisplay
                 _pickupPanel.SetActive(true);
                 (_pickupPanel.transform as RectTransform).position = RectTransformUtility.WorldToScreenPoint(Camera.main, _inventoryController.NearestInteractableItem.transform.position) + new Vector2(0, 40);
                 _progressBar.fillAmount = _inventoryController.ItemPickingProgress / PlayerInventory.ItemPickingUpTime;
+                if (_inventoryController.NearestInteractableItem.GetComponent<DroppedItemBehaviour>()) _pickupLabel.text = pickupText;
+                else _pickupLabel.text = openText;
             }
         }
     }

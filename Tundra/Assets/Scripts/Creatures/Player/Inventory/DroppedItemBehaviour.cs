@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Creatures.Player;
+
 
 namespace Creatures.Player.Inventory
 {
@@ -35,47 +35,6 @@ namespace Creatures.Player.Inventory
             if (_rigidbody.velocity.sqrMagnitude <= .1f)
             {
                 isThrown = false;
-            }
-        }
-
-        private void OnCollisionEnter(Collision collision)
-        {
-            
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if (!isThrown && other.gameObject.CompareTag("Player"))
-            {
-                CheckPlayerNearestItem(other.gameObject);
-            }
-        }
-
-        private void OnTriggerStay(Collider other)
-        {
-            if (!isThrown && other.gameObject.CompareTag("Player"))
-            {
-                CheckPlayerNearestItem(other.gameObject);
-            }
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            if (other.gameObject.CompareTag("Player") && other.gameObject.GetComponent<PlayerInventory>().NearestInteractableItem == gameObject)
-            {
-                other.gameObject.GetComponent<PlayerInventory>().ResetNearestItem(null);
-                Debug.Log("Removed item object from this");
-            }
-        }
-
-        void CheckPlayerNearestItem(GameObject player)
-        {
-            float oldDistance = player.GetComponent<PlayerInventory>().NearestInteractableItemDistance;
-            float currentDistance = Vector3.Distance(player.transform.position, transform.position);
-            if (currentDistance < oldDistance || oldDistance == -1)
-            {
-                player.GetComponent<PlayerInventory>().ResetNearestItem(gameObject);
-                Debug.Log("Updated object to this");
             }
         }
 
