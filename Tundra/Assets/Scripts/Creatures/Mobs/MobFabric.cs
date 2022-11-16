@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Creatures.Player.Behaviour;
 using Environment;
+using GUI.BestiaryGUI;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -11,6 +12,8 @@ namespace Creatures.Mobs
     {
         [SerializeField] private Mob[] mobsList;
         [SerializeField] private PlayerMovement player;
+        [SerializeField] private BestiaryPanel bestiaryPanel;
+        
         private Queue<Mob> _mobsPool;
         private const int TERRAIN_LAYER_MASK = 10; 
 
@@ -32,7 +35,7 @@ namespace Creatures.Mobs
             {
                 Mob mob = Instantiate(mobObject, transform);
                 mob.transform.gameObject.SetActive(false);
-                mob.Initialise(this, player.transform);
+                mob.Initialise(this, player.transform, bestiaryPanel);
                 _mobsPool.Enqueue(mob);
             }
         }

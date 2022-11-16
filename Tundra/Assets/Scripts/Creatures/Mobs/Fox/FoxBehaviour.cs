@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Creatures.Mobs.Fox.States;
+using GUI.BestiaryGUI;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -46,11 +47,16 @@ namespace Creatures.Mobs.Fox
             }
         }
 
-        public override void Initialise(MobFabric fabric, Transform player)
+        public void Initialise(MobFabric fabric, Transform player)
         {
             Player = player;
             Fabric = fabric;
             transform.gameObject.layer = MOB_LAYER_INDEX;
+        }
+
+        public override void Initialise(MobFabric fabric, Transform player, BestiaryPanel panel)
+        {
+            throw new System.NotImplementedException();
         }
 
         public override void SpawnSelf(Vector3 position)

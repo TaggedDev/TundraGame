@@ -2034,6 +2034,7 @@ MonoBehaviour:
   mobsList:
   - {fileID: 1432031131618546664, guid: 46f8c076e7f03b249916b2871a5bae14, type: 3}
   player: {fileID: 1552789788}
+  bestiaryPanel: {fileID: 860057045}
 --- !u!1 &1368491797
 GameObject:
   m_ObjectHideFlags: 0

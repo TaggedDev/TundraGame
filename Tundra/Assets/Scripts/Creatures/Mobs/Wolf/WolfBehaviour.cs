@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Creatures.Mobs.Wolf.States;
 using Creatures.Player.Behaviour;
+using GUI.BestiaryGUI;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -14,13 +15,14 @@ namespace Creatures.Mobs.Wolf
         private const float MAX_SNIFFING_TIME = 1.2f;
         private const float MAX_ATTACK_TIME = .175f;
         
-        private MobBasicState _currentMobState;
         private List<MobBasicState> _allMobStates;
+        private MobBasicState _currentMobState;
+        private BestiaryPanel _bestiaryPanel;
 
         private float currentSniffingTime;
         private float lastAttackTimePassed;
 
-        public override void Initialise(MobFabric fabric, Transform player)
+        public override void Initialise(MobFabric fabric, Transform player, BestiaryPanel panel)
         {
             if (wolfMaw is null)
                 throw new Exception("Wolf maw object wasn't assigned");
@@ -28,6 +30,7 @@ namespace Creatures.Mobs.Wolf
             wolfMaw.Initialise(player.GetComponent<PlayerProperties>(),
                 player.GetComponent<Rigidbody>());
 
+            _bestiaryPanel = panel;
             lastAttackTimePassed = MAX_ATTACK_TIME;
             Player = player;
             Fabric = fabric;
@@ -44,10 +47,11 @@ namespace Creatures.Mobs.Wolf
             // Temporary solution to kill mob
             if (Input.GetKeyDown(KeyCode.X))
             {
+                print(CurrentMobHealth);
                 CurrentMobHealth -= 5f;
                 if (CurrentMobHealth <= 0)
                 {
-                    Fabric.ReturnToPool(this);
+                    HandleDeath();
                     return;
                 }
             }
@@ -76,6 +80,15 @@ namespace Creatures.Mobs.Wolf
                 _currentMobState.SniffForTarget();
                 currentSniffingTime = MAX_SNIFFING_TIME;
             }
+        }
+
+        /// <summary>
+        /// Handles all stuff about death: returning to pool, filling the bestiary 
+        /// </summary>
+        private void HandleDeath()
+        {
+            _bestiaryPanel.Mobs[MobIndexes.WolfIndex].isKilled = true;
+            Fabric.ReturnToPool(this);
         }
 
         public override void SpawnSelf(Vector3 position)
