@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace Creatures.Player.Inventory
 {
+    /// <summary>
+    /// A class which represents a container to store player's items.
+    /// </summary>
     public class InventoryContainer
     {
         private int maxInventoryCapacity = 4;
@@ -23,14 +26,18 @@ namespace Creatures.Player.Inventory
             }
         }
         /// <summary>
-        /// Массив слотов инвентаря. 
+        /// Массив слотов инвентаря.
         /// </summary>
         public Slot[] Slots { get; private set; }
         /// <summary>
         ///Общий суммарный вес всех предметов в инвентаре.
         /// </summary>
         public float TotalWeight => Slots.Sum(x => x.Item == null ? 0 : x.Item.Weight * x.ItemsAmount);
-
+        /// <summary>
+        /// Returns a slot with given index.
+        /// </summary>
+        /// <param name="index">Provided index.</param>
+        /// <returns></returns>
         public Slot this[int index] => Slots[index];
         /// <summary>
         /// Событие, происходящее перед изменением количества слотов в инвентаре.
@@ -69,18 +76,32 @@ namespace Creatures.Player.Inventory
             rem = 0;
             return true;
         }
-
+        /// <summary>
+        /// FInds all slots which contains item of this type.
+        /// </summary>
+        /// <param name="item">Item configuration to find slots.</param>
+        /// <returns></returns>
         public List<Slot> FindSlotsWithItem(BasicItemConfiguration item)
         {
-            List<Slot> slots = Slots.Where(x => x.Item == item).ToList();
-            return slots;
+            return Slots.Where(x => x.Item == item).ToList();
         }
 
+        /// <summary>
+        /// Counts the number of items of this type in the inventory.
+        /// </summary>
+        /// <param name="item">Item configuration.</param>
+        /// <returns></returns>
         public int CountItemOfTypeInTheInventory(BasicItemConfiguration item)
         {
             return Slots.Aggregate(0, (x, y) => x += y.Item == item ? y.ItemsAmount : 0);//Исхожу из ситуации, что ItemConfiguration существует в единственном экземпляре для каждого предмета
         }
-
+        /// <summary>
+        /// Finds the first slot to store item of provided configuration.
+        /// </summary>
+        /// <param name="item">Item configuration.</param>
+        /// <param name="amount">Amount of items.</param>
+        /// <param name="remainder">Number of items which can't be stored in this slot.</param>
+        /// <returns></returns>
         private Slot FindNearestSlot(BasicItemConfiguration item, int amount, out int remainder)
         {
             remainder = 0;
