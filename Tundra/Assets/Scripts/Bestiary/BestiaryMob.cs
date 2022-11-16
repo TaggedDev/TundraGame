@@ -7,12 +7,9 @@
     public class BestiaryMob
     {
         // Description that will be displayed in bestiary
-        public string MobDescription { get; set; }
-        
+        public string MobDescription;
         // Mob name - title of mob card
-        public string MobName { get; set; }
-
-        // Represents if the mob has already once been killed in bestiary 
-        public bool IsKilled { get; set; }
+        public string MobName;
+        public bool IsKilled;
     }
 }

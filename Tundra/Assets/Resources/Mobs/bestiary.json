@@ -2,19 +2,19 @@
 	"mobs":
 	[
 		{
-			"mobDescription": "Lorem ipsum lorem",
-			"mobName": "Bunny",
-			"isKilled": false
+			"MobDescription": "Lorem ipsum lorem",
+			"MobName": "Bunny",
+			"IsKilled": false
 		},
 		{
-			"mobDescription": "Lorem ipsum lorem ipsum",
-			"mobName": "Fox",
-			"isKilled": true
+			"MobDescription": "Lorem ipsum lorem ipsum",
+			"MobName": "Fox",
+			"IsKilled": true
 		},
 		{
-			"mobDescription": "Lorem ipsum",
-			"mobName": "Wolf",
-			"isKilled": false
+			"MobDescription": "Lorem ipsum",
+			"MobName": "Wolf",
+			"IsKilled": false
 		}	
 	]
 }
