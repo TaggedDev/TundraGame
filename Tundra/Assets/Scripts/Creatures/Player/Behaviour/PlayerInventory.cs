@@ -42,13 +42,21 @@ namespace Creatures.Player.Behaviour
                 else return null;
             }
         }
-
+        /// <summary>
+        /// An interactable item which is the nearest to the player.
+        /// </summary>
         public GameObject NearestInteractableItem { get; private set; }
-
+        /// <summary>
+        /// The distance to the <see cref="NearestInteractableItem"/>.
+        /// </summary>
         public float NearestInteractableItemDistance => NearestInteractableItem == null ? -1 : Vector3.Distance(transform.position, NearestInteractableItem.transform.position);
-
+        /// <summary>
+        /// The progress of the item picking (or the interaction delay).
+        /// </summary>
         public float ItemPickingProgress { get; private set; } = 0f;
-
+        /// <summary>
+        /// The index of a selected slot.
+        /// </summary>
         public int SelectedInventorySlot { get; set; }
 
         private void Start()
@@ -108,12 +116,17 @@ namespace Creatures.Player.Behaviour
                 Debug.Log("Removed item object from this");
             }
         }
-
+        /// <summary>
+        /// Throws an item into the world space.
+        /// </summary>
         private void ThrowItemAway()
         {
             Inventory.Slots[SelectedInventorySlot].DropItem(transform.position, transform.forward * 3 + Vector3.up);
         }
 
+        /// <summary>
+        /// Picks an item frokm the ground.
+        /// </summary>
         private void PickItemUp()
         {
             if (_playerBehaviour.OverweightCoefficient < 2)
@@ -131,18 +144,25 @@ namespace Creatures.Player.Behaviour
             NearestInteractableItem = null;
             ItemPickingProgress = 0f;
         }
-
+        /// <summary>
+        /// Removes an item selection from the inventory.
+        /// </summary>
         public void UnselectItem()
         {
             _lastSlotIndex = SelectedInventorySlot;
             SelectedInventorySlot = -1;
         }
-
+        /// <summary>
+        /// Reselects last selected item.
+        /// </summary>
         public void ReselectItem()
         {
             SelectedInventorySlot = _lastSlotIndex;
         }
-
+        /// <summary>
+        /// Resets the nearest item to the player.
+        /// </summary>
+        /// <param name="item">New nearest interactable item.</param>
         public void ResetNearestItem(GameObject item)
         {
             NearestInteractableItem = item;
