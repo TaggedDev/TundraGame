@@ -1,4 +1,5 @@
 ﻿using Creatures.Player.Behaviour;
+using GUI.HeadUpDisplay;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -67,7 +68,7 @@ namespace GUI
             //Инициализируем некоторые значения.
             UIController controller = UIController.RootCanvas.GetComponent<UIController>();
             _rootCanvas = controller.GetComponent<Canvas>();
-            _player = controller._player;
+            _player = controller.Player;
             _indicator = transform.Find("HealthBarInner") as RectTransform;
             _deltaIndicator = transform.Find("DeltaHealthBarInner") as RectTransform;
             _currentScale = _indicator.localScale.x;

@@ -7,12 +7,10 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace GUI.GameplayGUI
+namespace GUI.HeadUpDisplay
 {
     public class InventoryUISlotsController : MonoBehaviour
     {
-        private int _maxSlotsNumber;
-
         private GameObject _player;
         [SerializeField]
         private Sprite _transparent;
@@ -24,11 +22,7 @@ namespace GUI.GameplayGUI
         private Image[] _icons;
         private Text[] _texts;
 
-        public int MaxSlotsNumber
-        {
-            get => _maxSlotsNumber;
-            private set => _maxSlotsNumber=value;
-        }
+        public int MaxSlotsNumber { get; private set; }
 
         private void SetSlotActive(GameObject slot, bool state)
         {

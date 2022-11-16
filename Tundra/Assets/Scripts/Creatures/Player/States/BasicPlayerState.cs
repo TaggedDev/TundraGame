@@ -3,6 +3,7 @@ using UnityEngine;
 using Creatures.Player.Inventory;
 using System;
 using GUI.GameplayGUI;
+using GUI.HeadUpDisplay;
 
 namespace Creatures.Player.States
 {

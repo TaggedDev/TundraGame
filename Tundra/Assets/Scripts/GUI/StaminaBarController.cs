@@ -1,4 +1,5 @@
 ﻿using Creatures.Player.Behaviour;
+using GUI.HeadUpDisplay;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +16,7 @@ public class StaminaBarController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _player = UIController.RootCanvas.GetComponent<UIController>()._player;
+        _player = UIController.RootCanvas.GetComponent<UIController>().Player;
         imageComponent = GetComponent<Image>();
         playerProperties = _player.GetComponent<PlayerProperties>();
     }

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace GUI.GameplayGUI
+namespace GUI.HeadUpDisplay
 {
     /// <summary>
     /// A class to control craft panel.
@@ -52,6 +52,7 @@ namespace GUI.GameplayGUI
         public void ShowPanel(PlaceableItemConfiguration workspace)
         {
             _currentWorkspace = workspace;
+            ReloadRecipesList();
         }
         /// <summary>
         /// Reloads recipes list.

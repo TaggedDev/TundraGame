@@ -10,7 +10,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
-namespace GUI.GameplayGUI
+namespace GUI.HeadUpDisplay
 {
     public class MagicPanelController : MonoBehaviour
     {

@@ -10,7 +10,7 @@ using TMPro.EditorUtilities;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GUI.GameplayGUI
+namespace GUI.HeadUpDisplay
 {
     public class PocketCraftUI : MonoBehaviour
     {

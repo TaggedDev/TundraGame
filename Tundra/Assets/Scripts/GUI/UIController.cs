@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GUI.GameplayGUI
+namespace GUI.HeadUpDisplay
 {
     public class UIController : MonoBehaviour
     {

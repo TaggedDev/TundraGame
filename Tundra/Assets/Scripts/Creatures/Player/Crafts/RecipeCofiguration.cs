@@ -4,6 +4,7 @@ using Creatures.Player.Inventory;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using UnityEngine;
 
@@ -32,7 +33,7 @@ public class RecipeCofiguration : ScriptableObject
     /// <summary>
     /// Items required for this recipe.
     /// </summary>
-    public List<RecipeComponent> RequiredItems => requiredItems;
+    public ReadOnlyCollection<RecipeComponent> RequiredItems => requiredItems.AsReadOnly();
     /// <summary>
     /// A work space to craft this recipe.
     /// </summary>

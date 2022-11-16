@@ -1,4 +1,5 @@
 ﻿using Creatures.Player.Behaviour;
+using GUI.HeadUpDisplay;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -48,7 +49,7 @@ namespace GUI
         void Start()
         {
             UIController controller = UIController.RootCanvas.GetComponent<UIController>();
-            _player = controller._player;
+            _player = controller.Player;
             _indicator = transform.Find("StarvationBarInner") as RectTransform;
             _currentScale = _indicator.localScale.x;
         }
