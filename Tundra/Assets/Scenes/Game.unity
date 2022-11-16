@@ -1205,7 +1205,7 @@ GameObject:
   - component: {fileID: 860057043}
   - component: {fileID: 860057045}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Bestiary_Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2938,6 +2938,11 @@ PrefabInstance:
       propertyPath: escapeCanvas
       value: 
       objectReference: {fileID: 507228184}
+    - target: {fileID: 8700357811891334371, guid: 559d97cf075654344b456f54e77c8b1c,
+        type: 3}
+      propertyPath: bestiaryPanel
+      value: 
+      objectReference: {fileID: 860057045}
     - target: {fileID: 8733377211142130738, guid: 559d97cf075654344b456f54e77c8b1c,
         type: 3}
       propertyPath: m_Layer

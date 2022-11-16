@@ -2,6 +2,7 @@
 using Creatures.Player.Behaviour;
 using UnityEngine;
 using Creatures.Player.Inventory;
+using GUI.BestiaryGUI;
 using GUI.GameplayGUI;
 
 namespace Creatures.Player.States
@@ -24,8 +25,9 @@ namespace Creatures.Player.States
         private Vector3 velocity;
 
         public MagicCastingPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
-            PlayerProperties playerProperties, PlayerMagic playerMagic, PlayerInventory inventory, EscapeMenu escapeCanvas)
-            : base(playerMovement, switcher, playerProperties, inventory, escapeCanvas)
+            PlayerProperties playerProperties, PlayerMagic playerMagic, PlayerInventory inventory, 
+            EscapeMenu escapeCanvas, BestiaryPanel bestiaryPanel)
+            : base(playerMovement, switcher, playerProperties, inventory, escapeCanvas, bestiaryPanel)
         {
             _playerMagic = playerMagic;
             _playerMagic.SpellCast += ExitState;

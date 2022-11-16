@@ -4,7 +4,9 @@ using CameraConfiguration;
 using Creatures.Player.States;
 using UnityEngine;
 using System;
+using GUI.BestiaryGUI;
 using GUI.GameplayGUI;
+using UnityEngine.UIElements;
 
 namespace Creatures.Player.Behaviour
 {
@@ -20,6 +22,7 @@ namespace Creatures.Player.Behaviour
 
         [SerializeField] private EscapeMenu escapeCanvas;
         [SerializeField] private DeathMenu deathCanvas;
+        [SerializeField] private BestiaryPanel bestiaryPanel;
         private Animator _animator;
         private BasicPlayerState _currentState;
         private PlayerMovement _playerMovement;
@@ -55,14 +58,20 @@ namespace Creatures.Player.Behaviour
             _playerBuild = GetComponent<PlayerBuild>();
             _rigidbody = GetComponent<Rigidbody>();
             _animator = GetComponent<Animator>();
-            _allStates = new List<BasicPlayerState>()
+            _allStates = new List<BasicPlayerState>
             {
-                new IdlePlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas),
-                new WalkPlayerState(_playerMovement,  this, _playerProperties, _playerInventory, escapeCanvas),
-                new SprintPlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas),
-                new BusyPlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas),
-                new MagicCastingPlayerState(_playerMovement, this, _playerProperties, _playerMagic, _playerInventory, escapeCanvas),
-                new BuildingPlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas, _playerBuild)
+                new IdlePlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas, 
+                    bestiaryPanel),
+                new WalkPlayerState(_playerMovement,  this, _playerProperties, _playerInventory, escapeCanvas, 
+                    bestiaryPanel),
+                new SprintPlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas, 
+                    bestiaryPanel),
+                new BusyPlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas, 
+                    bestiaryPanel),
+                new MagicCastingPlayerState(_playerMovement, this, _playerProperties, _playerMagic, _playerInventory, 
+                    escapeCanvas, bestiaryPanel),
+                new BuildingPlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas, 
+                    _playerBuild, bestiaryPanel)
             };
             _currentState = _allStates[0];
             _currentState.Start();
@@ -80,10 +89,9 @@ namespace Creatures.Player.Behaviour
         {
             if (_isDead)
                 return;
-            
+
             if (Input.GetKeyDown(KeyCode.Escape))
                 _currentState.HandleEscapeButton();
-
 
             _cameraHolder.transform.position = transform.position;
             _currentState.ContinueStarving();

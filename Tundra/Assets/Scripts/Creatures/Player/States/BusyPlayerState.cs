@@ -1,7 +1,7 @@
 ﻿using Creatures.Player.Behaviour;
 using System;
+using GUI.BestiaryGUI;
 using GUI.GameplayGUI;
-using UnityEngine;
 
 namespace Creatures.Player.States
 {
@@ -20,8 +20,8 @@ namespace Creatures.Player.States
 
         public BusyPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
 
-            PlayerProperties playerProperties, PlayerInventory inventory, EscapeMenu escapeCanvas)
-            : base(playerMovement, switcher, playerProperties, inventory, escapeCanvas)
+            PlayerProperties playerProperties, PlayerInventory inventory, EscapeMenu escapeCanvas, BestiaryPanel bestiaryPanel)
+            : base(playerMovement, switcher, playerProperties, inventory, escapeCanvas, bestiaryPanel)
         {
         }
 

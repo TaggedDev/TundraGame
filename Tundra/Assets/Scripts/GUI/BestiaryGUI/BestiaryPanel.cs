@@ -24,6 +24,8 @@ namespace GUI.BestiaryGUI
                 Sprite mobAvatar = sprites[i];
                 card.SetCardValues(mob.mobName, mob.mobDescription, mobAvatar, mob.isKilled);
             }
+            
+            gameObject.SetActive(false);
         }
     }
 }
