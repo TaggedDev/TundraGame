@@ -2,7 +2,9 @@
 using UnityEngine;
 using Creatures.Player.Inventory;
 using System;
+using GUI.BestiaryGUI;
 using GUI.GameplayGUI;
+using UnityEngine.UIElements;
 
 namespace Creatures.Player.States
 {
@@ -33,9 +35,12 @@ namespace Creatures.Player.States
         protected abstract float WarmConsumptionCoefficient { get; }
 
         private Vector3 velocity;
-        private EscapeMenu _escapeCanvas;
+        private readonly EscapeMenu _escapeCanvas;
+        private readonly BestiaryPanel _bestiaryPanel;
 
-        protected BasicPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher, PlayerProperties playerProperties, PlayerInventory playerInventory, EscapeMenu escapeCanvas)
+        protected BasicPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher, 
+            PlayerProperties playerProperties, PlayerInventory playerInventory, EscapeMenu escapeCanvas,
+            BestiaryPanel bestiaryPanel)
         {
             PlayerBehaviour = (PlayerBehaviour)switcher;
             PlayerMovement = playerMovement;
@@ -47,6 +52,7 @@ namespace Creatures.Player.States
             PlayerInventory = playerInventory;
             PlayerInventory.SelectedItemChanged += InventorySelectedSlotChanged;
             _escapeCanvas = escapeCanvas;
+            _bestiaryPanel = bestiaryPanel;
         }
 
         /// <summary>
@@ -130,6 +136,7 @@ namespace Creatures.Player.States
                 if (PlayerProperties.CurrentHealth < 0) PlayerProperties.CurrentHealth = 0;
             }
         }
+        
         protected virtual void InventorySelectedSlotChanged(object sender, EventArgs e)
         {
             if (PlayerInventory.SelectedItem is PlaceableItemConfiguration)
@@ -150,12 +157,13 @@ namespace Creatures.Player.States
                 if (PlayerProperties.CurrentHealth < 0) PlayerProperties.CurrentHealth = 0;
             }
         }
-
-
+        
         public virtual void SpendStamina()
         {
-            if (PlayerProperties.CurrentStamina > 0) PlayerProperties.CurrentStamina -= (StaminaConsumption * Time.deltaTime);
-            if (PlayerProperties.CurrentStamina <= 0) StaminaIsOver();
+            if (PlayerProperties.CurrentStamina > 0)
+                PlayerProperties.CurrentStamina -= StaminaConsumption * Time.deltaTime;
+            if (PlayerProperties.CurrentStamina <= 0) 
+                StaminaIsOver();
         }
 
         protected abstract void StaminaIsOver();
@@ -176,6 +184,7 @@ namespace Creatures.Player.States
                 PlayerProperties._throwLoadingProgress = PlayerProperties.ThrowPrepareTime;
             }
         }
+        
         /// <summary>
         /// Loads to hit.
         /// </summary>
@@ -199,18 +208,15 @@ namespace Creatures.Player.States
         }
 
         /// <summary>
-        /// Recievs player input for changing states with opening related menus.
+        /// Receives player input for changing states with opening related menus.
         /// </summary>
         public virtual void HandleUserInput()
         {
-            if (!(this is BusyPlayerState) && !(this is MagicCastingPlayerState) && Input.GetKeyDown(KeyCode.B))
-            {
-                PlayerStateSwitcher.SwitchState<BusyPlayerState>();
-            }
-            else if (this is BusyPlayerState && Input.GetKeyDown(KeyCode.Escape))
+            if (this is BusyPlayerState && Input.GetKeyDown(KeyCode.Escape))
             {
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
             }
+            
             if (!(this is BusyPlayerState) && !(this is MagicCastingPlayerState)
                 && PlayerEquipment.Book != null && Input.GetKeyDown(KeyCode.X))
             {
@@ -220,6 +226,12 @@ namespace Creatures.Player.States
             {
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
                 (this as MagicCastingPlayerState).Dispell();
+            }
+            
+            // Open bestiary if player is not busy and presses B key
+            if (!(this is BusyPlayerState) && Input.GetKeyDown(KeyCode.B))
+            {
+                HandleBestiaryOpen();
             }
         }
 
@@ -231,6 +243,14 @@ namespace Creatures.Player.States
             }
             else if (this is BuildingPlayerState)
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
+        }
+
+        /// <summary>
+        /// Handles Bestiary hotkey
+        /// </summary>
+        public virtual void HandleBestiaryOpen()
+        {
+            _bestiaryPanel.gameObject.SetActive(!_bestiaryPanel.gameObject.activeSelf);
         }
     }
 }
