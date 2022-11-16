@@ -47,7 +47,6 @@ namespace Creatures.Mobs.Wolf
             // Temporary solution to kill mob
             if (Input.GetKeyDown(KeyCode.X))
             {
-                print(CurrentMobHealth);
                 CurrentMobHealth -= 5f;
                 if (CurrentMobHealth <= 0)
                 {
