@@ -4,6 +4,7 @@ using Creatures.Player.Inventory;
 using System;
 using GUI.BestiaryGUI;
 using GUI.GameplayGUI;
+using UnityEngine.UIElements;
 
 namespace Creatures.Player.States
 {
@@ -226,7 +227,8 @@ namespace Creatures.Player.States
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
                 (this as MagicCastingPlayerState).Dispell();
             }
-
+            
+            // Open bestiary if player is not busy and presses B key
             if (!(this is BusyPlayerState) && Input.GetKeyDown(KeyCode.B))
             {
                 HandleBestiaryOpen();

@@ -87,7 +87,7 @@ namespace Creatures.Mobs.Wolf
         /// </summary>
         private void HandleDeath()
         {
-            _bestiaryPanel.Mobs[MobIndexes.WolfIndex].isKilled = true;
+            _bestiaryPanel.Mobs[MobIndices.WolfIndex].IsKilled = true;
             Fabric.ReturnToPool(this);
         }
 

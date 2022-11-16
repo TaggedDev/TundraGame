@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 namespace GUI.BestiaryGUI
 {
+    /// <summary>
+    /// A bestiary panel of a player 
+    /// </summary>
     public class BestiaryPanel : MonoBehaviour
     {
         public BestiaryMob[] Mobs { get; private set; }
@@ -26,7 +29,7 @@ namespace GUI.BestiaryGUI
                 BestiaryMob mob = Mobs[i];
                 MobCard card = Instantiate(mobCard, panelContent.transform);
                 Sprite mobAvatar = sprites[i];
-                card.SetCardValues(i, mob.mobName, mob.mobDescription, mobAvatar, mob.isKilled);
+                card.SetCardValues(i, mob.MobName, mob.MobDescription, mobAvatar, mob.IsKilled);
                 _mobCards[i] = card;
             }
             
@@ -46,7 +49,7 @@ namespace GUI.BestiaryGUI
             {
                 var mob = Mobs[i];
                 var card = _mobCards[i];
-                if (mob.isKilled)
+                if (mob.IsKilled)
                     card.SetMobKilled();
             }
         }

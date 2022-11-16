@@ -1,5 +1,8 @@
 ﻿namespace Bestiary
 {
+    /// <summary>
+    /// A model to represent a list of mobs in JSON deserialization
+    /// </summary>
     [System.Serializable]
     public class BestiaryMobs
     {
