@@ -108,4 +108,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnRateForLevel: 0.3
-  maxScaleDifference: 1.2
+  _hp: 20

@@ -5,12 +5,15 @@ using Creatures.Player.States;
 using UnityEngine;
 using System;
 using GUI.GameplayGUI;
+using Creatures.Mobs;
+using Creatures.Player.Inventory;
+using Environment.Terrain;
 
 namespace Creatures.Player.Behaviour
 {
     public class PlayerBehaviour : MonoBehaviour, IPlayerStateSwitcher
     {
-        public GameObject tmp;
+        
         
         // Properties
         public bool IsOverweight => _inventoryController.Inventory.TotalWeight > _playerProperties.MaxLoadCapacity;
@@ -21,6 +24,7 @@ namespace Creatures.Player.Behaviour
 
         [SerializeField] private EscapeMenu escapeCanvas;
         [SerializeField] private DeathMenu deathCanvas;
+        [SerializeField] private GameObject hitPosition;
         private Animator _animator;
         private BasicPlayerState _currentState;
         private PlayerMovement _playerMovement;
@@ -64,7 +68,7 @@ namespace Creatures.Player.Behaviour
                 new BusyPlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas),
                 new MagicCastingPlayerState(_playerMovement, this, _playerProperties, _playerMagic, _playerInventory, escapeCanvas),
                 new BuildingPlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas, _playerBuild),
-                new AttackPlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas, _animator)
+                new WindupHitPlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas, _animator)
             };
             _currentState = _allStates[0];
             _currentState.Start();
@@ -93,7 +97,6 @@ namespace Creatures.Player.Behaviour
             _currentState.LoadForThrow();
             _currentState.SpendStamina();
             _currentState.HandleUserInput();
-            _currentState.HandleLMB();
         }
 
         private void FixedUpdate()
@@ -130,16 +133,33 @@ namespace Creatures.Player.Behaviour
             _currentState = state;
             _playerProperties._throwLoadingProgress = _playerProperties.ThrowPrepareTime;
             StateChanged?.Invoke(this, null);
-            Debug.Log(typeof(T).ToString());
+            //Debug.Log(typeof(T).ToString());
         }
-
+        /// <summary>
+        /// Performs an attack
+        /// </summary>
         internal void Hit()
-        { 
-            _animator.SetTrigger("Release Right");
+        {
+            _animator.speed = 1;
+            _animator.Play("Release Right",0);
+            foreach(Collider a in Physics.OverlapBox(hitPosition.transform.position, new Vector3(1f, 2f, 1f)))
+            {
+                if (a.gameObject.GetComponent<Mob>() != null)
+                {
+                    a.gameObject.GetComponent<Mob>().CurrentMobHealth -= (_playerInventory.SelectedItem as MeleeWeaponConfiguration).Damage * 
+                        Mathf.Lerp(_playerProperties.MinDamageModificator, _playerProperties.MaxDamageModificator, Mathf.Sqrt(4 * _playerProperties.CurrentHitProgress / (_playerInventory.SelectedItem as MeleeWeaponConfiguration).FullWindupTime));
+                }
+                else if(a.gameObject.GetComponent<Entity>() != null)
+                {
+                    a.gameObject.GetComponent<Entity>().Hp -= (_playerInventory.SelectedItem as MeleeWeaponConfiguration).Damage *
+                        Mathf.Lerp(_playerProperties.MinDamageModificator, _playerProperties.MaxDamageModificator, Mathf.Sqrt(4 * _playerProperties.CurrentHitProgress / (_playerInventory.SelectedItem as MeleeWeaponConfiguration).FullWindupTime));
+                }
+            }
+            Debug.Log("hit " + (Mathf.Lerp(_playerProperties.MinDamageModificator, _playerProperties.MaxDamageModificator, Mathf.Sqrt(4 * _playerProperties.CurrentHitProgress / (_playerInventory.SelectedItem as MeleeWeaponConfiguration).FullWindupTime))).ToString());
         }
 
         /// <summary>
-        /// 
+        /// Player Dies
         /// </summary>
         private void KillPlayer()
         {
@@ -150,7 +170,7 @@ namespace Creatures.Player.Behaviour
 
         private void OnDrawGizmosSelected()
         {
-            Gizmos.DrawWireCube(tmp.transform.position, new Vector3(0.2f, 0.2f, 1));
+            Gizmos.DrawWireCube(hitPosition.transform.position, new Vector3(1f, 2f, 1));
         }
     }
 }

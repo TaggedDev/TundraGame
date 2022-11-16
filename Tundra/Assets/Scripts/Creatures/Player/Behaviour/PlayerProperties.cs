@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Schema;
 using UnityEngine;
 
 namespace Creatures.Player.Behaviour
@@ -50,9 +51,13 @@ namespace Creatures.Player.Behaviour
         /// </summary>
         [SerializeField] private float throwPrepareTime;
         /// <summary>
-        /// Total time to prepare for throw.
+        /// Maximal damage modificator. Used in lerp to calculate damage
         /// </summary>
-        [SerializeField] private float hitPreparationTime;
+        [SerializeField] private float maxDamageModificator;
+        /// <summary>
+        /// Maximal damage modificator. Used in lerp to calculate damage
+        /// </summary>
+        [SerializeField] private float minDamageModificator;
         /// <summary>
         /// Player character race.
         /// </summary>
@@ -129,10 +134,6 @@ namespace Creatures.Player.Behaviour
         /// Maximal player load capacity.
         /// </summary>
         public float MaxLoadCapacity => maxLoadCapacity;
-        /// <summary>
-        /// Total hit preparation time.
-        /// </summary>
-        public float HitPreparationTime => hitPreparationTime;
         /// <summary>
         /// Current hit preparation progress.
         /// </summary>
@@ -231,6 +232,9 @@ namespace Creatures.Player.Behaviour
             }
         }
 
+        public float MaxDamageModificator { get => maxDamageModificator; }
+        public float MinDamageModificator { get => minDamageModificator; }
+
         void Start()
         {
             if (playerRace != null)
@@ -244,7 +248,8 @@ namespace Creatures.Player.Behaviour
                 absoluteTemperatureAmplitude = playerRace.AbsoluteTemperatureAmplitude;
                 throwPrepareTime = playerRace.ThrowPrepareTime;
                 maxLoadCapacity = playerRace.MaxLoadCapacity;
-                hitPreparationTime = playerRace.HitPrepareTime;
+                maxDamageModificator = playerRace.MaxDamageModificator;
+                minDamageModificator= playerRace.MinDamageModificator;
             }
             _currentStarvation = maxStarve;
             _currentHealth = maxHealth;

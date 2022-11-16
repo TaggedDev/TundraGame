@@ -9,6 +9,7 @@ namespace Creatures.Player.Behaviour
     {
 
         private InventoryContainer inventory;
+        [SerializeField] private MeleeWeaponConfiguration _fist;
 
         public static float ItemPickingUpTime => 3f;
 
@@ -25,13 +26,23 @@ namespace Creatures.Player.Behaviour
             }
             private set => inventory = value;
         }
-
+        /// <summary>
+        /// returns selected item. Returns fists if nothing is selected
+        /// </summary>
         public BasicItemConfiguration SelectedItem
         {
             get
             {
-                if (SelectedInventorySlot != -1) return Inventory[SelectedInventorySlot]?.Item;
-                else return null;
+                if (SelectedInventorySlot != -1 && Inventory[SelectedInventorySlot].Item != null)
+                {
+                    return Inventory[SelectedInventorySlot].Item;
+                }
+                else if(SelectedInventorySlot != -1)
+                {
+                    
+                    return _fist;
+                }
+                return null;
             }
         }
 
@@ -40,7 +51,9 @@ namespace Creatures.Player.Behaviour
         public float NearestInteractableItemDistance => NearestInteractableItem == null ? -1 : Vector3.Distance(transform.position, NearestInteractableItem.transform.position);
 
         public float ItemPickingProgress { get; private set; } = 0f;
-
+        /// <summary>
+        /// Currently selected slot
+        /// </summary>
         public int SelectedInventorySlot 
         { 
             get
@@ -54,6 +67,9 @@ namespace Creatures.Player.Behaviour
             } 
         }
 
+        /// <summary>
+        /// Invokes on changing selected item
+        /// </summary>
         public event EventHandler SelectedItemChanged;
 
         // Start is called before the first frame update

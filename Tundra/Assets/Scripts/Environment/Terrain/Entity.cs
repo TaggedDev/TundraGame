@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Creatures.Player.Inventory;
+using System.Runtime.ExceptionServices;
+using UnityEngine;
 
 namespace Environment.Terrain
 {
@@ -9,10 +11,36 @@ namespace Environment.Terrain
     {
         [Range(0, 1)] [SerializeField] private float spawnRateForLevel;
 
+
+        [SerializeField]
+        private BasicItemConfiguration[] LootTable;
+        [SerializeField]
+        private int[] DropQuantity;
+        [SerializeField]
+        private int[] DropChance;
+
         public float SpawnRateForLevel => spawnRateForLevel;
+        public float Hp
+        {
+            get
+            {
+                return _hp;
+            }
+            set
+            {
+                _hp = value;
+                if (_hp <= 0)
+                    Break();
+            }
+        }
+
+        [SerializeField]
         private const float ENTITY_VIEW_RANGE = 3000f;
+        [SerializeField]
+        private float _hp;
         private Transform _player;
         private Vector2 _entityPosition;
+
 
         /// <summary>
         /// Due Entities are spawned as Initialise() function, there is no built-in constructor for this method.
@@ -29,7 +57,17 @@ namespace Environment.Terrain
             transform.rotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0);
             transform.position = position;
             transform.gameObject.layer = 10; // Environment layer 
+
+            //Checks LootTable Correctness
+            if (LootTable.Length != DropChance.Length || DropChance.Length != DropQuantity.Length)
+                throw new System.Exception("Loot Table setup is invalid");
+            foreach(int a in DropChance)
+            {
+                if (a > 100 || a <= 0)
+                    throw new System.Exception("Loot Table setup is invalid");
+            }
         }
+        
 
         /// <summary>
         /// Updates current entity's visibility.
@@ -43,6 +81,24 @@ namespace Environment.Terrain
                 return;
             }
             gameObject.SetActive(false);
+        }
+
+        /// <summary>
+        /// Breaks an entity. Drops items
+        /// </summary>
+        public void Break()
+        {
+            
+            MonoBehaviour.Destroy(gameObject);
+            for(int i = 0; i < LootTable.Length; i++)
+            {
+                int proc = Random.Range(0, 101);
+                if(proc <= DropChance[i])
+                {
+                    Instantiate(LootTable[i].ItemInWorldPrefab, new Vector3(transform.position.x + Random.Range(-2, 2), transform.position.y + Random.Range(1,2), transform.position.z + Random.Range(-2, 2)), new Quaternion(Random.Range(0, 160), Random.Range(0, 160), Random.Range(0, 160), 0)).
+                        GetComponent<DroppedItemBehaviour>().DroppedItemsAmount = DropQuantity[i];
+                }
+            }
         }
     }
 }

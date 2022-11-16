@@ -12,13 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cfb98d83d7423b469d797c159ae3c82, type: 3}
   m_Name: Human
   m_EditorClassIdentifier: 
-  maxStarve: 3000
-  saturationTime: 20
-  perfectTemperature: 36.6
-  absoluteTemperatureAmplitude: 0.6
-  maxWarmLevel: 1000
-  maxHealth: 100
-  maxStamina: 100
-  maxLoadCapacity: 30
-  throwPrepareTime: 1
-  hitPrepareTime: 1.5
+  _maxStarve: 200
+  _saturationTime: 5000
+  _perfectTemperature: 20
+  _absoluteTemperatureAmplitude: 20
+  _maxWarmLevel: 100
+  _maxHealth: 3000
+  _maxStamina: 100
+  _maxLoadCapacity: 100
+  _throwPrepareTime: 5
+  _maxDamageModificator: 1
+  _minDamageModificator: 0.17

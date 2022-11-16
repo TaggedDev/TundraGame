@@ -19,7 +19,7 @@ namespace Creatures.Player.Inventory
 
         public BasicItemConfiguration AssociatedItem { get => _associatedItem; private set => _associatedItem=value; }
 
-        public int DroppedItemsAmount { get => droppedItemsAmount; private set => droppedItemsAmount=value; }
+        public int DroppedItemsAmount { get => droppedItemsAmount; set => droppedItemsAmount=value; }
 
         public bool IsThrown { get => isThrown; set => isThrown = value; }
 

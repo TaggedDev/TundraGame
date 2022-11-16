@@ -375,6 +375,7 @@ MonoBehaviour:
   sniffingRadius: 5
   maxMobHealth: 50
   _player: {fileID: 0}
+  _hp: 20
   wolfMaw: {fileID: 2090333208596929043}
 --- !u!195 &1432031131618546671
 NavMeshAgent:

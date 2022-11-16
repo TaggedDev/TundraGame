@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Creatures.Player.Inventory;
+using UnityEngine;
 using UnityEngine.AI;
 
 namespace Creatures.Mobs
@@ -8,6 +9,7 @@ namespace Creatures.Mobs
         protected const int MOB_LAYER_INDEX = 11;
         protected const int TERRAIN_LAYER_INDEX = 10;
         public Vector3 targetPoint;
+
 
         public Transform Player
         {
@@ -99,7 +101,16 @@ namespace Creatures.Mobs
             get => _fabric;
             set => _fabric = value;
         }
-
+        protected float Hp 
+        { 
+            get => _hp;
+            set
+            {
+                _hp = value;
+                if (_hp <= 0)
+                    Die();
+            }  
+        }
 
         [SerializeField] private int mobID;
         [SerializeField] private float rotationSpeed;
@@ -108,7 +119,11 @@ namespace Creatures.Mobs
         [SerializeField] private float sniffingRadius;
         [SerializeField] private float maxMobHealth;
         [SerializeField] private Transform _player;
-        
+        [SerializeField] private float _hp;
+        [SerializeField] private BasicItemConfiguration[] LootTable;
+        [SerializeField] private int[] DropQuantity;
+        [SerializeField] private int[] DropChance;
+
         private MobFabric _fabric;
         private NavMeshAgent _agent;
         private RaycastHit _slopeHit;
@@ -120,7 +135,6 @@ namespace Creatures.Mobs
         private bool _isEntitySensed;
         private bool _isIgnoringSensor;
         private bool _isGrounded;
-
         /// <summary>
         /// Initialises basic parameters. Can't use constructor because objects with this class are initialized by
         /// instantiate method during the game
@@ -131,7 +145,23 @@ namespace Creatures.Mobs
         /// Sets the spawn position, turns on the object and sets default values. Basically replaces the Start() method
         /// </summary>
         public abstract void SpawnSelf(Vector3 position);
-        
+
+        protected virtual void Die()
+        {
+            Destroy(this);
+            MonoBehaviour.Destroy(gameObject);
+            //Goes through list, and drops everyting in apropriate amounts
+            for (int i = 0; i < LootTable.Length; i++)
+            {
+                int proc = Random.Range(0, 101);
+                if (proc <= DropChance[i])
+                {
+                    Instantiate(LootTable[i].ItemInWorldPrefab, new Vector3(transform.position.x + Random.Range(-2, 2), transform.position.y + Random.Range(1, 2), transform.position.z + Random.Range(-2, 2)), new Quaternion(Random.Range(0, 160), Random.Range(0, 160), Random.Range(0, 160), 0)).
+                        GetComponent<DroppedItemBehaviour>().DroppedItemsAmount = DropQuantity[i];
+                }
+            }
+        }
+
         /// <summary>
         /// Rotates wolf to face the player
         /// </summary>

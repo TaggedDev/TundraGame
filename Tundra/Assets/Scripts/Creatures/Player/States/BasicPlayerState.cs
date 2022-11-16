@@ -176,18 +176,7 @@ namespace Creatures.Player.States
                 PlayerProperties._throwLoadingProgress = PlayerProperties.ThrowPrepareTime;
             }
         }
-        /// <summary>
-        /// Loads to hit.
-        /// </summary>
-        public virtual void HandleLMB()
-        {
-            if (Input.GetMouseButton(0) && Input.GetMouseButton(0) && !(this is BusyPlayerState) && !(this is MagicCastingPlayerState) && !(this is BuildingPlayerState))
-            {
-                PlayerStateSwitcher.SwitchState<AttackPlayerState>();
-            }
-            if (PlayerProperties.CurrentHitProgress > 0)
-                PlayerProperties.CurrentHitProgress -= Time.deltaTime;
-        }
+
 
         /// <summary>
         /// Recievs player input for changing states with opening related menus.
@@ -211,6 +200,10 @@ namespace Creatures.Player.States
             {
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
                 (this as MagicCastingPlayerState).Dispell();
+            }
+            if(Input.GetMouseButton(0) && !(this is BusyPlayerState) && !(this is MagicCastingPlayerState) && !(this is BuildingPlayerState))
+            {
+                PlayerStateSwitcher.SwitchState<WindupHitPlayerState>();
             }
         }
 

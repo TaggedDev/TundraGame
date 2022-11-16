@@ -128,6 +128,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnRateForLevel: 0.3
+  LootTable:
+  - {fileID: 11400000, guid: ccbcd84c1460f9e4a8123ec8e1df54c0, type: 2}
+  - {fileID: 11400000, guid: ccbcd84c1460f9e4a8123ec8e1df54c0, type: 2}
+  DropQuantity: 0200000002000000
+  DropChance: 0000000000000000
+  _hp: 10
 --- !u!65 &6044253378586293161
 BoxCollider:
   m_ObjectHideFlags: 0

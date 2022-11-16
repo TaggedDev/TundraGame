@@ -6,64 +6,70 @@ namespace Creatures.Player.Races
     public class BasicPlayerRaceConfiguration : ScriptableObject
     {
         [SerializeField]
-        private float maxStarve;
+        private float _maxStarve;
         [SerializeField]
-        private float saturationTime;
+        private float _saturationTime;
         [SerializeField]
-        private float perfectTemperature;        
+        private float _perfectTemperature;        
         [SerializeField]
-        private float absoluteTemperatureAmplitude;        
+        private float _absoluteTemperatureAmplitude;        
         [SerializeField]
-        private float maxWarmLevel;        
+        private float _maxWarmLevel;        
         [SerializeField]
-        private float maxHealth;        
+        private float _maxHealth;        
         [SerializeField]
-        private float maxStamina;        
+        private float _maxStamina;        
         [SerializeField]
-        private float maxLoadCapacity;       
+        private float _maxLoadCapacity;       
         [SerializeField]
-        private float throwPrepareTime;
+        private float _throwPrepareTime;
         [SerializeField]
-        private float hitPrepareTime;
+        private float _maxDamageModificator;
+        [SerializeField]
+        private float _minDamageModificator;
         /// <summary>
         /// Maximal player starvation capacity.
         /// </summary>
-        public float MaxStarve => maxStarve;
+        public float MaxStarve => _maxStarve;
         /// <summary>
         /// Time in seconds while which player won't spend saturation.
         /// </summary>
-        public float SaturationTime => saturationTime;
+        public float SaturationTime => _saturationTime;
         /// <summary>
         /// Ideal player character temperature.
         /// </summary>
-        public float PerfectTemperature => perfectTemperature;
+        public float PerfectTemperature => _perfectTemperature;
         /// <summary>
         /// Value which represents amplitude of comfort temperature for player.
         /// </summary>
-        public float AbsoluteTemperatureAmplitude => absoluteTemperatureAmplitude;
+        public float AbsoluteTemperatureAmplitude => _absoluteTemperatureAmplitude;
         /// <summary>
         /// Maximal player warm level.
         /// </summary>
-        public float MaxWarmLevel => maxWarmLevel;
+        public float MaxWarmLevel => _maxWarmLevel;
         /// <summary>
         /// Maximal player character HP level.
         /// </summary>
-        public float MaxHealth => maxHealth;
+        public float MaxHealth => _maxHealth;
         /// <summary>
         /// Maximal player character stamina.
         /// </summary>
-        public float MaxStamina => maxStamina;
+        public float MaxStamina => _maxStamina;
         /// <summary>
         /// Maximal player load capacity.
         /// </summary>
-        public float MaxLoadCapacity => maxLoadCapacity;
+        public float MaxLoadCapacity => _maxLoadCapacity;
         /// <summary>
         /// Preparation time before item throwing.
         /// </summary>
-        public float ThrowPrepareTime => throwPrepareTime;
+        public float ThrowPrepareTime => _throwPrepareTime;
         /// <summary>
-        /// Total hit preparation time.
+        /// Minmal damage modificator. Used in lerp to calculate damage
         /// </summary>
-        public float HitPrepareTime => hitPrepareTime; 
+        public float MaxDamageModificator => _maxDamageModificator;
+        /// <summary>
+        /// Maximal damage modificator. Used in lerp to calculate damage
+        /// </summary>
+        public float MinDamageModificator  => _minDamageModificator;
     }
 }
