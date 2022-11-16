@@ -29,7 +29,7 @@ namespace GUI.BestiaryGUI
                 BestiaryMob mob = Mobs[i];
                 MobCard card = Instantiate(mobCard, panelContent.transform);
                 Sprite mobAvatar = sprites[i];
-                card.SetCardValues(i, mob.MobName, mob.MobDescription, mobAvatar, mob.IsKilled);
+                card.SetCardValues(mob.MobName, mob.MobDescription, mobAvatar, mob.IsKilled);
                 _mobCards[i] = card;
             }
             
