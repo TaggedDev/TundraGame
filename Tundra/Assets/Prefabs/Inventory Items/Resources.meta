@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Tundra/Assets/Prefabs/Inventory Items/Resources.meta
 guid: f3b46351d32d9e14c9868bbb5eb11538
+========
+guid: 053854ecbc421ae4390803512db2686b
+>>>>>>>> spells:Tundra/Assets/Scripts/GUI/Head Up Display.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

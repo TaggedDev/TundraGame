@@ -1,14 +1,12 @@
 ﻿using Creatures.Player.Behaviour;
 using GUI.BestiaryGUI;
 using GUI.GameplayGUI;
-using UnityEngine;
 
 namespace Creatures.Player.States
 {
     public class SprintPlayerState : BasicPlayerState
     {
         private const float speed = 2f;
-        private EscapeMenu _escapeCanvas;
 
         protected override float StarvingConsumptionCoefficient => 2f;
 
@@ -22,30 +20,17 @@ namespace Creatures.Player.States
 
             PlayerProperties playerProperties, PlayerInventory inventory, EscapeMenu escapeCanvas, BestiaryPanel bestiaryPanel)
             : base(playerMovement, switcher, playerProperties,  inventory, escapeCanvas, bestiaryPanel)
-        {
-        
-        }
+        { }
 
         public override void Start()
-        {
-
-        }
+        { }
 
         public override void Stop()
-        {
-
-        }
-
-
-        public override void LoadForThrow()
-        {
-            PlayerBehaviour.SwitchState<WalkPlayerState>();
-        }
+        { }
 
         protected override void StaminaIsOver()
         {
             PlayerBehaviour.SwitchState<WalkPlayerState>();
         }
-
     }
 }

@@ -29,7 +29,7 @@ namespace Creatures.Player.Inventory
         }
         
         /// <summary>
-        /// Массив слотов инвентаря. 
+        /// Массив слотов инвентаря.
         /// </summary>
         public Slot[] Slots { get; private set; }
         
@@ -43,7 +43,7 @@ namespace Creatures.Player.Inventory
         /// </summary>
         /// <param name="index">Index of requested slot</param>
         public Slot this[int index] => Slots[index];
-        
+
         /// <summary>
         /// Событие, происходящее перед изменением количества слотов в инвентаре.
         /// </summary>

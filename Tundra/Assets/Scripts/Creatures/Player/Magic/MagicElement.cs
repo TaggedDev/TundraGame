@@ -15,8 +15,10 @@ namespace Creatures.Player.Magic
         Air = 4,
         Ice = 8,
         Electro = 0x10,
-        Ground = 0x20,
-        Mood = 0x40,
-        Sound = 0x80,
+        Light = 0x20,
+        Explosion = 0x40,
+        Magma = 0x80,
+        Crystal = 0x100,
+        All = 0xFFFFFFF
     }
 }

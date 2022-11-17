@@ -1,10 +1,9 @@
-﻿using Creatures.Player.Behaviour;
-using UnityEngine;
+﻿using System;
+using Creatures.Player.Behaviour;
 using Creatures.Player.Inventory;
-using System;
 using GUI.BestiaryGUI;
 using GUI.GameplayGUI;
-using UnityEngine.UIElements;
+using UnityEngine;
 
 namespace Creatures.Player.States
 {
@@ -61,29 +60,16 @@ namespace Creatures.Player.States
         public abstract void Start();
 
         /// <summary>
-        /// When PlacableObbject is Chosen
-        /// </summary>
-        
-
-        /// <summary>
         /// On State changed | Stop
         /// </summary>
         public abstract void Stop();
-
-        /// <summary>
-        /// Handles the logic of pressing escape in different states
-        /// </summary>
-        public virtual void HandleEscapeButton()
-        {
-            _escapeCanvas.gameObject.SetActive(!_escapeCanvas.gameObject.activeSelf);
-        }
 
         /// <summary>
         /// Basic movement with sprint
         /// </summary>
         public virtual void MoveCharacter()
         {
-            if (Input.GetKey(KeyCode.LeftShift) && !Input.GetMouseButton(2) && !(this is SprintPlayerState) && !(this is BuildingPlayerState))
+            if (Input.GetKey(KeyCode.LeftShift) && !Input.GetMouseButton(2) && !(this is SprintPlayerState))
             {
                 if (PlayerProperties.CurrentStamina > 0) PlayerStateSwitcher.SwitchState<SprintPlayerState>();
             }
@@ -95,7 +81,7 @@ namespace Creatures.Player.States
             float _h = Input.GetAxis("Horizontal");
             float _v = Input.GetAxis("Vertical");
 
-            if (_h == 0 && _v == 0 && !(this is IdlePlayerState) && !(this is BuildingPlayerState))
+            if (_h == 0 && _v == 0 && !(this is IdlePlayerState))
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
 
             Vector3 _rightMovement = PlayerMovement.Right * (PlayerMovement.Speed * SpeedCoefficient * Time.deltaTime * _h);
@@ -106,15 +92,8 @@ namespace Creatures.Player.States
             var transform = PlayerMovement.transform;
             transform.forward += PlayerMovement.Heading;
             velocity = Vector3.Lerp(velocity, (_rightMovement + _forwardMovement) * 75f, 0.5f);//TODO: Multiplier is needed to increase force with which player can reach environment
-            //Debug.Log(velocity);
-            //PlayerRigidBody.AddForce(force);
 
             PlayerRigidBody.velocity = new Vector3(velocity.x, PlayerRigidBody.velocity.y, velocity.z);
-
-            //var position = transform.position;
-            //position += _rightMovement;
-            //position += _forwardMovement;
-            //transform.position = position;
         }
 
         /// <summary>
@@ -122,18 +101,19 @@ namespace Creatures.Player.States
         /// </summary>
         public virtual void ContinueStarving()
         {
-            //TODO: Maybe this algorithm is not as good as I think
             if (PlayerProperties._currentStarvationTime > 0)
             {
                 PlayerProperties._currentStarvationTime -= Time.deltaTime;
                 return;
             }
             PlayerProperties.CurrentStarvationCapacity -= StarvingConsumptionCoefficient;
+            
             if (PlayerProperties.CurrentStarvationCapacity < 0)
             {
                 PlayerProperties.CurrentStarvationCapacity = 0;
                 PlayerProperties.CurrentHealth -= 1f * Time.deltaTime;
-                if (PlayerProperties.CurrentHealth < 0) PlayerProperties.CurrentHealth = 0;
+                if (PlayerProperties.CurrentHealth < 0) 
+                    PlayerProperties.CurrentHealth = 0;
             }
         }
         
@@ -148,7 +128,6 @@ namespace Creatures.Player.States
         /// </summary>
         public virtual void ContinueFreeze()
         {
-            //TODO: Do something with it.
             PlayerProperties.CurrentWarmLevel -= WarmConsumptionCoefficient * Time.deltaTime;
             if (PlayerProperties.CurrentWarmLevel < 0)
             {
@@ -157,7 +136,7 @@ namespace Creatures.Player.States
                 if (PlayerProperties.CurrentHealth < 0) PlayerProperties.CurrentHealth = 0;
             }
         }
-        
+
         public virtual void SpendStamina()
         {
             if (PlayerProperties.CurrentStamina > 0)
@@ -167,23 +146,6 @@ namespace Creatures.Player.States
         }
 
         protected abstract void StaminaIsOver();
-
-        /// <summary>
-        /// Loads weapon for throwing.
-        /// </summary>
-        public virtual void LoadForThrow()
-        {
-            if (Input.GetMouseButton(2))
-            {
-                PlayerProperties._throwLoadingProgress -= Time.deltaTime;
-                if (PlayerProperties._throwLoadingProgress <= 0) PlayerProperties._throwLoadingProgress = 0;
-            }
-            else
-            {
-                if (PlayerProperties._throwLoadingProgress <= 0) PlayerBehaviour.ThrowItem();
-                PlayerProperties._throwLoadingProgress = PlayerProperties.ThrowPrepareTime;
-            }
-        }
         
         /// <summary>
         /// Loads to hit.
@@ -206,7 +168,6 @@ namespace Creatures.Player.States
             }
             else PlayerProperties.CurrentHitProgress = 0;
         }
-
         /// <summary>
         /// Receives player input for changing states with opening related menus.
         /// </summary>
@@ -216,7 +177,6 @@ namespace Creatures.Player.States
             {
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
             }
-            
             if (!(this is BusyPlayerState) && !(this is MagicCastingPlayerState)
                 && PlayerEquipment.Book != null && Input.GetKeyDown(KeyCode.X))
             {
@@ -234,7 +194,7 @@ namespace Creatures.Player.States
                 HandleBestiaryOpen();
             }
         }
-
+        
         public virtual void OnPlayerSelectedItemChanged(PlayerInventory inventory)
         {
             if (inventory.SelectedItem is PlaceableItemConfiguration)
@@ -253,4 +213,5 @@ namespace Creatures.Player.States
             _bestiaryPanel.gameObject.SetActive(!_bestiaryPanel.gameObject.activeSelf);
         }
     }
+
 }

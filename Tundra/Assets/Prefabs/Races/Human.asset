@@ -18,7 +18,7 @@ MonoBehaviour:
   absoluteTemperatureAmplitude: 0.6
   maxWarmLevel: 1000
   maxHealth: 100
-  maxStamina: 100
+  maxStamina: 25
   maxLoadCapacity: 30
   throwPrepareTime: 1
   hitPrepareTime: 1.5

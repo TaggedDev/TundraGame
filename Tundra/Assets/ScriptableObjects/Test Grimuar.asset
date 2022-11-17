@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5442735179c16940b977a75a4f31864, type: 3}
+  m_Name: Test Grimuar
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: cbd017adfcb65ff4296b69ec9a1aeeee, type: 3}
+  title: Grimuar of Testing
+  description: Very op thing. Ig it's the most powerful book in the world
+  itemInWorldPrefab: {fileID: 0}
+  maxStackVolume: 1
+  weight: 0.1
+  _equipmentSlot: 6
+  _additionalSlots: 0
+  _warmEconomyCoefficient: 0
+  _magicElements:
+  - element: 128
+    maxStoneAmount: 2
+    currentStonesAmount: 2
+    stoneReloadTime: 3
+  - element: 1
+    maxStoneAmount: 3
+    currentStonesAmount: 3
+    stoneReloadTime: 2
+  - element: 256
+    maxStoneAmount: 2
+    currentStonesAmount: 2
+    stoneReloadTime: 3
+  - element: 32
+    maxStoneAmount: 2
+    currentStonesAmount: 2
+    stoneReloadTime: 3
+  - element: 64
+    maxStoneAmount: 2
+    currentStonesAmount: 2
+    stoneReloadTime: 3
+  _freeSheets: 4

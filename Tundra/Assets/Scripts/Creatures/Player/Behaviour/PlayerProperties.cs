@@ -13,6 +13,8 @@ namespace Creatures.Player.Behaviour
     /// </summary>
     public class PlayerProperties : MonoBehaviour
     {
+        private PlayerMovement _movement;
+
         /// <summary>
         /// Maximal starvation capacity.
         /// </summary>
@@ -45,10 +47,6 @@ namespace Creatures.Player.Behaviour
         /// Maximal player load capacity.
         /// </summary>
         [SerializeField] private float maxLoadCapacity;
-        /// <summary>
-        /// Preparation time before item throwing.
-        /// </summary>
-        [SerializeField] private float throwPrepareTime;
         /// <summary>
         /// Total time to prepare for throw.
         /// </summary>
@@ -86,10 +84,6 @@ namespace Creatures.Player.Behaviour
         /// </summary>
         private float _currentHitPreparingTime;
         /// <summary>
-        /// Internal field for the progress of the item throwing.
-        /// </summary>
-        internal float _throwLoadingProgress;
-        /// <summary>
         /// Time while which player hasn't eaten anything.
         /// </summary>
         internal float _currentStarvationTime;
@@ -101,10 +95,6 @@ namespace Creatures.Player.Behaviour
         /// Player character temperature amplitude.
         /// </summary>
         public float AbsoluteTemperatureAmplitude => absoluteTemperatureAmplitude;
-        /// <summary>
-        /// Throw preparation time.
-        /// </summary>
-        public float ThrowPrepareTime => throwPrepareTime;
         /// <summary>
         /// Maximal starvation level.
         /// </summary>
@@ -180,11 +170,11 @@ namespace Creatures.Player.Behaviour
         {
             get
             {
-                return _currentSpeed;
+                return _movement.Speed;
             }
             internal set
             {
-                _currentSpeed = value;
+                _movement.Speed = value;
             }
         }
 
@@ -233,6 +223,7 @@ namespace Creatures.Player.Behaviour
 
         void Start()
         {
+            _movement = gameObject.GetComponent<PlayerMovement>();
             if (playerRace != null)
             {
                 maxStarve = playerRace.MaxStarve;
@@ -242,7 +233,6 @@ namespace Creatures.Player.Behaviour
                 saturationTime = playerRace.SaturationTime;
                 perfectTemperature = playerRace.PerfectTemperature;
                 absoluteTemperatureAmplitude = playerRace.AbsoluteTemperatureAmplitude;
-                throwPrepareTime = playerRace.ThrowPrepareTime;
                 maxLoadCapacity = playerRace.MaxLoadCapacity;
                 hitPreparationTime = playerRace.HitPrepareTime;
             }
@@ -250,7 +240,6 @@ namespace Creatures.Player.Behaviour
             _currentHealth = maxHealth;
             _currentStamina = maxStamina;
             _currentStarvationTime = saturationTime;
-            _throwLoadingProgress = throwPrepareTime;
         }
     }
 }

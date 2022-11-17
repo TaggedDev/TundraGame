@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 109183692590999879}
   - component: {fileID: 5247932744258706202}
   - component: {fileID: 3214704541126317242}
-  - component: {fileID: 2066273849566695194}
   - component: {fileID: 1668840066019717609}
   - component: {fileID: -719947448160126824}
   m_Layer: 8
@@ -96,19 +95,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!135 &2066273849566695194
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5910990546594079966}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 2
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1668840066019717609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,6 +109,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _associatedItem: {fileID: 11400000, guid: abd1c6618cdc9a84c8803e9157f067ff, type: 2}
   droppedItemsAmount: 1
+  isThrown: 0
 --- !u!54 &-719947448160126824
 Rigidbody:
   m_ObjectHideFlags: 0

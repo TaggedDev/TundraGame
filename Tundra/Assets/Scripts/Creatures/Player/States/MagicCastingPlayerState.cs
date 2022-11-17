@@ -1,7 +1,7 @@
-﻿using System;
-using Creatures.Player.Behaviour;
+﻿using Creatures.Player.Behaviour;
 using UnityEngine;
 using Creatures.Player.Inventory;
+using Creatures.Player.Magic;
 using GUI.BestiaryGUI;
 using GUI.GameplayGUI;
 
@@ -10,7 +10,6 @@ namespace Creatures.Player.States
     public class MagicCastingPlayerState : BasicPlayerState
     {
         private PlayerMagic _playerMagic;
-        private EscapeMenu _escapeCanvas;
 
         private const float speed = 1f;
 
@@ -23,26 +22,24 @@ namespace Creatures.Player.States
         protected override float WarmConsumptionCoefficient => 2f;
 
         private Vector3 velocity;
-
+        
         public MagicCastingPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
             PlayerProperties playerProperties, PlayerMagic playerMagic, PlayerInventory inventory, 
             EscapeMenu escapeCanvas, BestiaryPanel bestiaryPanel)
             : base(playerMovement, switcher, playerProperties, inventory, escapeCanvas, bestiaryPanel)
         {
-            _playerMagic = playerMagic;
+            _playerMagic=playerMagic;
             _playerMagic.SpellCast += ExitState;
         }
 
-        private void ExitState(object sender, EventArgs e)
+        /// <summary>
+        /// Exits from this state
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ExitState(object sender, Spell e)
         {
             PlayerStateSwitcher.SwitchState<IdlePlayerState>();
-        }
-
-        public override void HandleEscapeButton()
-        {
-            //I think I've accidentally deleted something from here
-            //woopsie
-            throw new NotImplementedException();
         }
 
         public override void MoveCharacter()
@@ -64,13 +61,14 @@ namespace Creatures.Player.States
 
         public override void Start()
         {
-            _playerMagic._config = (BookEquipmentConfiguration)PlayerEquipment.Book;
+            _playerMagic.Book = (BookEquipmentConfiguration)PlayerEquipment.Book;
             _playerMagic.StartSpelling();
+            PlayerBehaviour.gameObject.GetComponent<PlayerInventory>().UnselectItem();
         }
 
         public override void Stop()
         {
-            
+            PlayerBehaviour.gameObject.GetComponent<PlayerInventory>().ReselectItem();
         }
 
         protected override void StaminaIsOver()
@@ -80,9 +78,6 @@ namespace Creatures.Player.States
         public override void HandleUserInput()
         {
             base.HandleUserInput();
-            _playerMagic.MaxSpellElementCount += (int)(Input.GetAxis("Mouse ScrollWheel") * 10);
-            if (_playerMagic.MaxSpellElementCount > _playerMagic._config.FreeSheets) _playerMagic.MaxSpellElementCount = _playerMagic._config.FreeSheets;
-            else if (_playerMagic.MaxSpellElementCount < 1) _playerMagic.MaxSpellElementCount = 1;
             if (Input.GetKeyDown(KeyCode.Alpha1)) _playerMagic.AddElement(0);
             if (Input.GetKeyDown(KeyCode.Alpha2)) _playerMagic.AddElement(1);
             if (Input.GetKeyDown(KeyCode.Alpha3)) _playerMagic.AddElement(2);

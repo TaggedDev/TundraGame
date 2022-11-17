@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Creatures.Player.Behaviour;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
@@ -31,9 +32,9 @@ public class MagicPanelController : MonoBehaviour
     private GameObject _bookSlot;
     private readonly List<GameObject> _elements = new List<GameObject>();
     private readonly List<GameObject> _bookSheets = new List<GameObject>();
+    private readonly List<Image> _sheetIcons = new List<Image>();
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         GameObject player = UIController._rootCanvas.GetComponent<UIController>()._player;
         _playerMagic = player.GetComponent<PlayerMagic>();
@@ -58,6 +59,9 @@ public class MagicPanelController : MonoBehaviour
         SwitchVisibility(null, null);
     }
 
+    /// <summary>
+    /// Sets elements icon of this controller.
+    /// </summary>
     private void SetElements()
     {
         for (int i = 0; i < _elements.Count; i++)
@@ -65,15 +69,24 @@ public class MagicPanelController : MonoBehaviour
             try
             {
                 //That was hard to get natural number of element when it has number associated with binary field.
-                _elements[i].transform.Find("ElementIcon").gameObject.GetComponent<Image>().sprite = elementIcons[1 + (int)Math.Log((int)_currentMagicBook.MagicElements[i].Element, 2)];
+                var icon = _elements[i].transform.Find("ElementIcon").gameObject.GetComponent<Image>();
+                icon.sprite = elementIcons[1 + (int)Math.Log((int)_currentMagicBook.MagicElements[i].Element, 2)];
+                bool allowed = true;
+                _elements[i].GetComponent<Button>().interactable = allowed;
+                icon.color = allowed ? Color.white : new Color(0.5f, 0.5f, 0.5f, 0.5f);
             }
             catch
             {
-                _elements[i].transform.Find("ElementIcon").gameObject.GetComponent<Image>().sprite = elementIcons.First();
+                var icon = _elements[i].transform.Find("ElementIcon").gameObject.GetComponent<Image>();
+                icon.sprite = elementIcons.First();
+                icon.color = new Color(0.5f, 0.5f, 0.5f, 0.5f);
             }
         }
     }
 
+    /// <summary>
+    /// Sets sheets icons to this controller.
+    /// </summary>
     private void SetSheets()
     {
         foreach (var sheet in _bookSheets)
@@ -81,6 +94,7 @@ public class MagicPanelController : MonoBehaviour
             Destroy(sheet);
         }
         _bookSheets.Clear();
+        _sheetIcons.Clear();
         Image bookImage = _bookSlot.transform.Find("ItemIcon").gameObject.GetComponent<Image>();
         if (_currentMagicBook != null)
         {
@@ -95,6 +109,7 @@ public class MagicPanelController : MonoBehaviour
                 _bookSheets.Add(sheet);
                 sheet.transform.localPosition = start;
                 start += new Vector3(150, 0);
+                _sheetIcons.Add(sheet.transform.Find("InternalIcon").gameObject.GetComponent<Image>());
             }
         }
         else
@@ -104,23 +119,23 @@ public class MagicPanelController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Switches visibility of a panel.
+    /// </summary>
     private void SwitchVisibility(object sender, EventArgs e)
     {
         _elementsPanel.SetActive(_playerMagic.IsSpellingPanelOpened);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    /// <summary>
+    /// Handles user click on element.
+    /// </summary>
+    /// <param name="source">Element user has clicked.</param>
     public void OnElementClicked(GameObject source)
     {
-        print("Click!");
         int index = _elements.IndexOf(source);
         _playerMagic.AddElement(index);
-        print($"Id: {index}");
+        SetElements();
     }
 
     private void FixedUpdate()
@@ -135,7 +150,7 @@ public class MagicPanelController : MonoBehaviour
                 {
                     sheetIcon.color = Color.green;
                 }
-                else if (i < _playerMagic.MaxSpellElementCount)
+                else if (_playerMagic.IsReadyForCasting)
                 {
                     sheetIcon.color = new Color(0.56f, 0f, 1f);
                 }
@@ -165,8 +180,18 @@ public class MagicPanelController : MonoBehaviour
                 {
                     icon.color = new Color(0.5f, 0.5f, 0.5f, 0.5f);
                 }
-                else icon.color = Color.white;
+                else
+                {
+                    bool allowed = true;
+                    icon.color = allowed ? Color.white : new Color(0.5f, 0.5f, 0.5f, 0.5f);
+                }
             }
+            // Handling input
+            if (Input.GetKeyDown(KeyCode.Alpha1)) OnElementClicked(_elements[0]);
+            if (Input.GetKeyDown(KeyCode.Alpha2)) OnElementClicked(_elements[1]);
+            if (Input.GetKeyDown(KeyCode.Alpha3)) OnElementClicked(_elements[2]);
+            if (Input.GetKeyDown(KeyCode.Alpha4)) OnElementClicked(_elements[3]);
+            if (Input.GetKeyDown(KeyCode.Alpha5)) OnElementClicked(_elements[4]);
         }
     }
 }

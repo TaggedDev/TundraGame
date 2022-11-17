@@ -6,7 +6,6 @@ using UnityEngine;
 using System;
 using GUI.BestiaryGUI;
 using GUI.GameplayGUI;
-using UnityEngine.UIElements;
 
 namespace Creatures.Player.Behaviour
 {
@@ -18,8 +17,6 @@ namespace Creatures.Player.Behaviour
         public float OverweightCoefficient => _inventoryController.Inventory.TotalWeight / _playerProperties.MaxLoadCapacity;
 
         // Variables
-        //TODO: Здесь нужно думаю, по-хорошему, как-нибудь закрыть эти поля для доступа, но разрешить их изменение в классах States
-
         [SerializeField] private EscapeMenu escapeCanvas;
         [SerializeField] private DeathMenu deathCanvas;
         [SerializeField] private BestiaryPanel bestiaryPanel;
@@ -36,18 +33,12 @@ namespace Creatures.Player.Behaviour
         private PlayerMagic _playerMagic;
         private bool _isDead;
         private PlayerBuild _playerBuild;
-        //private float cameraDistance;
-
+        
         public BasicPlayerState CurrentState => _currentState;
-
         public event EventHandler StateChanged;
 
         private void Start()
         {
-            /*if (escapeCanvas is null)
-                throw new Exception("Escape Canvas object was not assigned to the player behaviour");*/
-
-            //cameraDistance = Vector3.Distance(Camera.main.transform.position, transform.position);
             _mainCamera = Camera.main;
             _cameraHolder = transform.parent.GetComponentInChildren<CameraMovement>();
             _playerMovement = GetComponent<PlayerMovement>();
@@ -77,12 +68,11 @@ namespace Creatures.Player.Behaviour
             _currentState.Start();
             _mainCamera.transform.RotateAround(transform.position, Vector3.up, 45);
             _playerMovement.UpdateDirections();
-            _playerMovement.Speed = 2f;
+            _playerMovement.Speed = 0.5f;
             _inventoryController.SelectedItemChanged += (sender, e) => 
             {
                 CurrentState.OnPlayerSelectedItemChanged(_inventoryController);
             };
-            //Initialize health, starvation and temperature:
         }
 
         private void Update()
@@ -96,7 +86,6 @@ namespace Creatures.Player.Behaviour
             _cameraHolder.transform.position = transform.position;
             _currentState.ContinueStarving();
             _currentState.ContinueFreeze();
-            _currentState.LoadForThrow();
             _currentState.SpendStamina();
             _currentState.HandleUserInput();
             _currentState.PrepareForHit();
@@ -115,18 +104,6 @@ namespace Creatures.Player.Behaviour
             _animator.SetBool("Shift Pressed", Input.GetKey(KeyCode.LeftShift));
         }
 
-        public void ThrowItem()
-        {
-            _animator.SetTrigger("Throw");
-            _playerProperties._throwLoadingProgress = _playerProperties.ThrowPrepareTime;
-            //Вся эта странная история нужна для того, чтобы он кидал в нужую сторону. 
-            //TODO: Не работает, надо фиксить.
-            Vector3 target = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-            target = Quaternion.Euler(0, 90, 0) * new Vector3(target.x, 0, target.z).normalized;
-            //print(target);
-            _inventoryController.Inventory.Slots[_inventoryController.SelectedInventorySlot].ThrowItem(transform.position, (target).normalized);
-        }
-
         public void SwitchState<T>() where T : BasicPlayerState
         {
             _animator.SetBool("Busy Mode", typeof(T) == typeof(BusyPlayerState));
@@ -134,9 +111,7 @@ namespace Creatures.Player.Behaviour
             _currentState.Stop();
             state.Start();
             _currentState = state;
-            _playerProperties._throwLoadingProgress = _playerProperties.ThrowPrepareTime;
             StateChanged?.Invoke(this, null);
-            Debug.Log(typeof(T).ToString());
         }
 
         internal void Hit()
