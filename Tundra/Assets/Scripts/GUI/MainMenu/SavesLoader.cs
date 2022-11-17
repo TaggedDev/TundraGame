@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 namespace GUI.MainMenu
 {
+    /// <summary>
+    /// Manager of all saves on user's PC
+    /// </summary>
     public class SavesLoader : MonoBehaviour
     {
         [SerializeField] private Text noSavesFoundText;
@@ -11,8 +14,7 @@ namespace GUI.MainMenu
         [SerializeField] private VerticalLayoutGroup content;
         [SerializeField] private LevelPlank levelSavePrefab;
         private readonly string savesPath = Application.streamingAssetsPath + "/Worlds/";
-    
-        // Start is called before the first frame update
+        
         private void Start()
         {
             if (Directory.Exists(savesPath) && Directory.GetFiles(savesPath).Length != 0)

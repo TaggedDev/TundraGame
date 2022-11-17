@@ -5,8 +5,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace GUI
+namespace GUI.MainMenu
 {
+    /// <summary>
+    /// Manages the world creation fields in Level Creation scene 
+    /// </summary>
     public class CreateMenu_WorldGenerator : MonoBehaviour
     {
         [SerializeField] private Text worldNameInput;
@@ -20,6 +23,9 @@ namespace GUI
                 throw new Exception("World seed input field is not assigned");
         }
 
+        /// <summary>
+        /// Sets the values for the world and launches the scene with the game
+        /// </summary>
         public void CreateWorld()
         {
             string worldName = worldNameInput.text;
@@ -30,8 +36,6 @@ namespace GUI
                 string[] files = Directory.GetFiles(savesPath, "New World*.txt");
                 worldName = $"New World ({files.Length+1})";
             }
-            
-            
             
             // Check if player didn't put value in seed placeholder
             int worldSeed;

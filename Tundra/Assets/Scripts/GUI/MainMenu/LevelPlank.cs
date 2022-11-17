@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 namespace GUI.MainMenu
 {
+    /// <summary>
+    /// Represents the behaviour of every "World Save" card in list of all cards in choosing the save menu 
+    /// </summary>
     public class LevelPlank : MonoBehaviour
     {
         [SerializeField] private Text levelName;
@@ -36,7 +39,7 @@ namespace GUI.MainMenu
             WorldConstants.WorldName = levelName.text;
             WorldConstants.WorldSeed = _levelSeed;
             WorldConstants.WorldData = _levelData; 
-            SceneManager.LoadScene(5);
+            SceneManager.LoadScene(4);
         }
     }
 }

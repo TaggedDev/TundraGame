@@ -3,6 +3,9 @@ using UnityEngine.SceneManagement;
 
 namespace GUI.MainMenu
 {
+    /// <summary>
+    /// A handler for scene switching in Main Menu scene
+    /// </summary>
     public class MainMenu_SceneSwitcher : MonoBehaviour
     {
         /// <summary>
