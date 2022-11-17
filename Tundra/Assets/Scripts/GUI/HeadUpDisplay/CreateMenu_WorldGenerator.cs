@@ -42,7 +42,7 @@ namespace GUI
 
             WorldConstants.WorldName = worldName;
             WorldConstants.WorldSeed = worldSeed;
-            SceneManager.LoadScene(5);
+            SceneManager.LoadScene(4);
         }
     }
 }
