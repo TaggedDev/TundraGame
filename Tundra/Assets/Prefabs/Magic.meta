@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Tundra/Assets/Prefabs/GUI/Bestiary.meta
-guid: 3a65fa113b0b34d4eb3652f00c483d3e
-========
 guid: 271d3b3e04c9fcc47aeeb81de57f4375
->>>>>>>> spells:Tundra/Assets/Prefabs/Magic.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

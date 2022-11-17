@@ -68,7 +68,7 @@ namespace Creatures.Player.Behaviour
             _currentState.Start();
             _mainCamera.transform.RotateAround(transform.position, Vector3.up, 45);
             _playerMovement.UpdateDirections();
-            _playerMovement.Speed = 0.5f;
+            _playerMovement.Speed = 2f;
             _inventoryController.SelectedItemChanged += (sender, e) => 
             {
                 CurrentState.OnPlayerSelectedItemChanged(_inventoryController);
