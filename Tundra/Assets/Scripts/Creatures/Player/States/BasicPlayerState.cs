@@ -97,6 +97,14 @@ namespace Creatures.Player.States
         }
 
         /// <summary>
+        /// Handles the logic of pressing escape in different states
+        /// </summary>
+        public virtual void HandleEscapeButton()
+        {
+            _escapeCanvas.gameObject.SetActive(!_escapeCanvas.gameObject.activeSelf);
+        }
+        
+        /// <summary>
         /// Updates starving state in <see cref="PlayerBehaviour"/>
         /// </summary>
         public virtual void ContinueStarving()
