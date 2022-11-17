@@ -16,7 +16,7 @@ namespace GUI.HeadUpDisplay
         [SerializeField]
         private GameObject recipePrefab;
         [SerializeField]
-        private GameObject contentObjectPrefab;
+        private GameObject contentObject;
         [SerializeField]
         private PlayerInventory playerInventory;
         [SerializeField]
@@ -81,17 +81,19 @@ namespace GUI.HeadUpDisplay
             _recipeTiles = new GameObject[recipes.Count()];
             int i = 0;
             var rect = (recipePrefab.transform as RectTransform).rect;
-            Vector3 position = new Vector3(rect.width / 2, 0);
+            var contentRect = (contentObject.transform as RectTransform).rect;
+            Vector3 position = new Vector3(0, (contentRect.yMax + Screen.height) / 2 - rect.height / 2);
             foreach (var recipe in recipes)
             {
-                var tile = Instantiate(recipePrefab, contentObjectPrefab.transform);
+                var tile = Instantiate(recipePrefab, contentObject.transform);
                 _recipeTiles[i++] = tile;
-                tile.transform.position = position;
-                position.y -= rect.height + 10;
+                tile.transform.localPosition = position;
+                position.y -= rect.height;
+                position.y -= 10;
                 tile.GetComponent<CraftTileUI>().SetRecipe(recipe);
             }
-            //var size = (contentObjectPrefab.transform as RectTransform).sizeDelta;
-            //(contentObjectPrefab.transform as RectTransform).sizeDelta = new Vector2(size.x, Mathf.Abs(position.y));
+            var size = (contentObject.transform as RectTransform).sizeDelta;
+            (contentObject.transform as RectTransform).sizeDelta = new Vector2(size.x, Mathf.Abs((Screen.height - position.y - rect.height)));
         }
     }
 }

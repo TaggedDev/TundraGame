@@ -822,6 +822,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5261347691535512832, guid: a6dd18d4dbf354c499e01e94eb08faa3,
+        type: 3}
+      propertyPath: m_Horizontal
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6942821834892844433, guid: a6dd18d4dbf354c499e01e94eb08faa3,
         type: 3}
       propertyPath: m_Name
@@ -972,11 +977,6 @@ PrefabInstance:
       propertyPath: playerInventory
       value: 
       objectReference: {fileID: 1782702501049584767}
-    - target: {fileID: 7102661004005948267, guid: a6dd18d4dbf354c499e01e94eb08faa3,
-        type: 3}
-      propertyPath: areAllRecipesVisible
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8536336974770636440, guid: a6dd18d4dbf354c499e01e94eb08faa3,
         type: 3}
       propertyPath: bookSlot
@@ -2160,6 +2160,17 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591950171598838081, guid: 559d97cf075654344b456f54e77c8b1c,
+        type: 3}
+      propertyPath: inventory.slots.Array.data[0].item
+      value: 
+      objectReference: {fileID: 11400000, guid: 39b8ca4e6b88fb841bce2e93b4ffb169,
+        type: 2}
+    - target: {fileID: 6591950171598838081, guid: 559d97cf075654344b456f54e77c8b1c,
+        type: 3}
+      propertyPath: inventory.slots.Array.data[0].itemsAmount
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6677471697813370866, guid: 559d97cf075654344b456f54e77c8b1c,
         type: 3}
