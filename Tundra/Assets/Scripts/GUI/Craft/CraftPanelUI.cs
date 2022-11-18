@@ -24,11 +24,13 @@ namespace GUI.HeadUpDisplay
 
         private GameObject[] _recipeTiles;
         private PlaceableItemConfiguration _currentWorkspace;
+        private bool _loaded;
 
         private void Start()
         {
             UIController.CraftPanel = this;
             ClosePanel();
+            _loaded = true;
         }
 
         private void Update()
@@ -62,12 +64,10 @@ namespace GUI.HeadUpDisplay
         private void ReloadRecipesList()
         {
             // Stage 1. Prepare recipes list.
-            var recipes = CraftHelper.Instance.AllRecipes;
+            var recipes = CraftHelper.Instance.GetAvailableConfigurations(null, _currentWorkspace);
             if (!areAllRecipesVisible)
             {
-                recipes = from recipe in recipes
-                          where recipe.CheckIfAvailable(_currentWorkspace, playerInventory)
-                          select recipe;
+                recipes = CraftHelper.Instance.GetAvailableConfigurations(playerInventory, _currentWorkspace);
             }
             // Stage 2. Remove old recipe tiles.
             if (_recipeTiles != null)
@@ -79,21 +79,20 @@ namespace GUI.HeadUpDisplay
             }
             // Stage 3. Fill list with new tiles.
             _recipeTiles = new GameObject[recipes.Count()];
+            if (recipes.Count() == 0) return;
             int i = 0;
-            var rect = (recipePrefab.transform as RectTransform).rect;
-            var contentRect = (contentObject.transform as RectTransform).rect;
-            Vector3 position = new Vector3(0, (contentRect.yMax + Screen.height) / 2 - rect.height / 2);
             foreach (var recipe in recipes)
             {
                 var tile = Instantiate(recipePrefab, contentObject.transform);
                 _recipeTiles[i++] = tile;
-                tile.transform.localPosition = position;
-                position.y -= rect.height;
-                position.y -= 10;
-                tile.GetComponent<CraftTileUI>().SetRecipe(recipe);
+                tile.GetComponent<CraftTileUI>().SetRecipe(recipe, playerInventory);
             }
-            var size = (contentObject.transform as RectTransform).sizeDelta;
-            (contentObject.transform as RectTransform).sizeDelta = new Vector2(size.x, Mathf.Abs((Screen.height - position.y - rect.height)));
+        }
+
+        public void SelectionChanged(bool value)
+        {
+            areAllRecipesVisible = !value;
+            if (_loaded) ReloadRecipesList();
         }
     }
 }

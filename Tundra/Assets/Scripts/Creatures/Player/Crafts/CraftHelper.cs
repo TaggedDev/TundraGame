@@ -86,7 +86,7 @@ namespace Creatures.Player.Crafts
         /// <returns></returns>
         public IEnumerable<RecipeCofiguration> GetAvailableConfigurations(PlayerInventory inventoryScript, PlaceableItemConfiguration workbench)
         {
-            var result = _allRecipes.Where(x => x.CheckIfAvailable(workbench, inventoryScript));
+            var result = AllRecipes.Where(x => x.CheckIfAvailable(workbench, inventoryScript));
             return result;
         }
     }
