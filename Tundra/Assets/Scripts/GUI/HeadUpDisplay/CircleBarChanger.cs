@@ -19,6 +19,7 @@ namespace GUI.HeadUpDisplay
             _mainCamera = Camera.main;
             _player = UIController._rootCanvas.GetComponent<UIController>()._player;
             _playerProperties = _player.GetComponent<PlayerProperties>();
+            _playerProperties.MaxCircleBarFillingTime = PlayerProperties.MaxCircleFillingTime_ATTACK;
         }
         
         private void Update()
