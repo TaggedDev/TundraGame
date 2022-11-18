@@ -7,6 +7,9 @@ using GUI.GameplayGUI;
 
 namespace Creatures.Player.States
 {
+    /// <summary>
+    /// An abstract model to describe the behaviour of player state
+    /// </summary>
     public abstract class BasicPlayerState
     {
         protected readonly PlayerAnimation PlayerAnimation;
@@ -17,6 +20,9 @@ namespace Creatures.Player.States
         protected readonly Rigidbody PlayerRigidBody;
         protected readonly PlayerEquipment PlayerEquipment;
         protected readonly PlayerInventory PlayerInventory;
+        private Vector3 velocity;
+        private EscapeMenu _escapeCanvas;
+        
         /// <summary>
         /// The hunger consumption value of this state.
         /// </summary>
@@ -33,10 +39,7 @@ namespace Creatures.Player.States
         /// The warm consumption coefficient of this state.
         /// </summary>
         protected abstract float WarmConsumptionCoefficient { get; }
-
-        private Vector3 velocity;
-        private EscapeMenu _escapeCanvas;
-
+        
         protected BasicPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher, PlayerProperties playerProperties, PlayerInventory playerInventory, EscapeMenu escapeCanvas)
         {
             PlayerBehaviour = (PlayerBehaviour)switcher;
@@ -129,6 +132,11 @@ namespace Creatures.Player.States
             }
         }
         
+        /// <summary>
+        /// An event called whenever user changed his item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected virtual void InventorySelectedSlotChanged(object sender, EventArgs e)
         {
             if (PlayerInventory.SelectedItem is PlaceableItemConfiguration)
@@ -165,15 +173,18 @@ namespace Creatures.Player.States
         {
             if (!(this is BusyPlayerState) && !(this is MagicCastingPlayerState))
             {
+                // Handle LMB press, filling the charge circle 
                 if (Input.GetMouseButton(0))
                 {
                     PlayerProperties.CurrentCircleBarFillingTime += Time.smoothDeltaTime;
                 }
+                // In case the stop pressing LMB -> reset the circle to zero
                 else
                 {
                     PlayerProperties.CurrentCircleBarFillingTime = 0f;
                 }
-
+                
+                // Hit in front of self when charge is 100%. To be reworked in Melee branch 
                 if (PlayerProperties.CurrentCircleBarFillingTime > PlayerProperties.MaxCircleBarFillingTime)
                 {
                     PlayerBehaviour.Hit();
