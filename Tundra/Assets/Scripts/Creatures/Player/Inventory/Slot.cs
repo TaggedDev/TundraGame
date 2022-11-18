@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Creatures.Player.Inventory.ItemConfiguration;
 using UnityEngine;
 
 namespace Creatures.Player.Inventory

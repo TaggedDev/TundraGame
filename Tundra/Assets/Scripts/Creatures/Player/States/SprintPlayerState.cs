@@ -18,15 +18,19 @@ namespace Creatures.Player.States
 
         public SprintPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
 
-            PlayerProperties playerProperties, PlayerInventory inventory, EscapeMenu escapeCanvas, BestiaryPanel bestiaryPanel)
-            : base(playerMovement, switcher, playerProperties,  inventory, escapeCanvas, bestiaryPanel)
+            PlayerProperties playerProperties, PlayerInventory inventory, EscapeMenu escapeCanvas)
+            : base(playerMovement, switcher, playerProperties,  inventory, escapeCanvas)
         { }
 
         public override void Start()
-        { }
+        {
+            PlayerAnimation.SwitchAnimation("Run");
+        }
 
         public override void Stop()
-        { }
+        {
+
+        }
 
         protected override void StaminaIsOver()
         {

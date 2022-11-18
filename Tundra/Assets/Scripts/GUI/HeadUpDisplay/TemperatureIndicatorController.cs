@@ -1,11 +1,8 @@
-﻿using Creatures.Player.Behaviour;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using Creatures.Player.Behaviour;
 using UnityEngine;
-using UnityEngine.UI;
 
-namespace GUI
+namespace GUI.HeadUpDisplay
 {
     public class TemperatureIndicatorController : MonoBehaviour
     {
@@ -47,7 +44,7 @@ namespace GUI
 
 
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
             UIController controller = UIController._rootCanvas.GetComponent<UIController>();
             _player = controller._player;
@@ -56,9 +53,9 @@ namespace GUI
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
-            _targetScale = PlayerProperties.CurrentWarmLevel / PlayerProperties.MaxWarmLevel;
+            _targetScale = PlayerProperties.CurrentWarmthPoints / PlayerProperties.MaxWarmthPoints;
             float deltaScaleValue = (float)Math.Round((_targetScale - _currentScale), 3) * animationSpeedModifier * Time.deltaTime;
             if (Math.Abs(deltaScaleValue) < 0.00002)
             {

@@ -1,4 +1,4 @@
-﻿using Creatures.Player.Inventory;
+using Creatures.Player.Inventory;
 using Creatures.Player.Magic;
 using JetBrains.Annotations;
 using System;

@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using Creatures.Player.Inventory.ItemConfiguration;
 using Creatures.Player.Inventory;
 using UnityEngine;
 
@@ -153,19 +156,7 @@ namespace Creatures.Player.Behaviour
         }
 
         public event EventHandler<EquipmentConfiguration> EquipmentChanged;
-
-        // Start is called before the first frame update
-        void Start()
-        {
-            _inventoryController = GetComponent<PlayerInventory>();
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
-
+        
         private void OnEquipmentChanged()
         {
             _inventoryController.Inventory.ResizeInventory(TotalAdditionalSlots);

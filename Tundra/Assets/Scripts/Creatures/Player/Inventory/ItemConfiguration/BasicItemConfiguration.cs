@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Creatures.Player.Inventory
+namespace Creatures.Player.Inventory.ItemConfiguration
 {
     /// <summary>
     /// Базовый класс для создания конфигураций предметов в игре.
@@ -26,6 +22,7 @@ namespace Creatures.Player.Inventory
         private int maxStackVolume;
         [SerializeField]
         private float weight;
+        
         /// <summary>
         /// Иконка прмдета в инвентаре.
         /// </summary>

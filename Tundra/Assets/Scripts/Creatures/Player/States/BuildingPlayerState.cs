@@ -4,6 +4,7 @@ using GUI.GameplayGUI;
 using System.Collections;
 using System.Collections.Generic;
 using GUI.BestiaryGUI;
+using Creatures.Player.Inventory.ItemConfiguration;
 using UnityEngine;
 
 namespace Creatures.Player.States
@@ -20,9 +21,7 @@ namespace Creatures.Player.States
         {
             _playerBuild = playerBuild;
         }
-
-
-
+        
         protected override float StarvingConsumptionCoefficient => 1f;
 
         protected override float StaminaConsumption => -.5f; //а за overweight мы стамину не едим? (в Valheim такое было)
@@ -33,6 +32,7 @@ namespace Creatures.Player.States
 
         public override void Start()
         {
+            PlayerMovement.CanSprint = false;
             _playerBuild.ObjectPlaced += ObjectPlaced;
             _playerBuild.PlacableObj = (PlayerInventory.SelectedItem as PlaceableItemConfiguration).RepresentedObject;
             _playerBuild.enabled = true;
@@ -45,6 +45,7 @@ namespace Creatures.Player.States
 
         public override void Stop()
         {
+            PlayerMovement.CanSprint = true;
             _playerBuild.enabled = false;
         }
 

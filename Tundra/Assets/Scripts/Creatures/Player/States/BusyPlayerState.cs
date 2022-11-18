@@ -35,7 +35,7 @@ namespace Creatures.Player.States
             //Here's nothing. Player Should'nt move in this state.
         }
 
-        public override void ContinueFreeze()
+        public override void ContinueFreezing()
         {
             //I guess it's like a pause, player should not spend temperature on it
         }
@@ -52,10 +52,12 @@ namespace Creatures.Player.States
 
         public override void Start()
         {
+            PlayerMovement.CanSprint = false;
         }
 
         public override void Stop()
         {
+            PlayerMovement.CanSprint = true;
         }
 
         protected override void StaminaIsOver()

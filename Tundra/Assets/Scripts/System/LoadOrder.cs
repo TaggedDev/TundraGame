@@ -13,7 +13,7 @@ namespace System
     {
         [SerializeField] private MapGenerator mapGenerator;
         [SerializeField] private ChunksGenerator chunksGenerator;
-        [SerializeField] private PlayerSpawner playerHolder;
+        [SerializeField] private PlayerSpawner playerObject;
         [SerializeField] private EntityRenderer entityRenderer;
 
         private string[] worldData;
@@ -57,10 +57,10 @@ namespace System
         {
             worldData = WorldConstants.WorldData.Split('\n');
             
-            _playerRigidbody = playerHolder.GetComponent<Rigidbody>();
+            _playerRigidbody = playerObject.GetComponent<Rigidbody>();
             _playerRigidbody.useGravity = false;
 
-            playerHolder.transform.position = GetPlayerStartPosition();
+            playerObject.transform.position = GetPlayerStartPosition();
             
             mapGenerator.gameObject.SetActive(true);
             chunksGenerator.gameObject.SetActive(true);
@@ -74,7 +74,7 @@ namespace System
         {
             yield return new WaitUntil(() => mapGenerator.mapDataCount == 9 && mapGenerator.meshDataCount == 9);
             
-            playerHolder.SpawnPlayer();
+            playerObject.SpawnPlayer();
             _playerRigidbody.useGravity = true;
             
             entityRenderer.gameObject.SetActive(true);

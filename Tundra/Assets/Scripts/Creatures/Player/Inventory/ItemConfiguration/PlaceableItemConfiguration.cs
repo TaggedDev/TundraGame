@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Environment;
+﻿using UnityEngine;
 
-namespace Creatures.Player.Inventory
+namespace Creatures.Player.Inventory.ItemConfiguration
 {
     [CreateAssetMenu(fileName = "New Placeable Configuration", menuName = "Items/Placable Configuration")]
     public class PlaceableItemConfiguration : BasicItemConfiguration

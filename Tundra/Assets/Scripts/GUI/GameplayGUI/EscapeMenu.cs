@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Creatures.Player.Behaviour;
 using Environment;
+using GUI.MainMenu;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -69,7 +70,7 @@ namespace GUI.GameplayGUI
         public void ExitToMainMenu()
         {
             loadOrder.UnloadCurrentScene();
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(Convert.ToInt32(TundraScenes.MAIN_MENU_SCENE_ID));
         }
     }
 

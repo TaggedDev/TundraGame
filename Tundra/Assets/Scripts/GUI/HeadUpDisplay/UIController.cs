@@ -1,26 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class UIController : MonoBehaviour
+namespace GUI.HeadUpDisplay
 {
-    static internal GameObject _rootCanvas;
-
-    [SerializeField] internal GameObject _player;
-
-    private void Awake()
+    public class UIController : MonoBehaviour
     {
-        _rootCanvas = gameObject;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
+        [SerializeField] internal GameObject _player;
+        internal static GameObject _rootCanvas;
         
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
+        private void Awake()
+        {
+            _rootCanvas = gameObject;
+        }
     }
 }

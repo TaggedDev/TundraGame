@@ -1,6 +1,6 @@
 ﻿using Creatures.Player.Inventory;
 using System;
-using System.Data;
+using Creatures.Player.Inventory.ItemConfiguration;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
@@ -15,7 +15,15 @@ namespace Creatures.Player.Behaviour
     {
         public static float ItemPickingUpTime => 3f;
 
-        private InventoryContainer inventory;
+        [SerializeField] private ItemHolder itemHolder;
+
+        public ItemHolder ItemHolder
+        {
+            get => itemHolder;
+            set => itemHolder = value;
+        }
+
+        private InventoryContainer _inventory;
         private PlayerBehaviour _playerBehaviour;
         private int _lastSlotIndex;
         private int _currentSlotIndex;
@@ -27,10 +35,10 @@ namespace Creatures.Player.Behaviour
         {
             get
             {
-                if (inventory == null) Init();
-                return inventory;
+                if (_inventory == null) Init();
+                return _inventory;
             }
-            private set => inventory = value;
+            private set => _inventory = value;
         }
 
         /// <summary>
@@ -40,8 +48,10 @@ namespace Creatures.Player.Behaviour
         {
             get
             {
-                if (SelectedInventorySlot != -1) return Inventory[SelectedInventorySlot]?.Item;
-                else return null;
+                if (SelectedInventorySlot != -1) 
+                    return Inventory[SelectedInventorySlot]?.Item;
+                else
+                    return null;
             }
         }
         /// <summary>
@@ -52,6 +62,7 @@ namespace Creatures.Player.Behaviour
         /// The distance to the <see cref="NearestInteractableItem"/>.
         /// </summary>
         public float NearestInteractableItemDistance => NearestInteractableItem == null ? -1 : Vector3.Distance(transform.position, NearestInteractableItem.transform.position);
+        
         /// <summary>
         /// The progress of the item picking (or the interaction delay).
         /// </summary>
@@ -73,7 +84,7 @@ namespace Creatures.Player.Behaviour
 
         private void Start()
         {
-            if (inventory == null) Init();
+            if (_inventory == null) Init();
         }
 
         private void Init()
@@ -81,7 +92,7 @@ namespace Creatures.Player.Behaviour
             Inventory = new InventoryContainer();
             _playerBehaviour = GetComponent<PlayerBehaviour>();
         }
-
+        
         private void Update()
         {
             if (Input.GetKey(KeyCode.E) && !Input.GetKey(KeyCode.LeftControl) && NearestInteractableItem != null)
@@ -93,49 +104,23 @@ namespace Creatures.Player.Behaviour
                     SelectedItemChanged?.Invoke(this, null);
                 }
             }
-            else ItemPickingProgress = 0f;
+            else
+            {
+                ItemPickingProgress = 0f;
+            }
+            
             if (Input.GetKeyDown(KeyCode.Q) && !Input.GetKey(KeyCode.LeftControl))
             {
-                ThrowItemAway();
+                DropEquippedItem();
                 SelectedItemChanged?.Invoke(this, null);
             }
         }
 
-        /// <summary>
-        /// Checks item if it's interactable.
-        /// </summary>
-        /// <param name="itemBehaviour">Item to test.</param>
-        private void CheckNearestInteractableItem(DroppedItemBehaviour itemBehaviour)
-        {
-            if (itemBehaviour == null || itemBehaviour.IsThrown) return;
-            float oldDistance = NearestInteractableItemDistance;
-            float currentDistance = Vector3.Distance(transform.position, transform.position);
-            if (currentDistance < oldDistance || oldDistance == -1)
-            {
-                ResetNearestItem(itemBehaviour.gameObject);
-                Debug.Log($"Updated object to {itemBehaviour}");
-            }
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            CheckNearestInteractableItem(other.gameObject.GetComponent<DroppedItemBehaviour>());
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            if (NearestInteractableItem == other)
-            {
-                ResetNearestItem(null);
-                Debug.Log("Removed item object from this");
-            }
-        }
-        /// <summary>
-        /// Throws an item into the world space.
-        /// </summary>
-        private void ThrowItemAway()
+        private void DropEquippedItem()
         {
             Inventory.Slots[SelectedInventorySlot].DropItem(transform.position, transform.forward * 3 + Vector3.up);
+            if (Inventory.Slots[SelectedInventorySlot].ItemsAmount == 0)
+                itemHolder.ResetMesh();
         }
 
         /// <summary>
@@ -143,15 +128,15 @@ namespace Creatures.Player.Behaviour
         /// </summary>
         private void PickItemUp()
         {
+            // If there is no overweight, we pick up the item
             if (_playerBehaviour.OverweightCoefficient < 2)
             {
                 var drop = NearestInteractableItem.GetComponent<DroppedItemBehaviour>();
-                if (Inventory.AddItem(drop.AssociatedItem,
-                    drop.DroppedItemsAmount, out int rem))
+                if (Inventory.AddItem(drop.AssociatedItem, drop.DroppedItemsAmount, out int rem))
                 {
                     if (rem == 0)
                     {
-                        drop.OnPickupHandler();
+                        drop.OnPickupHandler(itemHolder);
                     }
                 }
             }

@@ -27,6 +27,7 @@ namespace Creatures.Player.Behaviour
         private CameraMovement _cameraHolder;
         private Camera _mainCamera;
         private PlayerInventory _inventoryController;
+        private PlayerAnimation _playerAnimation;
         private PlayerProperties _playerProperties;
         private PlayerInventory _playerInventory;
         private Rigidbody _rigidbody;
@@ -41,12 +42,15 @@ namespace Creatures.Player.Behaviour
         {
             _mainCamera = Camera.main;
             _cameraHolder = transform.parent.GetComponentInChildren<CameraMovement>();
+            
             _playerMovement = GetComponent<PlayerMovement>();
             _inventoryController = GetComponent<PlayerInventory>();
             _playerProperties = GetComponent<PlayerProperties>();
             _playerInventory = GetComponent<PlayerInventory>();
             _playerMagic = GetComponent<PlayerMagic>();
             _playerBuild = GetComponent<PlayerBuild>();
+            _playerAnimation = GetComponent<PlayerAnimation>();
+            
             _rigidbody = GetComponent<Rigidbody>();
             _animator = GetComponent<Animator>();
             _allStates = new List<BasicPlayerState>
@@ -85,7 +89,7 @@ namespace Creatures.Player.Behaviour
 
             _cameraHolder.transform.position = transform.position;
             _currentState.ContinueStarving();
-            _currentState.ContinueFreeze();
+            _currentState.ContinueFreezing();
             _currentState.SpendStamina();
             _currentState.HandleUserInput();
             _currentState.PrepareForHit();
@@ -96,33 +100,32 @@ namespace Creatures.Player.Behaviour
             if (_isDead)
                 return;
             
-            if (_playerProperties.CurrentHealth <= 0)
+            if (_playerProperties.CurrentHealthPoints <= 0)
                 KillPlayer();
 
             _currentState.MoveCharacter();
-            _animator.SetFloat("Speed", _rigidbody.velocity.magnitude);
-            _animator.SetBool("Shift Pressed", Input.GetKey(KeyCode.LeftShift));
         }
 
         public void SwitchState<T>() where T : BasicPlayerState
         {
-            _animator.SetBool("Busy Mode", typeof(T) == typeof(BusyPlayerState));
             var state = _allStates.FirstOrDefault(st => st is T);
             _currentState.Stop();
             state.Start();
             _currentState = state;
             StateChanged?.Invoke(this, null);
+            
+            // Delete later
+            Debug.Log(typeof(T).ToString());
         }
 
         internal void Hit()
         {
             //Now it does almost nothing.
             //TODO: make hit logic.
-            _animator.SetTrigger("Fist Attack");
         }
 
         /// <summary>
-        /// 
+        /// Kills player, plays animation, blacks out the screen and shows the end menu
         /// </summary>
         private void KillPlayer()
         {

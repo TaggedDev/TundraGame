@@ -1,29 +1,35 @@
 ﻿using Creatures.Player.Behaviour;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StaminaBarController : MonoBehaviour
+namespace GUI.HeadUpDisplay
 {
-    GameObject _player;
-
-
-    PlayerProperties playerProperties;
-    Image imageComponent;
-
-    // Start is called before the first frame update
-    void Start()
+    public class StaminaBarController : MonoBehaviour
     {
-        _player = UIController._rootCanvas.GetComponent<UIController>()._player;
-        imageComponent = GetComponent<Image>();
-        playerProperties = _player.GetComponent<PlayerProperties>();
-    }
+        private GameObject _player;
+        private PlayerProperties _playerProperties;
+        private Image _imageComponent;
+        private Camera _mainCamera;
 
-    private void FixedUpdate()
-    {
-        transform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, _player.transform.position) - new Vector2(0, 50);
-        float displayValue = playerProperties.CurrentStamina / playerProperties.MaxStamina;
-        imageComponent.fillAmount = displayValue;
+        // Start is called before the first frame update
+        private void Start()
+        {
+            _mainCamera = Camera.main;
+            _player = UIController._rootCanvas.GetComponent<UIController>()._player;
+            _imageComponent = GetComponent<Image>();
+            _playerProperties = _player.GetComponent<PlayerProperties>();
+        }
+
+        // Update is called once per frame
+        private void Update()
+        {
+            float displayValue = _playerProperties.CurrentStaminaPoints / _playerProperties.MaxStaminaPoints;
+            _imageComponent.fillAmount = displayValue;
+        }
+
+        private void FixedUpdate()
+        {
+            transform.position = RectTransformUtility.WorldToScreenPoint(_mainCamera, _player.transform.position) - new Vector2(0, 50);
+        }
     }
 }

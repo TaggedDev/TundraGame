@@ -1,9 +1,4 @@
 ﻿using Creatures.Player.Races;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Creatures.Player.Behaviour
@@ -13,16 +8,17 @@ namespace Creatures.Player.Behaviour
     /// </summary>
     public class PlayerProperties : MonoBehaviour
     {
-        private PlayerMovement _movement;
-
+        public const float MaxCircleFillingTime_EATING = 1f;
+        public const float MaxCircleFillingTime_ATTACK = .5f;
+        
         /// <summary>
         /// Maximal starvation capacity.
         /// </summary>
-        [SerializeField] private float maxStarve;
+        [SerializeField] private float maxStarvePoints;
         /// <summary>
         /// Time in seconds while which player won't spend saturation.
         /// </summary>
-        [SerializeField] private float saturationTime;
+        [SerializeField] private float saturationPoints;
         /// <summary>
         /// Ideal player character temperature.
         /// </summary>
@@ -34,15 +30,15 @@ namespace Creatures.Player.Behaviour
         /// <summary>
         /// Maximal player warm level.
         /// </summary>
-        [SerializeField] private float maxWarmLevel;
+        [SerializeField] private float maxWarmthPoints;
         /// <summary>
         /// Maximal player character HP level.
         /// </summary>
-        [SerializeField] private float maxHealth;
+        [SerializeField] private float maxHealthPoints;
         /// <summary>
         /// Maximal player character stamina.
         /// </summary>
-        [SerializeField] private float maxStamina;
+        [SerializeField] private float maxStaminaPoints;
         /// <summary>
         /// Maximal player load capacity.
         /// </summary>
@@ -50,7 +46,7 @@ namespace Creatures.Player.Behaviour
         /// <summary>
         /// Total time to prepare for throw.
         /// </summary>
-        [SerializeField] private float hitPreparationTime;
+        [SerializeField] private float maxCircleBarFillingTime;
         /// <summary>
         /// Player character race.
         /// </summary>
@@ -58,7 +54,32 @@ namespace Creatures.Player.Behaviour
         /// <summary>
         /// Internal field for the current player's HP.
         /// </summary>
-        [SerializeField] private float _currentHealth;
+        [SerializeField] private float currentHealthPoints;
+
+        /// <summary>
+        /// Private field determines whether player is eating or not
+        /// </summary>
+        private bool _isHoldingFood;
+
+        /// <summary>
+        /// The time (sec) left to eat the equipped food item 
+        /// </summary>
+        private float _foodConsumingTimeLeft;
+
+        /// <summary>
+        /// The time (sec) left to eat the equipped food item 
+        /// </summary>
+        public float FoodConsumingTimeLeft
+        {
+            get => _foodConsumingTimeLeft;
+            set => _foodConsumingTimeLeft = value;
+        }
+
+        /// <summary>
+        /// The time takes to eat the equipped food item
+        /// </summary>
+        public const float FOOD_CONSUMING_MAX_TIME = 1f;
+
         /// <summary>
         /// Internal field for the current player speed coefficient.
         /// </summary>
@@ -66,19 +87,19 @@ namespace Creatures.Player.Behaviour
         /// <summary>
         /// Internal field for the current player warm level.
         /// </summary>
-        private float _currentWarm;
+        private float _currentWarmthPoints;
         /// <summary>
         /// Internal field for the current player starvation level.
         /// </summary>
-        private float _currentStarvation;
+        private float _currentStarvePoints;
         /// <summary>
         /// Internal field for the current player saturation.
         /// </summary>
-        private float _currentSaturation;
+        private float _currentSaturationPoints;
         /// <summary>
         /// Internal field for the current player stamina.
         /// </summary>
-        private float _currentStamina;
+        private float _currentStaminaPoints;
         /// <summary>
         /// Time of preparing for the hit.
         /// </summary>
@@ -98,69 +119,47 @@ namespace Creatures.Player.Behaviour
         /// <summary>
         /// Maximal starvation level.
         /// </summary>
-        public float MaxStarve => maxStarve;
+        public float MaxStarvePoints => maxStarvePoints;
         /// <summary>
         /// Maximal player health.
         /// </summary>
-        public float MaxHealth => maxHealth;
+        public float MaxHealthPoints => maxHealthPoints;
         /// <summary>
         /// Maximal player stamina.
         /// </summary>
-        public float MaxStamina => maxStamina;
+        public float MaxStaminaPoints => maxStaminaPoints;
         /// <summary>
         /// Maximal warm level. 
         /// </summary>
-        public float MaxWarmLevel => maxWarmLevel;
-        /// <summary>
-        /// Time while which player will be saturated.
-        /// </summary>
-        public float SaturationTime => saturationTime;
+        public float MaxWarmthPoints => maxWarmthPoints;
+
         /// <summary>
         /// Maximal player load capacity.
         /// </summary>
         public float MaxLoadCapacity => maxLoadCapacity;
         /// <summary>
-        /// Total hit preparation time.
+        /// Maximum value for the circle bar above the player
         /// </summary>
-        public float HitPreparationTime => hitPreparationTime;
+        public float MaxCircleBarFillingTime { get; set; }
         /// <summary>
-        /// Current hit preparation progress.
+        /// Current value for the circle bar above the player
         /// </summary>
-        public float CurrentHitProgress
-        {
-            get => _currentHitPreparingTime;
-            internal set
-            {
-                _currentHitPreparingTime = value;
-            }
-        }
+        public float CurrentCircleBarFillingTime { get; set; }
         /// <summary>
         /// Current player health.
         /// </summary>
-        public float CurrentHealth 
+        public float CurrentHealthPoints 
         {
-            get
-            {
-                return _currentHealth;
-            }
-            internal set
-            {
-                _currentHealth = value;
-            }
+            get => currentHealthPoints;
+            internal set => currentHealthPoints = value;
         }
         /// <summary>
         /// Current player stamina.
         /// </summary>
-        public float CurrentStamina
+        public float CurrentStaminaPoints
         {
-            get
-            {
-                return _currentStamina;
-            }
-            internal set
-            {
-                _currentStamina = value;
-            }
+            get => _currentStaminaPoints;
+            internal set => _currentStaminaPoints = value;
         }
 
         /// <summary>
@@ -168,78 +167,68 @@ namespace Creatures.Player.Behaviour
         /// </summary>
         public float CurrentSpeed
         {
-            get
-            {
-                return _movement.Speed;
-            }
-            internal set
-            {
-                _movement.Speed = value;
-            }
+            get => _currentSpeed;
+            internal set => _currentSpeed = value;
         }
 
         /// <summary>
         /// Current warm level. 
         /// </summary>
-        public float CurrentWarmLevel 
+        public float CurrentWarmthPoints 
         {
-            get
-            {
-                return _currentWarm;
-            }
-            internal set
-            {
-                _currentWarm = value;
-            }
+            get => _currentWarmthPoints;
+            internal set => _currentWarmthPoints = value;
         }
+        
         /// <summary>
         /// Current starvation capacity.
         /// </summary>
-        public float CurrentStarvationCapacity 
+        public float CurrentStarvePoints 
         {
-            get
-            {
-                return _currentStarvation;
-            }
+            get => _currentStarvePoints;
             internal set
             {
-                _currentStarvation = value;
+                if (value > maxStarvePoints)
+                    _currentStarvePoints = maxStarvePoints;
+                else
+                    _currentStarvePoints = value;
             }
         }
         /// <summary>
         /// Current saturation.
         /// </summary>
-        public float CurrentSaturation 
+        public float CurrentSaturationPoints 
         {
-            get
-            {
-                return _currentSaturation;
-            }
-            internal set
-            {
-                _currentSaturation = value;
-            }
+            get => _currentSaturationPoints;
+            internal set => _currentSaturationPoints = value;
+        }
+        /// <summary>
+        /// Player eating status 
+        /// </summary>
+        public bool IsHoldingFood
+        {
+            get => _isHoldingFood;
+            set => _isHoldingFood = value;
         }
 
-        void Start()
+        private void Start()
         {
-            _movement = gameObject.GetComponent<PlayerMovement>();
             if (playerRace != null)
             {
-                maxStarve = playerRace.MaxStarve;
-                maxHealth = playerRace.MaxHealth;
-                maxStamina = playerRace.MaxStamina;
-                maxWarmLevel = playerRace.MaxWarmLevel;
-                saturationTime = playerRace.SaturationTime;
+                _foodConsumingTimeLeft = FOOD_CONSUMING_MAX_TIME;
+                maxStarvePoints = playerRace.MaxStarve;
+                maxHealthPoints = playerRace.MaxHealth;
+                maxStaminaPoints = playerRace.MaxStamina;
+                maxWarmthPoints = playerRace.MaxWarmLevel;
+                saturationPoints = playerRace.SaturationTime;
                 perfectTemperature = playerRace.PerfectTemperature;
                 absoluteTemperatureAmplitude = playerRace.AbsoluteTemperatureAmplitude;
                 maxLoadCapacity = playerRace.MaxLoadCapacity;
-                hitPreparationTime = playerRace.HitPrepareTime;
+                maxCircleBarFillingTime = playerRace.HitPrepareTime;
             }
-            _currentStarvation = maxStarve;
-            _currentHealth = maxHealth;
-            _currentStamina = maxStamina;
-            _currentStarvationTime = saturationTime;
+            _currentStarvePoints = maxStarvePoints;
+            currentHealthPoints = maxHealthPoints;
+            _currentStaminaPoints = maxStaminaPoints;
         }
     }
 }
