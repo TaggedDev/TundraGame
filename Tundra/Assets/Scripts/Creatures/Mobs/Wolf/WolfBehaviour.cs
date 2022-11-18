@@ -45,11 +45,13 @@ namespace Creatures.Mobs.Wolf
                 SwitchState<WolfEscapingState>();
             
             // Temporary solution to kill mob
-            if (Input.GetKeyDown(KeyCode.X))
+            if (Input.GetKeyDown(KeyCode.G))
             {
                 CurrentMobHealth -= 5f;
+                Debug.Log($"{CurrentMobHealth}");
                 if (CurrentMobHealth <= 0)
                 {
+                    
                     HandleDeath();
                     return;
                 }

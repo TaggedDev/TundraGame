@@ -33,8 +33,8 @@ namespace Creatures.Player.Magic
                 _props.CurrentSpeed /= (float)Configuration.MovementFineCoefficient;
             }
             // Heals player
-            _props.CurrentHealth += (float)(Configuration.Regeneration * coefficient);
-            if (_props.CurrentHealth > _props.MaxHealth) _props.CurrentHealth = _props.MaxHealth;
+            _props.CurrentHealthPoints += (float)(Configuration.Regeneration * coefficient);
+            if (_props.CurrentHealthPoints > _props.MaxHealthPoints) _props.CurrentHealthPoints = _props.MaxHealthPoints;
             //TODO: deal damage to enemy which attacks player.
         }
     }

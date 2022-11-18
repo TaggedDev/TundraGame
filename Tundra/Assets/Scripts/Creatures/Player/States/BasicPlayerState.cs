@@ -166,9 +166,9 @@ namespace Creatures.Player.States
 
         public virtual void SpendStamina()
         {
-            if (PlayerProperties.CurrentStamina > 0)
-                PlayerProperties.CurrentStamina -= StaminaConsumption * Time.deltaTime;
-            if (PlayerProperties.CurrentStamina <= 0) 
+            if (PlayerProperties.CurrentStaminaPoints > 0)
+                PlayerProperties.CurrentStaminaPoints -= StaminaConsumption * Time.deltaTime;
+            if (PlayerProperties.CurrentStaminaPoints <= 0) 
                 StaminaIsOver();
         }
 

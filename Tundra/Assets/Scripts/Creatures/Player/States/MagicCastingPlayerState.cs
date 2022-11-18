@@ -26,10 +26,11 @@ namespace Creatures.Player.States
         private Vector3 velocity;
 
         public MagicCastingPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
-            PlayerProperties playerProperties, PlayerMagic playerMagic, PlayerInventory inventory, EscapeMenu escapeCanvas)
+            PlayerProperties playerProperties, PlayerMagic playerMagic, PlayerInventory inventory, 
+            EscapeMenu escapeCanvas, BestiaryPanel bestiaryPanel)
             : base(playerMovement, switcher, playerProperties, inventory, escapeCanvas, bestiaryPanel)
         {
-            _playerMagic = playerMagic;
+            _playerMagic=playerMagic;
             _playerMagic.SpellCast += ExitState;
         }
 
@@ -87,9 +88,6 @@ namespace Creatures.Player.States
         public override void HandleUserInput()
         {
             base.HandleUserInput();
-            _playerMagic.MaxSpellElementCount += (int)(Input.GetAxis("Mouse ScrollWheel") * 10);
-            if (_playerMagic.MaxSpellElementCount > _playerMagic._config.FreeSheets) _playerMagic.MaxSpellElementCount = _playerMagic._config.FreeSheets;
-            else if (_playerMagic.MaxSpellElementCount < 1) _playerMagic.MaxSpellElementCount = 1;
             if (Input.GetKeyDown(KeyCode.Alpha1)) _playerMagic.AddElement(0);
             if (Input.GetKeyDown(KeyCode.Alpha2)) _playerMagic.AddElement(1);
             if (Input.GetKeyDown(KeyCode.Alpha3)) _playerMagic.AddElement(2);

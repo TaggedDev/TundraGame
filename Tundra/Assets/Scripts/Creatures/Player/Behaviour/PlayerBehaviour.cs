@@ -20,17 +20,14 @@ namespace Creatures.Player.Behaviour
         [SerializeField] private EscapeMenu escapeCanvas;
         [SerializeField] private DeathMenu deathCanvas;
         [SerializeField] private BestiaryPanel bestiaryPanel;
-        private Animator _animator;
         private BasicPlayerState _currentState;
         private PlayerMovement _playerMovement;
         private List<BasicPlayerState> _allStates;
         private CameraMovement _cameraHolder;
         private Camera _mainCamera;
         private PlayerInventory _inventoryController;
-        private PlayerAnimation _playerAnimation;
         private PlayerProperties _playerProperties;
         private PlayerInventory _playerInventory;
-        private Rigidbody _rigidbody;
         private PlayerMagic _playerMagic;
         private bool _isDead;
         private PlayerBuild _playerBuild;
@@ -49,10 +46,10 @@ namespace Creatures.Player.Behaviour
             _playerInventory = GetComponent<PlayerInventory>();
             _playerMagic = GetComponent<PlayerMagic>();
             _playerBuild = GetComponent<PlayerBuild>();
-            _playerAnimation = GetComponent<PlayerAnimation>();
+            GetComponent<PlayerAnimation>();
             
-            _rigidbody = GetComponent<Rigidbody>();
-            _animator = GetComponent<Animator>();
+            GetComponent<Rigidbody>();
+            GetComponent<Animator>();
             _allStates = new List<BasicPlayerState>
             {
                 new IdlePlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas, 

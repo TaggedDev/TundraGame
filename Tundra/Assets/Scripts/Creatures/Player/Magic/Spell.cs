@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Creatures.Player.Behaviour;
 using UnityEngine;
 
 namespace Creatures.Player.Magic
@@ -13,9 +14,9 @@ namespace Creatures.Player.Magic
     {
         private readonly int _descFormulaLength;
 
-        private static List<Type> _allSpells;
+        private static readonly List<Type> _allSpells;
 
-        public MagicElement AllowedMagicElements { get; }
+        private MagicElement AllowedMagicElements { get; }
 
         public GameObject Caster { get; protected set; }
 

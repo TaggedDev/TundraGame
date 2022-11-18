@@ -6,11 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-<<<<<<<< HEAD:Tundra/Assets/Scripts/GUI/MainMenu/CreateMenu_WorldGenerator.cs
-namespace GUI.MainMenu
-========
 namespace GUI.HeadUpDisplay
->>>>>>>> food:Tundra/Assets/Scripts/GUI/HeadUpDisplay/CreateMenu_WorldGenerator.cs
 {
     /// <summary>
     /// Manages the world creation fields in Level Creation scene 
@@ -41,11 +37,7 @@ namespace GUI.HeadUpDisplay
                 string[] files = Directory.GetFiles(savesPath, "New World*.txt");
                 worldName = $"New World ({files.Length+1})";
             }
-<<<<<<<< HEAD:Tundra/Assets/Scripts/GUI/MainMenu/CreateMenu_WorldGenerator.cs
             
-========
-
->>>>>>>> food:Tundra/Assets/Scripts/GUI/HeadUpDisplay/CreateMenu_WorldGenerator.cs
             // Check if player didn't put value in seed placeholder
             int worldSeed;
             if (string.IsNullOrEmpty(worldSeedInput.text))
@@ -55,11 +47,7 @@ namespace GUI.HeadUpDisplay
 
             WorldConstants.WorldName = worldName;
             WorldConstants.WorldSeed = worldSeed;
-<<<<<<<< HEAD:Tundra/Assets/Scripts/GUI/MainMenu/CreateMenu_WorldGenerator.cs
-            SceneManager.LoadScene(4);
-========
             SceneManager.LoadScene(Convert.ToInt32(TundraScenes.GAME_SCENE_ID));
->>>>>>>> food:Tundra/Assets/Scripts/GUI/HeadUpDisplay/CreateMenu_WorldGenerator.cs
         }
     }
 }

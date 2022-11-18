@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GUI.HeadUpDisplay
 {
-    public class HealthbarController : MonoBehaviour
+    public class HealthBarController : MonoBehaviour
     {
         // Properties
         /// <summary>
@@ -23,7 +23,7 @@ namespace GUI.HeadUpDisplay
         // Public fields
         private Canvas _rootCanvas;
         private GameObject _player;
-
+        
         /// <summary>
         /// Модификатор, определяющий скорость анимации. 
         /// <!-- главное – не переборщить со скоростью, а то эта полоска может начать туда-сюда скакать.

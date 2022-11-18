@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Creatures.Player.Behaviour;
+using UnityEngine;
 
 namespace Creatures.Player.Magic
 {
@@ -6,8 +7,8 @@ namespace Creatures.Player.Magic
     /// A spell of crystal channel.
     /// </summary>
     [Spell("Crystal Channel",
-        "Creates a waterflow around the player to proptect him from attacks. It increases regeneration and attacks mobs in nearby area.",
-        new MagicElement[] { MagicElement.Water, MagicElement.Crystal })]
+        "Creates a waterfall around the player to protect him from attacks. It increases regeneration and attacks mobs in nearby area.",
+        new[] { MagicElement.Water, MagicElement.Crystal })]
     [ElementRestrictions(MagicElement.Water | MagicElement.Crystal)]
     public class CrystalChannelSpell : Spell
     {
@@ -32,7 +33,7 @@ namespace Creatures.Player.Magic
         {
             Caster = player;
             var variableForPrefab = magic.GetSpellPrefabByID(PrefabID);
-            var spellObject = UnityEngine.Object.Instantiate(variableForPrefab);
+            var spellObject = Object.Instantiate(variableForPrefab);
             spellObject.GetComponent<CrystalChannelScript>().Configuration = this;
         }
     }

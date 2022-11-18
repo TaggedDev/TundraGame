@@ -13,7 +13,7 @@ namespace Creatures.Player.Magic
     public class FreshnessScript : SpellScript<FreshnessSpell>
     {
         const double Time = 10;
-        double _lifeTime;
+        private double _lifeTime;
         private PlayerProperties _props;
 
         private void Start()
@@ -33,10 +33,17 @@ namespace Creatures.Player.Magic
                 _props.CurrentSpeed /= (float)Configuration.PlayerSpeedCoefficient;
             }
             // Heals player
-            _props.CurrentHealth += (float)(Configuration.RegenerationCoefficient * coefficient);
-            if (_props.CurrentHealth > _props.MaxHealth) _props.CurrentHealth = _props.MaxHealth;
-            _props.CurrentWarmLevel += (float)(Configuration.PlayerWarmCoefficient * coefficient);
-            if (_props.CurrentWarmLevel > _props.MaxWarmLevel) _props.CurrentWarmLevel = _props.MaxWarmLevel;
+            _props.CurrentHealthPoints += (float)(Configuration.RegenerationCoefficient * coefficient);
+            if (_props.CurrentHealthPoints > _props.MaxHealthPoints)
+            {
+                _props.CurrentHealthPoints = _props.MaxHealthPoints;
+            }
+            
+            _props.CurrentWarmthPoints += (float)(Configuration.PlayerWarmCoefficient * coefficient);
+            if (_props.CurrentWarmthPoints > _props.MaxWarmthPoints)
+            {
+                _props.CurrentWarmthPoints = _props.MaxWarmthPoints;
+            }
         }
     }
 }

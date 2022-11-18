@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GUI.HeadUpDisplay
 {
-    public class TemperatureIndicatorController : MonoBehaviour
+    class TemperatureIndicatorController : MonoBehaviour
     {
 
         // Properties

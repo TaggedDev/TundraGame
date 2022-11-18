@@ -17,9 +17,9 @@ namespace Creatures.Player.States
         protected override float WarmConsumptionCoefficient => 1f;
 
         public SprintPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
-
-            PlayerProperties playerProperties, PlayerInventory inventory, EscapeMenu escapeCanvas)
-            : base(playerMovement, switcher, playerProperties,  inventory, escapeCanvas)
+            PlayerProperties playerProperties, PlayerInventory inventory, EscapeMenu escapeCanvas,
+            BestiaryPanel bestiaryPanel)
+            : base(playerMovement, switcher, playerProperties, inventory, escapeCanvas, bestiaryPanel)
         { }
 
         public override void Start()

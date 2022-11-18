@@ -9,7 +9,8 @@ namespace Creatures.Player.States
     public class IdlePlayerState : BasicPlayerState
     {
         public IdlePlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
-            PlayerProperties playerProperties, PlayerInventory inventory, EscapeMenu escapeCanvas)
+            PlayerProperties playerProperties, PlayerInventory inventory, EscapeMenu escapeCanvas,
+            BestiaryPanel bestiaryPanel)
             : base(playerMovement, switcher, playerProperties, inventory, escapeCanvas, bestiaryPanel)
         {
             
@@ -27,6 +28,7 @@ namespace Creatures.Player.States
 
         public override void HandleUserInput()
         {
+            base.HandleUserInput();
             if (Input.GetMouseButton(0))
             {
                 Debug.Log(PlayerProperties.MaxCircleBarFillingTime);
