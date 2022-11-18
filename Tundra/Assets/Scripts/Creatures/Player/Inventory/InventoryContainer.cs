@@ -55,15 +55,20 @@ namespace Creatures.Player.Inventory
         public event EventHandler<ItemChangeArgs> ContentChanged;
 
         //TODO: организовать сохранение предметов и т.д
+
         /// <summary>
         /// Добавляет предмет в инвентарь.
         /// </summary>
         /// <param name="item">Добавляемый предмет.</param>
         /// <param name="amount">Количество предметов.</param>
         /// <param name="rem">Остаток после добавления.</param>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if the item has been added into the inventory, <see langword="false"/> otherwise.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="item"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="item"/> has no assigned storage limit.</exception>
         public bool AddItem(BasicItemConfiguration item, int amount, out int rem)
         {
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            if (item.MaxStackVolume == 0) throw new ArgumentOutOfRangeException(nameof(item), "Item must have an amount limit to add it to the inventory.");
             while (amount > 0)
             {
                 Slot slot = FindNearestSlot(item, amount, out int remainder);

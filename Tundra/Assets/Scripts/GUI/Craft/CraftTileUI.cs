@@ -1,7 +1,9 @@
 ﻿using Creatures.Player.Behaviour;
+using System;
 using System.Net;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace GUI.HeadUpDisplay
@@ -9,7 +11,7 @@ namespace GUI.HeadUpDisplay
     /// <summary>
     /// A class to control recipe tile.
     /// </summary>
-    public class CraftTileUI : MonoBehaviour
+    public class CraftTileUI : MonoBehaviour, IPointerDownHandler
     {
         [SerializeField]
         private GameObject recipePartIconPrefab;
@@ -20,18 +22,22 @@ namespace GUI.HeadUpDisplay
         [SerializeField]
         private Image progressImage;
         [SerializeField]
-        private float craftTime = 3f;
+        private float craftTime;
 
         private GameObject[] _recipeParts;
         private bool _isCrafting;
         private float _progress;
         private RecipeCofiguration _recipe;
         private PlayerInventory _playerInventory;
+        private bool _isAvailable;
 
-        public void SetRecipe(RecipeCofiguration recipe, PlayerInventory inventory)
+        public event EventHandler RecipeCrafted;
+
+        public void SetRecipe(RecipeCofiguration recipe, PlayerInventory inventory, bool isAvailable)
         {
             _recipe = recipe;
             _playerInventory = inventory;
+            GetComponent<Button>().interactable = _isAvailable = isAvailable;
             recipeTileIcon.GetComponent<Image>().sprite = recipe.Result.Icon;
             recipeName.GetComponent<Text>().text = recipe.Result.Title;
             if (_recipeParts != null)
@@ -61,23 +67,33 @@ namespace GUI.HeadUpDisplay
             {
                 if (Input.GetMouseButton(0))
                 {
-                    progressImage.fillAmount += _progress / craftTime;
+                    _progress += Time.deltaTime;
+                    progressImage.fillAmount = _progress / craftTime;
                     if (_progress > craftTime)
                     {
                         _recipe.Craft(_playerInventory, out int slot);
+                        if (slot != -1) _playerInventory.SelectedInventorySlot = slot;
+                        RecipeCrafted?.Invoke(this, null);
+                        CloseCraft();
                     }
                 }
                 else
                 {
-                    _isCrafting = false;
-                    _progress = 0;
+                    CloseCraft();
                 }
             }
         }
 
-        private void Click()
+        private void CloseCraft()
         {
-            if (_recipe.CheckIfAvailable(_recipe.Workbench, _playerInventory)) _isCrafting = true;
+            _isCrafting = false;
+            _progress = 0;
+            progressImage.fillAmount = 0;
+        }
+
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            if (!_isCrafting && _isAvailable) _isCrafting = true;
         }
     }
 }

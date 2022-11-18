@@ -1,6 +1,7 @@
 ﻿using Creatures.Player.Behaviour;
 using Creatures.Player.Crafts;
 using Creatures.Player.Inventory;
+using Creatures.Player.States;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,7 +86,14 @@ namespace GUI.HeadUpDisplay
             {
                 var tile = Instantiate(recipePrefab, contentObject.transform);
                 _recipeTiles[i++] = tile;
-                tile.GetComponent<CraftTileUI>().SetRecipe(recipe, playerInventory);
+                bool isAvailable = !areAllRecipesVisible || recipe.CheckIfAvailable(_currentWorkspace, playerInventory);
+                var tileUI = tile.GetComponent<CraftTileUI>();
+                tileUI.SetRecipe(recipe, playerInventory, isAvailable);
+                tileUI.RecipeCrafted += (_, __) =>
+                {
+                    playerInventory.gameObject.GetComponent<PlayerBehaviour>().SwitchState<IdlePlayerState>();
+                    ClosePanel();
+                };
             }
         }
 

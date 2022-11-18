@@ -787,6 +787,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1682586741414417257, guid: a6dd18d4dbf354c499e01e94eb08faa3,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3607927310380842546, guid: a6dd18d4dbf354c499e01e94eb08faa3,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -973,6 +978,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7102661004005948267, guid: a6dd18d4dbf354c499e01e94eb08faa3,
+        type: 3}
+      propertyPath: playerInventory
+      value: 
+      objectReference: {fileID: 1782702501049584767}
+    - target: {fileID: 8418509294124999370, guid: a6dd18d4dbf354c499e01e94eb08faa3,
         type: 3}
       propertyPath: playerInventory
       value: 
