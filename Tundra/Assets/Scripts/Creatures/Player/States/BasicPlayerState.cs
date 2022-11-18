@@ -169,8 +169,16 @@ namespace Creatures.Player.States
                 {
                     PlayerProperties.CurrentCircleBarFillingTime += Time.smoothDeltaTime;
                 }
-                else PlayerProperties.CurrentCircleBarFillingTime -= Time.deltaTime;
-                if (PlayerProperties.CurrentCircleBarFillingTime < 0) PlayerProperties.CurrentCircleBarFillingTime = 0;
+                else
+                {
+                    PlayerProperties.CurrentCircleBarFillingTime = 0f;
+                }
+
+                if (PlayerProperties.CurrentCircleBarFillingTime < 0)
+                {
+                    PlayerProperties.CurrentCircleBarFillingTime = 0;
+                }
+                
                 if (PlayerProperties.CurrentCircleBarFillingTime > PlayerProperties.MaxCircleBarFillingTime)
                 {
                     PlayerBehaviour.Hit();
