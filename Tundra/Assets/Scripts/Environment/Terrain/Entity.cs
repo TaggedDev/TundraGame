@@ -1,6 +1,12 @@
-﻿using Creatures.Player.Inventory;
+﻿using Creatures.Player.Behaviour;
+using Creatures.Player;
+using Creatures.Player.Inventory;
+using Creatures.Player.States;
 using System.Runtime.ExceptionServices;
 using UnityEngine;
+using System.Collections;
+using System;
+using Random = UnityEngine.Random;
 
 namespace Environment.Terrain
 {
@@ -31,6 +37,12 @@ namespace Environment.Terrain
                 _hp = value;
                 if (_hp <= 0)
                     Break();
+                else
+                {
+                    //Debug.Log(_originalScale.ToString() + " " + transform.localScale.ToString());
+                    StartCoroutine(Shake(0.5f));
+                }
+                    
             }
         }
 
@@ -39,8 +51,22 @@ namespace Environment.Terrain
         [SerializeField]
         private float _hp;
         private Transform _player;
+        public Vector3 _originalScale;
         private Vector2 _entityPosition;
 
+        private void Start()
+        {
+            _originalScale = transform.localScale;
+
+            //Checks LootTable Correctness
+            if (LootTable.Length != DropChance.Length || DropChance.Length != DropQuantity.Length)
+                throw new System.Exception("Loot Table setup is invalid");
+            foreach (int a in DropChance)
+            {
+                if (a > 100 || a <= 0)
+                    throw new System.Exception("Loot Table setup is invalid");
+            }
+        }
 
         /// <summary>
         /// Due Entities are spawned as Initialise() function, there is no built-in constructor for this method.
@@ -57,15 +83,7 @@ namespace Environment.Terrain
             transform.rotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0);
             transform.position = position;
             transform.gameObject.layer = 10; // Environment layer 
-
-            //Checks LootTable Correctness
-            if (LootTable.Length != DropChance.Length || DropChance.Length != DropQuantity.Length)
-                throw new System.Exception("Loot Table setup is invalid");
-            foreach(int a in DropChance)
-            {
-                if (a > 100 || a <= 0)
-                    throw new System.Exception("Loot Table setup is invalid");
-            }
+            
         }
         
 
@@ -99,6 +117,25 @@ namespace Environment.Terrain
                         GetComponent<DroppedItemBehaviour>().DroppedItemsAmount = DropQuantity[i];
                 }
             }
+        }
+        private IEnumerator Shake(float secs)
+        {
+            float i;
+            for ( i = 0; i < 0.03f; i += Time.deltaTime)
+            {
+                transform.localScale -= 0.03f * transform.localScale;
+                yield return null;
+            }
+            while (transform.localScale.x < _originalScale[0] || transform.localScale.y < _originalScale[1] || transform.localScale.z < _originalScale[2])
+            {
+                var pos = transform.position;
+                pos.y += 1;
+                transform.localScale += 0.03f * transform.localScale;
+                yield return null;
+            }
+            
+            yield break;
+
         }
     }
 }

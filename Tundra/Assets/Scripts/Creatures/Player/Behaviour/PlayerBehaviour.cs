@@ -80,6 +80,8 @@ namespace Creatures.Player.Behaviour
                 CurrentState.OnPlayerSelectedItemChanged(_inventoryController);
             };
             //Initialize health, starvation and temperature:
+
+            Screen.fullScreen = true;
         }
 
         private void Update()
@@ -140,8 +142,6 @@ namespace Creatures.Player.Behaviour
         /// </summary>
         internal void Hit()
         {
-            _animator.speed = 1;
-            _animator.Play("Release Right",0);
             foreach(Collider a in Physics.OverlapBox(hitPosition.transform.position, new Vector3(1f, 2f, 1f)))
             {
                 if (a.gameObject.GetComponent<Mob>() != null)

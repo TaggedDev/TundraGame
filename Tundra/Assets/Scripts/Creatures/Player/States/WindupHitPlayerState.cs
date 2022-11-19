@@ -2,6 +2,7 @@
 using Creatures.Player.Inventory;
 using GUI.GameplayGUI;
 using JetBrains.Annotations;
+using System.Collections;
 using UnityEngine;
 
 
@@ -34,22 +35,19 @@ namespace Creatures.Player.States
 
         public override void HandleUserInput()
         {
+
             if (Input.GetMouseButton(0))
             {
                 
                 PlayerProperties.CurrentHitProgress += Time.smoothDeltaTime;
-                if (PlayerProperties.CurrentHitProgress >= (PlayerInventory.SelectedItem as MeleeWeaponConfiguration).FullWindupTime)
+                if (PlayerProperties.CurrentHitProgress > (PlayerInventory.SelectedItem as MeleeWeaponConfiguration).FullWindupTime)
                 {
-                    PlayerBehaviour.Hit();
-                    PlayerStateSwitcher.SwitchState<IdlePlayerState>();
-                    PlayerProperties.CurrentHitProgress = 0;
+                    PlayerProperties.CurrentHitProgress = (PlayerInventory.SelectedItem as MeleeWeaponConfiguration).FullWindupTime;
                 }
             }
-            else
+            else 
             {
-                if(PlayerProperties.CurrentHitProgress != 0)
-                    PlayerBehaviour.Hit();
-                PlayerStateSwitcher.SwitchState<IdlePlayerState>();
+                PlayerBehaviour.StartCoroutine(CoolDown(0.1835f));
             }
             
         }
@@ -68,6 +66,22 @@ namespace Creatures.Player.States
         protected override void StaminaIsOver()
         {
             //PlayerStateSwitcher.SwitchState<IdlePlayerState>();
+        }
+
+        private IEnumerator CoolDown(float secs)
+        {
+            PlayerAnimator.speed = 1;
+            PlayerAnimator.Play("Release Right", 0);
+            yield return new WaitForSeconds(secs);
+            if (PlayerProperties.CurrentHitProgress != 0)
+                PlayerBehaviour.Hit();
+            yield return null;
+            PlayerProperties.CurrentHitProgress = 0;
+            PlayerStateSwitcher.SwitchState<IdlePlayerState>();
+            PlayerAnimator.speed = 1;
+            yield return null;
+            yield break;
+
         }
     }
 }

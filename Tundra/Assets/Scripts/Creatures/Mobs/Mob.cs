@@ -145,10 +145,11 @@ namespace Creatures.Mobs
         /// Sets the spawn position, turns on the object and sets default values. Basically replaces the Start() method
         /// </summary>
         public abstract void SpawnSelf(Vector3 position);
-
+        /// <summary>
+        /// Kills a Mob 💀
+        /// </summary>
         protected virtual void Die()
         {
-            Destroy(this);
             MonoBehaviour.Destroy(gameObject);
             //Goes through list, and drops everyting in apropriate amounts
             for (int i = 0; i < LootTable.Length; i++)

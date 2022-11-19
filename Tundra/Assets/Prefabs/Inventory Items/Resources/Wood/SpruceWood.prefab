@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8768670468119006588}
   - component: {fileID: 293352763373766781}
   m_Layer: 8
-  m_Name: Wood
+  m_Name: SpruceWood
   m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
