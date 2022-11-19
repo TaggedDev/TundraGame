@@ -16,6 +16,6 @@ MonoBehaviour:
   title: Cloth
   description: 
   itemInWorldPrefab: {fileID: 0}
-  maxStackVolume: 0
+  maxStackVolume: 2
   weight: 0
   recipe: {fileID: 0}
