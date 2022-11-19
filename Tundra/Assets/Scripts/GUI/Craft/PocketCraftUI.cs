@@ -30,6 +30,8 @@ namespace GUI.HeadUpDisplay
         private GameObject recipeIndicatorPrefab;
         [SerializeField]
         private int recipeSpacing;
+        [SerializeField]
+        private GameObject[] splitters;
 
         private int SelectedRecipe
         {
@@ -109,8 +111,8 @@ namespace GUI.HeadUpDisplay
             for (int i = 0; i < _basicRecipes.Length; i++)
             {
                 Color c;
-                if (i == SelectedRecipe) c = Color.white;
-                else if (_basicRecipes[i].CheckIfAvailable(null, _playerInventory)) c = Color.gray;
+                if (_basicRecipes[i].CheckIfAvailable(null, _playerInventory)) c = Color.white;
+                //else if (i == SelectedRecipe) c = ;
                 else c = new Color(0.25f, 0.25f, 0.25f);
                 _recipeImages[i].color = _recipeTexts[i].color = c;
             }
@@ -123,6 +125,17 @@ namespace GUI.HeadUpDisplay
             _segmentHolder.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, rot));
             // Find current recipe.
             _currentRecipe = _basicRecipes[_selectedRecipe];
+            bool available = _currentRecipe.CheckIfAvailable(null, _playerInventory);
+            foreach (var splitter in splitters)
+            {
+                splitter.SetActive(false);
+            }
+            if (available)
+            {
+                splitters[SelectedRecipe].SetActive(true);
+                splitters[(SelectedRecipe + 1) % 4].SetActive(true);
+            }
+            _segmentHolder.SetActive(available);
             // Calculate helper variables to generate recipe tiles on the screen.
             int items = _currentRecipe.RequiredItems.Count;
             Rect indicatorRect = (recipeIndicatorPrefab.transform as RectTransform).rect;
