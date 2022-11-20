@@ -12,6 +12,9 @@ using UnityEngine.UI;
 
 namespace GUI.HeadUpDisplay
 {
+    /// <summary>
+    /// A script to control pocket crafts UI.
+    /// </summary>
     public class PocketCraftUI : MonoBehaviour
     {
         private PlayerInventory _playerInventory;
@@ -26,12 +29,9 @@ namespace GUI.HeadUpDisplay
         private Image[] _recipeImages;
         private Text[] _recipeTexts;
 
-        [SerializeField]
-        private GameObject recipeIndicatorPrefab;
-        [SerializeField]
-        private int recipeSpacing;
-        [SerializeField]
-        private GameObject[] splitters;
+        [SerializeField] private GameObject recipeIndicatorPrefab;
+        [SerializeField] private int recipeSpacing;
+        [SerializeField] private GameObject[] splitters;
 
         private int SelectedRecipe
         {
@@ -46,8 +46,7 @@ namespace GUI.HeadUpDisplay
             }
         }
 
-        // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
             // Get all data which is necessary to this script.
             GameObject player = UIController.RootCanvas.GetComponent<UIController>().Player;
@@ -70,8 +69,7 @@ namespace GUI.HeadUpDisplay
             }
         }
 
-        // Update is called once per frame
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (Input.GetKeyDown(KeyCode.Escape)) gameObject.SetActive(false);
             // Get mouse position to set selected recipe.
@@ -118,6 +116,9 @@ namespace GUI.HeadUpDisplay
             }
         }
 
+        /// <summary>
+        /// A handler to selected recipe index change.
+        /// </summary>
         private void SelectedRecipeIndexChanged()
         {
             // Set rotation to selection segment.
