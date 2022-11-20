@@ -11,16 +11,38 @@ namespace Creatures.Player.Inventory
     public class MeleeWeaponConfiguration : WeaponConfiguration
     {
         [SerializeField]
-        private float fullAttackLoadingTime;
+        private float _WindupTime;
         [SerializeField]
         private float _damage;
+        [SerializeField]
+        private string _animationWeaponName;
+        [SerializeField]
+        private float _releaseClipLength;
+        [SerializeField]
+        private float _windupClipLength;
         /// <summary>
-        /// Время для 100% зарядки оружия.
+        /// Full windup time
         /// </summary>
-        public float FullWindupTime { get => fullAttackLoadingTime; private set => fullAttackLoadingTime=value; }
+        public float FullWindupTime { get => _WindupTime; private set => _WindupTime=value; }
         /// <summary>
-        /// Урон при максимальном (100%) заряде оружия.
+        /// Weapon base damage
         /// </summary>
         public float Damage { get => _damage; private set => _damage=value; }
+        /// <summary>
+        /// Returns a name of a weapon, used for animation
+        /// </summary>
+        public string AnimationWeaponName { get => _animationWeaponName; set => _animationWeaponName = value; }
+        /// <summary>
+        /// Returns the Speed animation should played
+        /// </summary>
+        public float AnimationClipSpeed { get => _windupClipLength / _WindupTime; }
+        /// <summary>
+        /// Returns lengs of the release clip
+        /// </summary>
+        public float WinupAnimationLenght { get => _releaseClipLength; }
+        /// <summary>
+        /// Returns lengs of the windup clip
+        /// </summary>
+        public float ReleaseAnimationLenght { get => _releaseClipLength; }
     }
 }

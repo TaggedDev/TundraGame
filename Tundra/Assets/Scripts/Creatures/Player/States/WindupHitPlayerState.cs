@@ -27,9 +27,8 @@ namespace Creatures.Player.States
 
         public override void Start()
         {
-            PlayerAnimator.speed = 0.867f / (PlayerInventory.SelectedItem as MeleeWeaponConfiguration).FullWindupTime;
-            PlayerAnimator.Play("Windup Right");
-            //PlayerAnimator.SetTrigger("Windup");
+            PlayerAnimator.speed = (PlayerInventory.SelectedItem as MeleeWeaponConfiguration).AnimationClipSpeed;
+            PlayerAnimator.CrossFade((PlayerInventory.SelectedItem as MeleeWeaponConfiguration).AnimationWeaponName + " Windup", .1f);
         }
 
 
@@ -45,9 +44,11 @@ namespace Creatures.Player.States
                     PlayerProperties.CurrentHitProgress = (PlayerInventory.SelectedItem as MeleeWeaponConfiguration).FullWindupTime;
                 }
             }
-            else 
+            if (Input.GetMouseButtonUp(0))
             {
-                PlayerBehaviour.StartCoroutine(CoolDown(0.1835f));
+                PlayerAnimator.speed = 1;
+                PlayerBehaviour.StartCoroutine(CoolDown((PlayerInventory.SelectedItem as MeleeWeaponConfiguration).ReleaseAnimationLenght));
+                //Debug.Log("HitRequest");
             }
             
         }
@@ -70,15 +71,14 @@ namespace Creatures.Player.States
 
         private IEnumerator CoolDown(float secs)
         {
-            PlayerAnimator.speed = 1;
-            PlayerAnimator.Play("Release Right", 0);
+            
+            PlayerAnimator.Play((PlayerInventory.SelectedItem as MeleeWeaponConfiguration).AnimationWeaponName + " Release");
             yield return new WaitForSeconds(secs);
             if (PlayerProperties.CurrentHitProgress != 0)
                 PlayerBehaviour.Hit();
             yield return null;
             PlayerProperties.CurrentHitProgress = 0;
             PlayerStateSwitcher.SwitchState<IdlePlayerState>();
-            PlayerAnimator.speed = 1;
             yield return null;
             yield break;
 

@@ -108,4 +108,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnRateForLevel: 0.3
-  _hp: 20
+  LootTable:
+  - {fileID: 11400000, guid: 15c829c82e724774fb64f49c695bfecc, type: 2}
+  - {fileID: 11400000, guid: 15c829c82e724774fb64f49c695bfecc, type: 2}
+  DropQuantity: 0200000001000000
+  DropChance: 6400000019000000
+  _hp: 50
+  _originalScale: {x: 0, y: 0, z: 0}
