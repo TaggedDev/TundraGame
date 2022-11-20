@@ -14,21 +14,13 @@ namespace Creatures.Player.Inventory
     //[CreateAssetMenu(fileName = "New ItemConfiguration", menuName = "Items")]
     public abstract class BasicItemConfiguration : ScriptableObject
     {
-        [SerializeField]
-        private Sprite icon;
-        [SerializeField]
-        private string title;
-        [SerializeField]
-        [Multiline(5)]
-        private string description;
-        [SerializeField]
-        private GameObject itemInWorldPrefab;
-        [SerializeField]
-        private int maxStackVolume;
-        [SerializeField]
-        private float weight;
-        [SerializeField]
-        RecipeConfiguration recipe;
+        [SerializeField] private Sprite icon;
+        [SerializeField] private string title;
+        [SerializeField] [Multiline(5)] private string description;
+        [SerializeField] private GameObject itemInWorldPrefab;
+        [SerializeField] private int maxStackVolume;
+        [SerializeField] private float weight;
+        [SerializeField] private RecipeConfiguration recipe;
 
         /// <summary>
         /// Иконка прмдета в инвентаре.
