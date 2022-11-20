@@ -40,11 +40,14 @@ namespace GUI.HeadUpDisplay
         /// <param name="isAvailable">Cached availability flag to not compute it again.</param>
         public void SetRecipe(RecipeConfiguration recipe, PlayerInventory inventory, bool isAvailable)
         {
+            // Set values to the fields.
             _recipe = recipe;
             _playerInventory = inventory;
             GetComponent<Button>().interactable = _isAvailable = isAvailable;
+            // Set values to the view from given recipe model
             recipeTileIcon.GetComponent<Image>().sprite = recipe.Result.Icon;
             recipeName.GetComponent<Text>().text = recipe.Result.Title;
+            // Destroy old parts objects if there were
             if (_recipeParts != null)
             {
                 foreach (var part in _recipeParts)
@@ -52,6 +55,7 @@ namespace GUI.HeadUpDisplay
                     Destroy(part);
                 }
             }
+            // Create new recipe parts objects.
             _recipeParts = new GameObject[recipe.RequiredItems.Count];
             Vector3 offset = Vector3.zero;
             offset.x += 140;
