@@ -9,6 +9,9 @@ using UnityEngine;
 
 namespace Creatures.Player.Inventory
 {
+    /// <summary>
+    /// A class provides a functionality to create a container to keep player's items.
+    /// </summary>
     [Serializable]
     public class InventoryContainer : IEnumerable<Slot>
     {
