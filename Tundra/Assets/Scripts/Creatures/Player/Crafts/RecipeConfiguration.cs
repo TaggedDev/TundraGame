@@ -20,18 +20,15 @@ namespace Creatures.Player.Crafts
         /// <summary>
         /// A result of the recipe.
         /// </summary>
-        [SerializeField]
-        private BasicItemConfiguration result;
+        [SerializeField] private BasicItemConfiguration result;
         /// <summary>
         /// Items required for this recipe.
         /// </summary>
-        [SerializeField]
-        private List<RecipeComponent> requiredItems;
+        [SerializeField] private List<RecipeComponent> requiredItems;
         /// <summary>
         /// A work space to craft this recipe.
         /// </summary>
-        [SerializeField]
-        private PlaceableItemConfiguration workbench;
+        [SerializeField] private PlaceableItemConfiguration workbench;
         /// <summary>
         /// A result of the recipe.
         /// </summary>
