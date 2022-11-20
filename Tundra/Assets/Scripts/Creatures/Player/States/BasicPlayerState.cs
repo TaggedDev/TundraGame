@@ -188,6 +188,8 @@ namespace Creatures.Player.States
         /// </summary>
         public virtual void HandleUserInput()
         {
+            // All operators below in this method should be moved to another classes. Now its temporary solution
+            // Handle actions to open busy state (not actual in busy state and magic casting state)
             if (!(this is BusyPlayerState) && !(this is MagicCastingPlayerState))
             {
                 bool busy = false;
@@ -197,8 +199,10 @@ namespace Creatures.Player.States
                     busy = true;
                     UIController.PocketCraftUI.gameObject.SetActive(true);
                 }
-                if (busy) PlayerStateSwitcher.SwitchState<BusyPlayerState>();
+                if (busy)
+                    PlayerStateSwitcher.SwitchState<BusyPlayerState>();
             }
+            // Handle actions to open magic casting state (not available in busy and magic casting state)
             if (!(this is BusyPlayerState) && !(this is MagicCastingPlayerState)
                 && PlayerEquipment.Book != null && Input.GetKeyDown(KeyCode.X))
             {
