@@ -14,8 +14,8 @@ namespace Creatures.Player.Crafts
     [CreateAssetMenu(fileName = "New recipes list", menuName = "Recipes/Recipe List")]
     public class RecipesListConfig : ScriptableObject
     {
-        [SerializeField]
-        private RecipeConfiguration[] recipes;
+        [SerializeField] private RecipeConfiguration[] recipes;
+        
         /// <summary>
         /// List of recipes in this player configuration.
         /// </summary>
