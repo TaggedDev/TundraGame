@@ -59,10 +59,7 @@ namespace Creatures.Player.Behaviour
 
         public int SelectedInventorySlot
         {
-            get
-            {
-                return _currentSlotIndex;
-            }
+            get => _currentSlotIndex;
             set
             {
                 _currentSlotIndex = value;
@@ -81,7 +78,8 @@ namespace Creatures.Player.Behaviour
 
         private void Init()
         {
-            if (inventory == null) inventory = new InventoryContainer();
+            if (inventory == null) 
+                inventory = new InventoryContainer();
             _playerBehaviour = GetComponent<PlayerBehaviour>();
         }
 
@@ -92,24 +90,35 @@ namespace Creatures.Player.Behaviour
                 ItemPickingProgress += Time.deltaTime;
                 if (ItemPickingProgress > ItemPickingUpTime)
                 {
-                    var craft = NearestInteractableItem.GetComponent<PlaceableObjectBehaviour>();
-                    if (craft != null && craft.CanBeOpened)
-                    {
-                        _playerBehaviour.SwitchState<BusyPlayerState>();
-                        UIController.CraftPanel.ShowPanel(craft.Configuration);
-                        NearestInteractableItem = null;
-                        ItemPickingProgress = 0f;
-                    }
-                    else
-                    {
-                        PickItemUp();
-                    }
+                    InteractWithItem();
                 }
             }
-            else ItemPickingProgress = 0f;
+            else
+            {
+                ItemPickingProgress = 0f;
+            }
             if (Input.GetKeyDown(KeyCode.Q) && !Input.GetKey(KeyCode.LeftControl))
             {
                 ThrowItemAway();
+            }
+        }
+
+        /// <summary>
+        /// Do an interaction with an item.
+        /// </summary>
+        private void InteractWithItem()
+        {
+            var craft = NearestInteractableItem.GetComponent<PlaceableObjectBehaviour>();
+            if (craft != null && craft.CanBeOpened)
+            {
+                _playerBehaviour.SwitchState<BusyPlayerState>();
+                UIController.CraftPanel.ShowPanel(craft.Configuration);
+                NearestInteractableItem = null;
+                ItemPickingProgress = 0f;
+            }
+            else
+            {
+                PickItemUp();
             }
         }
 
