@@ -21,22 +21,27 @@ namespace Creatures.Player.Crafts
         /// A result of the recipe.
         /// </summary>
         [SerializeField] private BasicItemConfiguration result;
+
         /// <summary>
         /// Items required for this recipe.
         /// </summary>
         [SerializeField] private List<RecipeComponent> requiredItems;
+        
         /// <summary>
         /// A work space to craft this recipe.
         /// </summary>
         [SerializeField] private PlaceableItemConfiguration workbench;
+        
         /// <summary>
         /// A result of the recipe.
         /// </summary>
         public BasicItemConfiguration Result => result;
+        
         /// <summary>
         /// Items required for this recipe.
         /// </summary>
         public ReadOnlyCollection<RecipeComponent> RequiredItems => requiredItems.AsReadOnly();
+        
         /// <summary>
         /// A work space to craft this recipe.
         /// </summary>
@@ -54,6 +59,7 @@ namespace Creatures.Player.Crafts
             // If the inventory script is null, it supposes that check is needed only for the workbench.
             return workbench == this.workbench && (inv == null || requiredItems.All(x => inv.Inventory.CountItemOfTypeInTheInventory(x.Item) >= x.Amount));
         }
+        
         /// <summary>
         /// Does a craft for this recipe.
         /// </summary>
