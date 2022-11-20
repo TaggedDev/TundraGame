@@ -69,10 +69,8 @@ namespace Creatures.Player.Behaviour
             _mainCamera.transform.RotateAround(transform.position, Vector3.up, 45);
             _playerMovement.UpdateDirections();
             _playerMovement.Speed = 2f;
-            _inventoryController.SelectedItemChanged += (_, __) => 
-            {
+            _inventoryController.SelectedItemChanged += (_, __) =>
                 CurrentState.OnPlayerSelectedItemChanged(_inventoryController);
-            };
             //Initialize health, starvation and temperature:
         }
 

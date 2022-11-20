@@ -138,16 +138,15 @@ namespace Creatures.Player.Behaviour
 
         private void OnTriggerEnter(Collider other)
         {
-            var drop = other.gameObject.GetComponent<DroppedItemBehaviour>();
-            if (drop != null)
+            if (other.gameObject.TryGetComponent<DroppedItemBehaviour>(out var drop))
             {
                 if (drop.IsThrown) return;
                 CheckNearestInteractableItem(drop.gameObject);
             }
             else
             {
-                var placeable = other.GetComponent<PlaceableObjectBehaviour>();
-                if (placeable != null) CheckNearestInteractableItem(placeable.gameObject);
+                if (other.TryGetComponent<PlaceableObjectBehaviour>(out var placeable))
+                    CheckNearestInteractableItem(placeable.gameObject);
             }
         }
 

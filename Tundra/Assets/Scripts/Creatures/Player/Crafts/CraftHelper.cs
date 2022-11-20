@@ -17,6 +17,9 @@ namespace Creatures.Player.Crafts
 
         private List<RecipeCofiguration> _allRecipes;
 
+        /// <summary>
+        /// A flag needed to prevent code from exceptions if recipes are not loaded.
+        /// </summary>
         public bool AreAllRecipesLoaded { get; private set; }
 
         /// <summary>
@@ -26,7 +29,8 @@ namespace Creatures.Player.Crafts
         {
             get
             {
-                if (_allRecipes == null) ReloadRecipes();
+                if (_allRecipes == null)
+                    ReloadRecipes();
                 return _allRecipes;
             }
 
@@ -37,6 +41,7 @@ namespace Creatures.Player.Crafts
         /// List of bassic recipes can be crafted from pocket craft mode.
         /// </summary>
         public IEnumerable<RecipeCofiguration> BasicRecipes => AllRecipes.Where(recipe => recipe.Workbench == null);
+
         /// <summary>
         /// Single instance of the <see cref="CraftHelper"/>.
         /// </summary>
@@ -48,10 +53,14 @@ namespace Creatures.Player.Crafts
             }
         }
 
+        /// <summary>
+        /// Internal contstructor to create the new <see cref="CraftHelper"/> incstance.
+        /// </summary>
         private CraftHelper()
         {
 
         }
+
         /// <summary>
         /// Resets recipes list.
         /// </summary>
