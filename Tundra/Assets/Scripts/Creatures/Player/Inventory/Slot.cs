@@ -10,15 +10,14 @@ namespace Creatures.Player.Inventory
     [Serializable]
     public class Slot
     {
-        [SerializeField]
-        private int itemsAmount;
-        [SerializeField]
-        private BasicItemConfiguration item;
+        [SerializeField] private int itemsAmount;
+        [SerializeField] private BasicItemConfiguration item;
+        
         /// <summary>
-        /// Создаёт новый слот с предметом внутри.
+        /// Creates a new slot with provided item configuration.
         /// </summary>
-        /// <param name="itemsAmount">Количество предметов.</param>
-        /// <param name="item">Сам по себе предмет.</param>
+        /// <param name="itemsAmount">Amount of items.</param>
+        /// <param name="item">An item configuration.</param>
         public Slot(int itemsAmount, BasicItemConfiguration item)
         {
             this.itemsAmount=itemsAmount;
@@ -31,15 +30,17 @@ namespace Creatures.Player.Inventory
         }
 
         /// <summary>
-        /// Указывает, является ли слот пустым.
+        /// Indicates if the slot is empty.
         /// </summary>
         public bool IsEmpty => ItemsAmount == 0;
+
         /// <summary>
-        /// Указывает, является ли слот заполненным.
+        /// Indicates if the slot is full.
         /// </summary>
         public bool IsFull => ItemsAmount == (item == null ? -1 : item.MaxStackVolume);
+
         /// <summary>
-        /// Предмет, лежащий внутри слота.
+        /// An item inside the slot.
         /// </summary>
         public BasicItemConfiguration Item
         {
@@ -51,11 +52,12 @@ namespace Creatures.Player.Inventory
                 ItemChanged?.Invoke(this, cache);
             }
         }
+
         /// <summary>
-        /// Количество предметов в слоте.
+        /// Amount of items inside the slot.
         /// </summary>
-        public int ItemsAmount 
-        { 
+        public int ItemsAmount
+        {
             get => itemsAmount;
             private set
             {
@@ -70,7 +72,7 @@ namespace Creatures.Player.Inventory
         public event EventHandler<BasicItemConfiguration> ItemChanged;
 
         /// <summary>
-        /// Очищает слот от предметов.
+        /// Clears the slot.
         /// </summary>
         public void Clear()
         {
@@ -78,13 +80,13 @@ namespace Creatures.Player.Inventory
             Item = null;
         }
         /// <summary>
-        /// Помещает в слот указанное число предметов.
+        /// Pushes items into the slot.
         /// </summary>
-        /// <param name="item">Предмет, который нужно поместить в слот.</param>
-        /// <param name="amount">Количество предметов.</param>
-        /// <returns>Возвращет True в случае, если предмет удалось поместить в слот (слот был пустой или в нём был предмет того же типа).</returns>
-        /// <exception cref="ArgumentOutOfRangeException">Возникает в случае превышения лимита вместимости слота.</exception>
-        /// <exception cref="ArgumentNullException">Возникает в случае, если <see cref="item"/> имеет значение null.</exception>
+        /// <param name="item">An item to push.</param>
+        /// <param name="amount">Amount of items.</param>
+        /// <returns><see langword="true"/> if the item was successfully placed into the slot.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if the slot capacity limit has been broken.</exception>
+        /// <exception cref="ArgumentNullException">Throw if the <see cref="item"/> is <see langword="null"/>.</exception>
         public bool PushItem(BasicItemConfiguration item, int amount)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
@@ -95,6 +97,11 @@ namespace Creatures.Player.Inventory
             return true;
         }
 
+        /// <summary>
+        /// Adds items into the non-empty slot.
+        /// </summary>
+        /// <param name="amount">Amount of items to add.</param>
+        /// <returns>Remainder after items addition</returns>
         public int AddItems(int amount)
         {
             if (amount + ItemsAmount > Item.MaxStackVolume)
@@ -106,13 +113,14 @@ namespace Creatures.Player.Inventory
             else ItemsAmount += amount;
             return 0;
         }
+
         /// <summary>
-        /// Выбрасывает предметы из слота в окружающий мир.
+        /// Drops items into a world space.
         /// </summary>
-        /// <param name="amount">Количество предметов, которое нужно выбросить.</param>
-        /// <param name="position">Местоположение объекта, который будет выбрасывать предмет.</param>
-        /// <param name="force">Сила и направление, с которыми будет выброшен предмет (при наличии у объекта предмета компонента <see cref="Rigidbody"/>).</param>
-        /// <exception cref="ArgumentOutOfRangeException">Возникает в случае, если нет такого количества предметов.</exception>
+        /// <param name="amount">Amounnt of items to drop.</param>
+        /// <param name="position">Position in the world to drop into.</param>
+        /// <param name="force">Force to throw an item (if its <see cref="GameObject"/> contains <see cref="Rigidbody"/>).</param>
+        /// <exception cref="ArgumentOutOfRangeException">Throws if items amount is more than available.</exception>
         public List<GameObject> DropItems(int amount, Vector3 position, Vector3 force)
         {
             if (amount > ItemsAmount) throw new ArgumentOutOfRangeException(nameof(amount), "Amount of items to throw is more than amount of items inside the slot.");
@@ -120,32 +128,25 @@ namespace Creatures.Player.Inventory
             return Item.MassDrop(amount, position, force);
         }
 
+        /// <summary>
+        /// Drops one item
+        /// </summary>
+        /// <param name="position">Position in the world to drop into.</param>
+        /// <param name="force">Force to throw an item (if its <see cref="GameObject"/> contains <see cref="Rigidbody"/>).</param>
+        /// <exception cref="InvalidOperationException">Thrown if the slot is empty.</exception>
         public GameObject DropItem(Vector3 position, Vector3 force)
         {
-            if (ItemsAmount == 0) throw new InvalidOperationException("Недостаточно предметов, чтобы выбросить.");
+            if (ItemsAmount == 0) throw new InvalidOperationException("Slot is empty.");
             var res = Item.Drop(position, force);
             ItemsAmount--;
             return res;
         }
+
         /// <summary>
-        /// Бросает предмет из слота в противника.
+        /// Removes items from the slot.
         /// </summary>
-        /// <param name="position">Местоположение игрока (чей инвентарь).</param>
-        /// <param name="target">Направление, по которому нужно сделать бросок.</param>
-        /// <returns>Брошенный объект.</returns>
-        /// <exception cref="NotImplementedException">Пока не реализовано, т.к. нужно написать логику для брошенного предмета, а это вряд ли получится сделать сейчас.</exception>
-        public GameObject ThrowItem(Vector3 position, Vector3 target)//TODO: возможно придётся несколько переделать после нормальной реализации броска предмета. 
-        {
-            if (ItemsAmount == 0) throw new InvalidOperationException("Недостаточно предметов, чтобы кинуть.");
-            var res = Item.Drop(position, target * 20);
-            ItemsAmount--;
-            return res;
-        }
-        /// <summary>
-        /// Убирает предметы из слота в указанном количестве.
-        /// </summary>
-        /// <param name="amount">Количество предметов.</param>
-        /// <returns>True в случае, если убрать получилось.</returns>
+        /// <param name="amount">Amount of items.</param>
+        /// <returns><see langword="true"/> if removing was successful.</returns>
         public bool RemoveItems(int amount)
         {
             if (amount > ItemsAmount) return false;
@@ -154,11 +155,11 @@ namespace Creatures.Player.Inventory
         }
 
         /// <summary>
-        /// Заполняет слот указаннными предметами.
+        /// Fills the slot with the given item.
         /// </summary>
-        /// <param name="item">Предмет, которым производится заполнение.</param>
-        /// <returns>True в случае, если получилось заполнить слот.</returns>
-        /// <exception cref="ArgumentNullException"></exception>
+        /// <param name="item">An item configuration.</param>
+        /// <returns><see langword="true"/> if filling was successful.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if the item configuration is <see langword="null"/>.</exception>
         public bool Fill(BasicItemConfiguration item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
