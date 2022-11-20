@@ -14,16 +14,11 @@ namespace GUI.HeadUpDisplay
     /// </summary>
     public class CraftTileUI : MonoBehaviour, IPointerDownHandler
     {
-        [SerializeField]
-        private GameObject recipePartIconPrefab;
-        [SerializeField]
-        private GameObject recipeTileIcon;
-        [SerializeField]
-        private GameObject recipeName;
-        [SerializeField]
-        private Image progressImage;
-        [SerializeField]
-        private float craftTime;
+        [SerializeField] private GameObject recipePartIconPrefab;
+        [SerializeField] private GameObject recipeTileIcon;
+        [SerializeField] private GameObject recipeName;
+        [SerializeField] private Image progressImage;
+        [SerializeField] private float craftTime;
 
         private GameObject[] _recipeParts;
         private bool _isCrafting;
@@ -32,8 +27,17 @@ namespace GUI.HeadUpDisplay
         private PlayerInventory _playerInventory;
         private bool _isAvailable;
 
+        /// <summary>
+        /// Event of the craft of the recipe.
+        /// </summary>
         public event EventHandler RecipeCrafted;
 
+        /// <summary>
+        /// Sets a recipe to this tile.
+        /// </summary>
+        /// <param name="recipe">A recipe configuration.</param>
+        /// <param name="inventory">Player inventory reference.</param>
+        /// <param name="isAvailable">Cached availability flag to not compute it again.</param>
         public void SetRecipe(RecipeConfiguration recipe, PlayerInventory inventory, bool isAvailable)
         {
             _recipe = recipe;
@@ -85,6 +89,9 @@ namespace GUI.HeadUpDisplay
             }
         }
 
+        /// <summary>
+        /// Ends the craft process.
+        /// </summary>
         private void CloseCraft()
         {
             _isCrafting = false;
@@ -92,6 +99,10 @@ namespace GUI.HeadUpDisplay
             progressImage.fillAmount = 0;
         }
 
+        /// <summary>
+        /// Handler of the pointer down event in Unity.
+        /// </summary>
+        /// <param name="eventData">Data of the event.</param>
         public void OnPointerDown(PointerEventData eventData)
         {
             if (!_isCrafting && _isAvailable) _isCrafting = true;
