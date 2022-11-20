@@ -14,14 +14,10 @@ namespace GUI.HeadUpDisplay
     /// </summary>
     public class CraftPanelUI : MonoBehaviour
     {
-        [SerializeField]
-        private GameObject recipePrefab;
-        [SerializeField]
-        private GameObject contentObject;
-        [SerializeField]
-        private PlayerInventory playerInventory;
-        [SerializeField]
-        private bool areAllRecipesVisible;
+        [SerializeField] private GameObject recipePrefab;
+        [SerializeField] private GameObject contentObject;
+        [SerializeField] private PlayerInventory playerInventory;
+        [SerializeField] private bool areAllRecipesVisible;
 
         private GameObject[] _recipeTiles;
         private PlaceableItemConfiguration _currentWorkspace;
@@ -97,6 +93,10 @@ namespace GUI.HeadUpDisplay
             }
         }
 
+        /// <summary>
+        /// A handler of the checkbox selection changed event in Unity.
+        /// </summary>
+        /// <param name="value">New checkbox value.</param>
         public void SelectionChanged(bool value)
         {
             areAllRecipesVisible = !value;
