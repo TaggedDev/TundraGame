@@ -36,11 +36,6 @@ namespace Creatures.Player.States
         }
 
 
-        public override void LoadForThrow()
-        {
-            PlayerBehaviour.SwitchState<WalkPlayerState>();
-        }
-
         protected override void StaminaIsOver()
         {
             PlayerBehaviour.SwitchState<WalkPlayerState>();

@@ -45,10 +45,6 @@ namespace Creatures.Player.States
             //And so I can say for starving.
         }
 
-        public override void LoadForThrow()
-        {
-            //Player cannot throw items while he's in inventory.
-        }
 
         public override void SpendStamina()
         {

@@ -162,22 +162,6 @@ namespace Creatures.Player.States
         protected abstract void StaminaIsOver();
 
         /// <summary>
-        /// Loads weapon for throwing.
-        /// </summary>
-        public virtual void LoadForThrow()
-        {
-            if (Input.GetMouseButton(2))
-            {
-                PlayerProperties._throwLoadingProgress -= Time.deltaTime;
-                if (PlayerProperties._throwLoadingProgress <= 0) PlayerProperties._throwLoadingProgress = 0;
-            }
-            else
-            {
-                if (PlayerProperties._throwLoadingProgress <= 0) PlayerBehaviour.ThrowItem();
-                PlayerProperties._throwLoadingProgress = PlayerProperties.ThrowPrepareTime;
-            }
-        }
-        /// <summary>
         /// Loads to hit.
         /// </summary>
         public virtual void PrepareForHit()
