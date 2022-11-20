@@ -37,6 +37,7 @@ namespace GUI.HeadUpDisplay
                 ClosePanel();
             }
         }
+
         /// <summary>
         /// Closes the panel.
         /// </summary>
@@ -45,6 +46,7 @@ namespace GUI.HeadUpDisplay
             _currentWorkspace = null;
             gameObject.SetActive(false);
         }
+
         /// <summary>
         /// Opens the panel to show recipes.
         /// </summary>
@@ -55,6 +57,7 @@ namespace GUI.HeadUpDisplay
             gameObject.SetActive(true);
             ReloadRecipesList();
         }
+
         /// <summary>
         /// Reloads recipes list.
         /// </summary>
