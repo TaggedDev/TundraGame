@@ -70,6 +70,7 @@ namespace Creatures.Player.Crafts
             SetConfig(config);
             ReloadRecipes();
         }
+
         /// <summary>
         /// Sets a configuration of available recipes.
         /// </summary>
@@ -78,6 +79,7 @@ namespace Creatures.Player.Crafts
         {
             _config = config;
         }
+
         /// <summary>
         /// Reloads all recipes from the configuration if it's not done yet.
         /// </summary>
