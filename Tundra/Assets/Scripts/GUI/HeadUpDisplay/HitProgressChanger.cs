@@ -13,15 +13,14 @@ public class HitProgressChanger : MonoBehaviour
 
     private GameObject _player;
     private PlayerProperties _playerProperties;
-    // Start is called before the first frame update
-    void Start()
+
+    private  void Start()
     {
         _player = UIController.RootCanvas.GetComponent<UIController>().Player;
         _playerProperties = _player.GetComponent<PlayerProperties>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         HitProgress.fillAmount = _playerProperties.CurrentHitProgress / _playerProperties.HitPreparationTime;
     }
