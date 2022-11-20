@@ -17,10 +17,10 @@ namespace GUI.HeadUpDisplay
         private PlayerInventory _playerInventory;
         private PlayerBehaviour _playerBehaviour;
         private CraftHelper _craftHelper;
-        private RecipeCofiguration[] _basicRecipes;
+        private RecipeConfiguration[] _basicRecipes;
         private int _selectedRecipe;
         private GameObject _segmentHolder;
-        private RecipeCofiguration _currentRecipe;
+        private RecipeConfiguration _currentRecipe;
         private GameObject[] _recipeParts;
         private Transform _centerCircle;
         private Image[] _recipeImages;

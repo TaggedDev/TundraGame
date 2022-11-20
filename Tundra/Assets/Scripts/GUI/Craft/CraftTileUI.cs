@@ -1,4 +1,5 @@
 ﻿using Creatures.Player.Behaviour;
+using Creatures.Player.Crafts;
 using System;
 using System.Net;
 using System.Runtime.CompilerServices;
@@ -27,13 +28,13 @@ namespace GUI.HeadUpDisplay
         private GameObject[] _recipeParts;
         private bool _isCrafting;
         private float _progress;
-        private RecipeCofiguration _recipe;
+        private RecipeConfiguration _recipe;
         private PlayerInventory _playerInventory;
         private bool _isAvailable;
 
         public event EventHandler RecipeCrafted;
 
-        public void SetRecipe(RecipeCofiguration recipe, PlayerInventory inventory, bool isAvailable)
+        public void SetRecipe(RecipeConfiguration recipe, PlayerInventory inventory, bool isAvailable)
         {
             _recipe = recipe;
             _playerInventory = inventory;

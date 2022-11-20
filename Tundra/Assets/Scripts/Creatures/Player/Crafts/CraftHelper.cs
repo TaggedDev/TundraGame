@@ -15,7 +15,7 @@ namespace Creatures.Player.Crafts
 
         private RecipesListConfig _config;
 
-        private List<RecipeCofiguration> _allRecipes;
+        private List<RecipeConfiguration> _allRecipes;
 
         /// <summary>
         /// A flag needed to prevent code from exceptions if recipes are not loaded.
@@ -25,7 +25,7 @@ namespace Creatures.Player.Crafts
         /// <summary>
         /// Full list of recipes existing in game.
         /// </summary>
-        public IEnumerable<RecipeCofiguration> AllRecipes
+        public IEnumerable<RecipeConfiguration> AllRecipes
         {
             get
             {
@@ -40,7 +40,7 @@ namespace Creatures.Player.Crafts
         /// <summary>
         /// List of bassic recipes can be crafted from pocket craft mode.
         /// </summary>
-        public IEnumerable<RecipeCofiguration> BasicRecipes => AllRecipes.Where(recipe => recipe.Workbench == null);
+        public IEnumerable<RecipeConfiguration> BasicRecipes => AllRecipes.Where(recipe => recipe.Workbench == null);
 
         /// <summary>
         /// Single instance of the <see cref="CraftHelper"/>.
@@ -85,7 +85,7 @@ namespace Creatures.Player.Crafts
         /// </summary>
         public void ReloadRecipes()
         {
-            _allRecipes = new List<RecipeCofiguration>(_config.Recipes);
+            _allRecipes = new List<RecipeConfiguration>(_config.Recipes);
             AreAllRecipesLoaded = true;
         }
 
@@ -95,7 +95,7 @@ namespace Creatures.Player.Crafts
         /// <param name="inventoryScript">Script which controls player's inventory.</param>
         /// <param name="workbench">A workbench instance in which player crafts an item.</param>
         /// <returns></returns>
-        public IEnumerable<RecipeCofiguration> GetAvailableConfigurations(PlayerInventory inventoryScript, PlaceableItemConfiguration workbench)
+        public IEnumerable<RecipeConfiguration> GetAvailableConfigurations(PlayerInventory inventoryScript, PlaceableItemConfiguration workbench)
         {
             var result = AllRecipes.Where(x => x.CheckIfAvailable(workbench, inventoryScript));
             return result;

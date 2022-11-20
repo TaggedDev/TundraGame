@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Creatures.Player.Crafts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,7 +28,7 @@ namespace Creatures.Player.Inventory
         [SerializeField]
         private float weight;
         [SerializeField]
-        RecipeCofiguration recipe;
+        RecipeConfiguration recipe;
 
         /// <summary>
         /// Иконка прмдета в инвентаре.
@@ -56,7 +57,7 @@ namespace Creatures.Player.Inventory
         /// <summary>
         /// Рецпет для создания данного предмета.
         /// </summary>
-        public RecipeCofiguration Recipe { get => recipe; protected set => recipe=value; }
+        public RecipeConfiguration Recipe { get => recipe; protected set => recipe=value; }
 
         public virtual GameObject Drop(Vector3 originPosition, Vector3 throwForce)
         {

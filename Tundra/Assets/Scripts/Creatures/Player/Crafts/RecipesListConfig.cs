@@ -15,11 +15,11 @@ namespace Creatures.Player.Crafts
     public class RecipesListConfig : ScriptableObject
     {
         [SerializeField]
-        private RecipeCofiguration[] recipes;
+        private RecipeConfiguration[] recipes;
         /// <summary>
         /// List of recipes in this player configuration.
         /// </summary>
-        public ReadOnlyCollection<RecipeCofiguration> Recipes => Array.AsReadOnly(recipes);
+        public ReadOnlyCollection<RecipeConfiguration> Recipes => Array.AsReadOnly(recipes);
 
         public RecipesListConfig()
         {
