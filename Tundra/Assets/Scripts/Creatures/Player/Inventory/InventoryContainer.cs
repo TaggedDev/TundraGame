@@ -12,11 +12,12 @@ namespace Creatures.Player.Inventory
     [Serializable]
     public class InventoryContainer : IEnumerable<Slot>
     {
-        [SerializeField]
-        private int maxInventoryCapacity = 4;
-        [SerializeField]
-        private Slot[] slots;
+        [SerializeField] private int maxInventoryCapacity = 4;
+        [SerializeField] private Slot[] slots;
 
+        /// <summary>
+        /// The maximal capacity of the inventory.
+        /// </summary>
         public int MaxInventoryCapacity
         {
             get => maxInventoryCapacity;
@@ -37,31 +38,39 @@ namespace Creatures.Player.Inventory
                 }
             }
         }
+
         /// <summary>
-        /// Массив слотов инвентаря. 
+        /// An array of slots in the inventory.
         /// </summary>
         public Slot[] Slots { get => slots; private set => slots=value; }
+
         /// <summary>
-        ///Общий суммарный вес всех предметов в инвентаре.
+        /// Total summary weight of all items in the inventory.
         /// </summary>
         public float TotalWeight => Slots.Sum(x => x.Item == null ? 0 : x.Item.Weight * x.ItemsAmount);
 
-        public Slot this[int index] => Slots[index];
         /// <summary>
-        /// Событие, происходящее перед изменением количества слотов в инвентаре.
+        /// Returns a slot with the provided index.
+        /// </summary>
+        /// <param name="index">Index of a slot.</param>
+        public Slot this[int index] => Slots[index];
+
+        /// <summary>
+        /// An event raises when the maximal inventory capacity has been changed.
         /// </summary>
         public event EventHandler<int> MaxInventoryCapacityChanging;
 
+        /// <summary>
+        /// An event raises when the content of the slot has been changed.
+        /// </summary>
         public event EventHandler<ItemChangeArgs> ContentChanged;
 
-        //TODO: организовать сохранение предметов и т.д
-
         /// <summary>
-        /// Добавляет предмет в инвентарь.
+        /// Adds an item into the inventory.
         /// </summary>
-        /// <param name="item">Добавляемый предмет.</param>
-        /// <param name="amount">Количество предметов.</param>
-        /// <param name="rem">Остаток после добавления.</param>
+        /// <param name="item">An item configuration.</param>
+        /// <param name="amount">Amount of items.</param>
+        /// <param name="rem">Remainder of items (how much weren't added).</param>
         /// <returns><see langword="true"/> if the item has been added into the inventory, <see langword="false"/> otherwise.</returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="item"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="item"/> has no assigned storage limit.</exception>
@@ -92,17 +101,30 @@ namespace Creatures.Player.Inventory
             return true;
         }
 
-        public List<Slot> FindSlotsWithItem(BasicItemConfiguration item)
-        {
-            List<Slot> slots = Slots.Where(x => x.Item == item).ToList();
-            return slots;
-        }
+        /// <summary>
+        /// Fins slots containing this item configuration.
+        /// </summary>
+        /// <param name="item">An item configuration.</param>
+        /// <returns>List of slots containing this item.</returns>
+        public List<Slot> FindSlotsWithItem(BasicItemConfiguration item) => Slots.Where(x => x.Item == item).ToList();
 
+        /// <summary>
+        /// Counts how much items of this configuration are in inventory.
+        /// </summary>
+        /// <param name="item">An item configuration.</param>
+        /// <returns>Amount of items of this configuration.</returns>
         public int CountItemOfTypeInTheInventory(BasicItemConfiguration item)
         {
             return Slots.Aggregate(0, (x, y) => x += y.Item == item ? y.ItemsAmount : 0);//Исхожу из ситуации, что ItemConfiguration существует в единственном экземпляре для каждого предмета
         }
 
+        /// <summary>
+        /// A helper method to find the first available slot to keep this item.
+        /// </summary>
+        /// <param name="item">An item configuration.</param>
+        /// <param name="amount">Amount of items to keep.</param>
+        /// <param name="remainder">How much items will be in remainder if add them to provided slot.</param>
+        /// <returns>The first slot which is empty or its item has given configuration.</returns>
         private Slot FindNearestSlot(BasicItemConfiguration item, int amount, out int remainder)
         {
             remainder = 0;
@@ -116,6 +138,9 @@ namespace Creatures.Player.Inventory
             return null;
         }
 
+        /// <summary>
+        /// Creates new inventory container.
+        /// </summary>
         public InventoryContainer()
         {
             Slots = new Slot[MaxInventoryCapacity];
@@ -126,7 +151,11 @@ namespace Creatures.Player.Inventory
             }
         }
 
-        internal void ResizeInventory(int additionalSlotsAmount)
+        /// <summary>
+        /// Resizes inventory with amount of additional slots.
+        /// </summary>
+        /// <param name="additionalSlotsAmount">Number of slots in addition to 4 basic slots.</param>
+        public void ResizeInventory(int additionalSlotsAmount)
         {
             MaxInventoryCapacity = 4 + additionalSlotsAmount;
         }
