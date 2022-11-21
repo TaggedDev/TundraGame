@@ -11,6 +11,8 @@ Tundra/[Ll]ibrary/*
 Tundra/[Tt]emp/*
 Tundra/Assets/Textures/GUI/Raw Files/*
 Tundra/Assets/Textures/Raw Textures/*
+Tundra/.idea
+Tundra/.idea/*
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
