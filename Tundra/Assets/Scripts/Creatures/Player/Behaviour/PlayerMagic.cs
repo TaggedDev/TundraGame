@@ -14,18 +14,10 @@ namespace Creatures.Player.Behaviour
     /// </summary>
     public class PlayerMagic : MonoBehaviour
     {
-        private bool _isSpellingPanelOpened;
-
-        /// <summary>
-        /// A built spell which is ready for casting.
-        /// </summary>
-        private Spell _currentSpell;
-        /// <summary>
-        /// Prefabs of spells. Idk where to place them.
-        /// </summary>
-        [SerializeField]
-        private List<GameObject> spellPrefabs;
-
+        // =============================================
+        // Properties
+        // =============================================
+        
         /// <summary>
         /// Checks if spelling panel opened.
         /// </summary>
@@ -38,39 +30,56 @@ namespace Creatures.Player.Behaviour
                 MagicPanelVisibilityChange?.Invoke(this, null);
             }
         }
-
+        
         /// <summary>
         /// Checks if player ready to cast a spell.
         /// </summary>
         public bool IsReadyForCasting { get; private set; }
-
+        
         /// <summary>
         /// A spell prototype which player has selected.
         /// </summary>
         public List<MagicElement> DraftSpell { get; private set; }
-
+        
         /// <summary>
         /// A magic book player holds in his hand.
         /// </summary>
         public BookEquipmentConfiguration Book { get; set; }
+        
+        // =============================================
+        // Serialize Fields
+        // =============================================
+        
+        /// <summary>
+        /// Prefabs of spells. Idk where to place them.
+        /// </summary>
+        [SerializeField] private List<GameObject> spellPrefabs;
+        
+        // === 
+        // Variables
+        // === 
 
+        private bool _isSpellingPanelOpened;
+        
+        /// <summary>
+        /// A built spell which is ready for casting.
+        /// </summary>
+        private Spell _currentSpell;
+
+        // =============================================
+        // Public methods
+        // =============================================
+        
         /// <summary>
         /// An event which invokes when panel visibilty should change.
         /// </summary>
         public event EventHandler MagicPanelVisibilityChange;
-
+        
         /// <summary>
         /// En event which invokes when spell is cast.
         /// </summary>
         public event EventHandler<Spell> SpellCast;
-
-
-        private void Start()
-        {
-            DraftSpell = new List<MagicElement>(5);
-            StartCoroutine(ReloadStones());
-        }
-
+        
         /// <summary>
         /// Adds an element to <see cref="DraftSpell"/>.
         /// </summary>
@@ -90,7 +99,7 @@ namespace Creatures.Player.Behaviour
                 }
             }
         }
-
+        
         /// <summary>
         /// Clears the draft spell and resets logic in case of player cancels casting.
         /// </summary>
@@ -109,7 +118,7 @@ namespace Creatures.Player.Behaviour
             IsSpellingPanelOpened = false;
             IsReadyForCasting = false;
         }
-
+        
         /// <summary>
         /// Prepares to create a spell.
         /// </summary>
@@ -118,7 +127,7 @@ namespace Creatures.Player.Behaviour
             IsSpellingPanelOpened = true;
             // You can make here a logic to bind animations etc.
         }
-
+        
         /// <summary>
         /// Prepares to cast selected spell.
         /// </summary>
@@ -139,7 +148,7 @@ namespace Creatures.Player.Behaviour
                 IsReadyForCasting = true;
             }
         }
-
+        
         /// <summary>
         /// Casts prepared spell and resets system.
         /// </summary>
@@ -153,7 +162,7 @@ namespace Creatures.Player.Behaviour
             DraftSpell.Clear();
             print("Spell has been casted!");
         }
-
+        
         /// <summary>
         /// Gets spell prefab by its ID.
         /// </summary>
@@ -163,7 +172,17 @@ namespace Creatures.Player.Behaviour
         {
             return spellPrefabs[id];
         }
-
+        
+        // =============================================
+        // Private methods
+        // =============================================
+        
+        private void Start()
+        {
+            DraftSpell = new List<MagicElement>(5);
+            StartCoroutine(ReloadStones());
+        }
+        
         /// <summary>
         /// A background function which reloads player's stones every frame.
         /// </summary>
