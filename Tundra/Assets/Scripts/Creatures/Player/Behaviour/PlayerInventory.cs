@@ -38,14 +38,9 @@ namespace Creatures.Player.Behaviour
             get
             {
                 if (SelectedInventorySlot != -1 && Inventory[SelectedInventorySlot].Item != null)
-                {
                     return Inventory[SelectedInventorySlot].Item;
-                }
                 else if(SelectedInventorySlot != -1)
-                {
-                    
                     return fist;
-                }
                 return null;
             }
         }
