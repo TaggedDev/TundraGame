@@ -5,7 +5,7 @@ using GUI.GameplayGUI;
 using Creatures.Player.Behaviour;
 using Creatures.Player.Inventory;
 using Creatures.Player.Inventory.ItemConfiguration;
-
+using GUI.HeadUpDisplay;
 
 namespace Creatures.Player.States
 {
@@ -138,6 +138,12 @@ namespace Creatures.Player.States
                     PlayerProperties.CurrentHealthPoints = 0;
             }
         }
+
+        protected virtual void InventorySelectedSlotChanged(object sender, int e)
+        {
+            if (PlayerInventory.SelectedItem is PlaceableItemConfiguration)
+                PlayerStateSwitcher.SwitchState<BuildingPlayerState>();
+        }
         
         /// <summary>
         /// An event called whenever user changed his item
@@ -210,6 +216,21 @@ namespace Creatures.Player.States
         /// </summary>
         public virtual void HandleUserInput()
         {
+            // All operators below in this method should be moved to another classes. Now its temporary solution
+            // Handle actions to open busy state (not actual in busy state and magic casting state)
+            if (!(this is BusyPlayerState) && !(this is MagicCastingPlayerState))
+            {
+                bool busy = false;
+                if (Input.GetKeyDown(KeyCode.B)) busy = true;
+                else if (Input.GetKeyDown(KeyCode.Tab))
+                {
+                    busy = true;
+                    UIController.PocketCraftUI.gameObject.SetActive(true);
+                }
+                if (busy)
+                    PlayerStateSwitcher.SwitchState<BusyPlayerState>();
+            }
+            // Handle actions to open magic casting state (not available in busy and magic casting state)
             if (this is BusyPlayerState && Input.GetKeyDown(KeyCode.Escape))
             {
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();

@@ -1,5 +1,7 @@
 ﻿using System;
 using Creatures.Player.Behaviour;
+using GUI.HeadUpDisplay;
+using Creatures.Player.Behaviour;
 using UnityEngine;
 
 namespace GUI.HeadUpDisplay
@@ -40,18 +42,15 @@ namespace GUI.HeadUpDisplay
         /// Текущая величина полоски.
         /// </summary>
         private float _currentScale;
-
-
-        // Start is called before the first frame update
+        
         private void Start()
         {
-            UIController controller = UIController._rootCanvas.GetComponent<UIController>();
-            _player = controller._player;
+            UIController controller = UIController.RootCanvas.GetComponent<UIController>();
+            _player = controller.Player;
             _indicator = transform.Find("StarvationBarInner") as RectTransform;
             _currentScale = _indicator.localScale.x;
         }
-
-        // Update is called once per frame
+        
         private void Update()
         {
             _targetScale = PlayerProperties.CurrentStarvePoints / PlayerProperties.MaxStarvePoints;

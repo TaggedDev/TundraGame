@@ -1,5 +1,9 @@
 ﻿using Creatures.Player.Inventory;
+using Creatures.Player.States;
+using GUI.HeadUpDisplay;
 using System;
+using Creatures.Player.Crafts;
+using Creatures.Player.Crafts.Placeables;
 using Creatures.Player.Inventory.ItemConfiguration;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
@@ -8,37 +12,33 @@ namespace Creatures.Player.Behaviour
 {
     /// <summary>
     /// Class that handles player's inventory logic.
-    /// </summary
+    /// </summary>
     [RequireComponent(typeof(SphereCollider))]
     [RequireComponent(typeof(PlayerBehaviour))]
     public class PlayerInventory : MonoBehaviour
     {
-        public static float ItemPickingUpTime => 3f;
-
+        [SerializeField] private InventoryContainer inventory;
+        [SerializeField] private RecipesListConfig recipesList;
         [SerializeField] private ItemHolder itemHolder;
-
-        public ItemHolder ItemHolder
-        {
-            get => itemHolder;
-            set => itemHolder = value;
-        }
-
-        private InventoryContainer _inventory;
+ 
+        public ItemHolder ItemHolder => itemHolder;
+        public static float ItemPickingUpTime => 3f;
+        
         private PlayerBehaviour _playerBehaviour;
         private int _lastSlotIndex;
         private int _currentSlotIndex;
 
         /// <summary>
-        /// Player inventory contatiner instance.
+        /// Player inventory container instance.
         /// </summary>
         public InventoryContainer Inventory
         {
             get
             {
-                if (_inventory == null) Init();
-                return _inventory;
+                if (inventory == null) 
+                    Init();
+                return inventory;
             }
-            private set => _inventory = value;
         }
 
         /// <summary>
@@ -50,49 +50,53 @@ namespace Creatures.Player.Behaviour
             {
                 if (SelectedInventorySlot != -1) 
                     return Inventory[SelectedInventorySlot]?.Item;
-                else
-                    return null;
+                return null;
             }
         }
+        
         /// <summary>
         /// An interactable item which is the nearest to the player.
         /// </summary>
         public GameObject NearestInteractableItem { get; private set; }
+        
         /// <summary>
         /// The distance to the <see cref="NearestInteractableItem"/>.
         /// </summary>
         public float NearestInteractableItemDistance => NearestInteractableItem == null ? -1 : Vector3.Distance(transform.position, NearestInteractableItem.transform.position);
-        
+
         /// <summary>
         /// The progress of the item picking (or the interaction delay).
         /// </summary>
-        public float ItemPickingProgress { get; private set; } = 0f;
+        public float ItemPickingProgress { get; private set; }
+
         /// <summary>
         /// The index of a selected slot.
         /// </summary>
-        public int SelectedInventorySlot 
-        { 
+        public int SelectedInventorySlot
+        {
             get => _currentSlotIndex;
             set
             {
                 _currentSlotIndex = value;
-                SelectedItemChanged?.Invoke(this, null);    
-            } 
+                SelectedItemChanged?.Invoke(this, value);
+            }
         }
 
-        public event EventHandler SelectedItemChanged;
+        public RecipesListConfig RecipesList => recipesList;
+
+        public event EventHandler<int> SelectedItemChanged;
 
         private void Start()
         {
-            if (_inventory == null) Init();
+            Init();
         }
 
         private void Init()
         {
-            Inventory = new InventoryContainer();
+            inventory = new InventoryContainer();
             _playerBehaviour = GetComponent<PlayerBehaviour>();
         }
-        
+
         private void Update()
         {
             if (Input.GetKey(KeyCode.E) && !Input.GetKey(KeyCode.LeftControl) && NearestInteractableItem != null)
@@ -100,22 +104,79 @@ namespace Creatures.Player.Behaviour
                 ItemPickingProgress += Time.deltaTime;
                 if (ItemPickingProgress > ItemPickingUpTime)
                 {
-                    PickItemUp();
-                    SelectedItemChanged?.Invoke(this, null);
+                    InteractWithItem();
                 }
             }
             else
             {
                 ItemPickingProgress = 0f;
             }
-            
             if (Input.GetKeyDown(KeyCode.Q) && !Input.GetKey(KeyCode.LeftControl))
             {
                 DropEquippedItem();
-                SelectedItemChanged?.Invoke(this, null);
+                SelectedItemChanged?.Invoke(this, 0);
             }
         }
 
+        /// <summary>
+        /// Do an interaction with an item.
+        /// </summary>
+        private void InteractWithItem()
+        {
+            var craft = NearestInteractableItem.GetComponent<PlaceableObjectBehaviour>();
+            if (craft != null && craft.CanBeOpened)
+            {
+                _playerBehaviour.SwitchState<BusyPlayerState>();
+                UIController.CraftPanel.ShowPanel(craft.Configuration);
+                NearestInteractableItem = null;
+                ItemPickingProgress = 0f;
+            }
+            else
+            {
+                PickItemUp();
+            }
+        }
+
+        /// <summary>
+        /// Checks item if it's interactable.
+        /// </summary>
+        /// <param name="item">Item to test.</param>
+        private void CheckNearestInteractableItem(GameObject item)
+        {
+            float oldDistance = NearestInteractableItemDistance;
+            float currentDistance = Vector3.Distance(transform.position, transform.position);
+            if (currentDistance < oldDistance || oldDistance == -1)
+            {
+                ResetNearestItem(item);
+            }
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.TryGetComponent<DroppedItemBehaviour>(out var drop))
+            {
+                if (drop.IsThrown) return;
+                CheckNearestInteractableItem(drop.gameObject);
+            }
+            else
+            {
+                if (other.TryGetComponent<PlaceableObjectBehaviour>(out var placeable))
+                    CheckNearestInteractableItem(placeable.gameObject);
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (NearestInteractableItem == other.gameObject)
+            {
+                ResetNearestItem(null);
+                Debug.Log("Removed item object from this");
+            }
+        }
+
+        /// <summary>
+        /// Handles the drop item event
+        /// </summary>
         private void DropEquippedItem()
         {
             Inventory.Slots[SelectedInventorySlot].DropItem(transform.position, transform.forward * 3 + Vector3.up);
@@ -124,7 +185,7 @@ namespace Creatures.Player.Behaviour
         }
 
         /// <summary>
-        /// Picks an item frokm the ground.
+        /// Picks an item from the ground.
         /// </summary>
         private void PickItemUp()
         {
@@ -143,6 +204,7 @@ namespace Creatures.Player.Behaviour
             NearestInteractableItem = null;
             ItemPickingProgress = 0f;
         }
+        
         /// <summary>
         /// Removes an item selection from the inventory.
         /// </summary>
@@ -151,13 +213,15 @@ namespace Creatures.Player.Behaviour
             _lastSlotIndex = SelectedInventorySlot;
             SelectedInventorySlot = -1;
         }
+        
         /// <summary>
-        /// Reselects last selected item.
+        /// Re-selects last selected item.
         /// </summary>
-        public void ReselectItem()
+        public void ReSelectItem()
         {
             SelectedInventorySlot = _lastSlotIndex;
         }
+        
         /// <summary>
         /// Resets the nearest item to the player.
         /// </summary>
@@ -165,8 +229,6 @@ namespace Creatures.Player.Behaviour
         public void ResetNearestItem(GameObject item)
         {
             NearestInteractableItem = item;
-            print($"New item: {item}");
         }
     }
 }
-

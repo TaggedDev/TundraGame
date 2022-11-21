@@ -34,7 +34,7 @@ namespace GUI.HeadUpDisplay
 
         private void Start()
         {
-            GameObject player = UIController._rootCanvas.GetComponent<UIController>()._player;
+            GameObject player = UIController.RootCanvas.GetComponent<UIController>().Player;
             _playerMagic = player.GetComponent<PlayerMagic>();
             _playerEquipment = player.GetComponent<PlayerEquipment>();
             _playerEquipment.EquipmentChanged += (sender, e) =>

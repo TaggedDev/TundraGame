@@ -398,6 +398,7 @@ MonoBehaviour:
   chunksGenerator: {fileID: 185302903}
   playerObject: {fileID: 1552789789}
   entityRenderer: {fileID: 1035914547}
+  UserInterface: {fileID: 1006955794}
 --- !u!4 &528677538
 Transform:
   m_ObjectHideFlags: 0
@@ -586,6 +587,12 @@ MonoBehaviour:
   mapDataCount: 0
   meshDataCount: 0
   normalizeMode: 1
+--- !u!223 &1006955794 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 6532455666756197696, guid: 7b949200a79eb1646bc81bf587b82533,
+    type: 3}
+  m_PrefabInstance: {fileID: 6532455668144582074}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1035914546
 GameObject:
   m_ObjectHideFlags: 0
@@ -1346,6 +1353,12 @@ PrefabInstance:
       propertyPath: speed
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 6591950171598838081, guid: 559d97cf075654344b456f54e77c8b1c,
+        type: 3}
+      propertyPath: recipesList
+      value: 
+      objectReference: {fileID: 11400000, guid: 2cfc27c9295a6994d9cd7fdc9a8f83b1,
+        type: 2}
     - target: {fileID: 6677471697813370866, guid: 559d97cf075654344b456f54e77c8b1c,
         type: 3}
       propertyPath: m_Layer
@@ -2382,6 +2395,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerInventoryUI
       objectReference: {fileID: 0}
+    - target: {fileID: 6532455666756197708, guid: 7b949200a79eb1646bc81bf587b82533,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6532455666756197709, guid: 7b949200a79eb1646bc81bf587b82533,
+        type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1552789787}
     - target: {fileID: 6532455666756197709, guid: 7b949200a79eb1646bc81bf587b82533,
         type: 3}
       propertyPath: _player
@@ -2392,6 +2415,11 @@ PrefabInstance:
       propertyPath: hitProgress
       value: 
       objectReference: {fileID: 1717257210}
+    - target: {fileID: 6532455668391482338, guid: 7b949200a79eb1646bc81bf587b82533,
+        type: 3}
+      propertyPath: _player
+      value: 
+      objectReference: {fileID: 1552789790}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b949200a79eb1646bc81bf587b82533, type: 3}
 --- !u!1001 &9077650338932226551

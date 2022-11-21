@@ -27,7 +27,7 @@ namespace Creatures.Player.States
 
         public override void HandleEscapeButton()
         {
-            throw new NotImplementedException();
+            PlayerStateSwitcher.SwitchState<IdlePlayerState>();
         }
 
         public override void MoveCharacter()
@@ -44,7 +44,7 @@ namespace Creatures.Player.States
         {
             //And so I can say for starving.
         }
-
+        
         public override void SpendStamina()
         {
             //Player doesn't spend stamina in inventory.

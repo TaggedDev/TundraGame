@@ -7,16 +7,19 @@ namespace GUI.HeadUpDisplay
     public class HealthBarController : MonoBehaviour
     {
         // Properties
+        
         /// <summary>
-        /// Ссылка на компонент, отвечающий за здоровье игрока.
+        /// Health component link
         /// </summary>
         private PlayerProperties PlayerProperties => _player.GetComponent<PlayerProperties>();
+        
         /// <summary>
-        /// Глобальная координата начала этого индикатора.
+        /// Global start position of this indicator start
         /// </summary>
-        private Vector3 HealthbarStart => transform.position - transform.rotation * new Vector3(ActualWidth / 2, 0, 0);
+        private Vector3 HealthBarStart => transform.position - transform.rotation * new Vector3(ActualWidth / 2, 0, 0);
+        
         /// <summary>
-        /// Реальная ширина индикатора в мире, нужна для преобразований.
+        /// An actual width of indicator in game
         /// </summary>
         private float ActualWidth => (transform as RectTransform).sizeDelta.x * _rootCanvas.scaleFactor;
 
@@ -25,51 +28,48 @@ namespace GUI.HeadUpDisplay
         private GameObject _player;
         
         /// <summary>
-        /// Модификатор, определяющий скорость анимации. 
+        /// A modifier to change the animation speed 
         /// <!-- главное – не переборщить со скоростью, а то эта полоска может начать туда-сюда скакать.
         /// Но с нормальными величинами всё нормально будет. -->
         /// </summary>
-        [SerializeField]
-        private float animationSpeedModifier = 1f;
+        [SerializeField] private float animationSpeedModifier = 1f;
 
         // Private fields
         /// <summary>
-        /// Трансформация красной полоски для анимации потери здоровья.
+        /// Red bar transform (loosing health indicator)
         /// </summary>
         private RectTransform _deltaIndicator;
         /// <summary>
-        /// Трансформация основной полоски для отображения здоровья.
+        /// Health bar indicator 
         /// </summary>
         private RectTransform _indicator;
 
         /// <summary>
-        /// Величина, к которой будет стремиться полоска здоровья.
+        /// A scale that health bar wants to reach
         /// </summary>
         private float _targetScale;
         /// <summary>
-        /// Текущая величина полоски.
+        /// Current health bar value
         /// </summary>
         private float _currentScale;
         /// <summary>
+        /// upd: ??Не понял как перевести??
         /// Расстояние от начала индикатора до начала полоски здоровья в последний момент до потери здоровья и до конца анимации.
         /// </summary>
-        private float _lastMaxWidthPoint = 0;
-
-
-        // Start is called before the first frame update
-        void Start()
+        private float _lastMaxWidthPoint;
+        
+        private void Start()
         {
             //Инициализируем некоторые значения.
-            UIController controller = UIController._rootCanvas.GetComponent<UIController>();
+            UIController controller = UIController.RootCanvas.GetComponent<UIController>();
             _rootCanvas = controller.GetComponent<Canvas>();
-            _player = controller._player;
+            _player = controller.Player;
             _indicator = transform.Find("HealthBarInner") as RectTransform;
             _deltaIndicator = transform.Find("DeltaHealthBarInner") as RectTransform;
             _currentScale = _indicator.localScale.x;
         }
-
-        // Update is called once per frame
-        void Update()
+        
+        private void Update()
         {
             //Определяем, куда нам нужно стремиться.
             _targetScale = PlayerProperties.CurrentHealthPoints / PlayerProperties.MaxHealthPoints;
@@ -91,7 +91,7 @@ namespace GUI.HeadUpDisplay
                 float realDeltaWidth = ActualWidth - ActualWidth * _currentScale - _lastMaxWidthPoint;
                 //Debug.Log(realDeltaWidth + " lmwp " + lastMaxWidthPoint);
                 Vector3 deltaPos = transform.rotation * new Vector3(realDeltaWidth / 2 + _lastMaxWidthPoint, 0);
-                _deltaIndicator.position = HealthbarStart + new Vector3((float)Math.Round(deltaPos.x, 1), (float)Math.Round(deltaPos.y, 1), (float)Math.Round(deltaPos.z, 1));
+                _deltaIndicator.position = HealthBarStart + new Vector3((float)Math.Round(deltaPos.x, 1), (float)Math.Round(deltaPos.y, 1), (float)Math.Round(deltaPos.z, 1));
                 _deltaIndicator.localScale = new Vector3(realDeltaWidth / ActualWidth, 1, 1);
                 if (deltaScaleValue < 0) _deltaIndicator.gameObject.SetActive(true);//Перезапускаем анимацию, если надо снова терять хп ещё до конца анимации.
                 if (ActualWidth - ActualWidth * _currentScale < _lastMaxWidthPoint)//И наоборот, выключаем её, если игрок активно хилится.

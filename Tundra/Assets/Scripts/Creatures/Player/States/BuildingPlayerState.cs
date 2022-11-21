@@ -34,8 +34,12 @@ namespace Creatures.Player.States
         {
             PlayerMovement.CanSprint = false;
             _playerBuild.ObjectPlaced += ObjectPlaced;
-            _playerBuild.PlacableObj = (PlayerInventory.SelectedItem as PlaceableItemConfiguration).RepresentedObject;
-            _playerBuild.enabled = true;
+            var item = PlayerInventory.SelectedItem as PlaceableItemConfiguration;
+            if (!(item is null))
+            {
+                _playerBuild.PlacableObj = item.RepresentedObject;
+                _playerBuild.enabled = true;    
+            }
         }
 
         private void ObjectPlaced(object source, System.EventArgs e)

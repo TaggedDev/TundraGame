@@ -20,6 +20,7 @@ namespace Creatures.Player.Behaviour
         [SerializeField] private EscapeMenu escapeCanvas;
         [SerializeField] private DeathMenu deathCanvas;
         [SerializeField] private BestiaryPanel bestiaryPanel;
+        private Animator _animator;
         private BasicPlayerState _currentState;
         private PlayerMovement _playerMovement;
         private List<BasicPlayerState> _allStates;
@@ -70,10 +71,9 @@ namespace Creatures.Player.Behaviour
             _mainCamera.transform.RotateAround(transform.position, Vector3.up, 45);
             _playerMovement.UpdateDirections();
             _playerMovement.Speed = 2f;
-            _inventoryController.SelectedItemChanged += (sender, e) => 
-            {
+            _inventoryController.SelectedItemChanged += (_, __) =>
                 CurrentState.OnPlayerSelectedItemChanged(_inventoryController);
-            };
+            //Initialize health, starvation and temperature:
         }
 
         private void Update()

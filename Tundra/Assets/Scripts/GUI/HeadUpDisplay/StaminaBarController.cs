@@ -15,7 +15,7 @@ namespace GUI.HeadUpDisplay
         private void Start()
         {
             _mainCamera = Camera.main;
-            _player = UIController._rootCanvas.GetComponent<UIController>()._player;
+            _player = UIController.RootCanvas.GetComponent<UIController>().Player;
             _imageComponent = GetComponent<Image>();
             _playerProperties = _player.GetComponent<PlayerProperties>();
         }

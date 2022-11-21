@@ -19,4 +19,5 @@ MonoBehaviour:
     type: 3}
   maxStackVolume: 1
   weight: 10
+  recipe: {fileID: 11400000, guid: b37d152082274af41a75f60dcf5cae85, type: 2}
   _representedObject: {fileID: 11400000, guid: 79a44028ca3df164a899fa9fa5ab3cf8, type: 2}

@@ -24,13 +24,6 @@ namespace Creatures.Player.Inventory.ItemConfiguration
         /// Коэффициент теплосбережения экипировки.
         /// </summary>
         public float WarmEconomyCoefficient { get => _warmEconomyCoefficient; set => _warmEconomyCoefficient=value; }
-
-        public override GameObject Throw(Vector3 originPosition, Vector3 force)
-        {
-            //Пусть пока что будет делать ничего.
-            //throw new InvalidOperationException("Throwing items is prohibited!");
-            return null;
-        }
     }
     /// <summary>
     /// Слот снаряжения, которому соответствует элемент экипировки.

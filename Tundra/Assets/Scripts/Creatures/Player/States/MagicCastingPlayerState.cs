@@ -46,8 +46,6 @@ namespace Creatures.Player.States
         
         public override void HandleEscapeButton()
         {
-            //I think I've accidentally deleted something from here
-            //woopsie
             throw new NotImplementedException();
         }
 
