@@ -13,8 +13,8 @@ namespace Creatures.Mobs
 
         public Transform Player
         {
-            get => _player;
-            set => _player = value;
+            get => player;
+            set => player = value;
         }
         public RaycastHit SlopeHit
         {
@@ -103,11 +103,11 @@ namespace Creatures.Mobs
         }
         protected float HealthPoints 
         { 
-            get => _healthPoints;
+            get => healthPoints;
             set
             {
-                _healthPoints = value;
-                if (_healthPoints <= 0)
+                healthPoints = value;
+                if (healthPoints <= 0)
                     Die();
             }  
         }
@@ -118,8 +118,8 @@ namespace Creatures.Mobs
         [SerializeField] private float roamingRadius;
         [SerializeField] private float sniffingRadius;
         [SerializeField] private float maxMobHealth;
-        [SerializeField] private Transform _player;
-        [SerializeField] private float _healthPoints;
+        [SerializeField] private Transform player;
+        [SerializeField] private float healthPoints;
         [SerializeField] private BasicItemConfiguration[] LootTable;
         [SerializeField] private int[] DropQuantity;
         [SerializeField] private int[] DropChance;

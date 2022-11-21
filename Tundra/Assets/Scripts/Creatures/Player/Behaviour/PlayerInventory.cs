@@ -26,13 +26,10 @@ namespace Creatures.Player.Behaviour
             }
             private set => inventory = value;
         }
-        /// <summary/>
-        /// <returns>
-        /// Selected Item<br/>
-        /// <see cref="fist"/> if nothing is selecred
-        /// </returns>
-
-
+        /// <summary>
+        /// Item that is currently in hands <br/>
+        /// Or hands itself
+        /// </summary>
         public BasicItemConfiguration SelectedItem
         {
             get
