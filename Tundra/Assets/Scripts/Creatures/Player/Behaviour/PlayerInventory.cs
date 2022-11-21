@@ -9,7 +9,7 @@ namespace Creatures.Player.Behaviour
     {
 
         private InventoryContainer inventory;
-        [SerializeField] private MeleeWeaponConfiguration _fist;
+        [SerializeField] private MeleeWeaponConfiguration fist;
 
         public static float ItemPickingUpTime => 3f;
 
@@ -26,9 +26,13 @@ namespace Creatures.Player.Behaviour
             }
             private set => inventory = value;
         }
-        /// <summary>
-        /// returns selected item. Returns fists if nothing is selected
-        /// </summary>
+        /// <summary/>
+        /// <returns>
+        /// Selected Item<br/>
+        /// <see cref="fist"/> if nothing is selecred
+        /// </returns>
+
+
         public BasicItemConfiguration SelectedItem
         {
             get
@@ -40,7 +44,7 @@ namespace Creatures.Player.Behaviour
                 else if(SelectedInventorySlot != -1)
                 {
                     
-                    return _fist;
+                    return fist;
                 }
                 return null;
             }

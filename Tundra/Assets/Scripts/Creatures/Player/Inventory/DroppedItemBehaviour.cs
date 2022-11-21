@@ -18,7 +18,9 @@ namespace Creatures.Player.Inventory
         private Rigidbody _rigidbody;
 
         public BasicItemConfiguration AssociatedItem { get => _associatedItem; private set => _associatedItem=value; }
-
+        /// <summary>
+        /// Amount of items stacked on the floor
+        /// </summary>
         public int DroppedItemsAmount { get => droppedItemsAmount; set => droppedItemsAmount=value; }
 
         public bool IsThrown { get => isThrown; set => isThrown = value; }

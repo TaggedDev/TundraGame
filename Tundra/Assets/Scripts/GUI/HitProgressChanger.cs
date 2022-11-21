@@ -13,19 +13,16 @@ public class HitProgressChanger : MonoBehaviour
     private PlayerProperties _playerProperties;
     private PlayerInventory _playerInventory;
     private GameObject _player;
-    // Start is called before the first frame update
-    void Start()
+
+    private void Start()
     {
         _player = UIController._rootCanvas.GetComponent<UIController>()._player;
         _playerProperties = _player.GetComponent<PlayerProperties>();
         _playerInventory = _player.GetComponent<PlayerInventory>();
-        Debug.Log(_playerInventory.SelectedItem);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
         HitProgress.fillAmount = _playerProperties.CurrentHitProgress / (_playerInventory.SelectedItem as MeleeWeaponConfiguration).FullWindupTime;
     }
 

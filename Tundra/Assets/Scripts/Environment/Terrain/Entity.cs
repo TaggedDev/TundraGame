@@ -19,23 +19,23 @@ namespace Environment.Terrain
 
 
         [SerializeField]
-        private BasicItemConfiguration[] LootTable;
+        private BasicItemConfiguration[] lootTable;
         [SerializeField]
-        private int[] DropQuantity;
+        private int[] dropQuantity;
         [SerializeField]
-        private int[] DropChance;
+        private int[] dropChance;
 
         public float SpawnRateForLevel => spawnRateForLevel;
-        public float Hp
+        public float HealthPoints
         {
             get
             {
-                return _hp;
+                return _healthPoints;
             }
             set
             {
-                _hp = value;
-                if (_hp <= 0)
+                _healthPoints = value;
+                if (_healthPoints <= 0)
                     Break();
                 else
                 {
@@ -49,7 +49,7 @@ namespace Environment.Terrain
         [SerializeField]
         private const float ENTITY_VIEW_RANGE = 3000f;
         [SerializeField]
-        private float _hp;
+        private float _healthPoints;
         private Transform _player;
         public Vector3 _originalScale;
         private Vector2 _entityPosition;
@@ -59,9 +59,9 @@ namespace Environment.Terrain
             _originalScale = transform.localScale;
 
             //Checks LootTable Correctness
-            if (LootTable.Length != DropChance.Length || DropChance.Length != DropQuantity.Length)
+            if (lootTable.Length != dropChance.Length || dropChance.Length != dropQuantity.Length)
                 throw new System.Exception("Loot Table setup is invalid");
-            foreach (int a in DropChance)
+            foreach (int a in dropChance)
             {
                 if (a > 100 || a <= 0)
                     throw new System.Exception("Loot Table setup is invalid");
@@ -108,13 +108,13 @@ namespace Environment.Terrain
         {
             
             MonoBehaviour.Destroy(gameObject);
-            for(int i = 0; i < LootTable.Length; i++)
+            for(int i = 0; i < lootTable.Length; i++)
             {
                 int proc = Random.Range(0, 101);
-                if(proc <= DropChance[i])
+                if(proc <= dropChance[i])
                 {
-                    Instantiate(LootTable[i].ItemInWorldPrefab, new Vector3(transform.position.x + Random.Range(-2, 2), transform.position.y + Random.Range(1,2), transform.position.z + Random.Range(-2, 2)), new Quaternion(Random.Range(0, 160), Random.Range(0, 160), Random.Range(0, 160), 0)).
-                        GetComponent<DroppedItemBehaviour>().DroppedItemsAmount = DropQuantity[i];
+                    Instantiate(lootTable[i].ItemInWorldPrefab, new Vector3(transform.position.x + Random.Range(-2, 2), transform.position.y + Random.Range(1,2), transform.position.z + Random.Range(-2, 2)), new Quaternion(Random.Range(0, 160), Random.Range(0, 160), Random.Range(0, 160), 0)).
+                        GetComponent<DroppedItemBehaviour>().DroppedItemsAmount = dropQuantity[i];
                 }
             }
         }

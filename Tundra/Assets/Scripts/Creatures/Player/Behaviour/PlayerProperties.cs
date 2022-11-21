@@ -65,7 +65,7 @@ namespace Creatures.Player.Behaviour
         /// <summary>
         /// Internal field for the current player's HP.
         /// </summary>
-        [SerializeField] private float _currentHealth;
+        [SerializeField] private float currentHealth;
         /// <summary>
         /// Internal field for the current player speed coefficient.
         /// </summary>
@@ -152,11 +152,11 @@ namespace Creatures.Player.Behaviour
         {
             get
             {
-                return _currentHealth;
+                return currentHealth;
             }
             internal set
             {
-                _currentHealth = value;
+                currentHealth = value;
             }
         }
         /// <summary>
@@ -231,8 +231,16 @@ namespace Creatures.Player.Behaviour
                 _currentSaturation = value;
             }
         }
-
+        /// <summary>
+        /// Max Modificator of damage player can apply <br/>
+        /// Calculated by <see cref="PlayerBehaviour.Hit"/>
+        /// </summary>
+        /// 
         public float MaxDamageModificator { get => maxDamageModificator; }
+        /// <summary>
+        /// Min modificator of damage player can apply <br/>
+        /// Calculated By <see cref="PlayerBehaviour.Hit"/>
+        /// </summary>
         public float MinDamageModificator { get => minDamageModificator; }
 
         void Start()
@@ -252,7 +260,7 @@ namespace Creatures.Player.Behaviour
                 minDamageModificator= playerRace.MinDamageModificator;
             }
             _currentStarvation = maxStarve;
-            _currentHealth = maxHealth;
+            currentHealth = maxHealth;
             _currentStamina = maxStamina;
             _currentStarvationTime = saturationTime;
             _throwLoadingProgress = throwPrepareTime;

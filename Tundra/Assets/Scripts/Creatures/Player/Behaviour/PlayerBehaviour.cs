@@ -142,16 +142,18 @@ namespace Creatures.Player.Behaviour
         /// </summary>
         internal void Hit()
         {
-            foreach(Collider a in Physics.OverlapBox(hitPosition.transform.position, new Vector3(1f, 2f, 1f)))
+            foreach(Collider hitObject in Physics.OverlapBox(hitPosition.transform.position, new Vector3(1f, 2f, 1f)))
             {
-                if (a.gameObject.GetComponent<Mob>() != null)
+                var mob = hitObject.gameObject.GetComponent<Mob>();
+                if (mob != null)
                 {
-                    a.gameObject.GetComponent<Mob>().CurrentMobHealth -= (_playerInventory.SelectedItem as MeleeWeaponConfiguration).Damage * 
+                    mob.CurrentMobHealth -= (_playerInventory.SelectedItem as MeleeWeaponConfiguration).Damage * 
                         Mathf.Lerp(_playerProperties.MinDamageModificator, _playerProperties.MaxDamageModificator, Mathf.Sqrt(4 * _playerProperties.CurrentHitProgress / (_playerInventory.SelectedItem as MeleeWeaponConfiguration).FullWindupTime));
                 }
-                else if(a.gameObject.GetComponent<Entity>() != null)
+                var entity = hitObject.gameObject.GetComponent<Entity>();
+                if(entity != null)
                 {
-                    a.gameObject.GetComponent<Entity>().Hp -= (_playerInventory.SelectedItem as MeleeWeaponConfiguration).Damage *
+                    entity.HealthPoints -= (_playerInventory.SelectedItem as MeleeWeaponConfiguration).Damage *
                         Mathf.Lerp(_playerProperties.MinDamageModificator, _playerProperties.MaxDamageModificator, Mathf.Sqrt(4 * _playerProperties.CurrentHitProgress / (_playerInventory.SelectedItem as MeleeWeaponConfiguration).FullWindupTime));
                 }
             }

@@ -31,7 +31,10 @@ namespace Creatures.Player.States
             PlayerAnimator.CrossFade((PlayerInventory.SelectedItem as MeleeWeaponConfiguration).AnimationWeaponName + " Windup", .1f);
         }
 
-
+        /// <summary>
+        /// Overrides basic player input <br/>
+        /// Only reads MouseButton0
+        /// </summary>
         public override void HandleUserInput()
         {
 
@@ -48,11 +51,12 @@ namespace Creatures.Player.States
             {
                 PlayerAnimator.speed = 1;
                 PlayerBehaviour.StartCoroutine(CoolDown((PlayerInventory.SelectedItem as MeleeWeaponConfiguration).ReleaseAnimationLenght));
-                //Debug.Log("HitRequest");
             }
             
         }
-
+        /// <summary>
+        /// Blocks all movement
+        /// </summary>
         public override void MoveCharacter()
         {
 
@@ -66,14 +70,18 @@ namespace Creatures.Player.States
 
         protected override void StaminaIsOver()
         {
-            //PlayerStateSwitcher.SwitchState<IdlePlayerState>();
+            
         }
-
-        private IEnumerator CoolDown(float secs)
+        /// <summary>
+        /// Starts a hit cooldown so animation could play properly <br/>
+        /// And to avoid spamming
+        /// </summary>
+        /// <param name="delayTime"> Hit/CoolDown Duration in seconds </param> 
+        private IEnumerator CoolDown(float delayTime)
         {
             
             PlayerAnimator.Play((PlayerInventory.SelectedItem as MeleeWeaponConfiguration).AnimationWeaponName + " Release");
-            yield return new WaitForSeconds(secs);
+            yield return new WaitForSeconds(delayTime);
             if (PlayerProperties.CurrentHitProgress != 0)
                 PlayerBehaviour.Hit();
             yield return null;

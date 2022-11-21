@@ -11,38 +11,38 @@ namespace Creatures.Player.Inventory
     public class MeleeWeaponConfiguration : WeaponConfiguration
     {
         [SerializeField]
-        private float _WindupTime;
+        private float windupTime;
         [SerializeField]
-        private float _damage;
+        private float damage;
         [SerializeField]
-        private string _animationWeaponName;
+        private string animationWeaponName;
         [SerializeField]
-        private float _releaseClipLength;
+        private float releaseClipLength;
         [SerializeField]
-        private float _windupClipLength;
+        private float windupClipLength;
         /// <summary>
         /// Full windup time
         /// </summary>
-        public float FullWindupTime { get => _WindupTime; private set => _WindupTime=value; }
+        public float FullWindupTime { get => windupTime; private set => windupTime=value; }
         /// <summary>
         /// Weapon base damage
         /// </summary>
-        public float Damage { get => _damage; private set => _damage=value; }
+        public float Damage { get => damage; private set => damage=value; }
         /// <summary>
         /// Returns a name of a weapon, used for animation
         /// </summary>
-        public string AnimationWeaponName { get => _animationWeaponName; set => _animationWeaponName = value; }
+        public string AnimationWeaponName { get => animationWeaponName; set => animationWeaponName = value; }
         /// <summary>
         /// Returns the Speed animation should played
         /// </summary>
-        public float AnimationClipSpeed { get => _windupClipLength / _WindupTime; }
+        public float AnimationClipSpeed { get => windupClipLength / windupTime; }
         /// <summary>
         /// Returns lengs of the release clip
         /// </summary>
-        public float WinupAnimationLenght { get => _releaseClipLength; }
+        public float WinupAnimationLenght { get => releaseClipLength; }
         /// <summary>
         /// Returns lengs of the windup clip
         /// </summary>
-        public float ReleaseAnimationLenght { get => _releaseClipLength; }
+        public float ReleaseAnimationLenght { get => releaseClipLength; }
     }
 }

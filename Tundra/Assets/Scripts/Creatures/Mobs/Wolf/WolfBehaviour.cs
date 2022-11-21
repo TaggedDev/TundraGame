@@ -51,7 +51,7 @@ namespace Creatures.Mobs.Wolf
                     return;
                 }
             }
-            //_currentMobState.MoveMob();
+            _currentMobState.MoveMob();
 
             // We cant perform the calculations on wolf maw in preparing state because there is a chance for the wolf
             // to switch states between preparing and hunting states during the attack.

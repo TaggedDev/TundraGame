@@ -101,13 +101,13 @@ namespace Creatures.Mobs
             get => _fabric;
             set => _fabric = value;
         }
-        protected float Hp 
+        protected float HealthPoints 
         { 
-            get => _hp;
+            get => _healthPoints;
             set
             {
-                _hp = value;
-                if (_hp <= 0)
+                _healthPoints = value;
+                if (_healthPoints <= 0)
                     Die();
             }  
         }
@@ -119,7 +119,7 @@ namespace Creatures.Mobs
         [SerializeField] private float sniffingRadius;
         [SerializeField] private float maxMobHealth;
         [SerializeField] private Transform _player;
-        [SerializeField] private float _hp;
+        [SerializeField] private float _healthPoints;
         [SerializeField] private BasicItemConfiguration[] LootTable;
         [SerializeField] private int[] DropQuantity;
         [SerializeField] private int[] DropChance;
