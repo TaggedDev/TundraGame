@@ -1,174 +1,165 @@
-﻿using Creatures.Player.Behaviour;
-using Creatures.Player.Inventory;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Creatures.Player.Inventory.ItemConfiguration;
+using Creatures.Player.Inventory;
 using UnityEngine;
 
-public class PlayerEquipment : MonoBehaviour
+namespace Creatures.Player.Behaviour
 {
-    [SerializeField]
-    private EquipmentConfiguration head;
-    [SerializeField]
-    private EquipmentConfiguration body;
-    [SerializeField]
-    private EquipmentConfiguration legs;
-    [SerializeField]
-    private EquipmentConfiguration feet;
-    [SerializeField]
-    private EquipmentConfiguration neck;
-    [SerializeField]
-    private EquipmentConfiguration backpack;
-    [SerializeField]
-    private EquipmentConfiguration book;
-
-    private PlayerInventory _inventoryController;
-
-    public EquipmentConfiguration Helmet
+    public class PlayerEquipment : MonoBehaviour
     {
-        get => head;
-        set
+        [SerializeField]
+        private EquipmentConfiguration head;
+        [SerializeField]
+        private EquipmentConfiguration body;
+        [SerializeField]
+        private EquipmentConfiguration legs;
+        [SerializeField]
+        private EquipmentConfiguration feet;
+        [SerializeField]
+        private EquipmentConfiguration neck;
+        [SerializeField]
+        private EquipmentConfiguration backpack;
+        [SerializeField]
+        private EquipmentConfiguration book;
+
+        private PlayerInventory _inventoryController;
+
+        public EquipmentConfiguration Helmet
         {
-            if (value.EquipmentSlot == EquipmentSlotPosition.Head)
+            get => head;
+            set
             {
-                var temp = head;
-                head = value;
-                EquipmentChanged?.Invoke(this, temp);
-                OnEquipmentChanged();
+                if (value.EquipmentSlot == EquipmentSlotPosition.Head)
+                {
+                    var temp = head;
+                    head = value;
+                    EquipmentChanged?.Invoke(this, temp);
+                    OnEquipmentChanged();
+                }
+                else throw new ArgumentException("This item cannot be equipped to this slot.", nameof(value));
             }
-            else throw new ArgumentException("This item cannot be equipped to this slot.", nameof(value));
         }
-    }
 
-    public EquipmentConfiguration Body
-    {
-        get => body;
-        set
+        public EquipmentConfiguration Body
         {
-            if (body.EquipmentSlot == EquipmentSlotPosition.Body)
+            get => body;
+            set
             {
-                var temp = body;
-                body = value;
-                EquipmentChanged?.Invoke(this, temp);
-                OnEquipmentChanged();
+                if (body.EquipmentSlot == EquipmentSlotPosition.Body)
+                {
+                    var temp = body;
+                    body = value;
+                    EquipmentChanged?.Invoke(this, temp);
+                    OnEquipmentChanged();
+                }
+                else throw new ArgumentException("This item cannot be equipped to this slot.", nameof(value));
             }
-            else throw new ArgumentException("This item cannot be equipped to this slot.", nameof(value));
         }
-    }
 
-    public EquipmentConfiguration Legs
-    {
-        get => legs;
-        set
+        public EquipmentConfiguration Legs
         {
-            if (legs.EquipmentSlot == EquipmentSlotPosition.Legs)
+            get => legs;
+            set
             {
-                var temp = legs;
-                legs = value;
-                EquipmentChanged?.Invoke(this, temp);
-                OnEquipmentChanged();
+                if (legs.EquipmentSlot == EquipmentSlotPosition.Legs)
+                {
+                    var temp = legs;
+                    legs = value;
+                    EquipmentChanged?.Invoke(this, temp);
+                    OnEquipmentChanged();
+                }
+                else throw new ArgumentException("This item cannot be equipped to this slot.", nameof(value));
             }
-            else throw new ArgumentException("This item cannot be equipped to this slot.", nameof(value));
         }
-    }
 
-    public EquipmentConfiguration Feet
-    {
-        get => feet;
-        set
+        public EquipmentConfiguration Feet
         {
-            if (feet.EquipmentSlot == EquipmentSlotPosition.Feet)
+            get => feet;
+            set
             {
-                var temp = feet;
-                feet = value;
-                EquipmentChanged?.Invoke(this, temp);
-                OnEquipmentChanged();
+                if (feet.EquipmentSlot == EquipmentSlotPosition.Feet)
+                {
+                    var temp = feet;
+                    feet = value;
+                    EquipmentChanged?.Invoke(this, temp);
+                    OnEquipmentChanged();
+                }
+                else throw new ArgumentException("This item cannot be equipped to this slot.", nameof(value));
             }
-            else throw new ArgumentException("This item cannot be equipped to this slot.", nameof(value));
         }
-    }
 
-    public EquipmentConfiguration Neck
-    {
-        get => neck;
-        set
+        public EquipmentConfiguration Neck
         {
-            if (neck.EquipmentSlot == EquipmentSlotPosition.Neck)
+            get => neck;
+            set
             {
-                var temp = neck;
-                neck = value;
-                EquipmentChanged?.Invoke(this, temp);
-                OnEquipmentChanged();
+                if (neck.EquipmentSlot == EquipmentSlotPosition.Neck)
+                {
+                    var temp = neck;
+                    neck = value;
+                    EquipmentChanged?.Invoke(this, temp);
+                    OnEquipmentChanged();
+                }
+                else throw new ArgumentException("This item cannot be equipped to this slot.", nameof(value));
             }
-            else throw new ArgumentException("This item cannot be equipped to this slot.", nameof(value));
         }
-    }
 
-    public EquipmentConfiguration Backpack
-    {
-        get => backpack;
-        set
+        public EquipmentConfiguration Backpack
         {
-            if (backpack.EquipmentSlot == EquipmentSlotPosition.Backpack)
+            get => backpack;
+            set
             {
-                var temp = backpack;
-                backpack = value;
-                EquipmentChanged?.Invoke(this, temp);
-                OnEquipmentChanged();
+                if (backpack.EquipmentSlot == EquipmentSlotPosition.Backpack)
+                {
+                    var temp = backpack;
+                    backpack = value;
+                    EquipmentChanged?.Invoke(this, temp);
+                    OnEquipmentChanged();
+                }
+                else throw new ArgumentException("This item cannot be equipped to this slot.", nameof(value));
             }
-            else throw new ArgumentException("This item cannot be equipped to this slot.", nameof(value));
         }
-    }
 
-    public EquipmentConfiguration Book
-    {
-        get => book;
-        set
+        public EquipmentConfiguration Book
         {
-            if (book.EquipmentSlot == EquipmentSlotPosition.Book)
+            get => book;
+            set
             {
-                var temp = book;
-                backpack = value;
-                EquipmentChanged?.Invoke(this, temp);
-                OnEquipmentChanged();
+                if (book.EquipmentSlot == EquipmentSlotPosition.Book)
+                {
+                    var temp = book;
+                    backpack = value;
+                    EquipmentChanged?.Invoke(this, temp);
+                    OnEquipmentChanged();
+                }
+                else throw new ArgumentException("This item cannot be equipped to this slot.", nameof(value));
             }
-            else throw new ArgumentException("This item cannot be equipped to this slot.", nameof(value));
         }
-    }
 
-    public int TotalAdditionalSlots
-    {
-        get 
+        public int TotalAdditionalSlots
         {
-            int total = 0;
-            if (head != null) total += head.AdditionalSlots;
-            if (body != null) total += body.AdditionalSlots;
-            if (legs != null) total += legs.AdditionalSlots;
-            if (feet != null) total += feet.AdditionalSlots;
-            if (neck != null) total += neck.AdditionalSlots;
-            if (backpack != null) total += backpack.AdditionalSlots;
-            // Shoud the book have additional inventory slots!? Well, it's magic book anyways, maybe it has a pocket dimension to keep items or sth like that.
-            if (book != null) total += book.AdditionalSlots;
-            return total;
+            get 
+            {
+                int total = 0;
+                if (head != null) total += head.AdditionalSlots;
+                if (body != null) total += body.AdditionalSlots;
+                if (legs != null) total += legs.AdditionalSlots;
+                if (feet != null) total += feet.AdditionalSlots;
+                if (neck != null) total += neck.AdditionalSlots;
+                if (backpack != null) total += backpack.AdditionalSlots;
+                // Shoud the book have additional inventory slots!? Well, it's magic book anyways, maybe it has a pocket dimension to keep items or sth like that.
+                if (book != null) total += book.AdditionalSlots;
+                return total;
+            }
         }
-    }
 
-    public event EventHandler<EquipmentConfiguration> EquipmentChanged;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        _inventoryController = GetComponent<PlayerInventory>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    private void OnEquipmentChanged()
-    {
-        _inventoryController.Inventory.ResizeInventory(TotalAdditionalSlots);
+        public event EventHandler<EquipmentConfiguration> EquipmentChanged;
+        
+        private void OnEquipmentChanged()
+        {
+            _inventoryController.Inventory.ResizeInventory(TotalAdditionalSlots);
+        }
     }
 }

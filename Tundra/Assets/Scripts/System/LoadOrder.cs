@@ -1,7 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using System.Globalization;
-//using Creatures.Mobs;
 using Creatures.Player.Behaviour;
 using Environment;
 using Environment.Terrain;
@@ -13,19 +11,19 @@ namespace System
     {
         [SerializeField] private MapGenerator mapGenerator;
         [SerializeField] private ChunksGenerator chunksGenerator;
-        [SerializeField] private PlayerSpawner playerHolder;
+        [SerializeField] private PlayerSpawner playerObject;
         [SerializeField] private EntityRenderer entityRenderer;
+        [SerializeField] private Canvas UserInterface;
 
         private string[] worldData;
         private Rigidbody _playerRigidbody;
         
-        /*[SerializeField] private MobFabric[] fabrics;*/
-
         /*
          * 1. Terrain generation
          * 2. Surface objects generation
          * 3. Light sources
          * 4. Player spawn
+         * 5. UI Initialisation
          */
 
         /// <summary>
@@ -57,10 +55,10 @@ namespace System
         {
             worldData = WorldConstants.WorldData.Split('\n');
             
-            _playerRigidbody = playerHolder.GetComponent<Rigidbody>();
+            _playerRigidbody = playerObject.GetComponent<Rigidbody>();
             _playerRigidbody.useGravity = false;
 
-            playerHolder.transform.position = GetPlayerStartPosition();
+            playerObject.transform.position = GetPlayerStartPosition();
             
             mapGenerator.gameObject.SetActive(true);
             chunksGenerator.gameObject.SetActive(true);
@@ -72,12 +70,20 @@ namespace System
         /// </summary>
         private IEnumerator InstantiateWorld()
         {
+            // Wait for world render
             yield return new WaitUntil(() => mapGenerator.mapDataCount == 9 && mapGenerator.meshDataCount == 9);
             
-            playerHolder.SpawnPlayer();
+            // Spawn player and set it's parameter
+            playerObject.SpawnPlayer();
             _playerRigidbody.useGravity = true;
             
+            // Turn on UI
+            UserInterface.gameObject.SetActive(true);
+            
+            // Enable entity generation
             entityRenderer.gameObject.SetActive(true);
+            
+            // Enable mob fabrics 
             /*foreach (var fabric in fabrics)
                 fabric.transform.gameObject.SetActive(true);*/
         }

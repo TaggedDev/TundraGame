@@ -1,4 +1,5 @@
-﻿using Creatures.Player.Inventory;
+﻿using GUI.BestiaryGUI;
+using Creatures.Player.Inventory;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -139,7 +140,7 @@ namespace Creatures.Mobs
         /// Initialises basic parameters. Can't use constructor because objects with this class are initialized by
         /// instantiate method during the game
         /// </summary>
-        public abstract void Initialise(MobFabric fabric, Transform player);
+        public abstract void Initialise(MobFabric fabric, Transform player, BestiaryPanel panel);
 
         /// <summary>
         /// Sets the spawn position, turns on the object and sets default values. Basically replaces the Start() method

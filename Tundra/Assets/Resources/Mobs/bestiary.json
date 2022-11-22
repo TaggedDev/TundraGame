@@ -1,0 +1,20 @@
+{
+	"mobs":
+	[
+		{
+			"MobDescription": "Lorem ipsum lorem",
+			"MobName": "Bunny",
+			"IsKilled": false
+		},
+		{
+			"MobDescription": "Lorem ipsum lorem ipsum",
+			"MobName": "Fox",
+			"IsKilled": true
+		},
+		{
+			"MobDescription": "Lorem ipsum",
+			"MobName": "Wolf",
+			"IsKilled": false
+		}	
+	]
+}

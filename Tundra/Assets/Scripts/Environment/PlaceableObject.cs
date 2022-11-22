@@ -3,9 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Creatures.Player.Inventory 
+namespace Creatures.Player.Inventory
 {
-    [CreateAssetMenu(menuName = "PlacableObject")]
+    /// <summary>
+    /// I guess it's a class of the configuration of the placeable object.
+    /// </summary>
+    [CreateAssetMenu(menuName = "PlaceableObject")]
     public class PlaceableObject : ScriptableObject
     {
         public GameObject Object;
@@ -16,7 +19,12 @@ namespace Creatures.Player.Inventory
         [SerializeField] public Material _previewPlacable;
         [SerializeField] public Material _previewUnPlacable;
 
-        public void DiplayGhostObject(Vector3 position, Quaternion rotation)
+        /// <summary>
+        /// Displays GhostObject into a provided position and rotation
+        /// </summary>
+        /// <param name="position">Position.</param>
+        /// <param name="rotation">Rotation.</param>
+        public void DisplayGhostObject(Vector3 position, Quaternion rotation)
         {
 
             GhostObject.transform.position = position;
@@ -25,8 +33,10 @@ namespace Creatures.Player.Inventory
         }
 
 
-    
-        public bool IsPlacable
+        /// <summary>
+        /// Indicates if the object is placeable
+        /// </summary>
+        public bool IsPlaceable
         {
             get
             {
@@ -59,7 +69,7 @@ namespace Creatures.Player.Inventory
         }
         public void AssignMaterial()
         {
-            if (IsPlacable)
+            if (IsPlaceable)
                 GhostObject.GetComponent<Renderer>().materials = new Material[] { _previewPlacable };
             else
                 GhostObject.GetComponent<Renderer>().materials = new Material[] { _previewUnPlacable };
@@ -67,7 +77,7 @@ namespace Creatures.Player.Inventory
 
         public bool TryPlacing(Vector3 position, Quaternion rotation)
         {
-            if (!IsPlacable)
+            if (!IsPlaceable)
                 return false;
             Instantiate(Object, position, rotation);
             Destroy(GhostObject);

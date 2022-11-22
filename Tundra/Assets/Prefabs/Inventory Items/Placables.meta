@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Tundra/Assets/Prefabs/Inventory Items/Placables.meta
 guid: 60db0ea8636eb6644bad5643100f68c2
+========
+guid: 2d5c866b15faeaf47a920e5ef91bc9de
+>>>>>>>> spells:Tundra/Assets/Prefabs/Modelling.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

@@ -1,8 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace GUI.MainMenu
 {
+    /// <summary>
+    /// A handler for scene switching in Main Menu scene
+    /// </summary>
     public class MainMenu_SceneSwitcher : MonoBehaviour
     {
         /// <summary>
@@ -13,14 +17,21 @@ namespace GUI.MainMenu
             Debug.Log("Leaving game...");
             Application.Quit();
         }
-
+        
         /// <summary>
-        /// Loads level by it's ID in Build Settings
+        /// Loads LoadLevel Scene
         /// </summary>
-        /// <param name="id">ID of the scene in Build Settings</param>
-        public void LoadLevelByID(int id)
+        public void LoadLoadLevelScene()
         {
-            SceneManager.LoadScene(id);
+            SceneManager.LoadScene(Convert.ToInt32(TundraScenes.LOAD_GAME_SCENE_ID));
+        }
+        
+        /// <summary>
+        /// Loads CreateLevel scene
+        /// </summary>
+        public void LoadCreateLevelScene()
+        {
+            SceneManager.LoadScene(Convert.ToInt32(TundraScenes.CREATE_GAME_SCENE_ID));
         }
     }
 }

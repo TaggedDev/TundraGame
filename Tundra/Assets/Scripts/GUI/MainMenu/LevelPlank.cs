@@ -1,10 +1,14 @@
-﻿using Environment;
+﻿using System;
+using Environment;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace GUI.MainMenu
 {
+    /// <summary>
+    /// Represents the behaviour of every "World Save" card in list of all cards in choosing the save menu 
+    /// </summary>
     public class LevelPlank : MonoBehaviour
     {
         [SerializeField] private Text levelName;
@@ -35,8 +39,8 @@ namespace GUI.MainMenu
             // We set world seed and load the scene with game
             WorldConstants.WorldName = levelName.text;
             WorldConstants.WorldSeed = _levelSeed;
-            WorldConstants.WorldData = _levelData; 
-            SceneManager.LoadScene(5);
+            WorldConstants.WorldData = _levelData;
+            SceneManager.LoadScene(Convert.ToInt32(TundraScenes.GAME_SCENE_ID));
         }
     }
 }

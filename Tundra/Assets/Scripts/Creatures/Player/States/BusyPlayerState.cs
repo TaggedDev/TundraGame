@@ -1,7 +1,7 @@
 ﻿using Creatures.Player.Behaviour;
 using System;
+using GUI.BestiaryGUI;
 using GUI.GameplayGUI;
-using UnityEngine;
 
 namespace Creatures.Player.States
 {
@@ -20,14 +20,14 @@ namespace Creatures.Player.States
 
         public BusyPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
 
-            PlayerProperties playerProperties, PlayerInventory inventory, EscapeMenu escapeCanvas)
-            : base(playerMovement, switcher, playerProperties, inventory, escapeCanvas)
+            PlayerProperties playerProperties, PlayerInventory inventory, EscapeMenu escapeCanvas, BestiaryPanel bestiaryPanel)
+            : base(playerMovement, switcher, playerProperties, inventory, escapeCanvas, bestiaryPanel)
         {
         }
 
         public override void HandleEscapeButton()
         {
-            throw new NotImplementedException();
+            PlayerStateSwitcher.SwitchState<IdlePlayerState>();
         }
 
         public override void MoveCharacter()
@@ -35,7 +35,7 @@ namespace Creatures.Player.States
             //Here's nothing. Player Should'nt move in this state.
         }
 
-        public override void ContinueFreeze()
+        public override void ContinueFreezing()
         {
             //I guess it's like a pause, player should not spend temperature on it
         }
@@ -44,12 +44,7 @@ namespace Creatures.Player.States
         {
             //And so I can say for starving.
         }
-
-        public override void LoadForThrow()
-        {
-            //Player cannot throw items while he's in inventory.
-        }
-
+        
         public override void SpendStamina()
         {
             //Player doesn't spend stamina in inventory.
@@ -57,10 +52,12 @@ namespace Creatures.Player.States
 
         public override void Start()
         {
+            PlayerMovement.CanSprint = false;
         }
 
         public override void Stop()
         {
+            PlayerMovement.CanSprint = true;
         }
 
         protected override void StaminaIsOver()

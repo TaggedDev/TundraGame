@@ -1,4 +1,6 @@
 ﻿using Creatures.Player.Behaviour;
+using GUI.BestiaryGUI;
+using Creatures.Player.Inventory.ItemConfiguration;
 using GUI.GameplayGUI;
 using UnityEngine;
 
@@ -6,17 +8,17 @@ namespace Creatures.Player.States
 {
     public class IdlePlayerState : BasicPlayerState
     {
-
         public IdlePlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
-            PlayerProperties playerProperties, PlayerInventory inventory, EscapeMenu escapeCanvas)
-            : base(playerMovement, switcher, playerProperties, inventory, escapeCanvas)
+            PlayerProperties playerProperties, PlayerInventory inventory, EscapeMenu escapeCanvas,
+            BestiaryPanel bestiaryPanel)
+            : base(playerMovement, switcher, playerProperties, inventory, escapeCanvas, bestiaryPanel)
         {
             
         }
 
-        private float _h = 0, _v = 0;
+        private float _h, _v;
 
-        protected override float StarvingConsumptionCoefficient => 1f;
+        protected override float StarvingConsumptionCoefficient => 10f;
 
         protected override float StaminaConsumption => -1f;
 
@@ -24,6 +26,48 @@ namespace Creatures.Player.States
 
         protected override float WarmConsumptionCoefficient => 2f;
 
+        public override void HandleUserInput()
+        {
+            base.HandleUserInput();
+            if (Input.GetMouseButton(0))
+            {
+                Debug.Log(PlayerProperties.MaxCircleBarFillingTime);
+                
+                // Check if we are trying to eat something that is not food
+                if (!PlayerProperties.IsHoldingFood)
+                    PlayerProperties.IsHoldingFood = CheckWhetherSelectedItemIsFood();
+
+                if (PlayerProperties.IsHoldingFood)
+                {
+                    PlayerProperties.MaxCircleBarFillingTime = PlayerProperties.MaxCircleFillingTime_EATING;
+                    PlayerAnimation.SwitchAnimation("Eat");
+                    PlayerProperties.FoodConsumingTimeLeft -= Time.deltaTime;
+                    if (PlayerProperties.FoodConsumingTimeLeft <= 0)
+                    {
+                        ConsumeCurrentFood();    
+                        PlayerProperties.FoodConsumingTimeLeft = PlayerProperties.FOOD_CONSUMING_MAX_TIME;
+                        PlayerAnimation.SwitchAnimation("Idle");
+                        PlayerAnimation.SwitchAnimation("Not eating");
+                    }
+                }
+                else
+                {
+                    PlayerProperties.MaxCircleBarFillingTime = PlayerProperties.MaxCircleFillingTime_ATTACK;
+                }
+            }
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                PlayerProperties.FoodConsumingTimeLeft = PlayerProperties.FOOD_CONSUMING_MAX_TIME;
+                PlayerAnimation.SwitchAnimation("Not eating");
+            }
+            
+            if (PlayerEquipment.Book != null && Input.GetKeyDown(KeyCode.X))
+            {
+                PlayerStateSwitcher.SwitchState<MagicCastingPlayerState>();
+            }
+            
+        }
 
         public override void MoveCharacter()
         {
@@ -36,7 +80,9 @@ namespace Creatures.Player.States
 
         public override void Start()
         {
-            
+            PlayerProperties.CurrentCircleBarFillingTime = 0f;
+            PlayerMovement.CanSprint = true;
+            PlayerAnimation.SwitchAnimation("Idle");
         }
 
         public override void Stop()
@@ -46,12 +92,20 @@ namespace Creatures.Player.States
 
         public override void SpendStamina()
         {
-            PlayerProperties.CurrentStamina -= (StaminaConsumption * Time.deltaTime);
-            if (PlayerProperties.CurrentStamina > PlayerProperties.MaxStamina) PlayerProperties.CurrentStamina = PlayerProperties.MaxStamina;
+            PlayerProperties.CurrentStaminaPoints -= (StaminaConsumption * Time.deltaTime);
+            if (PlayerProperties.CurrentStaminaPoints > PlayerProperties.MaxStaminaPoints) PlayerProperties.CurrentStaminaPoints = PlayerProperties.MaxStaminaPoints;
         }
 
         protected override void StaminaIsOver()
         { }
 
+        /// <summary>
+        /// Checks whether the selected inventory item is a type of food
+        /// </summary>
+        /// <returns>True if this is a food item</returns>
+        private bool CheckWhetherSelectedItemIsFood()
+        {
+            return PlayerInventory.SelectedItem is FoodItemConfiguration;
+        }
     }
 }

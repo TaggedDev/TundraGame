@@ -1,0 +1,4 @@
+
+pcsharpsquid:S3776ã"RRefactor this method to reduce its Cognitive Complexity from 32 to the 15 allowed.(èà€å
+âcsharpsquid:S2583J"lChange this condition so that it does not always evaluate to 'true'; some subsequent code is never executed.(±§´é
+äcsharpsquid:S2583∏"lChange this condition so that it does not always evaluate to 'true'; some subsequent code is never executed.(±§´é

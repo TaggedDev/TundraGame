@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using GUI.MainMenu;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace GUI.GameplayGUI
@@ -23,7 +25,7 @@ namespace GUI.GameplayGUI
         /// </summary>
         public void ToMainMenu()
         {
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(Convert.ToInt32(TundraScenes.MAIN_MENU_SCENE_ID));
         }
     }
 }
