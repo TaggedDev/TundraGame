@@ -4954,4 +4954,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   configuration: {fileID: 11400000, guid: 524ec756e93204a4bbc76addde2a7f47, type: 2}
-  canBeOpened: 0
+  canBeOpened: 1
