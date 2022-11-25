@@ -18,7 +18,6 @@ namespace Creatures.Player.Behaviour
     public class PlayerInventory : MonoBehaviour
     {
 
-        private InventoryContainer inventory;
         [SerializeField] private MeleeWeaponConfiguration fist;
         [SerializeField] private InventoryContainer inventory;
         [SerializeField] private RecipesListConfig recipesList;

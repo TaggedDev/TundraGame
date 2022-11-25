@@ -17,5 +17,6 @@ MonoBehaviour:
   description: Bark of a spruce tree
   itemInWorldPrefab: {fileID: 1511484082210258090, guid: d68aed2e374d99c489f7b6f251ee4419,
     type: 3}
-  maxStackVolume: 0
-  weight: 0
+  maxStackVolume: 12
+  weight: 5
+  recipe: {fileID: 0}

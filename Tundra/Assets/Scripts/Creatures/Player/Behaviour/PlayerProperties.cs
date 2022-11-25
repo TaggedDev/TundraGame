@@ -9,7 +9,7 @@ namespace Creatures.Player.Behaviour
     public class PlayerProperties : MonoBehaviour
     {
         public const float MaxCircleFillingTime_EATING = 1f;
-        public const float MaxCircleFillingTime_ATTACK = .5f;
+        public const float MaxCircleFillingTime_ATTACK = 1f;
         
         /// <summary>
         /// Maximal starvation capacity.
@@ -43,10 +43,7 @@ namespace Creatures.Player.Behaviour
         /// Maximal player load capacity.
         /// </summary>
         [SerializeField] private float maxLoadCapacity;
-        /// <summary>
-        /// Total time to prepare for throw.
-        /// </summary>
-        [SerializeField] private float maxCircleBarFillingTime;
+        [SerializeField] private float maxDamageModificator;
         /// <summary>
         /// Maximal damage modificator. Used in lerp to calculate damage
         /// </summary>
@@ -104,10 +101,6 @@ namespace Creatures.Player.Behaviour
         /// Internal field for the current player stamina.
         /// </summary>
         private float _currentStaminaPoints;
-        /// <summary>
-        /// Time of preparing for the hit.
-        /// </summary>
-        private float _currentHitPreparingTime;
         /// <summary>
         /// Time while which player hasn't eaten anything.
         /// </summary>
@@ -226,6 +219,7 @@ namespace Creatures.Player.Behaviour
         /// </summary>
         public float MinDamageModificator { get => minDamageModificator; }
 
+
         private void Start()
         {
             if (playerRace != null)
@@ -241,11 +235,12 @@ namespace Creatures.Player.Behaviour
                 maxLoadCapacity = playerRace.MaxLoadCapacity;
                 maxDamageModificator = playerRace.MaxDamageModificator;
                 minDamageModificator= playerRace.MinDamageModificator;
-                maxCircleBarFillingTime = playerRace.HitPrepareTime;
             }
             _currentStarvePoints = maxStarvePoints;
             currentHealthPoints = maxHealthPoints;
             _currentStaminaPoints = maxStaminaPoints;
+            MaxCircleBarFillingTime = 1.5f; 
+            CurrentCircleBarFillingTime = 0;
         }
     }
 }

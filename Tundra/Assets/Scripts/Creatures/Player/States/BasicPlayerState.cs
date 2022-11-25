@@ -144,17 +144,6 @@ namespace Creatures.Player.States
             if (PlayerInventory.SelectedItem is PlaceableItemConfiguration)
                 PlayerStateSwitcher.SwitchState<BuildingPlayerState>();
         }
-        
-        /// <summary>
-        /// An event called whenever user changed his item
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected virtual void InventorySelectedSlotChanged(object sender, EventArgs e)
-        {
-            if (PlayerInventory.SelectedItem is PlaceableItemConfiguration)
-                PlayerStateSwitcher.SwitchState<BuildingPlayerState>();
-        }
 
         /// <summary>
         /// Updates player warm with current state coefficient.
@@ -180,44 +169,6 @@ namespace Creatures.Player.States
 
         protected abstract void StaminaIsOver();
         
-        /// <summary>
-        /// Loads weapon for throwing.
-        /// </summary>
-        public virtual void LoadForThrow()
-        {
-            if (Input.GetMouseButton(2))
-            {
-                PlayerProperties._throwLoadingProgress -= Time.deltaTime;
-                if (PlayerProperties._throwLoadingProgress <= 0) PlayerProperties._throwLoadingProgress = 0;
-            }
-            else
-            {
-                if (PlayerProperties._throwLoadingProgress <= 0) PlayerBehaviour.ThrowItem();
-                PlayerProperties._throwLoadingProgress = PlayerProperties.ThrowPrepareTime;
-            }
-        }
-        /// <summary>
-        /// Loads to hit.
-        /// </summary>
-        public virtual void PrepareForHit()
-        {
-            if (!(this is BusyPlayerState) && !(this is MagicCastingPlayerState))
-            {
-                if (Input.GetMouseButton(0))
-                {
-                    PlayerProperties.CurrentHitProgress += Time.smoothDeltaTime;
-                }
-                else PlayerProperties.CurrentHitProgress -= Time.deltaTime;
-                if (PlayerProperties.CurrentHitProgress < 0) PlayerProperties.CurrentHitProgress = 0;
-                if (PlayerProperties.CurrentHitProgress > PlayerProperties.HitPreparationTime)
-                {
-                    PlayerBehaviour.Hit();
-                    PlayerProperties.CurrentHitProgress = 0;
-                }
-            }
-            else PlayerProperties.CurrentHitProgress = 0;
-        }
-
         /// <summary>
         /// Receives player input for changing states with opening related menus.
         /// </summary>
@@ -254,14 +205,15 @@ namespace Creatures.Player.States
             {
                 HandleBestiaryOpen();
             }
-            if(Input.GetMouseButton(0) && !(this is BusyPlayerState) && !(this is MagicCastingPlayerState) && !(this is BuildingPlayerState))
+            if (Input.GetMouseButton(0) && !(this is BusyPlayerState) && !(this is MagicCastingPlayerState) &&
+                !(this is BuildingPlayerState) && (PlayerInventory.SelectedItem is MeleeWeaponConfiguration))
             {
                 PlayerStateSwitcher.SwitchState<WindupHitPlayerState>();
             }
-            if(Input.GetMouseButton(0) && !(this is BusyPlayerState) && !(this is MagicCastingPlayerState) && !(this is BuildingPlayerState))
+
+            if (!(this is BusyPlayerState) && !(this is MagicCastingPlayerState)
+                && PlayerEquipment.Book != null && Input.GetKeyDown(KeyCode.X))
             {
-                PlayerStateSwitcher.SwitchState<WindupHitPlayerState>();
-            }
                 PlayerStateSwitcher.SwitchState<MagicCastingPlayerState>();
             }
             else if (this is MagicCastingPlayerState && Input.GetKeyDown(KeyCode.X))
@@ -285,7 +237,7 @@ namespace Creatures.Player.States
             }
             
             // If selected item is null -> switch to idle state and show empty hands
-            if (inventory.SelectedItem is null)
+            if (inventory.SelectedItem is null || inventory.SelectedItem.Title == "Fist")
             {
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
                 PlayerInventory.ItemHolder.ResetMesh();
@@ -333,8 +285,11 @@ namespace Creatures.Player.States
             // Gaining more than max is handled in properties
             PlayerProperties.CurrentStarvePoints += food.Calories;
             PlayerInventory.Inventory.Slots[PlayerInventory.SelectedInventorySlot].RemoveItems(1);
-            PlayerProperties.IsHoldingFood = false;
-            PlayerInventory.ItemHolder.ResetMesh();
+            if (PlayerInventory.SelectedItem.Title == "Fist")
+            {
+                PlayerProperties.IsHoldingFood = false;
+                PlayerInventory.ItemHolder.ResetMesh();
+            }
         }
 
         /// <summary>

@@ -18,4 +18,5 @@ MonoBehaviour:
   itemInWorldPrefab: {fileID: 1511484082210258090, guid: b48c9d9757fcb2a488ceb4cc8ab89324,
     type: 3}
   maxStackVolume: 12
-  weight: 0.4
+  weight: 5
+  recipe: {fileID: 0}

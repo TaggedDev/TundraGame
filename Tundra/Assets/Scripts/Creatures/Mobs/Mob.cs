@@ -2,6 +2,7 @@
 using Creatures.Player.Inventory;
 using UnityEngine;
 using UnityEngine.AI;
+using Creatures.Player.Inventory.ItemConfiguration;
 
 namespace Creatures.Mobs
 {

@@ -7,6 +7,7 @@ using UnityEngine;
 using System.Collections;
 using System;
 using Random = UnityEngine.Random;
+using Creatures.Player.Inventory.ItemConfiguration;
 
 namespace Environment.Terrain
 {
@@ -39,7 +40,6 @@ namespace Environment.Terrain
                     Break();
                 else
                 {
-                    //Debug.Log(_originalScale.ToString() + " " + transform.localScale.ToString());
                     StartCoroutine(Shake(0.5f));
                 }
                     
@@ -51,7 +51,7 @@ namespace Environment.Terrain
         [SerializeField]
         private float _healthPoints;
         private Transform _player;
-        public Vector3 _originalScale;
+        private Vector3 _originalScale;
         private Vector2 _entityPosition;
 
         private void Start()

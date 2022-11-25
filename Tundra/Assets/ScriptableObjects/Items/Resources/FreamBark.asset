@@ -17,5 +17,6 @@ MonoBehaviour:
   description: Bark of fream tree
   itemInWorldPrefab: {fileID: 1511484082210258090, guid: 1eb4ccd885674bd41a1da33060a6eb41,
     type: 3}
-  maxStackVolume: 0
-  weight: 0
+  maxStackVolume: 12
+  weight: 5
+  recipe: {fileID: 0}

@@ -20,11 +20,12 @@ namespace Creatures.Player.Behaviour
         /// Switches the current animation  
         /// </summary>
         /// <param name="animationName">The name of the state in Animator</param>
-        public void SwitchAnimation(string animationName)
+        /// <param name="speed">Animation speed</param>
+        public void SwitchAnimation(string animationName, float speed = 1)
         {
             if (_currentStateName == animationName)
                 return;
-            
+            _animator.speed = speed;
             _animator.CrossFade(animationName, .1f);
             _currentStateName = animationName;
         }

@@ -1,4 +1,5 @@
 ﻿using Creatures.Player.Behaviour;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +10,7 @@ namespace GUI.HeadUpDisplay
     /// </summary>
     public class CircleBarChanger : MonoBehaviour
     {
-        [SerializeField] private Image hitProgress;
+        [SerializeField] private Image CircleDisplay;
         private GameObject _player;
         private PlayerProperties _playerProperties;
         private Camera _mainCamera;
@@ -19,12 +20,11 @@ namespace GUI.HeadUpDisplay
             _mainCamera = Camera.main;
             _player = UIController.RootCanvas.GetComponent<UIController>().Player;
             _playerProperties = _player.GetComponent<PlayerProperties>();
-            _playerProperties.MaxCircleBarFillingTime = PlayerProperties.MaxCircleFillingTime_ATTACK;
         }
         
         private void Update()
         {
-            hitProgress.fillAmount = _playerProperties.CurrentCircleBarFillingTime / _playerProperties.MaxCircleBarFillingTime;
+            CircleDisplay.fillAmount = _playerProperties.CurrentCircleBarFillingTime / _playerProperties.MaxCircleBarFillingTime;
         }
 
         private void FixedUpdate()

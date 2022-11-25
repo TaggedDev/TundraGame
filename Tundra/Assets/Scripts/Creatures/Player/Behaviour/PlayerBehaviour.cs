@@ -9,6 +9,7 @@ using GUI.GameplayGUI;
 using Creatures.Mobs;
 using Creatures.Player.Inventory;
 using Environment.Terrain;
+using Creatures.Player.Inventory.ItemConfiguration;
 
 namespace Creatures.Player.Behaviour
 {
@@ -53,7 +54,7 @@ namespace Creatures.Player.Behaviour
             _playerMagic = GetComponent<PlayerMagic>();
             _playerBuild = GetComponent<PlayerBuild>();
             GetComponent<PlayerAnimation>();
-            
+            _animator = GetComponent<Animator>();
             GetComponent<Rigidbody>();
             GetComponent<Animator>();
             _allStates = new List<BasicPlayerState>
@@ -70,7 +71,8 @@ namespace Creatures.Player.Behaviour
                     escapeCanvas, bestiaryPanel),
                 new BuildingPlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas, 
                     _playerBuild, bestiaryPanel),
-                new WindupHitPlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas, _animator)
+                new WindupHitPlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas, 
+                    bestiaryPanel)
             };
             _currentState = _allStates[0];
             _currentState.Start();
@@ -119,7 +121,7 @@ namespace Creatures.Player.Behaviour
             StateChanged?.Invoke(this, null);
             
             // Delete later
-            Debug.Log(typeof(T).ToString());
+            //Debug.Log(typeof(T).ToString());
         }
         /// <summary>
         /// Performs an attack
@@ -132,16 +134,16 @@ namespace Creatures.Player.Behaviour
                 if (mob != null)
                 {
                     mob.CurrentMobHealth -= (_playerInventory.SelectedItem as MeleeWeaponConfiguration).Damage * 
-                        Mathf.Lerp(_playerProperties.MinDamageModificator, _playerProperties.MaxDamageModificator, Mathf.Sqrt(4 * _playerProperties.CurrentHitProgress / (_playerInventory.SelectedItem as MeleeWeaponConfiguration).FullWindupTime));
+                        Mathf.Lerp(_playerProperties.MinDamageModificator, _playerProperties.MaxDamageModificator, Mathf.Sqrt(4 * _playerProperties.CurrentCircleBarFillingTime / (_playerInventory.SelectedItem as MeleeWeaponConfiguration).FullWindupTime));
                 }
                 var entity = hitObject.gameObject.GetComponent<Entity>();
                 if(entity != null)
                 {
                     entity.HealthPoints -= (_playerInventory.SelectedItem as MeleeWeaponConfiguration).Damage *
-                        Mathf.Lerp(_playerProperties.MinDamageModificator, _playerProperties.MaxDamageModificator, Mathf.Sqrt(4 * _playerProperties.CurrentHitProgress / (_playerInventory.SelectedItem as MeleeWeaponConfiguration).FullWindupTime));
+                        Mathf.Lerp(_playerProperties.MinDamageModificator, _playerProperties.MaxDamageModificator, Mathf.Sqrt(4 * _playerProperties.CurrentCircleBarFillingTime / (_playerInventory.SelectedItem as MeleeWeaponConfiguration).FullWindupTime));
                 }
             }
-            Debug.Log("hit " + (Mathf.Lerp(_playerProperties.MinDamageModificator, _playerProperties.MaxDamageModificator, Mathf.Sqrt(4 * _playerProperties.CurrentHitProgress / (_playerInventory.SelectedItem as MeleeWeaponConfiguration).FullWindupTime))).ToString());
+            //Debug.Log("hit " + (Mathf.Lerp(_playerProperties.MinDamageModificator, _playerProperties.MaxDamageModificator, Mathf.Sqrt(4 * _playerProperties.CurrentCircleBarFillingTime / (_playerInventory.SelectedItem as MeleeWeaponConfiguration).FullWindupTime))).ToString());
         }
 
         /// <summary>
@@ -158,5 +160,6 @@ namespace Creatures.Player.Behaviour
         {
             Gizmos.DrawWireCube(hitPosition.transform.position, new Vector3(1f, 2f, 1));
         }
+
     }
 }

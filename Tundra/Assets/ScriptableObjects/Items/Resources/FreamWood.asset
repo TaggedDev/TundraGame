@@ -17,5 +17,6 @@ MonoBehaviour:
   description: It used to be a fream tree
   itemInWorldPrefab: {fileID: 1511484082210258090, guid: 1feeac0dacd4e55429a4810ecf12da1a,
     type: 3}
-  maxStackVolume: 0
-  weight: 0
+  maxStackVolume: 12
+  weight: 5
+  recipe: {fileID: 0}
