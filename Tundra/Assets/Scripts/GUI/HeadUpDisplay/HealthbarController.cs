@@ -1,13 +1,5 @@
-<<<<<<<< HEAD:Tundra/Assets/Scripts/GUI/HeadUpDisplay/HealthBarController.cs
-﻿using System;
-using Creatures.Player.Behaviour;
-========
-﻿using Creatures.Player.Behaviour;
-using GUI.HeadUpDisplay;
 using System;
-using System.Collections;
-using System.Collections.Generic;
->>>>>>>> origin/crafts:Tundra/Assets/Scripts/GUI/HeadUpDisplay/HealthbarController.cs
+using Creatures.Player.Behaviour;
 using UnityEngine;
 
 namespace GUI.HeadUpDisplay
