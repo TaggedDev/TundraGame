@@ -1,4 +1,13 @@
-﻿using UnityEngine;
+﻿using Creatures.Player.Behaviour;
+using Creatures.Player;
+using Creatures.Player.Inventory;
+using Creatures.Player.States;
+using System.Runtime.ExceptionServices;
+using UnityEngine;
+using System.Collections;
+using System;
+using Random = UnityEngine.Random;
+using Creatures.Player.Inventory.ItemConfiguration;
 
 namespace Environment.Terrain
 {
@@ -9,10 +18,55 @@ namespace Environment.Terrain
     {
         [Range(0, 1)] [SerializeField] private float spawnRateForLevel;
 
+
+        [SerializeField]
+        private BasicItemConfiguration[] lootTable;
+        [SerializeField]
+        private int[] dropQuantity;
+        [SerializeField]
+        private int[] dropChance;
+
         public float SpawnRateForLevel => spawnRateForLevel;
+        public float HealthPoints
+        {
+            get
+            {
+                return _healthPoints;
+            }
+            set
+            {
+                _healthPoints = value;
+                if (_healthPoints <= 0)
+                    Break();
+                else
+                {
+                    StartCoroutine(Shake(0.5f));
+                }
+                    
+            }
+        }
+
+        [SerializeField]
         private const float ENTITY_VIEW_RANGE = 3000f;
+        [SerializeField]
+        private float _healthPoints;
         private Transform _player;
+        private Vector3 _originalScale;
         private Vector2 _entityPosition;
+
+        private void Start()
+        {
+            _originalScale = transform.localScale;
+
+            //Checks LootTable Correctness
+            if (lootTable.Length != dropChance.Length || dropChance.Length != dropQuantity.Length)
+                throw new System.Exception("Loot Table setup is invalid");
+            foreach (int a in dropChance)
+            {
+                if (a > 100 || a <= 0)
+                    throw new System.Exception("Loot Table setup is invalid");
+            }
+        }
 
         /// <summary>
         /// Due Entities are spawned as Initialise() function, there is no built-in constructor for this method.
@@ -29,7 +83,9 @@ namespace Environment.Terrain
             transform.rotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0);
             transform.position = position;
             transform.gameObject.layer = 10; // Environment layer 
+            
         }
+        
 
         /// <summary>
         /// Updates current entity's visibility.
@@ -43,6 +99,43 @@ namespace Environment.Terrain
                 return;
             }
             gameObject.SetActive(false);
+        }
+
+        /// <summary>
+        /// Breaks an entity. Drops items
+        /// </summary>
+        public void Break()
+        {
+            
+            MonoBehaviour.Destroy(gameObject);
+            for(int i = 0; i < lootTable.Length; i++)
+            {
+                int proc = Random.Range(0, 101);
+                if(proc <= dropChance[i])
+                {
+                    Instantiate(lootTable[i].ItemInWorldPrefab, new Vector3(transform.position.x + Random.Range(-2, 2), transform.position.y + Random.Range(1,2), transform.position.z + Random.Range(-2, 2)), new Quaternion(Random.Range(0, 160), Random.Range(0, 160), Random.Range(0, 160), 0)).
+                        GetComponent<DroppedItemBehaviour>().DroppedItemsAmount = dropQuantity[i];
+                }
+            }
+        }
+        private IEnumerator Shake(float secs)
+        {
+            float i;
+            for ( i = 0; i < 0.03f; i += Time.deltaTime)
+            {
+                transform.localScale -= 0.03f * transform.localScale;
+                yield return null;
+            }
+            while (transform.localScale.x < _originalScale[0] || transform.localScale.y < _originalScale[1] || transform.localScale.z < _originalScale[2])
+            {
+                var pos = transform.position;
+                pos.y += 1;
+                transform.localScale += 0.03f * transform.localScale;
+                yield return null;
+            }
+            
+            yield break;
+
         }
     }
 }

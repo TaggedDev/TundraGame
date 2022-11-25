@@ -90,7 +90,7 @@ namespace Creatures.Player.Behaviour
             if (elementIndex < 5)
             {
                 // Select current magic element slot in book.
-                MagicElementSlot slot = Book.MagicElements[elementIndex];
+                MagicElementSlot slot = Book.MagicElements[elementIndex]; 
                 // If player can use this element, we spend his stone and add it to the current spell.
                 if (slot.CurrentStonesAmount > 0 && DraftSpell.Count < Book.FreeSheets)
                 {

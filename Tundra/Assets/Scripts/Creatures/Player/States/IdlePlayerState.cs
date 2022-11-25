@@ -29,9 +29,9 @@ namespace Creatures.Player.States
         public override void HandleUserInput()
         {
             base.HandleUserInput();
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0) && !(PlayerInventory.SelectedItem is MeleeWeaponConfiguration))
             {
-                Debug.Log(PlayerProperties.MaxCircleBarFillingTime);
+
                 
                 // Check if we are trying to eat something that is not food
                 if (!PlayerProperties.IsHoldingFood)
@@ -42,9 +42,11 @@ namespace Creatures.Player.States
                     PlayerProperties.MaxCircleBarFillingTime = PlayerProperties.MaxCircleFillingTime_EATING;
                     PlayerAnimation.SwitchAnimation("Eat");
                     PlayerProperties.FoodConsumingTimeLeft -= Time.deltaTime;
+                    PlayerProperties.CurrentCircleBarFillingTime += Time.deltaTime;
                     if (PlayerProperties.FoodConsumingTimeLeft <= 0)
                     {
-                        ConsumeCurrentFood();    
+                        ConsumeCurrentFood();
+                        PlayerProperties.CurrentCircleBarFillingTime = 0;
                         PlayerProperties.FoodConsumingTimeLeft = PlayerProperties.FOOD_CONSUMING_MAX_TIME;
                         PlayerAnimation.SwitchAnimation("Idle");
                         PlayerAnimation.SwitchAnimation("Not eating");
@@ -56,7 +58,7 @@ namespace Creatures.Player.States
                 }
             }
 
-            if (Input.GetMouseButtonUp(0))
+            if (Input.GetMouseButtonUp(0) && !(PlayerInventory.SelectedItem is MeleeWeaponConfiguration))
             {
                 PlayerProperties.FoodConsumingTimeLeft = PlayerProperties.FOOD_CONSUMING_MAX_TIME;
                 PlayerAnimation.SwitchAnimation("Not eating");
@@ -83,6 +85,7 @@ namespace Creatures.Player.States
             PlayerProperties.CurrentCircleBarFillingTime = 0f;
             PlayerMovement.CanSprint = true;
             PlayerAnimation.SwitchAnimation("Idle");
+            
         }
 
         public override void Stop()

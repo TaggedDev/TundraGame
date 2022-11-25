@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84552cb724c7e3140bf3ed2c15a4dc60, type: 3}
   m_Name: Stone Axe Recipe
   m_EditorClassIdentifier: 
-  result: {fileID: 11400000, guid: e4b65c0e6e472424ca51466879d2250d, type: 2}
+  result: {fileID: 11400000, guid: 72966fc013b52914bb5d7edc258c046d, type: 2}
   requiredItems:
   - item: {fileID: 11400000, guid: ccbcd84c1460f9e4a8123ec8e1df54c0, type: 2}
     amount: 1

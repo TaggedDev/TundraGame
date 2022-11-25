@@ -21,7 +21,12 @@ namespace Creatures.Player.Inventory
         public Vector3 HandedRotation { get => handedRotation; set => handedRotation = value; }
         public Vector3 HandedScale { get => handedScale; set => handedScale = value; }
         public BasicItemConfiguration AssociatedItem { get => _associatedItem; private set => _associatedItem=value; }
-        public int DroppedItemsAmount { get => droppedItemsAmount; private set => droppedItemsAmount=value; }
+        
+        /// <summary>
+        /// Amount of items stacked on the floor
+        /// </summary>
+        public int DroppedItemsAmount { get => droppedItemsAmount; set => droppedItemsAmount=value; }
+
         public bool IsThrown { get => isThrown; set => isThrown = value; }
 
         private void Start()
@@ -36,6 +41,14 @@ namespace Creatures.Player.Inventory
             if (_rigidbody.velocity.sqrMagnitude <= .1f)
             {
                 isThrown = false;
+            }
+        }
+
+        private void OnValidate()
+        {
+            if (handedScale == Vector3.zero) 
+            {
+                handedScale = Vector3.one / 4;
             }
         }
 

@@ -20,6 +20,7 @@ MonoBehaviour:
   maxStackVolume: 1
   weight: 0.1
   throwDamage: 50
-  fullAttackLoadingTime: 2
-  minimalDamage: 1
-  maximalDamage: 100
+  _WindupTime: 0.5
+  _damage: 10
+  _animationWeaponName: Knife
+  _animationClipLength: 0

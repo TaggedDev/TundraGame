@@ -6,11 +6,16 @@ using UnityEngine;
 using System;
 using GUI.BestiaryGUI;
 using GUI.GameplayGUI;
+using Creatures.Mobs;
+using Creatures.Player.Inventory;
+using Environment.Terrain;
+using Creatures.Player.Inventory.ItemConfiguration;
 
 namespace Creatures.Player.Behaviour
 {
     public class PlayerBehaviour : MonoBehaviour, IPlayerStateSwitcher
     {
+        
         
         // Properties
         public bool IsOverweight => _inventoryController.Inventory.TotalWeight > _playerProperties.MaxLoadCapacity;
@@ -19,6 +24,7 @@ namespace Creatures.Player.Behaviour
         // Variables
         [SerializeField] private EscapeMenu escapeCanvas;
         [SerializeField] private DeathMenu deathCanvas;
+        [SerializeField] private GameObject hitPosition;
         [SerializeField] private BestiaryPanel bestiaryPanel;
         private Animator _animator;
         private BasicPlayerState _currentState;
@@ -48,7 +54,7 @@ namespace Creatures.Player.Behaviour
             _playerMagic = GetComponent<PlayerMagic>();
             _playerBuild = GetComponent<PlayerBuild>();
             GetComponent<PlayerAnimation>();
-            
+            _animator = GetComponent<Animator>();
             GetComponent<Rigidbody>();
             GetComponent<Animator>();
             _allStates = new List<BasicPlayerState>
@@ -64,7 +70,9 @@ namespace Creatures.Player.Behaviour
                 new MagicCastingPlayerState(_playerMovement, this, _playerProperties, _playerMagic, _playerInventory, 
                     escapeCanvas, bestiaryPanel),
                 new BuildingPlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas, 
-                    _playerBuild, bestiaryPanel)
+                    _playerBuild, bestiaryPanel),
+                new WindupHitPlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas, 
+                    bestiaryPanel)
             };
             _currentState = _allStates[0];
             _currentState.Start();
@@ -74,6 +82,8 @@ namespace Creatures.Player.Behaviour
             _inventoryController.SelectedItemChanged += (_, __) =>
                 CurrentState.OnPlayerSelectedItemChanged(_inventoryController);
             //Initialize health, starvation and temperature:
+
+            Screen.fullScreen = true;
         }
 
         private void Update()
@@ -89,7 +99,6 @@ namespace Creatures.Player.Behaviour
             _currentState.ContinueFreezing();
             _currentState.SpendStamina();
             _currentState.HandleUserInput();
-            _currentState.PrepareForHit();
         }
 
         private void FixedUpdate()
@@ -112,13 +121,29 @@ namespace Creatures.Player.Behaviour
             StateChanged?.Invoke(this, null);
             
             // Delete later
-            Debug.Log(typeof(T).ToString());
+            //Debug.Log(typeof(T).ToString());
         }
-
+        /// <summary>
+        /// Performs an attack
+        /// </summary>
         internal void Hit()
         {
-            //Now it does almost nothing.
-            //TODO: make hit logic.
+            foreach(Collider hitObject in Physics.OverlapBox(hitPosition.transform.position, new Vector3(1f, 2f, 1f)))
+            {
+                var mob = hitObject.gameObject.GetComponent<Mob>();
+                if (mob != null)
+                {
+                    mob.CurrentMobHealth -= (_playerInventory.SelectedItem as MeleeWeaponConfiguration).Damage * 
+                        Mathf.Lerp(_playerProperties.MinDamageModificator, _playerProperties.MaxDamageModificator, Mathf.Sqrt(4 * _playerProperties.CurrentCircleBarFillingTime / (_playerInventory.SelectedItem as MeleeWeaponConfiguration).FullWindupTime));
+                }
+                var entity = hitObject.gameObject.GetComponent<Entity>();
+                if(entity != null)
+                {
+                    entity.HealthPoints -= (_playerInventory.SelectedItem as MeleeWeaponConfiguration).Damage *
+                        Mathf.Lerp(_playerProperties.MinDamageModificator, _playerProperties.MaxDamageModificator, Mathf.Sqrt(4 * _playerProperties.CurrentCircleBarFillingTime / (_playerInventory.SelectedItem as MeleeWeaponConfiguration).FullWindupTime));
+                }
+            }
+            //Debug.Log("hit " + (Mathf.Lerp(_playerProperties.MinDamageModificator, _playerProperties.MaxDamageModificator, Mathf.Sqrt(4 * _playerProperties.CurrentCircleBarFillingTime / (_playerInventory.SelectedItem as MeleeWeaponConfiguration).FullWindupTime))).ToString());
         }
 
         /// <summary>
@@ -130,5 +155,11 @@ namespace Creatures.Player.Behaviour
             _isDead = true;
             deathCanvas.EnableSelf();
         }
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.DrawWireCube(hitPosition.transform.position, new Vector3(1f, 2f, 1));
+        }
+
     }
 }

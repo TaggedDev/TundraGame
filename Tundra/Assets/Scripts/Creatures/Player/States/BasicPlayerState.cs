@@ -144,17 +144,6 @@ namespace Creatures.Player.States
             if (PlayerInventory.SelectedItem is PlaceableItemConfiguration)
                 PlayerStateSwitcher.SwitchState<BuildingPlayerState>();
         }
-        
-        /// <summary>
-        /// An event called whenever user changed his item
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected virtual void InventorySelectedSlotChanged(object sender, EventArgs e)
-        {
-            if (PlayerInventory.SelectedItem is PlaceableItemConfiguration)
-                PlayerStateSwitcher.SwitchState<BuildingPlayerState>();
-        }
 
         /// <summary>
         /// Updates player warm with current state coefficient.
@@ -180,37 +169,6 @@ namespace Creatures.Player.States
 
         protected abstract void StaminaIsOver();
         
-        /// <summary>
-        /// Loads to hit.
-        /// </summary>
-        public virtual void PrepareForHit()
-        {
-            if (!(this is BusyPlayerState) && !(this is MagicCastingPlayerState))
-            {
-                // Handle LMB press, filling the charge circle 
-                if (Input.GetMouseButton(0))
-                {
-                    PlayerProperties.CurrentCircleBarFillingTime += Time.smoothDeltaTime;
-                }
-                // In case the stop pressing LMB -> reset the circle to zero
-                else
-                {
-                    PlayerProperties.CurrentCircleBarFillingTime = 0f;
-                }
-                
-                // Hit in front of self when charge is 100%. To be reworked in Melee branch 
-                if (PlayerProperties.CurrentCircleBarFillingTime > PlayerProperties.MaxCircleBarFillingTime)
-                {
-                    PlayerBehaviour.Hit();
-                    PlayerProperties.CurrentCircleBarFillingTime = 0;
-                }
-            }
-            else
-            {
-                PlayerProperties.CurrentCircleBarFillingTime = 0;
-            }
-        }
-
         /// <summary>
         /// Receives player input for changing states with opening related menus.
         /// </summary>
@@ -238,10 +196,6 @@ namespace Creatures.Player.States
             if (!(this is BusyPlayerState) && !(this is MagicCastingPlayerState)
                 && PlayerEquipment.Book != null && Input.GetKeyDown(KeyCode.X))
             {
-                PlayerStateSwitcher.SwitchState<MagicCastingPlayerState>();
-            }
-            else if (this is MagicCastingPlayerState && Input.GetKeyDown(KeyCode.X))
-            {
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
                 (this as MagicCastingPlayerState).Dispell();
             }
@@ -250,6 +204,22 @@ namespace Creatures.Player.States
             if (!(this is BusyPlayerState) && Input.GetKeyDown(KeyCode.B))
             {
                 HandleBestiaryOpen();
+            }
+            if (Input.GetMouseButton(0) && !(this is BusyPlayerState) && !(this is MagicCastingPlayerState) &&
+                !(this is BuildingPlayerState) && (PlayerInventory.SelectedItem is MeleeWeaponConfiguration))
+            {
+                PlayerStateSwitcher.SwitchState<WindupHitPlayerState>();
+            }
+
+            if (!(this is BusyPlayerState) && !(this is MagicCastingPlayerState)
+                && PlayerEquipment.Book != null && Input.GetKeyDown(KeyCode.X))
+            {
+                PlayerStateSwitcher.SwitchState<MagicCastingPlayerState>();
+            }
+            else if (this is MagicCastingPlayerState && Input.GetKeyDown(KeyCode.X))
+            {
+                PlayerStateSwitcher.SwitchState<IdlePlayerState>();
+                (this as MagicCastingPlayerState).Dispell();
             }
         }
         
@@ -267,7 +237,7 @@ namespace Creatures.Player.States
             }
             
             // If selected item is null -> switch to idle state and show empty hands
-            if (inventory.SelectedItem is null)
+            if (inventory.SelectedItem is null || inventory.SelectedItem.Title == "Fist")
             {
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
                 PlayerInventory.ItemHolder.ResetMesh();
@@ -315,8 +285,11 @@ namespace Creatures.Player.States
             // Gaining more than max is handled in properties
             PlayerProperties.CurrentStarvePoints += food.Calories;
             PlayerInventory.Inventory.Slots[PlayerInventory.SelectedInventorySlot].RemoveItems(1);
-            PlayerProperties.IsHoldingFood = false;
-            PlayerInventory.ItemHolder.ResetMesh();
+            if (PlayerInventory.SelectedItem.Title == "Fist")
+            {
+                PlayerProperties.IsHoldingFood = false;
+                PlayerInventory.ItemHolder.ResetMesh();
+            }
         }
 
         /// <summary>

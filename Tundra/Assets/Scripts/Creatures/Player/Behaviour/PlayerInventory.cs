@@ -17,6 +17,8 @@ namespace Creatures.Player.Behaviour
     [RequireComponent(typeof(PlayerBehaviour))]
     public class PlayerInventory : MonoBehaviour
     {
+
+        [SerializeField] private MeleeWeaponConfiguration fist;
         [SerializeField] private InventoryContainer inventory;
         [SerializeField] private RecipesListConfig recipesList;
         [SerializeField] private ItemHolder itemHolder;
@@ -40,16 +42,18 @@ namespace Creatures.Player.Behaviour
                 return inventory;
             }
         }
-
         /// <summary>
-        /// Item in selected slot.
+        /// Item that is currently in hands <br/>
+        /// Or hands itself
         /// </summary>
         public BasicItemConfiguration SelectedItem
         {
             get
             {
-                if (SelectedInventorySlot != -1) 
-                    return Inventory[SelectedInventorySlot]?.Item;
+                if (SelectedInventorySlot != -1 && Inventory[SelectedInventorySlot].Item != null)
+                    return Inventory[SelectedInventorySlot].Item;
+                else if(SelectedInventorySlot != -1)
+                    return fist;
                 return null;
             }
         }
@@ -67,14 +71,16 @@ namespace Creatures.Player.Behaviour
         /// <summary>
         /// The progress of the item picking (or the interaction delay).
         /// </summary>
-        public float ItemPickingProgress { get; private set; }
-
+        public float ItemPickingProgress { get; private set; } = 0f;
         /// <summary>
-        /// The index of a selected slot.
+        /// Currently selected slot
         /// </summary>
         public int SelectedInventorySlot
         {
-            get => _currentSlotIndex;
+            get
+            {
+                return _currentSlotIndex;
+            }
             set
             {
                 _currentSlotIndex = value;
@@ -84,6 +90,9 @@ namespace Creatures.Player.Behaviour
 
         public RecipesListConfig RecipesList => recipesList;
 
+        /// <summary>
+        /// Invokes on changing selected item
+        /// </summary>
         public event EventHandler<int> SelectedItemChanged;
 
         private void Start()

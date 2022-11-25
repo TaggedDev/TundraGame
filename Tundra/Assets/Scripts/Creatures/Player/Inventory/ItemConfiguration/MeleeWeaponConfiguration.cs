@@ -6,22 +6,38 @@ namespace Creatures.Player.Inventory.ItemConfiguration
     public class MeleeWeaponConfiguration : WeaponConfiguration
     {
         [SerializeField]
-        private float fullAttackLoadingTime;
+        private float windupTime;
         [SerializeField]
-        private float minimalDamage;
+        private float damage;
         [SerializeField]
-        private float maximalDamage;
+        private string animationWeaponName;
+        [SerializeField]
+        private float releaseClipLength;
+        [SerializeField]
+        private float windupClipLength;
         /// <summary>
-        /// Время для 100% зарядки оружия.
+        /// Full windup time
         /// </summary>
-        public float FullAttackLoadingTime { get => fullAttackLoadingTime; private set => fullAttackLoadingTime=value; }
+        public float FullWindupTime { get => windupTime; private set => windupTime=value; }
         /// <summary>
-        /// Урон при минимальном (1%) заряде оружия.
+        /// Weapon base damage
         /// </summary>
-        public float MinimalDamage { get => minimalDamage; private set => minimalDamage=value; }
+        public float Damage { get => damage; private set => damage=value; }
         /// <summary>
-        /// Урон при максимальном (100%) заряде оружия.
+        /// Returns a name of a weapon, used for animation
         /// </summary>
-        public float MaximalDamage { get => maximalDamage; private set => maximalDamage=value; }
+        public string AnimationWeaponName { get => animationWeaponName; set => animationWeaponName = value; }
+        /// <summary>
+        /// Returns the Speed animation should played
+        /// </summary>
+        public float AnimationClipSpeed { get => windupClipLength / windupTime; }
+        /// <summary>
+        /// Returns lengs of the release clip
+        /// </summary>
+        public float WinupAnimationLenght { get => releaseClipLength; }
+        /// <summary>
+        /// Returns lengs of the windup clip
+        /// </summary>
+        public float ReleaseAnimationLenght { get => releaseClipLength; }
     }
 }

@@ -9,7 +9,7 @@ namespace Creatures.Player.Behaviour
     public class PlayerProperties : MonoBehaviour
     {
         public const float MaxCircleFillingTime_EATING = 1f;
-        public const float MaxCircleFillingTime_ATTACK = .5f;
+        public const float MaxCircleFillingTime_ATTACK = 1f;
         
         /// <summary>
         /// Maximal starvation capacity.
@@ -43,10 +43,11 @@ namespace Creatures.Player.Behaviour
         /// Maximal player load capacity.
         /// </summary>
         [SerializeField] private float maxLoadCapacity;
+        [SerializeField] private float maxDamageModificator;
         /// <summary>
-        /// Total time to prepare for throw.
+        /// Maximal damage modificator. Used in lerp to calculate damage
         /// </summary>
-        [SerializeField] private float maxCircleBarFillingTime;
+        [SerializeField] private float minDamageModificator;
         /// <summary>
         /// Player character race.
         /// </summary>
@@ -100,10 +101,6 @@ namespace Creatures.Player.Behaviour
         /// Internal field for the current player stamina.
         /// </summary>
         private float _currentStaminaPoints;
-        /// <summary>
-        /// Time of preparing for the hit.
-        /// </summary>
-        private float _currentHitPreparingTime;
         /// <summary>
         /// Time while which player hasn't eaten anything.
         /// </summary>
@@ -210,6 +207,18 @@ namespace Creatures.Player.Behaviour
             get => _isHoldingFood;
             set => _isHoldingFood = value;
         }
+        /// <summary>
+        /// Max Modificator of damage player can apply <br/>
+        /// Calculated by <see cref="PlayerBehaviour.Hit"/>
+        /// </summary>
+        /// 
+        public float MaxDamageModificator { get => maxDamageModificator; }
+        /// <summary>
+        /// Min modificator of damage player can apply <br/>
+        /// Calculated By <see cref="PlayerBehaviour.Hit"/>
+        /// </summary>
+        public float MinDamageModificator { get => minDamageModificator; }
+
 
         private void Start()
         {
@@ -224,11 +233,14 @@ namespace Creatures.Player.Behaviour
                 perfectTemperature = playerRace.PerfectTemperature;
                 absoluteTemperatureAmplitude = playerRace.AbsoluteTemperatureAmplitude;
                 maxLoadCapacity = playerRace.MaxLoadCapacity;
-                maxCircleBarFillingTime = playerRace.HitPrepareTime;
+                maxDamageModificator = playerRace.MaxDamageModificator;
+                minDamageModificator= playerRace.MinDamageModificator;
             }
             _currentStarvePoints = maxStarvePoints;
             currentHealthPoints = maxHealthPoints;
             _currentStaminaPoints = maxStaminaPoints;
+            MaxCircleBarFillingTime = 1.5f; 
+            CurrentCircleBarFillingTime = 0;
         }
     }
 }

@@ -24,7 +24,9 @@ namespace Creatures.Player.Races
         [SerializeField]
         private float throwPrepareTime;
         [SerializeField]
-        private float hitPrepareTime;
+        private float maxDamageModificator;
+        [SerializeField]
+        private float minDamageModificator;
         /// <summary>
         /// Maximal player starvation capacity.
         /// </summary>
@@ -62,8 +64,12 @@ namespace Creatures.Player.Races
         /// </summary>
         public float ThrowPrepareTime => throwPrepareTime;
         /// <summary>
-        /// Total hit preparation time.
+        /// Minmal damage modificator. Used in lerp to calculate damage
         /// </summary>
-        public float HitPrepareTime => hitPrepareTime; 
+        public float MaxDamageModificator => maxDamageModificator;
+        /// <summary>
+        /// Maximal damage modificator. Used in lerp to calculate damage
+        /// </summary>
+        public float MinDamageModificator  => minDamageModificator;
     }
 }

@@ -17,5 +17,6 @@ MonoBehaviour:
   description: Just a stone
   itemInWorldPrefab: {fileID: 1215538471623678579, guid: 7ae60b74f6831c74a9fc22dc030ece92,
     type: 3}
-  maxStackVolume: 5
+  maxStackVolume: 12
   weight: 1.1
+  recipe: {fileID: 0}
