@@ -43,11 +43,6 @@ namespace Creatures.Player.States
         {
             PlayerStateSwitcher.SwitchState<IdlePlayerState>();
         }
-        
-        public override void HandleEscapeButton()
-        {
-            throw new NotImplementedException();
-        }
 
         public override void MoveCharacter()
         {
