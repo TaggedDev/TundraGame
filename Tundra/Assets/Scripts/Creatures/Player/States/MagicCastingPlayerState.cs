@@ -89,8 +89,8 @@ namespace Creatures.Player.States
             if (Input.GetKeyDown(KeyCode.Alpha5)) _playerMagic.AddElement(4);
             if (Input.GetKeyDown(KeyCode.F))
             {
-                if (!_playerMagic.IsReadyForCasting) _playerMagic.PrepareForCasting();
-                else _playerMagic.CastSpell();
+                _playerMagic.PrepareForCasting();
+                _playerMagic.CastSpell();
             }
         }
 
