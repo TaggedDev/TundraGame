@@ -79,6 +79,11 @@ namespace Creatures.Player.Behaviour
         /// En event which invokes when spell is cast.
         /// </summary>
         public event EventHandler<Spell> SpellCast;
+
+        /// <summary>
+        /// Needed to refresh a panel when the spell cast gone wrong.
+        /// </summary>
+        public event EventHandler RefreshPanelEvent;
         
         /// <summary>
         /// Adds an element to <see cref="DraftSpell"/>.
@@ -142,10 +147,27 @@ namespace Creatures.Player.Behaviour
             // If spell type isn't null, it creates it's instance and builds its properties in order of used elements
             if (spell != null)
             {
-                _currentSpell = Activator.CreateInstance(spell) as Spell;
-                _currentSpell?.Build(DraftSpell);
-                if (_currentSpell == null) return;
-                IsReadyForCasting = true;
+                try
+                {
+                    _currentSpell = Activator.CreateInstance(spell) as Spell;
+                    _currentSpell?.Build(DraftSpell);
+                    if (_currentSpell == null) return;
+                    IsReadyForCasting = true;
+                }
+                catch (ArgumentException)
+                {
+                    IsReadyForCasting = false;
+                    _currentSpell = null;
+                    DraftSpell.Clear();
+                    RefreshPanelEvent?.Invoke(this, null);
+                }
+            }
+            else
+            {
+                IsReadyForCasting = false;
+                _currentSpell = null;
+                DraftSpell.Clear();
+                RefreshPanelEvent?.Invoke(this, null);
             }
         }
         
@@ -154,13 +176,16 @@ namespace Creatures.Player.Behaviour
         /// </summary>
         public void CastSpell()
         {
-            _currentSpell?.Cast(gameObject, this);
-            SpellCast?.Invoke(this, _currentSpell);
-            IsReadyForCasting = false;
-            _currentSpell = null;
-            //AllowedElements = MagicElement.All;
-            DraftSpell.Clear();
-            print("Spell has been casted!");
+            if (IsReadyForCasting)
+            {
+                _currentSpell?.Cast(gameObject, this);
+                SpellCast?.Invoke(this, _currentSpell);
+                IsReadyForCasting = false;
+                _currentSpell = null;
+                //AllowedElements = MagicElement.All;
+                DraftSpell.Clear();
+                print("Spell has been casted!");
+            }
         }
         
         /// <summary>

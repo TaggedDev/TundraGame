@@ -73,6 +73,7 @@ namespace Creatures.Player.Magic
         /// Build a spell to get it ready for cast. Created spell will get all modifiers given by reagents.
         /// </summary>
         /// <param name="elements">List of elements which are used to make a spell. In the start of list are needed elements, after them are reagents.</param>
+        /// <exception cref="ArgumentException"/>
         public virtual void Build(List<MagicElement> elements)
         {
             if (!CheckValidity(elements)) throw new ArgumentException("Some of elements are prohibited for this spell!", nameof(elements));
