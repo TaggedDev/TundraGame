@@ -28,6 +28,7 @@ namespace GUI.HeadUpDisplay
         private GameObject _elementsPanel;
         private BookEquipmentConfiguration _currentMagicBook;
         private GameObject _bookSlot;
+        private bool _isActive;
         private readonly List<GameObject> _elements = new List<GameObject>();
         private readonly List<GameObject> _bookSheets = new List<GameObject>();
         private readonly List<Image> _sheetIcons = new List<Image>();
@@ -54,7 +55,7 @@ namespace GUI.HeadUpDisplay
             SetSheets();
             SetElements();
             _playerMagic.MagicPanelVisibilityChange += SwitchVisibility;
-            SwitchVisibility(null, null);
+            SwitchVisibility(null, false);
         }
 
         /// <summary>
@@ -120,9 +121,10 @@ namespace GUI.HeadUpDisplay
         /// <summary>
         /// Switches visibility of a panel.
         /// </summary>
-        private void SwitchVisibility(object sender, EventArgs e)
+        private void SwitchVisibility(object sender, bool e)
         {
-            _elementsPanel.SetActive(_playerMagic.IsSpellingPanelOpened);
+            _elementsPanel.SetActive(e);
+            _isActive = e;
         }
 
         /// <summary>
@@ -138,7 +140,7 @@ namespace GUI.HeadUpDisplay
 
         private void FixedUpdate()
         {
-            if (_currentMagicBook != null)
+            if (_currentMagicBook != null && _isActive)
             {
                 // Colorizing book sheets.
                 for (int i = 0; i < _bookSheets.Count; i++)

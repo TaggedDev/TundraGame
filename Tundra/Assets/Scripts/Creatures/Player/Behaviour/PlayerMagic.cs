@@ -27,7 +27,7 @@ namespace Creatures.Player.Behaviour
             private set
             {
                 _isSpellingPanelOpened=value;
-                MagicPanelVisibilityChange?.Invoke(this, null);
+                MagicPanelVisibilityChange?.Invoke(this, value);
             }
         }
         
@@ -73,7 +73,7 @@ namespace Creatures.Player.Behaviour
         /// <summary>
         /// An event which invokes when panel visibilty should change.
         /// </summary>
-        public event EventHandler MagicPanelVisibilityChange;
+        public event EventHandler<bool> MagicPanelVisibilityChange;
         
         /// <summary>
         /// En event which invokes when spell is cast.
