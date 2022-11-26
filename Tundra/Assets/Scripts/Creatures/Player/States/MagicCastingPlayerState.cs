@@ -42,6 +42,7 @@ namespace Creatures.Player.States
         private void ExitState(object sender, Spell e)
         {
             PlayerStateSwitcher.SwitchState<IdlePlayerState>();
+            _playerMagic.Dispell();
         }
 
         public override void MoveCharacter()
