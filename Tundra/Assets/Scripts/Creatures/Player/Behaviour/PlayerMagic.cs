@@ -147,6 +147,8 @@ namespace Creatures.Player.Behaviour
             // If spell type isn't null, it creates it's instance and builds its properties in order of used elements
             if (spell != null)
             {
+                // It's needed to handle when elements combination for the spell is wrong.
+                // If it's wrong, it throws an ArgumentException to clear the draft spell.
                 try
                 {
                     _currentSpell = Activator.CreateInstance(spell) as Spell;
