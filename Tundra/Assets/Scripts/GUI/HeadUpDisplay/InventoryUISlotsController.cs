@@ -3,7 +3,6 @@ using GameObject = UnityEngine.GameObject;
 using Creatures.Player.Inventory;
 using Creatures.Player.States;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace GUI.HeadUpDisplay
@@ -16,6 +15,7 @@ namespace GUI.HeadUpDisplay
         [SerializeField] private Sprite transparent;
         [SerializeField] private string pickupText;
         [SerializeField] private string openText;
+        [SerializeField] private RectTransform slotHolder;
         private PlayerInventory _inventoryController;
         private GameObject _player; // Replace GameObject with smth else
         private GameObject _pickupPanel; // same here
@@ -27,25 +27,6 @@ namespace GUI.HeadUpDisplay
         private Image[] _icons;
         private Text[] _texts;
         private Text _pickupLabel;
-
-        public int SelectedInventorySlot
-        {
-            get => _slotId;
-            set
-            {
-                if (_slotId != value)
-                {
-                    GameObject slot = _visualSlots[_slotId - 1];
-                    SetSlotActive(slot, false);
-                    if (value < 1) value = 1;
-                    if (value > MaxSlotsNumber) value = MaxSlotsNumber;
-                    _slotId = value;
-                    slot = _visualSlots[_slotId - 1];
-                    SetSlotActive(slot, true);
-                    _inventoryController.SelectedInventorySlot = _slotId - 1;
-                }
-            }
-        }
 
         /// <summary>
         /// Maximal number of slots.
@@ -104,6 +85,9 @@ namespace GUI.HeadUpDisplay
         /// <param name="e">Maximal slots number.</param>
         private void ResetSlots(object sender, int e)
         {
+            float newWidth = _inventoryController.Inventory.Slots.Length * 125 + 
+                             (_inventoryController.Inventory.Slots.Length - 1) * 25;
+            slotHolder.sizeDelta = new Vector2(100, 100);
             MaxSlotsNumber = e;
             float offset = 150 * UIController.RootCanvas.GetComponent<Canvas>().scaleFactor;
             var rect = (transform as RectTransform).rect;
