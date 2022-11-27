@@ -1,6 +1,5 @@
 ﻿using Creatures.Player.Behaviour;
 using GameObject = UnityEngine.GameObject;
-using Creatures.Player.Inventory;
 using Creatures.Player.States;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,39 +9,18 @@ namespace GUI.HeadUpDisplay
     /// <summary>
     /// A script to control inventory slots visualization.
     /// </summary>
-    public class InventoryUISlotsController : MonoBehaviour
+    public class delete_later : MonoBehaviour
     {
+        
         [SerializeField] private Sprite transparent;
-        [SerializeField] private string pickupText;
-        [SerializeField] private string openText;
         private Camera _mainCamera;
         private PlayerInventory _inventoryController;
         private GameObject _player; // Replace GameObject with smth else
-        private GameObject _pickupPanel; // same here
-        private GameObject[] _visualSlots; // same here
         private int _maxSlotsNumber;
         public float mouseScrollCoefficient = 10f;
-        private Image _progressBar;
         private Image[] _icons;
         private Text[] _texts;
-        private Text _pickupLabel;
-
-        /// <summary>
-        /// Maximal number of slots.
-        /// </summary>
-        public int MaxSlotsNumber { get; private set; }
-
-        /// <summary>
-        /// Sets the slot activity state.
-        /// </summary>
-        /// <param name="slot">A slot.</param>
-        /// <param name="state">A state.</param>
-        private void SetSlotActive(GameObject slot, bool state)
-        {
-            // Rework this line. Don't use 'find' in runtime
-            slot.transform.Find("SelectedSlot").gameObject.SetActive(state);
-        }
-
+        
         private void Start()
         {
             // Initialize all fields.
@@ -56,8 +34,6 @@ namespace GUI.HeadUpDisplay
                 gameObject.SetActive(visibility);
             };
             
-            
-
             /*// Cache another fields
             _inventoryController = _player.GetComponent<PlayerInventory>();
             _pickupPanel = GameObject.Find("ItemPickupPanel");
@@ -67,33 +43,6 @@ namespace GUI.HeadUpDisplay
             _pickupLabel = _pickupPanel.transform.Find("Text").gameObject.GetComponent<Text>();
             // Reset slots values.
             ResetSlots(this, _inventoryController.Inventory.MaxInventoryCapacity);*/
-        }
-
-        /// <summary>
-        /// Resets the slots to viziualize them with updated rules.
-        /// </summary>
-        /// <param name="sender">Not necessary argument.</param>
-        /// <param name="e">Maximal slots number.</param>
-        private void ResetSlots(object sender, int e)
-        {
-            MaxSlotsNumber = e;
-            float offset = 150 * UIController.RootCanvas.GetComponent<Canvas>().scaleFactor;
-            var rect = (transform as RectTransform).rect;
-            float posX = rect.center.x + rect.width / 2 - 75 - e * offset;
-            for (int i = 1; i < 10; i++)
-            {
-                GameObject slot = _visualSlots[i - 1];
-                if (i <= e)
-                {
-                    slot.SetActive(true);
-                    slot.transform.position = new Vector3(posX, slot.transform.position.y, slot.transform.position.z);
-                    posX += offset;
-                }
-                else
-                {
-                    slot.SetActive(false);
-                }
-            }
         }
 
         /*private void Update()
@@ -153,7 +102,6 @@ namespace GUI.HeadUpDisplay
             }
             else
             {
-                // TODO: Add maincamera variable instead of calling the methods Camera.main
                 _pickupPanel.SetActive(true);
                 (_pickupPanel.transform as RectTransform).position = RectTransformUtility.WorldToScreenPoint(_mainCamera, _inventoryController.NearestInteractableItem.transform.position) + new Vector2(0, 40);
                 _progressBar.fillAmount = _inventoryController.ItemPickingProgress / PlayerInventory.ItemPickingUpTime;

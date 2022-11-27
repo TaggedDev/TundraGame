@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace GUI.PlayerInventoryUI
 {
-    public class UISlot : MonoBehaviour
+    public class UIInventorySlot : MonoBehaviour
     {
         private Image _image;
         

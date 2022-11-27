@@ -255,26 +255,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 239d136454e74d3caf953eaa2e6745ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &462769617 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 289522189090283569, guid: 7b949200a79eb1646bc81bf587b82533,
-    type: 3}
-  m_PrefabInstance: {fileID: 6532455668144582074}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &462769618
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 462769617}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40b4d147deef4d19a1743e96f1c4eaa6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slotPrefab: {fileID: 8381522143711127064, guid: e635843d05bc5e447b4dabcdc9045e1d,
-    type: 3}
 --- !u!1 &494034827
 GameObject:
   m_ObjectHideFlags: 0
@@ -1754,6 +1734,12 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2262219101352160264, guid: 7b949200a79eb1646bc81bf587b82533,
+        type: 3}
+      propertyPath: inventorySlotPrefab
+      value: 
+      objectReference: {fileID: 8381522143711127064, guid: e635843d05bc5e447b4dabcdc9045e1d,
+        type: 3}
     - target: {fileID: 2514347460601317353, guid: 7b949200a79eb1646bc81bf587b82533,
         type: 3}
       propertyPath: m_AnchorMax.y
