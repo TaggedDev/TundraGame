@@ -13,7 +13,9 @@ namespace GUI.PlayerInventoryUI
         [SerializeField] private Image slotOutline;
         [SerializeField] private Text quantity;
 
-        public int ItemsInSlotQuantity
+        private Slot _slot;
+        
+        public int ItemsInSlotQuantity { get => _slot.ItemsAmount; set => _slot.ItemsAmount = value; }
         {
             get => Convert.ToInt32(quantity.text);
             set
