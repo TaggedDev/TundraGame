@@ -44,7 +44,7 @@ namespace Creatures.Player.States
 
         private void ObjectPlaced(object source, System.EventArgs e)
         {
-            PlayerInventory.Inventory[PlayerInventory.SelectedInventorySlot].Clear();
+            PlayerInventory.InventoryContainer[PlayerInventory.SelectedInventorySlot].Clear();
         }
 
         public override void Stop()

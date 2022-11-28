@@ -159,7 +159,7 @@ namespace Creatures.Player.Behaviour
         
         private void OnEquipmentChanged()
         {
-            _inventoryController.Inventory.ResizeInventory(TotalAdditionalSlots);
+            _inventoryController.InventoryContainer.ResizeInventory(TotalAdditionalSlots);
         }
     }
 }

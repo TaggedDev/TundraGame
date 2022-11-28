@@ -14,7 +14,7 @@ namespace GUI.PlayerInventoryUI
         private GridLayoutGroup _uiSlotsParent;
         private int _currentVisibleSlotsAmount;
 
-        private void Start()
+        private void Awake()
         {
             _uiSlotsParent = GetComponentInChildren<GridLayoutGroup>();
             InitialiseUISlots();
@@ -26,7 +26,7 @@ namespace GUI.PlayerInventoryUI
         /// Sets (removes or adds) visibility of the slots in the inventory 
         /// </summary>
         /// <param name="count">The amount of slots that has to be drawn</param>
-        public void SetInventorySlotsVisibility(int count)
+        public void SetVisibleSlotAmount(int count)
         {
             // Count active inventory slots
             int currentSlotAmount = _uiSlotsParent.transform

@@ -73,12 +73,12 @@ namespace System
             // Wait for world render
             yield return new WaitUntil(() => mapGenerator.mapDataCount == 9 && mapGenerator.meshDataCount == 9);
             
+            // Turn on UI
+            UserInterface.gameObject.SetActive(true);
+            
             // Spawn player and set it's parameter
             playerObject.SpawnPlayer();
             _playerRigidbody.useGravity = true;
-            
-            // Turn on UI
-            UserInterface.gameObject.SetActive(true);
             
             // Enable entity generation
             entityRenderer.gameObject.SetActive(true);

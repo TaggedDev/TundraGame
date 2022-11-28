@@ -19,7 +19,7 @@ namespace Creatures.Player.Behaviour
     public class PlayerInventory : MonoBehaviour
     {
         [SerializeField] private MeleeWeaponConfiguration fist;
-        [SerializeField] private InventoryContainer inventory;
+        [SerializeField] private InventoryContainer inventoryContainer;
         [SerializeField] private RecipesListConfig recipesList;
         [SerializeField] private ItemHolder itemHolder;
         [SerializeField] private InventoryUISlotsController inventoryUIController;
@@ -34,13 +34,13 @@ namespace Creatures.Player.Behaviour
         /// <summary>
         /// Player inventory container instance.
         /// </summary>
-        public InventoryContainer Inventory
+        public InventoryContainer InventoryContainer
         {
             get
             {
-                if (inventory == null) 
+                if (inventoryContainer == null) 
                     Init();
-                return inventory;
+                return inventoryContainer;
             }
         }
         /// <summary>
@@ -51,8 +51,8 @@ namespace Creatures.Player.Behaviour
         {
             get
             {
-                if (SelectedInventorySlot != -1 && Inventory[SelectedInventorySlot].Item != null)
-                    return Inventory[SelectedInventorySlot].Item;
+                if (SelectedInventorySlot != -1 && InventoryContainer[SelectedInventorySlot].Item != null)
+                    return InventoryContainer[SelectedInventorySlot].Item;
                 else if(SelectedInventorySlot != -1)
                     return fist;
                 return null;
@@ -98,11 +98,12 @@ namespace Creatures.Player.Behaviour
         private void Start()
         {
             Init();
+           
         }
 
         private void Init()
         {
-            inventory = new InventoryContainer();
+            inventoryContainer = new InventoryContainer(inventoryUIController);
             _playerBehaviour = GetComponent<PlayerBehaviour>();
         }
 
@@ -204,8 +205,8 @@ namespace Creatures.Player.Behaviour
         /// </summary>
         private void DropEquippedItem()
         {
-            Inventory.Slots[SelectedInventorySlot].DropItem(transform.position, transform.forward * 3 + Vector3.up);
-            if (Inventory.Slots[SelectedInventorySlot].ItemsAmount == 0)
+            InventoryContainer.Slots[SelectedInventorySlot].DropItem(transform.position, transform.forward * 3 + Vector3.up);
+            if (InventoryContainer.Slots[SelectedInventorySlot].ItemsAmount == 0)
                 itemHolder.ResetMesh();
         }
 
@@ -218,7 +219,7 @@ namespace Creatures.Player.Behaviour
             if (_playerBehaviour.OverweightCoefficient < 2)
             {
                 var drop = NearestInteractableItem.GetComponent<DroppedItemBehaviour>();
-                if (Inventory.AddItem(drop.AssociatedItem, drop.DroppedItemsAmount, out int rem))
+                if (InventoryContainer.AddItem(drop.AssociatedItem, drop.DroppedItemsAmount, out int rem))
                 {
                     if (rem == 0)
                     {

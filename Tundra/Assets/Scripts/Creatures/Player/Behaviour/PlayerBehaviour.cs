@@ -18,8 +18,8 @@ namespace Creatures.Player.Behaviour
         
         
         // Properties
-        public bool IsOverweight => _inventoryController.Inventory.TotalWeight > _playerProperties.MaxLoadCapacity;
-        public float OverweightCoefficient => _inventoryController.Inventory.TotalWeight / _playerProperties.MaxLoadCapacity;
+        public bool IsOverweight => _inventoryController.InventoryContainer.TotalWeight > _playerProperties.MaxLoadCapacity;
+        public float OverweightCoefficient => _inventoryController.InventoryContainer.TotalWeight / _playerProperties.MaxLoadCapacity;
 
         // Variables
         [SerializeField] private EscapeMenu escapeCanvas;

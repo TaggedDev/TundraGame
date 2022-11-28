@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Creatures.Player.Inventory.ItemConfiguration;
+using GUI.PlayerInventoryUI;
 using UnityEngine;
 
 namespace Creatures.Player.Inventory
@@ -10,11 +11,11 @@ namespace Creatures.Player.Inventory
     /// <summary>
     /// A model to store inventory items
     /// </summary>
-    [Serializable]
     public class InventoryContainer : IEnumerable<Slot>
     {
-        [SerializeField] private int maxInventoryCapacity = 4;
-        [SerializeField] private Slot[] slots;
+        private int maxInventoryCapacity = 4;
+        private InventoryUISlotsController inventoryUI;
+        private Slot[] slots;
 
         /// <summary>
         /// Maximum inventory capacity
@@ -25,6 +26,7 @@ namespace Creatures.Player.Inventory
             private set
             {
                 MaxInventoryCapacityChanging?.Invoke(this, value);
+                inventoryUI.SetVisibleSlotAmount(value);
                 maxInventoryCapacity=value;
                 Slot[] newInventory = new Slot[maxInventoryCapacity];
                 Slots.CopyTo(newInventory, 0);
@@ -144,9 +146,11 @@ namespace Creatures.Player.Inventory
         /// <summary>
         /// Creates new inventory container.
         /// </summary>
-        public InventoryContainer()
+        public InventoryContainer(InventoryUISlotsController inventoryUI)
         {
+            this.inventoryUI = inventoryUI;
             Slots = new Slot[MaxInventoryCapacity];
+            inventoryUI.SetVisibleSlotAmount(maxInventoryCapacity);
             for (int i = 0; i<Slots.Length; i++)
             {
                 Slots[i] = new Slot();
