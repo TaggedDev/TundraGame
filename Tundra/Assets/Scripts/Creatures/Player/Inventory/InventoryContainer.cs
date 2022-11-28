@@ -13,8 +13,8 @@ namespace Creatures.Player.Inventory
     /// </summary>
     public class InventoryContainer : IEnumerable<Slot>
     {
+        private readonly InventoryUISlotsController inventoryUI;
         private int maxInventoryCapacity = 4;
-        private InventoryUISlotsController inventoryUI;
         private Slot[] slots;
 
         /// <summary>

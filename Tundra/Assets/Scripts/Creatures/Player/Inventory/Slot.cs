@@ -138,7 +138,9 @@ namespace Creatures.Player.Inventory
         /// <exception cref="InvalidOperationException">Thrown if the slot is empty.</exception>
         public GameObject DropItem(Vector3 position, Vector3 force)
         {
-            if (ItemsAmount == 0) throw new InvalidOperationException("Slot is empty.");
+            if (ItemsAmount == 0)
+                return null;
+            
             var res = Item.Drop(position, force);
             ItemsAmount--;
             return res;

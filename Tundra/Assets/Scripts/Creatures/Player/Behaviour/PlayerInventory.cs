@@ -19,11 +19,11 @@ namespace Creatures.Player.Behaviour
     public class PlayerInventory : MonoBehaviour
     {
         [SerializeField] private MeleeWeaponConfiguration fist;
-        [SerializeField] private InventoryContainer inventoryContainer;
+        private InventoryContainer inventoryContainer;
         [SerializeField] private RecipesListConfig recipesList;
         [SerializeField] private ItemHolder itemHolder;
         [SerializeField] private InventoryUISlotsController inventoryUIController;
- 
+
         public ItemHolder ItemHolder => itemHolder;
         public static float ItemPickingUpTime => 3f;
         
@@ -82,7 +82,12 @@ namespace Creatures.Player.Behaviour
             get => _currentSlotIndex;
             set
             {
-                Debug.Log(value);
+                if (value >= inventoryContainer.MaxInventoryCapacity)
+                    value %= inventoryContainer.MaxInventoryCapacity;
+                else if (value < 0)
+                    value = inventoryContainer.MaxInventoryCapacity - 1;
+                
+                inventoryUIController.SelectChosenSlot(value, _currentSlotIndex);
                 _currentSlotIndex = value;
                 SelectedItemChanged?.Invoke(this, value);
             }
@@ -140,8 +145,27 @@ namespace Creatures.Player.Behaviour
                         SelectedInventorySlot);
                     SelectedInventorySlot = slotIndex;
                 }
-                
             }
+
+            float wheelAxis = Input.GetAxis("Mouse ScrollWheel");
+            if (wheelAxis > 0)
+            {
+                SelectedInventorySlot = _currentSlotIndex + 1;
+            }
+            else if (wheelAxis < 0)
+            {
+                SelectedInventorySlot = _currentSlotIndex - 1;
+            }
+            /*float wheel = Input.GetAxis("Mouse ScrollWheel"); /* * mouseScrollCoefficient#2#; #1#
+        
+            /*if (SelectedInventorySlot + wheel > MaxSlotsNumber - 1) 
+                tempVal = 0;
+            else if (_inventoryController.SelectedInventorySlot + wheel < 0) 
+                tempVal = MaxSlotsNumber - 1;
+            else #1#
+            
+            /* * 20#1#;
+            SelectedInventorySlot = tempVal;*/
         }
 
         /// <summary>

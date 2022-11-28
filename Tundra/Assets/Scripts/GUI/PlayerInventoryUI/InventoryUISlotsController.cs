@@ -60,17 +60,7 @@ namespace GUI.PlayerInventoryUI
         {
             _uiInventorySlots[slotToDeactivate].RemoveSlotSelectionEffects();
             _uiInventorySlots[slotToActivate].ApplySlotSelectionEffects();
-
-            /*// Hande user mousewheel scroll
-            float wheel = Input.GetAxis("Mouse ScrollWheel") /* * mouseScrollCoefficient#1#;
             
-            if (_inventoryController.SelectedInventorySlot + wheel > MaxSlotsNumber - 1) 
-                tempVal = 0;
-            else if (_inventoryController.SelectedInventorySlot + wheel < 0) 
-                tempVal = MaxSlotsNumber - 1;
-            else 
-                tempVal += (int)Mathf.Round(wheel);*/
-
             /*// Prevent new 
             if (tempVal != _inventoryController.SelectedInventorySlot)
                 _inventoryController.SelectedInventorySlot = tempVal;
