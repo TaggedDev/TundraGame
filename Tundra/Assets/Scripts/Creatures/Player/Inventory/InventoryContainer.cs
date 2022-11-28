@@ -79,10 +79,12 @@ namespace Creatures.Player.Inventory
         /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="item"/> has no assigned storage limit.</exception>
         public bool AddItem(BasicItemConfiguration item, int amount, out int rem)
         {
-            if (item == null) 
+            if (item is null) 
                 throw new ArgumentNullException(nameof(item));
+            
             if (item.MaxStackVolume == 0) 
                 throw new ArgumentOutOfRangeException(nameof(item), "Item must have an amount limit to add it to the inventory.");
+            
             while (amount > 0)
             {
                 Slot slot = FindNearestSlot(item, amount, out int remainder);
@@ -151,7 +153,7 @@ namespace Creatures.Player.Inventory
             this.inventoryUI = inventoryUI;
             Slots = new Slot[MaxInventoryCapacity];
             inventoryUI.SetVisibleSlotAmount(maxInventoryCapacity);
-            for (int i = 0; i<Slots.Length; i++)
+            for (int i = 0; i < Slots.Length; i++)
             {
                 Slots[i] = new Slot();
                 Slots[i].ItemChanged += (s, e) => ContentChanged?.Invoke(s, new ItemChangeArgs(i, e));

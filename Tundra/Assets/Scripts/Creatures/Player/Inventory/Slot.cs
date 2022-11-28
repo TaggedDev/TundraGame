@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Creatures.Player.Inventory
 {
     /// <summary>
-    /// Класс, представляющий собой слот инвентаря для хранения предметов игрока.
+    /// A model to represent an inventory slot
     /// </summary>
     [Serializable]
     public class Slot
@@ -14,22 +14,6 @@ namespace Creatures.Player.Inventory
         [SerializeField] private int itemsAmount;
         [SerializeField] private BasicItemConfiguration item;
         
-        /// <summary>
-        /// Creates a new slot with provided item configuration.
-        /// </summary>
-        /// <param name="itemsAmount">Amount of items.</param>
-        /// <param name="item">An item configuration.</param>
-        public Slot(int itemsAmount, BasicItemConfiguration item)
-        {
-            this.itemsAmount=itemsAmount;
-            this.item=item;
-        }
-
-        public Slot()
-        {
-
-        }
-
         /// <summary>
         /// Indicates if the slot is empty.
         /// </summary>

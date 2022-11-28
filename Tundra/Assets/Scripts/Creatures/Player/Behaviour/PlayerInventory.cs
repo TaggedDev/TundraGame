@@ -28,7 +28,6 @@ namespace Creatures.Player.Behaviour
         public static float ItemPickingUpTime => 3f;
         
         private PlayerBehaviour _playerBehaviour;
-        private int _lastSlotIndex;
         private int _currentSlotIndex;
 
         /// <summary>
@@ -147,25 +146,13 @@ namespace Creatures.Player.Behaviour
                 }
             }
 
+            // Handle wheel scroll (back & forward)
             float wheelAxis = Input.GetAxis("Mouse ScrollWheel");
             if (wheelAxis > 0)
-            {
                 SelectedInventorySlot = _currentSlotIndex + 1;
-            }
             else if (wheelAxis < 0)
-            {
                 SelectedInventorySlot = _currentSlotIndex - 1;
-            }
-            /*float wheel = Input.GetAxis("Mouse ScrollWheel"); /* * mouseScrollCoefficient#2#; #1#
-        
-            /*if (SelectedInventorySlot + wheel > MaxSlotsNumber - 1) 
-                tempVal = 0;
-            else if (_inventoryController.SelectedInventorySlot + wheel < 0) 
-                tempVal = MaxSlotsNumber - 1;
-            else #1#
             
-            /* * 20#1#;
-            SelectedInventorySlot = tempVal;*/
         }
 
         /// <summary>
@@ -231,7 +218,10 @@ namespace Creatures.Player.Behaviour
         {
             InventoryContainer.Slots[SelectedInventorySlot].DropItem(transform.position, transform.forward * 3 + Vector3.up);
             if (InventoryContainer.Slots[SelectedInventorySlot].ItemsAmount == 0)
+            {
                 itemHolder.ResetMesh();
+                inventoryUIController.UIInventorySlots[SelectedInventorySlot].RemoveSlotIcon();
+            }
         }
 
         /// <summary>
@@ -249,6 +239,7 @@ namespace Creatures.Player.Behaviour
                     {
                         drop.OnPickupHandler(itemHolder);
                     }
+                    inventoryUIController.SetSlotIcon(_currentSlotIndex, drop.AssociatedItem.Icon);
                 }
             }
             NearestInteractableItem = null;
@@ -260,7 +251,6 @@ namespace Creatures.Player.Behaviour
         /// </summary>
         public void SetMagicAsSelectedItem()
         {
-            _lastSlotIndex = SelectedInventorySlot;
             SelectedInventorySlot = -1;
         }
 

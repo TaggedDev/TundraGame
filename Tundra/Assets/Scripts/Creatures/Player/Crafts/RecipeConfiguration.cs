@@ -100,7 +100,10 @@ namespace Creatures.Player.Crafts
                 resultSlot = -1;
                 result.Drop(inventoryScript.transform.position, Vector3.up);
             }
-            else resultSlot = Array.FindLastIndex(inventoryScript.InventoryContainer.Slots, x => x.Item == result);
+            else
+            {
+                resultSlot = Array.FindLastIndex(inventoryScript.InventoryContainer.Slots, x => x.Item == result);
+            }
             return true;
         }
     }

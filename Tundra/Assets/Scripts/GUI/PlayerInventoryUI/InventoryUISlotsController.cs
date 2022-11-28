@@ -9,6 +9,8 @@ namespace GUI.PlayerInventoryUI
     /// </summary>
     public class InventoryUISlotsController : MonoBehaviour
     {
+        public UIInventorySlot[] UIInventorySlots => _uiInventorySlots;
+        
         [SerializeField] private UIInventorySlot inventorySlotPrefab;
         private UIInventorySlot[] _uiInventorySlots;
         private GridLayoutGroup _uiSlotsParent;
@@ -62,20 +64,7 @@ namespace GUI.PlayerInventoryUI
             _uiInventorySlots[slotToActivate].ApplySlotSelectionEffects();
             
             /*// Prevent new 
-            if (tempVal != _inventoryController.SelectedInventorySlot)
-                _inventoryController.SelectedInventorySlot = tempVal;
             
-            // Add new visual states
-            int i = 0;
-            foreach (var slot in _inventoryController.Inventory.Slots)
-            {
-                GameObject UIslot = _visualSlots[i];
-                SetSlotActive(UIslot, _inventoryController.SelectedInventorySlot == i);
-                _icons[i].sprite = slot.Item != null ? slot.Item.Icon : transparent;
-                _texts[i].text = slot.ItemsAmount.ToString();
-                i++;
-            }#2#
-
             // Show the nearest interactable item tile.
             if (_inventoryController.NearestInteractableItem == null)
             {
@@ -89,6 +78,16 @@ namespace GUI.PlayerInventoryUI
                 if (_inventoryController.NearestInteractableItem.GetComponent<DroppedItemBehaviour>()) _pickupLabel.text = pickupText;
                 else _pickupLabel.text = openText;
             }*/
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="slotIndex"></param>
+        /// <param name="sprite"></param>
+        public void SetSlotIcon(int slotIndex, Sprite sprite)
+        {
+            _uiInventorySlots[slotIndex].SetSlotIcon(sprite);
         }
     }
 }

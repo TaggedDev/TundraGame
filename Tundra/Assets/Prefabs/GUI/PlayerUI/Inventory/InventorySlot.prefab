@@ -287,7 +287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddf5f6823ffa4f9a885e3cb6137719a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotBackground: {fileID: 1572897766565726844}
+  slotIcon: {fileID: 6191598077320906584}
   slotOutline: {fileID: 5281870327061640943}
 --- !u!1 &6073280294109513281
 GameObject:
