@@ -5,6 +5,7 @@ using Creatures.Player.Behaviour;
 using Creatures.Player.Inventory;
 using Creatures.Player.Inventory.ItemConfiguration;
 using GUI.HeadUpDisplay;
+using UnityEngine.UIElements;
 
 namespace Creatures.Player.States
 {
@@ -169,7 +170,7 @@ namespace Creatures.Player.States
         }
 
         protected abstract void StaminaIsOver();
-        
+
         /// <summary>
         /// Receives player input for changing states with opening related menus.
         /// </summary>
@@ -193,12 +194,6 @@ namespace Creatures.Player.States
             if (this is BusyPlayerState && Input.GetKeyDown(KeyCode.Escape))
             {
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
-            }
-            if (!(this is BusyPlayerState) && !(this is MagicCastingPlayerState)
-                && PlayerEquipment.Book != null && Input.GetKeyDown(KeyCode.X))
-            {
-                PlayerStateSwitcher.SwitchState<IdlePlayerState>();
-                (this as MagicCastingPlayerState).Dispell();
             }
             
             // Open bestiary if player is not busy and presses B key

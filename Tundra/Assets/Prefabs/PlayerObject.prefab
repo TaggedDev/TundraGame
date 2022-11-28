@@ -3266,7 +3266,6 @@ MonoBehaviour:
   maxStaminaPoints: 0
   maxLoadCapacity: 0
   maxDamageModificator: 0
-  maxCircleBarFillingTime: 0
   minDamageModificator: 0
   playerRace: {fileID: 11400000, guid: 0ba9c8e9c67db184daf1c9a0e52a6909, type: 2}
   currentHealthPoints: 0
@@ -3288,7 +3287,7 @@ MonoBehaviour:
   feet: {fileID: 0}
   neck: {fileID: 0}
   backpack: {fileID: 0}
-  book: {fileID: 11400000, guid: 895de157cc5167341b382caf5626e4f8, type: 2}
+  book: {fileID: 11400000, guid: fc77f7461f3ba184cb6ded1c10370102, type: 2}
 --- !u!114 &6591950171598838081
 MonoBehaviour:
   m_ObjectHideFlags: 0
