@@ -27,7 +27,7 @@ namespace Creatures.Player.Behaviour
             private set
             {
                 _isSpellingPanelOpened=value;
-                MagicPanelVisibilityChange?.Invoke(this, null);
+                MagicPanelVisibilityChange?.Invoke(this, value);
             }
         }
         
@@ -73,12 +73,17 @@ namespace Creatures.Player.Behaviour
         /// <summary>
         /// An event which invokes when panel visibilty should change.
         /// </summary>
-        public event EventHandler MagicPanelVisibilityChange;
+        public event EventHandler<bool> MagicPanelVisibilityChange;
         
         /// <summary>
         /// En event which invokes when spell is cast.
         /// </summary>
         public event EventHandler<Spell> SpellCast;
+
+        /// <summary>
+        /// Needed to refresh a panel when the spell cast gone wrong.
+        /// </summary>
+        public event EventHandler RefreshPanelEvent;
         
         /// <summary>
         /// Adds an element to <see cref="DraftSpell"/>.
@@ -142,10 +147,29 @@ namespace Creatures.Player.Behaviour
             // If spell type isn't null, it creates it's instance and builds its properties in order of used elements
             if (spell != null)
             {
-                _currentSpell = Activator.CreateInstance(spell) as Spell;
-                _currentSpell?.Build(DraftSpell);
-                if (_currentSpell == null) return;
-                IsReadyForCasting = true;
+                // It's needed to handle when elements combination for the spell is wrong.
+                // If it's wrong, it throws an ArgumentException to clear the draft spell.
+                try
+                {
+                    _currentSpell = Activator.CreateInstance(spell) as Spell;
+                    _currentSpell?.Build(DraftSpell);
+                    if (_currentSpell == null) return;
+                    IsReadyForCasting = true;
+                }
+                catch (ArgumentException)
+                {
+                    IsReadyForCasting = false;
+                    _currentSpell = null;
+                    DraftSpell.Clear();
+                    RefreshPanelEvent?.Invoke(this, null);
+                }
+            }
+            else
+            {
+                IsReadyForCasting = false;
+                _currentSpell = null;
+                DraftSpell.Clear();
+                RefreshPanelEvent?.Invoke(this, null);
             }
         }
         
@@ -154,13 +178,16 @@ namespace Creatures.Player.Behaviour
         /// </summary>
         public void CastSpell()
         {
-            _currentSpell?.Cast(gameObject, this);
-            SpellCast?.Invoke(this, _currentSpell);
-            IsReadyForCasting = false;
-            _currentSpell = null;
-            //AllowedElements = MagicElement.All;
-            DraftSpell.Clear();
-            print("Spell has been casted!");
+            if (IsReadyForCasting)
+            {
+                _currentSpell?.Cast(gameObject, this);
+                SpellCast?.Invoke(this, _currentSpell);
+                IsReadyForCasting = false;
+                _currentSpell = null;
+                //AllowedElements = MagicElement.All;
+                DraftSpell.Clear();
+                print("Spell has been casted!");
+            }
         }
         
         /// <summary>
