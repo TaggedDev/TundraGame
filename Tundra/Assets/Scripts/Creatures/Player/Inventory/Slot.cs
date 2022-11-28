@@ -46,7 +46,7 @@ namespace Creatures.Player.Inventory
         }
 
         /// <summary>
-        /// Amount of items inside the slot.
+        /// Amount of items in this slot.
         /// </summary>
         public int ItemsAmount
         {
@@ -94,6 +94,7 @@ namespace Creatures.Player.Inventory
             if (ItemsAmount > 0 && Item.Title != item.Title) return false;
             Item = item;
             ItemsAmount = amount;
+            slotUI.ItemsInSlotQuantity += amount;
             return true;
         }
 
@@ -108,9 +109,11 @@ namespace Creatures.Player.Inventory
             {
                 int rem = amount + ItemsAmount - Item.MaxStackVolume;
                 ItemsAmount = Item.MaxStackVolume;
+                slotUI.ItemsInSlotQuantity = Item.MaxStackVolume;
                 return rem;
             }
-            else ItemsAmount += amount;
+            ItemsAmount += amount;
+            slotUI.ItemsInSlotQuantity += amount;
             return 0;
         }
 
@@ -125,6 +128,7 @@ namespace Creatures.Player.Inventory
         {
             if (amount > ItemsAmount) throw new ArgumentOutOfRangeException(nameof(amount), "Amount of items to throw is more than amount of items inside the slot.");
             ItemsAmount -= amount;
+            slotUI.ItemsInSlotQuantity -= amount;
             return Item.MassDrop(amount, position, force);
         }
 
@@ -141,6 +145,7 @@ namespace Creatures.Player.Inventory
             
             var res = Item.Drop(position, force);
             ItemsAmount--;
+            slotUI.ItemsInSlotQuantity -= 1;
             return res;
         }
 
@@ -159,15 +164,22 @@ namespace Creatures.Player.Inventory
         /// <summary>
         /// Fills the slot with the given item.
         /// </summary>
-        /// <param name="item">An item configuration.</param>
+        /// <param name="fillItem">An item configuration.</param>
         /// <returns><see langword="true"/> if filling was successful.</returns>
         /// <exception cref="ArgumentNullException">Thrown if the item configuration is <see langword="null"/>.</exception>
-        public bool Fill(BasicItemConfiguration item)
+        public bool Fill(BasicItemConfiguration fillItem)
         {
-            if (item == null) throw new ArgumentNullException(nameof(item));
-            if (Item != item && Item != null) return false;
-            ItemsAmount = item.MaxStackVolume;
-            if (Item == null) Item = item;
+            if (fillItem is null)
+                throw new ArgumentNullException(nameof(fillItem));
+            if (Item != fillItem && !(Item is null))
+                return false;
+            
+            ItemsAmount = fillItem.MaxStackVolume;
+            slotUI.ItemsInSlotQuantity += fillItem.MaxStackVolume;
+            
+            if (Item is null) 
+                Item = fillItem;
+            
             return true;
         }
 

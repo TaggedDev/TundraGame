@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Creatures.Player.Inventory.ItemConfiguration;
 using GUI.PlayerInventoryUI;
-using UnityEngine;
 
 namespace Creatures.Player.Inventory
 {

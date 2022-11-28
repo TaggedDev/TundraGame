@@ -289,6 +289,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slotIcon: {fileID: 6191598077320906584}
   slotOutline: {fileID: 5281870327061640943}
+  quantity: {fileID: 6073280292425428487}
 --- !u!1 &6073280294109513281
 GameObject:
   m_ObjectHideFlags: 0

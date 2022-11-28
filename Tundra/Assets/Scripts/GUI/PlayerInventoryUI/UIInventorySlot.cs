@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace GUI.PlayerInventoryUI
@@ -10,8 +11,18 @@ namespace GUI.PlayerInventoryUI
     {
         [SerializeField] private Image slotIcon;
         [SerializeField] private Image slotOutline;
+        [SerializeField] private Text quantity;
 
-        public bool IsSelected { get; set; }
+        public int ItemsInSlotQuantity
+        {
+            get => Convert.ToInt32(quantity.text);
+            set
+            {
+                if (value < 0)
+                    return;
+                quantity.text = Convert.ToString(value);
+            }
+        }
 
         /// <summary>
         /// Applies slot selection effects on this slot in inventory UI
@@ -21,7 +32,6 @@ namespace GUI.PlayerInventoryUI
             var tempColor = slotOutline.color;
             tempColor.a = 1f;
             slotOutline.color = tempColor;
-            IsSelected = true;
         }
         
         /// <summary>
@@ -32,7 +42,6 @@ namespace GUI.PlayerInventoryUI
             var tempColor = slotOutline.color;
             tempColor.a = 150/255f;
             slotOutline.color = tempColor;
-            IsSelected = false;
         }
 
         /// <summary>
