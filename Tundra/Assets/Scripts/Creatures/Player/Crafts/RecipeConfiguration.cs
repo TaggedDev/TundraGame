@@ -94,7 +94,7 @@ namespace Creatures.Player.Crafts
                 }
             }
             // Adds an item to player's inventory or drops it if player's inventory is full.
-            inventoryScript.InventoryContainer.AddItem(result, 1, out int rem);
+            inventoryScript.InventoryContainer.AddItem(result, 1, out int rem, out int slotIndex);
             if (rem == 1)
             {
                 resultSlot = -1;

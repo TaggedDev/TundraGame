@@ -233,13 +233,13 @@ namespace Creatures.Player.Behaviour
             if (_playerBehaviour.OverweightCoefficient < 2)
             {
                 var drop = NearestInteractableItem.GetComponent<DroppedItemBehaviour>();
-                if (InventoryContainer.AddItem(drop.AssociatedItem, drop.DroppedItemsAmount, out int rem))
+                if (InventoryContainer.AddItem(drop.AssociatedItem, drop.DroppedItemsAmount, out int rem, out int slotIndex))
                 {
                     if (rem == 0)
                     {
                         drop.OnPickupHandler(itemHolder);
                     }
-                    inventoryUIController.SetSlotIcon(_currentSlotIndex, drop.AssociatedItem.Icon);
+                    inventoryUIController.SetSlotIcon(slotIndex, drop.AssociatedItem.Icon);
                 }
             }
             NearestInteractableItem = null;

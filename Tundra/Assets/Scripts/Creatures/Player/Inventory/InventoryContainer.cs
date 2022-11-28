@@ -35,7 +35,7 @@ namespace Creatures.Player.Inventory
                 {
                     if (Slots[i] == null)
                     {
-                        Slots[i] = new Slot();
+                        Slots[i] = new Slot(i);
                         Slots[i].ItemChanged += (s, e) => ContentChanged?.Invoke(s, new ItemChangeArgs(i, e));
                     }
                 }
@@ -74,10 +74,11 @@ namespace Creatures.Player.Inventory
         /// <param name="item">An item configuration.</param>
         /// <param name="amount">Amount of items.</param>
         /// <param name="rem">Remainder of items (how much weren't added).</param>
+        /// <param name="slotIndex"></param>
         /// <returns><see langword="true"/> if the item has been added into the inventory, <see langword="false"/> otherwise.</returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="item"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="item"/> has no assigned storage limit.</exception>
-        public bool AddItem(BasicItemConfiguration item, int amount, out int rem)
+        public bool AddItem(BasicItemConfiguration item, int amount, out int rem, out int slotIndex)
         {
             if (item is null) 
                 throw new ArgumentNullException(nameof(item));
@@ -88,6 +89,7 @@ namespace Creatures.Player.Inventory
             while (amount > 0)
             {
                 Slot slot = FindNearestSlot(item, amount, out int remainder);
+                // If there is an available slot
                 if (slot != null)
                 {
                     if (remainder > 0)
@@ -96,15 +98,19 @@ namespace Creatures.Player.Inventory
                         slot.PushItem(item, amount);
                     else 
                         slot.AddItems(amount);
-                    amount = remainder;
+                    
+                    slotIndex = slot.Index;
+                    rem = 0;
+                    return true;
                 }
-                else
-                {
-                    rem = remainder;
-                    return false;
-                }
+                // If no empty slots found
+                slotIndex = -1;
+                rem = remainder;
+                return false;
             }
+            // Don't do anything if amount of items if <= 0
             rem = 0;
+            slotIndex = -1;
             return true;
         }
 
@@ -155,7 +161,7 @@ namespace Creatures.Player.Inventory
             inventoryUI.SetVisibleSlotAmount(maxInventoryCapacity);
             for (int i = 0; i < Slots.Length; i++)
             {
-                Slots[i] = new Slot();
+                Slots[i] = new Slot(i);
                 Slots[i].ItemChanged += (s, e) => ContentChanged?.Invoke(s, new ItemChangeArgs(i, e));
             }
         }

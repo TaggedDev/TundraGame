@@ -15,6 +15,11 @@ namespace Creatures.Player.Inventory
         [SerializeField] private BasicItemConfiguration item;
         
         /// <summary>
+        /// The index of the current slot
+        /// </summary>
+        public int Index { get; set; }
+        
+        /// <summary>
         /// Indicates if the slot is empty.
         /// </summary>
         public bool IsEmpty => ItemsAmount == 0;
@@ -52,6 +57,11 @@ namespace Creatures.Player.Inventory
                     item = null;
                 }
             }
+        }
+
+        public Slot(int index)
+        {
+            Index = index;
         }
 
         public event EventHandler<BasicItemConfiguration> ItemChanged;
