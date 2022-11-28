@@ -35,7 +35,7 @@ namespace Creatures.Player.Inventory
                 {
                     if (Slots[i] == null)
                     {
-                        Slots[i] = new Slot(i);
+                        Slots[i] = new Slot(i, inventoryUI.UIInventorySlots[i]);
                         Slots[i].ItemChanged += (s, e) => ContentChanged?.Invoke(s, new ItemChangeArgs(i, e));
                     }
                 }
@@ -161,7 +161,7 @@ namespace Creatures.Player.Inventory
             inventoryUI.SetVisibleSlotAmount(maxInventoryCapacity);
             for (int i = 0; i < Slots.Length; i++)
             {
-                Slots[i] = new Slot(i);
+                Slots[i] = new Slot(i, this.inventoryUI.UIInventorySlots[i]);
                 Slots[i].ItemChanged += (s, e) => ContentChanged?.Invoke(s, new ItemChangeArgs(i, e));
             }
         }

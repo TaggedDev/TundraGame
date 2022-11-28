@@ -240,6 +240,7 @@ namespace Creatures.Player.Behaviour
                         drop.OnPickupHandler(itemHolder);
                     }
                     inventoryUIController.SetSlotIcon(slotIndex, drop.AssociatedItem.Icon);
+                    inventoryUIController.SelectChosenSlot(slotIndex, _currentSlotIndex);
                 }
             }
             NearestInteractableItem = null;

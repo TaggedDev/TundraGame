@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Creatures.Player.Inventory.ItemConfiguration;
+using GUI.PlayerInventoryUI;
 using UnityEngine;
 
 namespace Creatures.Player.Inventory
@@ -13,6 +14,7 @@ namespace Creatures.Player.Inventory
     {
         [SerializeField] private int itemsAmount;
         [SerializeField] private BasicItemConfiguration item;
+        private UIInventorySlot slotUI;
         
         /// <summary>
         /// The index of the current slot
@@ -59,9 +61,10 @@ namespace Creatures.Player.Inventory
             }
         }
 
-        public Slot(int index)
+        public Slot(int index, UIInventorySlot uiSlot)
         {
             Index = index;
+            slotUI = uiSlot;
         }
 
         public event EventHandler<BasicItemConfiguration> ItemChanged;
@@ -72,6 +75,7 @@ namespace Creatures.Player.Inventory
         public void Clear()
         {
             ItemsAmount = 0;
+            slotUI.RemoveSlotIcon();
             Item = null;
         }
         
@@ -113,7 +117,7 @@ namespace Creatures.Player.Inventory
         /// <summary>
         /// Drops items into a world space.
         /// </summary>
-        /// <param name="amount">Amounnt of items to drop.</param>
+        /// <param name="amount">Amount of items to drop.</param>
         /// <param name="position">Position in the world to drop into.</param>
         /// <param name="force">Force to throw an item (if its <see cref="GameObject"/> contains <see cref="Rigidbody"/>).</param>
         /// <exception cref="ArgumentOutOfRangeException">Throws if items amount is more than available.</exception>

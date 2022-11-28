@@ -60,19 +60,20 @@ namespace Creatures.Player.Crafts
             // If the inventory script is null, it supposes that check is needed only for the workbench.
             return workbench == this.workbench && (inv == null || requiredItems.All(x => inv.InventoryContainer.CountItemOfTypeInTheInventory(x.Item) >= x.Amount));
         }
-        
+
         /// <summary>
         /// Does a craft for this recipe.
         /// </summary>
         /// <param name="inventoryScript">Player inventory script which controls inventory.</param>
-        /// <returns><see langword="true"/> if craft was done successfully, <see langword="false"/> otherwise.</returns>
-        public bool Craft(PlayerInventory inventoryScript, out int resultSlot)
+        /// <param name="resultSlot"></param>
+        public void Craft(PlayerInventory inventoryScript, out int resultSlot)
         {
             if (!CheckIfAvailable(workbench, inventoryScript))
             {
                 resultSlot = -1;
-                return false;
+                return;
             }
+            
             // Removes from inventory as much items as required in the craft.
             foreach (var component in requiredItems)
             {
@@ -104,7 +105,6 @@ namespace Creatures.Player.Crafts
             {
                 resultSlot = Array.FindLastIndex(inventoryScript.InventoryContainer.Slots, x => x.Item == result);
             }
-            return true;
         }
     }
 }
