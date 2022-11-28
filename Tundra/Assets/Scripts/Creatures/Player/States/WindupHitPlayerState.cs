@@ -66,7 +66,7 @@ namespace Creatures.Player.States
 
         }
 
-        protected override void InventorySelectedSlotChanged(object sender, int e)
+        public override void InventorySelectedSlotChanged(object sender, int e)
         {
             PlayerStateSwitcher.SwitchState<IdlePlayerState>();
         }

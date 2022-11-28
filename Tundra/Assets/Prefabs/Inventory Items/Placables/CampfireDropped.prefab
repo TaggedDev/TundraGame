@@ -215,7 +215,7 @@ Transform:
   m_GameObject: {fileID: 9218944179259735198}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3, y: 1.54, z: -0.13}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.125, y: 0.125, z: 0.125}
   m_Children:
   - {fileID: 9218944178980225690}
   - {fileID: 9218944180602858315}
@@ -251,6 +251,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e2419c5e935a274d95b42ea371c96db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  model: {fileID: 9218944180602858318}
+  materials: {fileID: 9218944180602858313}
+  handedRotation: {x: 0, y: 0, z: 0}
+  handedScale: {x: 0.25, y: 0.25, z: 0.25}
   _associatedItem: {fileID: 11400000, guid: 524ec756e93204a4bbc76addde2a7f47, type: 2}
   droppedItemsAmount: 1
   isThrown: 0

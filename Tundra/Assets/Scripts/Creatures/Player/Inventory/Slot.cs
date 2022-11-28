@@ -79,6 +79,7 @@ namespace Creatures.Player.Inventory
         {
             ItemsAmount = 0;
             Item = null;
+            ItemChanged.Invoke(this, item);
         }
         
         /// <summary>

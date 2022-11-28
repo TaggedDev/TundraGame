@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using GUI.BestiaryGUI;
 using GUI.GameplayGUI;
@@ -58,7 +57,6 @@ namespace Creatures.Player.States
             PlayerEquipment = PlayerBehaviour.gameObject.GetComponent<PlayerEquipment>();
             PlayerAnimation = PlayerBehaviour.GetComponent<PlayerAnimation>();
             PlayerInventory = playerInventory;
-            PlayerInventory.SelectedItemChanged += InventorySelectedSlotChanged;
             _escapeCanvas = escapeCanvas;
             _bestiaryPanel = bestiaryPanel;
         }
@@ -140,10 +138,13 @@ namespace Creatures.Player.States
             }
         }
 
-        protected virtual void InventorySelectedSlotChanged(object sender, int e)
+        public virtual void InventorySelectedSlotChanged(object sender, int e)
         {
+            
             if (PlayerInventory.SelectedItem is PlaceableItemConfiguration)
+            {
                 PlayerStateSwitcher.SwitchState<BuildingPlayerState>();
+            }
         }
 
         /// <summary>
@@ -200,7 +201,7 @@ namespace Creatures.Player.States
             {
                 HandleBestiaryOpen();
             }
-            if (Input.GetMouseButton(0) && !(this is BusyPlayerState) && !(this is MagicCastingPlayerState) &&
+            if (Input.GetMouseButtonDown(0) && !(this is BusyPlayerState) && !(this is MagicCastingPlayerState) &&
                 !(this is BuildingPlayerState) && (PlayerInventory.SelectedItem is MeleeWeaponConfiguration))
             {
                 PlayerStateSwitcher.SwitchState<WindupHitPlayerState>();
@@ -220,16 +221,6 @@ namespace Creatures.Player.States
         
         public virtual void OnPlayerSelectedItemChanged(PlayerInventory inventory)
         {
-            // If the selected item is a building item -> switch to building state 
-            if (inventory.SelectedItem is PlaceableItemConfiguration)
-            {
-                PlayerStateSwitcher.SwitchState<BuildingPlayerState>();
-            }
-            // Otherwise, if this not a building item and we are in a building state -> switch to idle
-            else if (this is BuildingPlayerState)
-            {
-                PlayerStateSwitcher.SwitchState<IdlePlayerState>();
-            }
             
             // If selected item is null -> switch to idle state and show empty hands
             if (inventory.SelectedItem is null || inventory.SelectedItem.Title == "Fist")
