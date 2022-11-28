@@ -26,7 +26,6 @@ namespace Creatures.Player.Inventory
         /// <param name="rotation">Rotation.</param>
         public void DisplayGhostObject(Vector3 position, Quaternion rotation)
         {
-            Debug.Log(GhostObject.ToString() + " " + position.ToString() + " " + rotation.ToString());
             GhostObject.transform.position = position;
             GhostObject.transform.rotation = rotation;
             AssignMaterial();

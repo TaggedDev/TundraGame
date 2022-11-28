@@ -37,10 +37,9 @@ namespace Creatures.Player.States
         public override void Start()
         {
             PlayerMovement.CanSprint = false;
-            Debug.Log("entered");
             if (!(PlayerInventory.SelectedItem is PlaceableItemConfiguration) || PlayerInventory.SelectedItem is null)
             {
-                Debug.LogError("Entered Building State without proper Item");
+                throw new System.InvalidCastException("Seleceted object is not Placable");
                 
             }
             _placeableObject = (PlayerInventory.SelectedItem as PlaceableItemConfiguration).RepresentedObject;
@@ -50,6 +49,7 @@ namespace Creatures.Player.States
         }
         public override void HandleUserInput()
         {
+            Build();
             if (Input.GetMouseButton(0))
             {
                 if (_placeableObject.TryPlacing(_point, new Quaternion(0, Quaternion.LookRotation(PlayerMovement.transform.position - _point).y, 0,
@@ -64,7 +64,7 @@ namespace Creatures.Player.States
                 PlayerStateSwitcher.SwitchState<IdlePlayerState>();
             }
         }
-        public override void Build()
+        public void Build()
         {
             
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -88,7 +88,6 @@ namespace Creatures.Player.States
 
         public override void Stop()
         {
-            Debug.Log("Exited");
             Object.Destroy(_placeableObject.GhostObject);
             PlayerMovement.CanSprint = true;
         }

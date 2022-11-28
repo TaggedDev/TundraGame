@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using GUI.BestiaryGUI;
 using GUI.GameplayGUI;
@@ -6,7 +5,6 @@ using Creatures.Player.Behaviour;
 using Creatures.Player.Inventory;
 using Creatures.Player.Inventory.ItemConfiguration;
 using GUI.HeadUpDisplay;
-using System.Runtime.CompilerServices;
 
 namespace Creatures.Player.States
 {
@@ -71,11 +69,7 @@ namespace Creatures.Player.States
         /// On State changed | Stop
         /// </summary>
         public abstract void Stop();
-        /// <summary>
-        /// Handles logic of building
-        /// </summary>
-        /// <param name="placeableItem">An Item</param>
-        public virtual void Build() { }
+
         /// <summary>
         /// Handles the logic of pressing escape in different states
         /// </summary>
@@ -215,7 +209,6 @@ namespace Creatures.Player.States
             if (Input.GetMouseButtonDown(0) && !(this is BusyPlayerState) && !(this is MagicCastingPlayerState) &&
                 !(this is BuildingPlayerState) && (PlayerInventory.SelectedItem is MeleeWeaponConfiguration))
             {
-                Debug.Log(Time.frameCount);
                 PlayerStateSwitcher.SwitchState<WindupHitPlayerState>();
             }
 

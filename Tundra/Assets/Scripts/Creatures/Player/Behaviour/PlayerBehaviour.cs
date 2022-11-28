@@ -97,7 +97,6 @@ namespace Creatures.Player.Behaviour
             _currentState.ContinueFreezing();
             _currentState.SpendStamina();
             _currentState.HandleUserInput();
-            _currentState.Build();
         }
 
         private void FixedUpdate()
@@ -113,15 +112,11 @@ namespace Creatures.Player.Behaviour
 
         public void SwitchState<T>() where T : BasicPlayerState
         {
-            //Debug.Log(_currentState.ToString() + "->" + typeof(T).ToString());
             var state = _allStates.FirstOrDefault(st => st is T);
             _currentState.Stop();
             state.Start();
             _currentState = state;
             StateChanged?.Invoke(this, null);
-            
-            // Delete later
-            
         }
         private void OnSelectedItemChanged(object sender, int arg)
         {
