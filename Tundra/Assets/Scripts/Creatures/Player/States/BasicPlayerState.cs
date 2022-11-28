@@ -26,7 +26,6 @@ namespace Creatures.Player.States
         private Vector3 velocity;
         private readonly EscapeMenu _escapeCanvas;
         private readonly BestiaryPanel _bestiaryPanel;
-
         
         /// <summary>
         /// The hunger consumption value of this state.
@@ -245,7 +244,6 @@ namespace Creatures.Player.States
                     Quaternion.Euler(item.HandedRotation),
                     item.Model, 
                     item.Materials);
-                //PlayerInventory.ItemHolder.SetNewMesh(inventory.SelectedItem);
             }
         }
 

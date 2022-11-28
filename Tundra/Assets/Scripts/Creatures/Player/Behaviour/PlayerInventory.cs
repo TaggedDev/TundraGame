@@ -5,6 +5,7 @@ using System;
 using Creatures.Player.Crafts;
 using Creatures.Player.Crafts.Placeables;
 using Creatures.Player.Inventory.ItemConfiguration;
+using GUI.PlayerInventoryUI;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
@@ -17,11 +18,11 @@ namespace Creatures.Player.Behaviour
     [RequireComponent(typeof(PlayerBehaviour))]
     public class PlayerInventory : MonoBehaviour
     {
-
         [SerializeField] private MeleeWeaponConfiguration fist;
         [SerializeField] private InventoryContainer inventory;
         [SerializeField] private RecipesListConfig recipesList;
         [SerializeField] private ItemHolder itemHolder;
+        [SerializeField] private InventoryUISlotsController inventoryUIController;
  
         public ItemHolder ItemHolder => itemHolder;
         public static float ItemPickingUpTime => 3f;
@@ -72,17 +73,16 @@ namespace Creatures.Player.Behaviour
         /// The progress of the item picking (or the interaction delay).
         /// </summary>
         public float ItemPickingProgress { get; private set; } = 0f;
+        
         /// <summary>
         /// Currently selected slot
         /// </summary>
         public int SelectedInventorySlot
         {
-            get
-            {
-                return _currentSlotIndex;
-            }
+            get => _currentSlotIndex;
             set
             {
+                Debug.Log(value);
                 _currentSlotIndex = value;
                 SelectedItemChanged?.Invoke(this, value);
             }
@@ -120,10 +120,26 @@ namespace Creatures.Player.Behaviour
             {
                 ItemPickingProgress = 0f;
             }
+            
             if (Input.GetKeyDown(KeyCode.Q) && !Input.GetKey(KeyCode.LeftControl))
             {
                 DropEquippedItem();
                 SelectedItemChanged?.Invoke(this, 0);
+            }
+            
+            // Select slots if buttons 1-9 are pressed 
+            if (!string.IsNullOrEmpty(Input.inputString))
+            {
+                // If two buttons are pressed -> the first one will be shown
+                char input = Input.inputString[0];
+                if ('1' <= input && '9' >= input)
+                {
+                    int slotIndex = Convert.ToInt32(input) - 48 - 1;
+                    inventoryUIController.SelectChosenSlot(slotIndex,
+                        SelectedInventorySlot);
+                    SelectedInventorySlot = slotIndex;
+                }
+                
             }
         }
 
@@ -217,20 +233,12 @@ namespace Creatures.Player.Behaviour
         /// <summary>
         /// Removes an item selection from the inventory.
         /// </summary>
-        public void UnselectItem()
+        public void SetMagicAsSelectedItem()
         {
             _lastSlotIndex = SelectedInventorySlot;
             SelectedInventorySlot = -1;
         }
-        
-        /// <summary>
-        /// Re-selects last selected item.
-        /// </summary>
-        public void ReSelectItem()
-        {
-            SelectedInventorySlot = _lastSlotIndex;
-        }
-        
+
         /// <summary>
         /// Resets the nearest item to the player.
         /// </summary>

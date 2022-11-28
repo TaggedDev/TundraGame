@@ -67,7 +67,7 @@ namespace Creatures.Player.States
             PlayerMovement.CanSprint = false;
             _playerMagic.Book = (BookEquipmentConfiguration)PlayerEquipment.Book;
             _playerMagic.StartSpelling();
-            PlayerBehaviour.gameObject.GetComponent<PlayerInventory>().UnselectItem();
+            PlayerBehaviour.gameObject.GetComponent<PlayerInventory>().SetMagicAsSelectedItem();
         }
 
         public override void Stop()

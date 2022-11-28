@@ -260,7 +260,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40b4d147deef4d19a1743e96f1c4eaa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotPrefab: {fileID: 8381522143711127064, guid: e635843d05bc5e447b4dabcdc9045e1d,
+  inventorySlotPrefab: {fileID: 8381522143711127064, guid: e635843d05bc5e447b4dabcdc9045e1d,
     type: 3}
 --- !u!1 &5722572140231147028
 GameObject:
