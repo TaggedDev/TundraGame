@@ -37,7 +37,6 @@ namespace Creatures.Player.Behaviour
         private PlayerInventory _playerInventory;
         private PlayerMagic _playerMagic;
         private bool _isDead;
-        private PlayerBuild _playerBuild;
         
         public BasicPlayerState CurrentState => _currentState;
         public event EventHandler StateChanged;
@@ -52,7 +51,6 @@ namespace Creatures.Player.Behaviour
             _playerProperties = GetComponent<PlayerProperties>();
             _playerInventory = GetComponent<PlayerInventory>();
             _playerMagic = GetComponent<PlayerMagic>();
-            _playerBuild = GetComponent<PlayerBuild>();
             GetComponent<PlayerAnimation>();
             _animator = GetComponent<Animator>();
             GetComponent<Rigidbody>();
@@ -70,7 +68,7 @@ namespace Creatures.Player.Behaviour
                 new MagicCastingPlayerState(_playerMovement, this, _playerProperties, _playerMagic, _playerInventory, 
                     escapeCanvas, bestiaryPanel),
                 new BuildingPlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas, 
-                    _playerBuild, bestiaryPanel),
+                    bestiaryPanel),
                 new WindupHitPlayerState(_playerMovement, this, _playerProperties, _playerInventory, escapeCanvas, 
                     bestiaryPanel)
             };
@@ -82,7 +80,7 @@ namespace Creatures.Player.Behaviour
             _inventoryController.SelectedItemChanged += (_, __) =>
                 CurrentState.OnPlayerSelectedItemChanged(_inventoryController);
             //Initialize health, starvation and temperature:
-
+            _playerInventory.SelectedItemChanged += OnSelectedItemChanged;
             Screen.fullScreen = true;
         }
 
@@ -99,6 +97,7 @@ namespace Creatures.Player.Behaviour
             _currentState.ContinueFreezing();
             _currentState.SpendStamina();
             _currentState.HandleUserInput();
+            _currentState.Build();
         }
 
         private void FixedUpdate()
@@ -114,6 +113,7 @@ namespace Creatures.Player.Behaviour
 
         public void SwitchState<T>() where T : BasicPlayerState
         {
+            //Debug.Log(_currentState.ToString() + "->" + typeof(T).ToString());
             var state = _allStates.FirstOrDefault(st => st is T);
             _currentState.Stop();
             state.Start();
@@ -121,14 +121,18 @@ namespace Creatures.Player.Behaviour
             StateChanged?.Invoke(this, null);
             
             // Delete later
-            //Debug.Log(typeof(T).ToString());
+            
+        }
+        private void OnSelectedItemChanged(object sender, int arg)
+        {
+            CurrentState.InventorySelectedSlotChanged(sender, arg);
         }
         /// <summary>
         /// Performs an attack
         /// </summary>
         internal void Hit()
         {
-            foreach(Collider hitObject in Physics.OverlapBox(hitPosition.transform.position, new Vector3(1f, 2f, 1f)))
+            foreach(Collider hitObject in Physics.OverlapBox(hitPosition.transform.position, new Vector3(0.125f, 0.25f, 0.125f)))
             {
                 var mob = hitObject.gameObject.GetComponent<Mob>();
                 if (mob != null)
@@ -155,10 +159,10 @@ namespace Creatures.Player.Behaviour
             _isDead = true;
             deathCanvas.EnableSelf();
         }
-
+        
         private void OnDrawGizmosSelected()
         {
-            Gizmos.DrawWireCube(hitPosition.transform.position, new Vector3(1f, 2f, 1));
+            Gizmos.DrawWireCube(hitPosition.transform.position, new Vector3(0.125f, 0.25f, 0.125f));
         }
 
     }

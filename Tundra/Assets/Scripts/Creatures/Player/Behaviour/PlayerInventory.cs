@@ -85,6 +85,7 @@ namespace Creatures.Player.Behaviour
             {
                 _currentSlotIndex = value;
                 SelectedItemChanged?.Invoke(this, value);
+                
             }
         }
 
@@ -160,6 +161,16 @@ namespace Creatures.Player.Behaviour
             }
         }
 
+        /// <summary>
+        /// Clears Selected Slot, raising an event
+        /// </summary>
+        /// <param name="SlotID">Slot Id to clear</param>
+        public void ClearSlot(int SlotID)
+        {
+            this.Inventory.Slots[SlotID].Clear();
+            if(SlotID == SelectedInventorySlot)
+                SelectedItemChanged?.Invoke(this, SelectedInventorySlot);
+        }
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.TryGetComponent<DroppedItemBehaviour>(out var drop))
@@ -190,7 +201,11 @@ namespace Creatures.Player.Behaviour
         {
             Inventory.Slots[SelectedInventorySlot].DropItem(transform.position, transform.forward * 3 + Vector3.up);
             if (Inventory.Slots[SelectedInventorySlot].ItemsAmount == 0)
+            {
                 itemHolder.ResetMesh();
+                SelectedItemChanged?.Invoke(this, SelectedInventorySlot);
+            }
+
         }
 
         /// <summary>
@@ -212,6 +227,7 @@ namespace Creatures.Player.Behaviour
             }
             NearestInteractableItem = null;
             ItemPickingProgress = 0f;
+            SelectedItemChanged?.Invoke(this, SelectedInventorySlot);
         }
         
         /// <summary>
