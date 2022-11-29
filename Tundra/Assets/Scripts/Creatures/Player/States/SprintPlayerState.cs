@@ -22,7 +22,7 @@ namespace Creatures.Player.States
             : base(playerMovement, switcher, playerProperties, inventory, escapeCanvas, bestiaryPanel)
         { }
 
-        public override void Start()
+        protected override void OnStart()
         {
             PlayerAnimation.SwitchAnimation("Run");
         }

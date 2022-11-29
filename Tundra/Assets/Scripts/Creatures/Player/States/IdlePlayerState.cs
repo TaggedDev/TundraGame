@@ -80,7 +80,7 @@ namespace Creatures.Player.States
                 PlayerStateSwitcher.SwitchState<WalkPlayerState>();
         }
 
-        public override void Start()
+        protected override void OnStart()
         {
             PlayerProperties.CurrentCircleBarFillingTime = 0f;
             PlayerMovement.CanSprint = true;

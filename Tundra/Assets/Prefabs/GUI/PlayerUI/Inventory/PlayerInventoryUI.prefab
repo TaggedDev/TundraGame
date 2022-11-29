@@ -293,6 +293,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  inventorySlotsPanel: {fileID: 5170119690260560402}
 --- !u!1 &6532455666770100183
 GameObject:
   m_ObjectHideFlags: 0

@@ -72,7 +72,7 @@ namespace Creatures.Player.States
             return PlayerInventory.SelectedItem is FoodItemConfiguration;
         }
 
-        public override void Start()
+        protected override void OnStart()
         {
             PlayerAnimation.SwitchAnimation("Walk");
         }

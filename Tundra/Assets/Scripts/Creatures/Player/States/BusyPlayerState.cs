@@ -50,7 +50,7 @@ namespace Creatures.Player.States
             //Player doesn't spend stamina in inventory.
         }
 
-        public override void Start()
+        protected override void OnStart()
         {
             PlayerMovement.CanSprint = false;
         }

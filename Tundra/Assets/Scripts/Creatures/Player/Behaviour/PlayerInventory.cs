@@ -226,7 +226,6 @@ namespace Creatures.Player.Behaviour
             if (NearestInteractableItem == other.gameObject)
             {
                 ResetNearestItem(null);
-                Debug.Log("Removed item object from this");
             }
         }
 

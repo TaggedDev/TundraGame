@@ -26,7 +26,7 @@ namespace Creatures.Player.States
 
         protected override float WarmConsumptionCoefficient => 0.5f;
 
-        public override void Start()
+        protected override void OnStart()
         {
             IsOnCoolDown = false;
             PlayerAnimation.SwitchAnimation((PlayerInventory.SelectedItem as MeleeWeaponConfiguration).AnimationWeaponName + " Windup", (PlayerInventory.SelectedItem as MeleeWeaponConfiguration).AnimationClipSpeed);

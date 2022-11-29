@@ -23,6 +23,8 @@ namespace Creatures.Player.States
 
         protected override float WarmConsumptionCoefficient => 2f;
 
+        protected override bool IsInventoryVisible => false;
+
         private Vector3 velocity;
 
         public MagicCastingPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
@@ -62,7 +64,7 @@ namespace Creatures.Player.States
             PlayerRigidBody.velocity = new Vector3(velocity.x, PlayerRigidBody.velocity.y, velocity.z);
         }
 
-        public override void Start()
+        protected override void OnStart()
         {
             PlayerMovement.CanSprint = false;
             _playerMagic.Book = (BookEquipmentConfiguration)PlayerEquipment.Book;
@@ -92,6 +94,11 @@ namespace Creatures.Player.States
                 _playerMagic.PrepareForCasting();
                 _playerMagic.CastSpell();
             }
+        }
+
+        public override void OnPlayerSelectedItemChanged(PlayerInventory inventory)
+        {
+            // Temporary solution. TODO: remake inventory system.
         }
 
         internal void Dispell()

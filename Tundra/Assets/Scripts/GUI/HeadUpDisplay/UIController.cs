@@ -8,6 +8,7 @@ namespace GUI.HeadUpDisplay
     public class UIController : MonoBehaviour
     {
         [SerializeField] private GameObject player;
+        [SerializeField] private GameObject inventorySlotsPanel;
 
         /// <summary>
         /// A <see cref="PocketCraftUI"/> instance.
@@ -27,12 +28,17 @@ namespace GUI.HeadUpDisplay
         /// <summary>
         /// Instance of the root canvas script.
         /// </summary>
-        private static UIController RootUIInstance { get; set; }
+        public static UIController RootUIInstance { get; private set; }
 
         /// <summary>
         /// A player <see cref="GameObject"/> instance.
         /// </summary>
         public GameObject Player => player;
+
+        /// <summary>
+        /// An inventory panel instance.
+        /// </summary>
+        public GameObject InventorySlotsPanel => inventorySlotsPanel;
 
         private void Awake()
         {
