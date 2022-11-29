@@ -4,17 +4,20 @@ using System.Collections.Generic;
 using System.Linq;
 using Creatures.Player.Inventory.ItemConfiguration;
 using GUI.PlayerInventoryUI;
+using UnityEngine;
+
 
 namespace Creatures.Player.Inventory
 {
     /// <summary>
     /// A model to store inventory items
     /// </summary>
+    [Serializable]
     public class InventoryContainer : IEnumerable<Slot>
     {
         private readonly InventoryUISlotsController inventoryUI;
         private int maxInventoryCapacity = 4;
-        private Slot[] slots;
+        [SerializeField] private Slot[] slots;
 
         /// <summary>
         /// Maximum inventory capacity
