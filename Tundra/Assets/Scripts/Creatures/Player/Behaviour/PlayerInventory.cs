@@ -5,6 +5,7 @@ using System;
 using Creatures.Player.Crafts;
 using Creatures.Player.Crafts.Placeables;
 using Creatures.Player.Inventory.ItemConfiguration;
+using GUI.PlayerInventoryUI;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
@@ -17,29 +18,28 @@ namespace Creatures.Player.Behaviour
     [RequireComponent(typeof(PlayerBehaviour))]
     public class PlayerInventory : MonoBehaviour
     {
-
         [SerializeField] private MeleeWeaponConfiguration fist;
-        [SerializeField] private InventoryContainer inventory;
+        [SerializeField] private InventoryContainer inventoryContainer;
         [SerializeField] private RecipesListConfig recipesList;
         [SerializeField] private ItemHolder itemHolder;
- 
+        [SerializeField] private InventoryUISlotsController inventoryUIController;
+
         public ItemHolder ItemHolder => itemHolder;
         public static float ItemPickingUpTime => 3f;
         
         private PlayerBehaviour _playerBehaviour;
-        private int _lastSlotIndex;
         private int _currentSlotIndex;
 
         /// <summary>
         /// Player inventory container instance.
         /// </summary>
-        public InventoryContainer Inventory
+        public InventoryContainer InventoryContainer
         {
             get
             {
-                if (inventory == null) 
+                if (inventoryContainer == null) 
                     Init();
-                return inventory;
+                return inventoryContainer;
             }
         }
         /// <summary>
@@ -50,8 +50,8 @@ namespace Creatures.Player.Behaviour
         {
             get
             {
-                if (SelectedInventorySlot != -1 && Inventory[SelectedInventorySlot].Item != null)
-                    return Inventory[SelectedInventorySlot].Item;
+                if (SelectedInventorySlot != -1 && InventoryContainer[SelectedInventorySlot].Item != null)
+                    return InventoryContainer[SelectedInventorySlot].Item;
                 else if(SelectedInventorySlot != -1)
                     return fist;
                 return null;
@@ -72,20 +72,23 @@ namespace Creatures.Player.Behaviour
         /// The progress of the item picking (or the interaction delay).
         /// </summary>
         public float ItemPickingProgress { get; private set; } = 0f;
+        
         /// <summary>
         /// Currently selected slot
         /// </summary>
         public int SelectedInventorySlot
         {
-            get
-            {
-                return _currentSlotIndex;
-            }
+            get => _currentSlotIndex;
             set
             {
+                if (value >= inventoryContainer.MaxInventoryCapacity)
+                    value %= inventoryContainer.MaxInventoryCapacity;
+                else if (value < 0)
+                    value = inventoryContainer.MaxInventoryCapacity - 1;
+                
+                inventoryUIController.SelectChosenSlot(value, _currentSlotIndex);
                 _currentSlotIndex = value;
                 SelectedItemChanged?.Invoke(this, value);
-                
             }
         }
 
@@ -103,7 +106,7 @@ namespace Creatures.Player.Behaviour
 
         private void Init()
         {
-            inventory = new InventoryContainer();
+            inventoryContainer = new InventoryContainer(inventoryUIController);
             _playerBehaviour = GetComponent<PlayerBehaviour>();
         }
 
@@ -121,11 +124,34 @@ namespace Creatures.Player.Behaviour
             {
                 ItemPickingProgress = 0f;
             }
+            
             if (Input.GetKeyDown(KeyCode.Q) && !Input.GetKey(KeyCode.LeftControl))
             {
                 DropEquippedItem();
                 SelectedItemChanged?.Invoke(this, 0);
             }
+            
+            // Select slots if buttons 1-9 are pressed 
+            if (!string.IsNullOrEmpty(Input.inputString))
+            {
+                // If two buttons are pressed -> the first one will be shown
+                char input = Input.inputString[0];
+                if ('1' <= input && '9' >= input)
+                {
+                    int slotIndex = Convert.ToInt32(input) - 48 - 1;
+                    inventoryUIController.SelectChosenSlot(slotIndex,
+                        SelectedInventorySlot);
+                    SelectedInventorySlot = slotIndex;
+                }
+            }
+
+            // Handle wheel scroll (back & forward)
+            float wheelAxis = Input.GetAxis("Mouse ScrollWheel");
+            if (wheelAxis > 0)
+                SelectedInventorySlot = _currentSlotIndex + 1;
+            else if (wheelAxis < 0)
+                SelectedInventorySlot = _currentSlotIndex - 1;
+            
         }
 
         /// <summary>
@@ -171,6 +197,7 @@ namespace Creatures.Player.Behaviour
             if(SlotID == SelectedInventorySlot)
                 SelectedItemChanged?.Invoke(this, SelectedInventorySlot);
         }
+        
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.TryGetComponent<DroppedItemBehaviour>(out var drop))
@@ -199,13 +226,13 @@ namespace Creatures.Player.Behaviour
         /// </summary>
         private void DropEquippedItem()
         {
-            Inventory.Slots[SelectedInventorySlot].DropItem(transform.position, transform.forward * 3 + Vector3.up);
-            if (Inventory.Slots[SelectedInventorySlot].ItemsAmount == 0)
+            InventoryContainer.Slots[SelectedInventorySlot].DropItem(transform.position, transform.forward * 3 + Vector3.up);
+            if (InventoryContainer.Slots[SelectedInventorySlot].ItemsAmount == 0)
             {
                 itemHolder.ResetMesh();
+                inventoryUIController.UIInventorySlots[SelectedInventorySlot].RemoveSlotIcon();
                 SelectedItemChanged?.Invoke(this, SelectedInventorySlot);
             }
-
         }
 
         /// <summary>
@@ -217,12 +244,14 @@ namespace Creatures.Player.Behaviour
             if (_playerBehaviour.OverweightCoefficient < 2)
             {
                 var drop = NearestInteractableItem.GetComponent<DroppedItemBehaviour>();
-                if (Inventory.AddItem(drop.AssociatedItem, drop.DroppedItemsAmount, out int rem))
+                if (InventoryContainer.AddItem(drop.AssociatedItem, drop.DroppedItemsAmount, out int rem, out int slotIndex))
                 {
                     if (rem == 0)
                     {
                         drop.OnPickupHandler(itemHolder);
                     }
+                    inventoryUIController.SetSlotIcon(slotIndex, drop.AssociatedItem.Icon);
+                    inventoryUIController.SelectChosenSlot(slotIndex, _currentSlotIndex);
                 }
             }
             NearestInteractableItem = null;
@@ -233,20 +262,11 @@ namespace Creatures.Player.Behaviour
         /// <summary>
         /// Removes an item selection from the inventory.
         /// </summary>
-        public void UnselectItem()
+        public void SetMagicAsSelectedItem()
         {
-            _lastSlotIndex = SelectedInventorySlot;
             SelectedInventorySlot = -1;
         }
-        
-        /// <summary>
-        /// Re-selects last selected item.
-        /// </summary>
-        public void ReSelectItem()
-        {
-            SelectedInventorySlot = _lastSlotIndex;
-        }
-        
+
         /// <summary>
         /// Resets the nearest item to the player.
         /// </summary>

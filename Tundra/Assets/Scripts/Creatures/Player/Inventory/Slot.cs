@@ -1,35 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using Creatures.Player.Inventory.ItemConfiguration;
+using GUI.PlayerInventoryUI;
 using UnityEngine;
 
 namespace Creatures.Player.Inventory
 {
     /// <summary>
-    /// Класс, представляющий собой слот инвентаря для хранения предметов игрока.
+    /// A model to represent an inventory slot
     /// </summary>
     [Serializable]
     public class Slot
     {
         [SerializeField] private int itemsAmount;
         [SerializeField] private BasicItemConfiguration item;
+        private UIInventorySlot slotUI;
         
         /// <summary>
-        /// Creates a new slot with provided item configuration.
+        /// The index of the current slot
         /// </summary>
-        /// <param name="itemsAmount">Amount of items.</param>
-        /// <param name="item">An item configuration.</param>
-        public Slot(int itemsAmount, BasicItemConfiguration item)
-        {
-            this.itemsAmount=itemsAmount;
-            this.item=item;
-        }
-
-        public Slot()
-        {
-
-        }
-
+        public int Index { get; set; }
+        
         /// <summary>
         /// Indicates if the slot is empty.
         /// </summary>
@@ -55,19 +46,26 @@ namespace Creatures.Player.Inventory
         }
 
         /// <summary>
-        /// Amount of items inside the slot.
+        /// Amount of items in this slot.
         /// </summary>
         public int ItemsAmount
         {
             get => itemsAmount;
-            private set
+            set
             {
-                itemsAmount=value;
+                itemsAmount = value;
                 if (value == 0)
                 {
                     item = null;
                 }
+                slotUI.VisualItemsQuantityInSlot = ItemsAmount;
             }
+        }
+
+        public Slot(int index, UIInventorySlot uiSlot)
+        {
+            Index = index;
+            slotUI = uiSlot;
         }
 
         public event EventHandler<BasicItemConfiguration> ItemChanged;
@@ -78,6 +76,7 @@ namespace Creatures.Player.Inventory
         public void Clear()
         {
             ItemsAmount = 0;
+            slotUI.RemoveSlotIcon();
             Item = null;
             ItemChanged.Invoke(this, item);
         }
@@ -113,14 +112,14 @@ namespace Creatures.Player.Inventory
                 ItemsAmount = Item.MaxStackVolume;
                 return rem;
             }
-            else ItemsAmount += amount;
+            ItemsAmount += amount;
             return 0;
         }
 
         /// <summary>
         /// Drops items into a world space.
         /// </summary>
-        /// <param name="amount">Amounnt of items to drop.</param>
+        /// <param name="amount">Amount of items to drop.</param>
         /// <param name="position">Position in the world to drop into.</param>
         /// <param name="force">Force to throw an item (if its <see cref="GameObject"/> contains <see cref="Rigidbody"/>).</param>
         /// <exception cref="ArgumentOutOfRangeException">Throws if items amount is more than available.</exception>
@@ -139,7 +138,9 @@ namespace Creatures.Player.Inventory
         /// <exception cref="InvalidOperationException">Thrown if the slot is empty.</exception>
         public GameObject DropItem(Vector3 position, Vector3 force)
         {
-            if (ItemsAmount == 0) throw new InvalidOperationException("Slot is empty.");
+            if (ItemsAmount == 0)
+                return null;
+            
             var res = Item.Drop(position, force);
             ItemsAmount--;
             return res;
@@ -160,15 +161,20 @@ namespace Creatures.Player.Inventory
         /// <summary>
         /// Fills the slot with the given item.
         /// </summary>
-        /// <param name="item">An item configuration.</param>
+        /// <param name="fillItem">An item configuration.</param>
         /// <returns><see langword="true"/> if filling was successful.</returns>
         /// <exception cref="ArgumentNullException">Thrown if the item configuration is <see langword="null"/>.</exception>
-        public bool Fill(BasicItemConfiguration item)
+        public bool Fill(BasicItemConfiguration fillItem)
         {
-            if (item == null) throw new ArgumentNullException(nameof(item));
-            if (Item != item && Item != null) return false;
-            ItemsAmount = item.MaxStackVolume;
-            if (Item == null) Item = item;
+            if (fillItem is null)
+                throw new ArgumentNullException(nameof(fillItem));
+            if (Item != fillItem && !(Item is null))
+                return false;
+            
+            ItemsAmount = fillItem.MaxStackVolume;
+            if (Item is null) 
+                Item = fillItem;
+            
             return true;
         }
 

@@ -25,7 +25,6 @@ namespace Creatures.Player.States
         private Vector3 velocity;
         private readonly EscapeMenu _escapeCanvas;
         private readonly BestiaryPanel _bestiaryPanel;
-
         
         /// <summary>
         /// The hunger consumption value of this state.
@@ -236,7 +235,6 @@ namespace Creatures.Player.States
                     Quaternion.Euler(item.HandedRotation),
                     item.Model, 
                     item.Materials);
-                //PlayerInventory.ItemHolder.SetNewMesh(inventory.SelectedItem);
             }
         }
 
@@ -270,7 +268,7 @@ namespace Creatures.Player.States
             
             // Gaining more than max is handled in properties
             PlayerProperties.CurrentStarvePoints += food.Calories;
-            PlayerInventory.Inventory.Slots[PlayerInventory.SelectedInventorySlot].RemoveItems(1);
+            PlayerInventory.InventoryContainer.Slots[PlayerInventory.SelectedInventorySlot].RemoveItems(1);
             if (PlayerInventory.SelectedItem.Title == "Fist")
             {
                 PlayerProperties.IsHoldingFood = false;

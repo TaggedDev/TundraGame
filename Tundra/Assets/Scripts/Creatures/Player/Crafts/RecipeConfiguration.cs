@@ -58,28 +58,29 @@ namespace Creatures.Player.Crafts
         {
             // Returns true if there's a workbench match and player inventory contains all required item (their number is equal or more than required amount).
             // If the inventory script is null, it supposes that check is needed only for the workbench.
-            return workbench == this.workbench && (inv == null || requiredItems.All(x => inv.Inventory.CountItemOfTypeInTheInventory(x.Item) >= x.Amount));
+            return workbench == this.workbench && (inv == null || requiredItems.All(x => inv.InventoryContainer.CountItemOfTypeInTheInventory(x.Item) >= x.Amount));
         }
-        
+
         /// <summary>
         /// Does a craft for this recipe.
         /// </summary>
         /// <param name="inventoryScript">Player inventory script which controls inventory.</param>
-        /// <returns><see langword="true"/> if craft was done successfully, <see langword="false"/> otherwise.</returns>
-        public bool Craft(PlayerInventory inventoryScript, out int resultSlot)
+        /// <param name="resultSlot"></param>
+        public void Craft(PlayerInventory inventoryScript, out int resultSlot)
         {
             if (!CheckIfAvailable(workbench, inventoryScript))
             {
                 resultSlot = -1;
-                return false;
+                return;
             }
+            
             // Removes from inventory as much items as required in the craft.
             foreach (var component in requiredItems)
             {
                 int remainder = component.Amount;
                 while (remainder > 0)
                 {
-                    var slot = inventoryScript.Inventory.Slots.Last(x => x.Item == component.Item);
+                    var slot = inventoryScript.InventoryContainer.Slots.Last(x => x.Item == component.Item);
                     int items = slot.ItemsAmount;
                     if (remainder >= items)
                     {
@@ -94,14 +95,16 @@ namespace Creatures.Player.Crafts
                 }
             }
             // Adds an item to player's inventory or drops it if player's inventory is full.
-            inventoryScript.Inventory.AddItem(result, 1, out int rem);
+            inventoryScript.InventoryContainer.AddItem(result, 1, out int rem, out int slotIndex);
             if (rem == 1)
             {
                 resultSlot = -1;
                 result.Drop(inventoryScript.transform.position, Vector3.up);
             }
-            else resultSlot = Array.FindLastIndex(inventoryScript.Inventory.Slots, x => x.Item == result);
-            return true;
+            else
+            {
+                resultSlot = Array.FindLastIndex(inventoryScript.InventoryContainer.Slots, x => x.Item == result);
+            }
         }
     }
 }

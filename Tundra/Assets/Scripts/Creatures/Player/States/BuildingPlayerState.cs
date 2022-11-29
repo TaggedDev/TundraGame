@@ -16,6 +16,7 @@ namespace Creatures.Player.States
         private const float speed = .7f; //ain't it supposed to be set somwhere in 1 place for everyone?
         private PlaceableObject _placeableObject;
         private Vector3 _point;
+        
         public BuildingPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
             PlayerProperties playerProperties, PlayerInventory inventory, EscapeMenu escapeCanvas, 
             BestiaryPanel bestiaryPanel) 
@@ -23,9 +24,7 @@ namespace Creatures.Player.States
         {
             
         }
-
-
-
+        
         protected override float StarvingConsumptionCoefficient => 1f;
 
         protected override float StaminaConsumption => -.5f; 
@@ -84,6 +83,7 @@ namespace Creatures.Player.States
             }
 
             PlayerStateSwitcher.SwitchState<IdlePlayerState>();
+            PlayerInventory.InventoryContainer[PlayerInventory.SelectedInventorySlot].Clear();
         }
 
         public override void Stop()

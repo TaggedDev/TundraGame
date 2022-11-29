@@ -12,7 +12,7 @@ namespace GUI.HeadUpDisplay
         /// <summary>
         /// A <see cref="PocketCraftUI"/> instance.
         /// </summary>
-        public static PocketCraftUI PocketCraftUI { get; set; }
+        public static PocketCraftUI PocketCraftUI { get; private set; }
 
         /// <summary>
         /// A <see cref="CraftPanelUI"/> instance.
@@ -27,7 +27,7 @@ namespace GUI.HeadUpDisplay
         /// <summary>
         /// Instance of the root canvas script.
         /// </summary>
-        public static UIController RootUIInstance { get; private set; }
+        private static UIController RootUIInstance { get; set; }
 
         /// <summary>
         /// A player <see cref="GameObject"/> instance.
