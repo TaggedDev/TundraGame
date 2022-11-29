@@ -25,7 +25,7 @@ namespace Creatures.Player.Behaviour
         [SerializeField] private InventoryUISlotsController inventoryUIController;
 
         public ItemHolder ItemHolder => itemHolder;
-        public static float ItemPickingUpTime => 3f;
+        private static float ItemPickingUpTime => 3f;
         
         private PlayerBehaviour _playerBehaviour;
         private int _currentSlotIndex;
@@ -71,7 +71,7 @@ namespace Creatures.Player.Behaviour
         /// <summary>
         /// The progress of the item picking (or the interaction delay).
         /// </summary>
-        public float ItemPickingProgress { get; private set; } = 0f;
+        private float ItemPickingProgress { get; set; }
         
         /// <summary>
         /// Currently selected slot
@@ -193,7 +193,7 @@ namespace Creatures.Player.Behaviour
         /// <param name="SlotID">Slot Id to clear</param>
         public void ClearSlot(int SlotID)
         {
-            this.Inventory.Slots[SlotID].Clear();
+            InventoryContainer.Slots[SlotID].Clear();
             if(SlotID == SelectedInventorySlot)
                 SelectedItemChanged?.Invoke(this, SelectedInventorySlot);
         }
