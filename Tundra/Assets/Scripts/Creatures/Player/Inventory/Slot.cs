@@ -51,13 +51,14 @@ namespace Creatures.Player.Inventory
         public int ItemsAmount
         {
             get => itemsAmount;
-            private set
+            set
             {
-                itemsAmount=value;
+                itemsAmount = value;
                 if (value == 0)
                 {
                     item = null;
                 }
+                slotUI.VisualItemsQuantityInSlot = ItemsAmount;
             }
         }
 
@@ -94,7 +95,6 @@ namespace Creatures.Player.Inventory
             if (ItemsAmount > 0 && Item.Title != item.Title) return false;
             Item = item;
             ItemsAmount = amount;
-            slotUI.ItemsInSlotQuantity += amount;
             return true;
         }
 
@@ -109,11 +109,9 @@ namespace Creatures.Player.Inventory
             {
                 int rem = amount + ItemsAmount - Item.MaxStackVolume;
                 ItemsAmount = Item.MaxStackVolume;
-                slotUI.ItemsInSlotQuantity = Item.MaxStackVolume;
                 return rem;
             }
             ItemsAmount += amount;
-            slotUI.ItemsInSlotQuantity += amount;
             return 0;
         }
 
@@ -128,7 +126,6 @@ namespace Creatures.Player.Inventory
         {
             if (amount > ItemsAmount) throw new ArgumentOutOfRangeException(nameof(amount), "Amount of items to throw is more than amount of items inside the slot.");
             ItemsAmount -= amount;
-            slotUI.ItemsInSlotQuantity -= amount;
             return Item.MassDrop(amount, position, force);
         }
 
@@ -145,7 +142,6 @@ namespace Creatures.Player.Inventory
             
             var res = Item.Drop(position, force);
             ItemsAmount--;
-            slotUI.ItemsInSlotQuantity -= 1;
             return res;
         }
 
@@ -175,8 +171,6 @@ namespace Creatures.Player.Inventory
                 return false;
             
             ItemsAmount = fillItem.MaxStackVolume;
-            slotUI.ItemsInSlotQuantity += fillItem.MaxStackVolume;
-            
             if (Item is null) 
                 Item = fillItem;
             
