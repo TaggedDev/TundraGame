@@ -5,6 +5,7 @@ using System;
 using Creatures.Player.Crafts;
 using Creatures.Player.Crafts.Placeables;
 using Creatures.Player.Inventory.ItemConfiguration;
+using GUI.PlayerGameplayGUI;
 using GUI.PlayerInventoryUI;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
@@ -23,9 +24,10 @@ namespace Creatures.Player.Behaviour
         [SerializeField] private RecipesListConfig recipesList;
         [SerializeField] private ItemHolder itemHolder;
         [SerializeField] private InventoryUISlotsController inventoryUIController;
+        [SerializeField] private InteractionPanel interactionPanel;
 
         public ItemHolder ItemHolder => itemHolder;
-        private static float ItemPickingUpTime => 3f;
+        public static float ItemPickingUpTime => 3f;
         
         private PlayerBehaviour _playerBehaviour;
         private int _currentSlotIndex;
@@ -71,7 +73,7 @@ namespace Creatures.Player.Behaviour
         /// <summary>
         /// The progress of the item picking (or the interaction delay).
         /// </summary>
-        private float ItemPickingProgress { get; set; }
+        public float ItemPickingProgress { get; set; }
         
         /// <summary>
         /// Currently selected slot
@@ -152,6 +154,13 @@ namespace Creatures.Player.Behaviour
             else if (wheelAxis < 0)
                 SelectedInventorySlot = _currentSlotIndex - 1;
             
+            // Show the nearest interactable item tile.
+            if (!(NearestInteractableItem is null))
+                interactionPanel.EnablePanel(
+                    NearestInteractableItem.GetComponent<DroppedItemBehaviour>() is null);
+            else
+                interactionPanel.DisablePanel();
+
         }
 
         /// <summary>

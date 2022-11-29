@@ -62,22 +62,6 @@ namespace GUI.PlayerInventoryUI
         {
             _uiInventorySlots[slotToDeactivate].RemoveSlotSelectionEffects();
             _uiInventorySlots[slotToActivate].ApplySlotSelectionEffects();
-            
-            /*// Prevent new 
-            
-            // Show the nearest interactable item tile.
-            if (_inventoryController.NearestInteractableItem == null)
-            {
-                _pickupPanel.SetActive(false);
-            }
-            else
-            {
-                _pickupPanel.SetActive(true);
-                (_pickupPanel.transform as RectTransform).position = RectTransformUtility.WorldToScreenPoint(_mainCamera, _inventoryController.NearestInteractableItem.transform.position) + new Vector2(0, 40);
-                _progressBar.fillAmount = _inventoryController.ItemPickingProgress / PlayerInventory.ItemPickingUpTime;
-                if (_inventoryController.NearestInteractableItem.GetComponent<DroppedItemBehaviour>()) _pickupLabel.text = pickupText;
-                else _pickupLabel.text = openText;
-            }*/
         }
 
         /// <summary>

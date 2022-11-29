@@ -981,6 +981,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c03cfd42317533f43b1f60e037046418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1552789793 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6591950171598838081, guid: 559d97cf075654344b456f54e77c8b1c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1683048383}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1552789787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 310c41ff2346f874f895e93cda8cf71b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1552789797 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5228099823817914258, guid: 559d97cf075654344b456f54e77c8b1c,
@@ -1085,6 +1097,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6591950171598838081, guid: 559d97cf075654344b456f54e77c8b1c,
+        type: 3}
+      propertyPath: interactionPanel
+      value: 
+      objectReference: {fileID: 2108574951}
     - target: {fileID: 6591950171598838081, guid: 559d97cf075654344b456f54e77c8b1c,
         type: 3}
       propertyPath: inventoryUIController
@@ -1542,6 +1559,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2108574951 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1333583847824173446, guid: 7b949200a79eb1646bc81bf587b82533,
+    type: 3}
+  m_PrefabInstance: {fileID: 6532455668144582074}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e62c2e98b204ac28b500d469207a094, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3644022884352078094
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1863,6 +1892,11 @@ PrefabInstance:
       propertyPath: m_Value
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1333583847824173446, guid: 7b949200a79eb1646bc81bf587b82533,
+        type: 3}
+      propertyPath: inventory
+      value: 
+      objectReference: {fileID: 1552789793}
     - target: {fileID: 1675321709422225667, guid: 7b949200a79eb1646bc81bf587b82533,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -2086,7 +2120,7 @@ PrefabInstance:
     - target: {fileID: 5843327809793584945, guid: 7b949200a79eb1646bc81bf587b82533,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.07742503
+      value: 599.99994
       objectReference: {fileID: 0}
     - target: {fileID: 6427001432709537127, guid: 7b949200a79eb1646bc81bf587b82533,
         type: 3}
