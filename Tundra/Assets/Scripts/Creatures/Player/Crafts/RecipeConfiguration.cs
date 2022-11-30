@@ -58,7 +58,9 @@ namespace Creatures.Player.Crafts
         {
             // Returns true if there's a workbench match and player inventory contains all required item (their number is equal or more than required amount).
             // If the inventory script is null, it supposes that check is needed only for the workbench.
-            return workbench == this.workbench && (inv == null || requiredItems.All(x => inv.InventoryContainer.CountItemOfTypeInTheInventory(x.Item) >= x.Amount));
+            bool debug = workbench == this.workbench && (inv == null || requiredItems.All(x => inv.InventoryContainer.CountItemOfTypeInTheInventory(x.Item) >= x.Amount));
+            if (debug) Debug.Log($"{this} is available for craft.");
+            return debug;
         }
 
         /// <summary>

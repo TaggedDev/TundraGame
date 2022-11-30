@@ -71,37 +71,40 @@ namespace GUI.HeadUpDisplay
         
         private void Update()
         {
-            //Определяем, куда нам нужно стремиться.
+            // Check which scale is needed
             _targetScale = PlayerProperties.CurrentHealthPoints / PlayerProperties.MaxHealthPoints;
-            //Вычисляем, какой путь проделаем в этом кадре.
+            // Calculate value to change this frame
             float deltaScaleValue = (float)Math.Round((_targetScale - _currentScale), 3) * animationSpeedModifier * Time.deltaTime;
-            //Debug.Log($"target: {targetScale}, current: {currentScale}, delta: {deltaScaleValue}, actualWidth: {actualWidth}");
-            //Если анимация завершена (не надо особо стремиться), то окргуляем величины для точности информации и выключаем анимацию потери хп
-            if (Math.Abs(deltaScaleValue) < 0.0000002)
+            // If animation should over, we round value up and end it.
+            if (Math.Abs(deltaScaleValue) < 0.0002)
             {
                 deltaScaleValue = 0;
                 _currentScale = _targetScale;
                 _lastMaxWidthPoint = ActualWidth - ActualWidth * _currentScale;
                 _deltaIndicator.gameObject.SetActive(false);
             }
-            //Иначе рассчитываем анимацию потери хп (тут начинается какая-то матемтаическая дичь, вроде я и сам это сделал, но всё равно не хочется в неё лишний раз лезть).
+            // Else we calculate animation
             else
             {
-                //Ну а если точнее, то определяем предполагаемую ширину красной полоски, потом рассчитываем сдвиг от начала индикатора и двигаем и масштабируем.
+                // Calculate width to change in process of scaling
                 float realDeltaWidth = ActualWidth - ActualWidth * _currentScale - _lastMaxWidthPoint;
-                //Debug.Log(realDeltaWidth + " lmwp " + lastMaxWidthPoint);
+                // Move the red line center
                 Vector3 deltaPos = transform.rotation * new Vector3(realDeltaWidth / 2 + _lastMaxWidthPoint, 0);
                 _deltaIndicator.position = HealthBarStart + new Vector3((float)Math.Round(deltaPos.x, 1), (float)Math.Round(deltaPos.y, 1), (float)Math.Round(deltaPos.z, 1));
                 _deltaIndicator.localScale = new Vector3(realDeltaWidth / ActualWidth, 1, 1);
-                if (deltaScaleValue < 0) _deltaIndicator.gameObject.SetActive(true);//Перезапускаем анимацию, если надо снова терять хп ещё до конца анимации.
-                if (ActualWidth - ActualWidth * _currentScale < _lastMaxWidthPoint)//И наоборот, выключаем её, если игрок активно хилится.
+                // Restart the animation if it's updated
+                if (deltaScaleValue < 0) _deltaIndicator.gameObject.SetActive(true);
+                // Turn it off if the player healed up.
+                if (ActualWidth - ActualWidth * _currentScale < _lastMaxWidthPoint)
                 {
                     _lastMaxWidthPoint = ActualWidth - ActualWidth * _currentScale;
                     _deltaIndicator.gameObject.SetActive(false);
                 }
             }
-            _indicator.localScale = new Vector3(deltaScaleValue + _currentScale, _indicator.localScale.y, _indicator.localScale.z);//Ну а тут уже переопределяем значения для основной шкалы.
-            _currentScale = _indicator.localScale.x;//И напоследок обновляем текущее значение.
+            // Reset main scale
+            _indicator.localScale = new Vector3(deltaScaleValue + _currentScale, _indicator.localScale.y, _indicator.localScale.z);
+            // Update current scale value.
+            _currentScale = _indicator.localScale.x;
         }
     }
 
