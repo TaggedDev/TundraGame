@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
   title: Cloth
-  description: 
+  description: A piece of cloth to make clothes. Helpful item
   itemInWorldPrefab: {fileID: 0}
-  maxStackVolume: 2
-  weight: 0
-  recipe: {fileID: 0}
+  maxStackVolume: 5
+  weight: 0.1
+  recipe: {fileID: 11400000, guid: c39c8cb5c25af4945a2b61632fddaacb, type: 2}

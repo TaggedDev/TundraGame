@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Rope
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
-  title: 
-  description: 
+  title: Rope
+  description: A rope is needed to make some items and tools.
   itemInWorldPrefab: {fileID: 0}
-  maxStackVolume: 0
-  weight: 0
+  maxStackVolume: 7
+  weight: 0.3
   recipe: {fileID: 0}
