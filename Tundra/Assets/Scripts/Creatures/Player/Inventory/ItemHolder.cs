@@ -24,6 +24,12 @@ namespace Creatures.Player.Inventory
         /// <param name="materials">MeshRenderer of this item</param>
         public void SetNewMesh(Vector3 handedScale, Quaternion handedRotation, MeshFilter model, MeshRenderer materials)
         {
+            // To not break when item hasn't model.
+            if (model == null || materials == null)
+            {
+                ResetMesh();
+                return;
+            }
             _meshFilter.mesh = model.sharedMesh;
             _meshRenderer.materials = materials.sharedMaterials;
             transform.localRotation = handedRotation;

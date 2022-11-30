@@ -192,7 +192,9 @@ namespace Creatures.Player.Behaviour
             float currentDistance = Vector3.Distance(transform.position, transform.position);
             if (currentDistance < oldDistance || oldDistance == -1)
             {
-                ResetNearestItem(item);
+                var craft = item.GetComponent<PlaceableObjectBehaviour>();
+                if (craft == null || craft.CanBeOpened)
+                    ResetNearestItem(item);
             }
         }
 
@@ -226,7 +228,6 @@ namespace Creatures.Player.Behaviour
             if (NearestInteractableItem == other.gameObject)
             {
                 ResetNearestItem(null);
-                Debug.Log("Removed item object from this");
             }
         }
 

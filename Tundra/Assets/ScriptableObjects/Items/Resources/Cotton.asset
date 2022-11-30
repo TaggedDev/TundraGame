@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
   title: Cotton
-  description: 
+  description: Cotton, needed to make clothes
   itemInWorldPrefab: {fileID: 0}
-  maxStackVolume: 5
-  weight: 0
+  maxStackVolume: 4
+  weight: 0.05
   recipe: {fileID: 0}

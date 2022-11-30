@@ -42,6 +42,10 @@ namespace Creatures.Player.States
         /// The warm consumption coefficient of this state.
         /// </summary>
         protected abstract float WarmConsumptionCoefficient { get; }
+        /// <summary>
+        /// Indicates if the inventory panel visible.
+        /// </summary>
+        protected virtual bool IsInventoryVisible => true;
         
         protected BasicPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher, 
             PlayerProperties playerProperties, PlayerInventory playerInventory, EscapeMenu escapeCanvas,
@@ -61,9 +65,18 @@ namespace Creatures.Player.States
         }
 
         /// <summary>
+        /// Starts the state.
+        /// </summary>
+        public void Start()
+        {
+            UIController.RootUIInstance.InventorySlotsPanel.SetActive(IsInventoryVisible);
+            OnStart();
+        }
+
+        /// <summary>
         /// On State changed | Start
         /// </summary>
-        public abstract void Start();
+        protected abstract void OnStart();
         
         /// <summary>
         /// On State changed | Stop

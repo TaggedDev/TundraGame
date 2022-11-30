@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Mushroom
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
-  title: 
-  description: 
+  title: Mushroom
+  description: "Grows in the forest. \nYou can find them almost everywhere\nNote:
+    don't eat strange mushrooms!"
   itemInWorldPrefab: {fileID: 0}
-  maxStackVolume: 0
-  weight: 0
+  maxStackVolume: 30
+  weight: 0.025
   recipe: {fileID: 0}

@@ -18,6 +18,8 @@ namespace Creatures.Player.States
 
         protected override float WarmConsumptionCoefficient => throw new NotImplementedException();
 
+        protected override bool IsInventoryVisible => false;
+
         public BusyPlayerState(PlayerMovement playerMovement, IPlayerStateSwitcher switcher,
 
             PlayerProperties playerProperties, PlayerInventory inventory, EscapeMenu escapeCanvas, BestiaryPanel bestiaryPanel)
@@ -50,7 +52,7 @@ namespace Creatures.Player.States
             //Player doesn't spend stamina in inventory.
         }
 
-        public override void Start()
+        protected override void OnStart()
         {
             PlayerMovement.CanSprint = false;
         }

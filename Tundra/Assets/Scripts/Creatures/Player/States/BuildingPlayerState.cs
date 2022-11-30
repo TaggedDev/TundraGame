@@ -33,7 +33,7 @@ namespace Creatures.Player.States
 
         protected override float WarmConsumptionCoefficient => 1f;
 
-        public override void Start()
+        protected override void OnStart()
         {
             PlayerMovement.CanSprint = false;
             if (!(PlayerInventory.SelectedItem is PlaceableItemConfiguration) || PlayerInventory.SelectedItem is null)
@@ -79,7 +79,7 @@ namespace Creatures.Player.States
             if(PlayerInventory.SelectedItem is PlaceableItemConfiguration)
             {
                 Stop();
-                Start();
+                OnStart();
             }
 
             PlayerStateSwitcher.SwitchState<IdlePlayerState>();
